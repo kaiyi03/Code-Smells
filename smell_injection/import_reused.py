@@ -34,10 +34,10 @@ MAX_PYSMELL_PER = 250      # cap per (smell, label) to bound GitHub downloads
 MSGID_TO_SMELL = {
     "W0102": "mutable_default",
     "W0718": "broad_except", "W0703": "broad_except",
-    "W0611": "unused_import",
+    "W0611": "dead_code", "W0612": "dead_code",
     "R0913": "long_parameter_list",
     "R1702": "deep_nesting",
-    "R0916": "too_many_booleans",
+    "R0916": "complex_conditional",
     "R0915": "long_method",
     "R2004": "magic_number",
 }

@@ -9,11 +9,20 @@ Everything runs top to bottom in this one file:
   STEP 5  save the confirmed (clean, smelly, label) rows to samples.jsonl
 
 All 12 smells are wired up, grouped by the tool that confirms them:
-  - pylint : mutable_default, broad_except, unused_import, long_parameter_list,
-             deep_nesting, too_many_booleans, long_method, magic_number
-  - ruff   : perf_try_in_loop, perf_manual_list, perf_manual_copy
+  - pylint : mutable_default, broad_except, dead_code, long_parameter_list,
+             deep_nesting, complex_conditional, long_method, magic_number
+  - ruff   : perf_try_in_loop, inefficient_loop, inefficient_copy
   - jscpd  : duplicate_code
 Each is the same shape: write an injector, map it to the rule that proves it landed.
+
+Two smells from the original plan -- "string concatenation in a loop" and
+"redundant / loop-invariant computation" -- are deliberately NOT here: no
+off-the-shelf pylint/ruff rule detects them, so they cannot meet our operational
+definition (a smell is whatever an established detector flags). They are stood in
+for by two perf smells ruff DOES detect: inefficient_copy (PERF402) and
+perf_try_in_loop (PERF203). "dead_code" covers both an unused import (W0611) and
+an unused variable (W0612); "complex_conditional" and "inefficient_loop" are the
+plan's names for the too-many-booleans and manual-comprehension smells.
 
 Needs:    pylint, ruff, datasets  (pip)   +   jscpd  (npm install -g jscpd)
 Python 3.9+  (uses ast.unparse)
@@ -39,7 +48,7 @@ from collections import Counter
 PER_SOURCE = None        # functions per MBPP split / HumanEval; None = all (full build)
 TARGET_PER_SMELL = 100   # cap per smell so common smells don't drown the rare ones
 # CodeSearchNet top-up (full build only): pull real GitHub Python functions the
-# perf injectors can apply to, to lift perf_manual_list/copy toward target.
+# perf injectors can apply to, to lift inefficient_loop/inefficient_copy toward target.
 CSN_COPY_TARGET = 400    # functions with a list-copy shape (the rarer one)
 CSN_LIST_TARGET = 200    # functions with a transforming-comprehension shape
 CSN_SCAN_LIMIT = 60000   # max functions to stream while hunting for those shapes
@@ -51,10 +60,10 @@ OUT_FILE = os.path.join(OUT_DIR, "samples.jsonl")
 PYLINT_SMELLS = {
     "mutable_default":     ["W0102"],           # def f(x=[])  dangerous-default-value
     "broad_except":        ["W0718", "W0703"],  # except Exception
-    "unused_import":       ["W0611"],           # import never used
+    "dead_code":           ["W0611", "W0612"],  # unused import OR unused variable
     "long_parameter_list": ["R0913"],           # too-many-arguments (>5)
     "deep_nesting":        ["R1702"],           # too-many-nested-blocks (>5)
-    "too_many_booleans":   ["R0916"],           # too-many-boolean-expressions (>5)
+    "complex_conditional": ["R0916"],           # too-many-boolean-expressions (>5)
     "long_method":         ["R0915"],           # too-many-statements (>50)
     "magic_number":        ["R2004"],           # magic-value-comparison
 }
@@ -64,8 +73,8 @@ PYLINT_ENABLE = ",".join(MSGID_TO_SMELL)
 # smell name -> the ruff rule code(s) that mark it (the performance smells)
 RUFF_SMELLS = {
     "perf_try_in_loop": ["PERF203"],   # try/except inside a loop
-    "perf_manual_list": ["PERF401"],   # manual loop that should be a comprehension
-    "perf_manual_copy": ["PERF402"],   # manual loop that just copies a list
+    "inefficient_loop": ["PERF401"],   # manual loop that should be a comprehension
+    "inefficient_copy": ["PERF402"],   # manual loop that just copies a list
 }
 RULE_TO_SMELL = {code: s for s, codes in RUFF_SMELLS.items() for code in codes}
 RUFF_SELECT = ",".join(RULE_TO_SMELL)
@@ -165,10 +174,10 @@ def load_references(per_source=None):
                     norm = ast.unparse(ast.parse(ex.get("code") or ""))
             except (SyntaxError, ValueError, RecursionError):
                 continue
-            if copy_n < CSN_COPY_TARGET and inject_perf_manual_copy(norm) is not None:
+            if copy_n < CSN_COPY_TARGET and inject_inefficient_copy(norm) is not None:
                 refs.append({"id": f"csn_{scanned}", "source": "codesearchnet", "code": norm})
                 copy_n += 1
-            elif list_n < CSN_LIST_TARGET and inject_perf_manual_list(norm) is not None:
+            elif list_n < CSN_LIST_TARGET and inject_inefficient_loop(norm) is not None:
                 refs.append({"id": f"csn_{scanned}", "source": "codesearchnet", "code": norm})
                 list_n += 1
             if copy_n >= CSN_COPY_TARGET and list_n >= CSN_LIST_TARGET:
@@ -263,14 +272,53 @@ def inject_broad_except(src):
     return ast.unparse(tree)
 
 
-def inject_unused_import(src):
-    """Prepend an import the function never uses."""
+def _unused_import(src):
+    """Prepend an import the function never uses (-> pylint W0611)."""
     candidates = ["os", "sys", "math", "json", "random", "itertools"]
     used = set(re.findall(r"[A-Za-z_]\w*", src))
     name = next((c for c in candidates if c not in used), None)
     if name is None:
         return None
     return f"import {name}\n" + src
+
+
+def _unused_variable(src):
+    """Insert a local variable that is assigned but never read (-> pylint W0612).
+    The value is the first parameter (a bare alias, so it can never raise) or a
+    literal if there is none; either way it is never used, so behaviour is
+    unchanged. The name is the first candidate not already in the source, and is
+    a plain word (not a `_`/`dummy`-style name, which pylint would treat as an
+    intentional throwaway and NOT flag)."""
+    tree = ast.parse(src)
+    fn = _first_func(tree)
+    if fn is None:
+        return None
+    used = set(re.findall(r"[A-Za-z_]\w*", src))
+    name = next((c for c in ("leftover", "spare", "waste", "unused", "dead", "buf")
+                 if c not in used), None)
+    if name is None:
+        return None
+    doc, rest = _split_docstring(fn.body)
+    p = _first_param(fn)
+    value = ast.Name(id=p, ctx=ast.Load()) if p is not None else ast.Constant(value=0)
+    stmt = ast.Assign(targets=[ast.Name(id=name, ctx=ast.Store())], value=value)
+    fn.body = doc + [stmt] + rest
+    ast.fix_missing_locations(tree)
+    return ast.unparse(tree)
+
+
+def inject_dead_code(src):
+    """Introduce dead code: an unused variable (W0612) or an unused import (W0611).
+    The 'Dead Code (unused var/import)' smell covers both forms, so the injector
+    alternates deterministically (by source content) to include each, then falls
+    back to the other form if the preferred one cannot apply."""
+    prefer_var = sum(src.encode("utf-8")) % 2 == 0
+    order = (_unused_variable, _unused_import) if prefer_var else (_unused_import, _unused_variable)
+    for fn in order:
+        out = fn(src)
+        if out is not None:
+            return out
+    return None
 
 
 # ---- pylint-confirmed structural injectors --------------------------
@@ -323,8 +371,9 @@ def inject_deep_nesting(src):
     return ast.unparse(tree)
 
 
-def inject_too_many_booleans(src):
-    """Add an `if` whose condition chains many boolean terms (>5)."""
+def inject_complex_conditional(src):
+    """Add an `if` whose condition chains many boolean terms (>5) -- a tangled,
+    hard-to-read compound condition."""
     tree = ast.parse(src)
     fn = _first_func(tree)
     if fn is None:
@@ -429,8 +478,9 @@ def _append_loop(name, target, it, value):
     return [init, loop]
 
 
-def inject_perf_manual_list(src):
-    """Turn a transforming list comprehension into a manual append loop (PERF401)."""
+def inject_inefficient_loop(src):
+    """Turn a transforming list comprehension into a manual append loop (PERF401)
+    -- an inefficient loop where a comprehension would be clearer and faster."""
     tree = ast.parse(src)
     fn = _first_func(tree)
     if fn is None:
@@ -466,7 +516,7 @@ def _provably_list(fn, node):
     return False
 
 
-def inject_perf_manual_copy(src):
+def inject_inefficient_copy(src):
     """Turn a *list* copy into an append loop (PERF402). Handles `[x for x in it]`
     and `list(it)` (always lists), plus `it[:]` and `it.copy()` ONLY when the
     source is provably a list -- the guard stops dict/set copies, whose loop
@@ -520,15 +570,15 @@ def inject_duplicate_code(src):
 INJECTORS = {
     "mutable_default": inject_mutable_default,
     "broad_except": inject_broad_except,
-    "unused_import": inject_unused_import,
+    "dead_code": inject_dead_code,
     "long_parameter_list": inject_long_parameter_list,
     "deep_nesting": inject_deep_nesting,
-    "too_many_booleans": inject_too_many_booleans,
+    "complex_conditional": inject_complex_conditional,
     "long_method": inject_long_method,
     "magic_number": inject_magic_number,
     "perf_try_in_loop": inject_perf_try_in_loop,
-    "perf_manual_list": inject_perf_manual_list,
-    "perf_manual_copy": inject_perf_manual_copy,
+    "inefficient_loop": inject_inefficient_loop,
+    "inefficient_copy": inject_inefficient_copy,
     "duplicate_code": inject_duplicate_code,
 }
 
@@ -775,7 +825,7 @@ def _preflight():
     checks = [
         ("pylint core",        "def f(x=[]):\n    return x\n",                          "mutable_default"),
         ("pylint magic_value", "def f(x):\n    _ = x == 42\n    return x\n",             "magic_number"),
-        ("ruff (perf)",        "def f(xs):\n    o = []\n    for x in xs:\n        o.append(x + 1)\n    return o\n", "perf_manual_list"),
+        ("ruff (perf)",        "def f(xs):\n    o = []\n    for x in xs:\n        o.append(x + 1)\n    return o\n", "inefficient_loop"),
     ]
     ok = True
     for label, code, smell in checks:
