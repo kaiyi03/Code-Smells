@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Code Smells &mdash; visualizations</title>
+<style>
+  :root { color-scheme: light dark; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+         line-height:1.55; color:#1a1a1a; background:#fafafa; }
+  .wrap { max-width:860px; margin:0 auto; padding:48px 24px 80px; }
+  h1 { font-size:28px; margin:0 0 6px; }
+  .sub { color:#555; margin:0 0 8px; font-size:16px; }
+  .meta { color:#888; font-size:13.5px; margin:0 0 32px; }
+  .cards { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  a.card { display:block; text-decoration:none; color:inherit; background:#fff;
+           border:1px solid #e4e4e4; border-radius:12px; padding:20px 22px;
+           box-shadow:0 1px 2px rgba(0,0,0,.04);
+           transition:transform .08s, box-shadow .08s, border-color .08s; }
+  a.card:hover { transform:translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,.08); border-color:#c9c9c9; }
+  a.card h2 { margin:0 0 6px; font-size:18px; }
+  a.card p { margin:0; color:#666; font-size:14px; }
+  a.card .tag { display:inline-block; margin-top:12px; font-size:12px; color:#2563eb; font-weight:600; }
+  .note { color:#b45309; }
+  footer { margin-top:40px; font-size:13px; color:#888; }
+  footer a { color:#2563eb; text-decoration:none; }
+  @media (max-width:640px){ .cards{ grid-template-columns:1fr; } }
+  @media (prefers-color-scheme: dark){
+    body{ background:#0f1115; color:#e6e6e6; }
+    .sub{ color:#a8adb7; } .meta,footer{ color:#7a7a7a; }
+    a.card{ background:#171a21; border-color:#2a2f3a; box-shadow:none; }
+    a.card:hover{ border-color:#3a4150; } a.card p{ color:#9aa0aa; }
+    a.card .tag, footer a{ color:#6ea8fe; } .note{ color:#f0b429; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Code Smells &mdash; visualizations</h1>
+  <p class="sub">Benchmarking and metrics for poorly-structured (&ldquo;smelly&rdquo;) LLM-generated Python code.</p>
+  <p class="meta">Rendered reports from the benchmark and the evaluation tool. Part of a research project at the University of Oxford&rsquo;s Machine Learning Research Group.</p>
+
+  <div class="cards">
+    <a class="card" href="smell_injection/smell_guide.html">
+      <h2>Smell guide</h2>
+      <p>The 12 code smells, how each is injected into clean code, and which tool confirms it &mdash; with real clean&rarr;smelly examples.</p>
+      <span class="tag">Open &rarr;</span>
+    </a>
+    <a class="card" href="eval_tool/panel_report.html">
+      <h2>Detection-strength report</h2>
+      <p>How strongly each independent measure separates a clean function from its smelly twin, per smell.</p>
+      <span class="tag">Open &rarr;</span>
+    </a>
+    <a class="card" href="arc_qwen/generations_report.html">
+      <h2>Qwen generations</h2>
+      <p>Qwen2.5-Coder&rsquo;s solutions to the benchmark tasks, side by side with the canonical answers.</p>
+      <span class="tag">Open &rarr;</span>
+    </a>
+    <a class="card" href="smell_injection/samples_report.html">
+      <h2>Sample browser</h2>
+      <p>Every clean/smelly pair in the benchmark, shown as a side-by-side diff. <span class="note">Large page (~5&nbsp;MB) &mdash; may take a moment to load.</span></p>
+      <span class="tag">Open &rarr;</span>
+    </a>
+  </div>
+
+  <footer>Source and data: <a href="https://github.com/kaiyi03/Code-Smells">github.com/kaiyi03/Code-Smells</a></footer>
+</div>
+</body>
+</html>

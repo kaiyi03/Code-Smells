@@ -29,5 +29,9 @@ node_modules/
 !eval_tool/panel_report.html
 !arc_qwen/generations_report.html
 
+# GitHub Pages: landing page + Jekyll opt-out (serve the HTML as-is)
+!/index.html
+!/.nojekyll
+
 # build/backup artifacts
 *.zip
