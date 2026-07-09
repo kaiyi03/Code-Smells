@@ -1,0 +1,62 @@
+<!doctype html><html><head><meta charset="utf-8">
+<title>Real-world validation &mdash; structural measures</title>
+<style>
+ body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;margin:0;background:#fafafa;color:#1a1a1a;line-height:1.5}
+ .wrap{max-width:1000px;margin:0 auto;padding:32px 26px 80px}
+ h1{font-size:24px;margin:0 0 2px} .sub{color:#666;margin:0 0 22px;font-size:14px}
+ h2{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:#555;
+     border-bottom:2px solid #e2e2e2;padding-bottom:6px;margin:34px 0 6px}
+ .note{color:#777;font-size:12.5px;margin:0 0 12px}
+ table{border-collapse:collapse;width:100%;font-size:13px;background:#fff;
+        border:1px solid #e4e4e4;border-radius:8px;overflow:hidden;margin-bottom:8px}
+ th,td{padding:6px 10px;text-align:right;border-bottom:1px solid #eee}
+ th:first-child,td:first-child{text-align:left}
+ th{background:#f4f4f6;font-weight:600}
+ code{background:#f0f0f2;padding:1px 5px;border-radius:4px;font-size:12px}
+ .prov{font-size:12px;color:#888}
+</style></head><body><div class="wrap">
+<h1>Real-world validation &mdash; structural measures</h1>
+<p class="sub">The benchmark's second source: the structural measures run on real,
+naturally-occurring labelled code (CodeSmellData 1.0 / 2.0 and PySmell), to check
+whether the findings generalise beyond the injected samples. Similarity measures
+need a clean twin and so do not apply to real code.</p>
+<h2>Real vs injected detection strength</h2>
+<p class="note">Real smelly code vs real clean code (unpaired Cohen&rsquo;s d), next to the injected value (paired). Only <code>long_method</code> and <code>long_parameter_list</code> have real clean negatives. Positive = worse; capped at &plusmn;5.</p>
+<p style="margin:14px 0 4px"><b>long_method</b> <span class="prov">(472 real smelly, 250 real clean)</span></p>
+<table><tr><th>measure</th><th>injected d (paired)</th><th>real d (unpaired)</th><th>real clean median</th><th>real smelly median</th></tr>
+<tr><td>sloc</td><td>5.00</td><td style="background:rgba(185,28,28,0.38)">1.38</td><td>16.5</td><td>117.0</td></tr>
+<tr><td>cyclomatic</td><td>0.00</td><td style="background:rgba(185,28,28,0.29)">0.96</td><td>4.0</td><td>22.0</td></tr>
+<tr><td>maintainability</td><td>2.23</td><td style="background:rgba(185,28,28,0.51)">2.05</td><td>80.9</td><td>49.8</td></tr>
+<tr><td>halstead_volume</td><td>5.00</td><td style="background:rgba(185,28,28,0.30)">0.99</td><td>34.9</td><td>514.5</td></tr>
+<tr><td>halstead_difficulty</td><td>1.35</td><td style="background:rgba(185,28,28,0.46)">1.78</td><td>1.9</td><td>6.9</td></tr>
+<tr><td>halstead_effort</td><td>1.44</td><td style="background:rgba(185,28,28,0.27)">0.85</td><td>61.0</td><td>3417.4</td></tr>
+</table>
+<p style="margin:14px 0 4px"><b>long_parameter_list</b> <span class="prov">(950 real smelly, 247 real clean)</span></p>
+<table><tr><th>measure</th><th>injected d (paired)</th><th>real d (unpaired)</th><th>real clean median</th><th>real smelly median</th></tr>
+<tr><td>sloc</td><td>0.00</td><td style="background:rgba(185,28,28,0.21)">0.53</td><td>5.0</td><td>17.0</td></tr>
+<tr><td>cyclomatic</td><td>0.00</td><td style="background:rgba(185,28,28,0.12)">0.10</td><td>3.0</td><td>4.0</td></tr>
+<tr><td>maintainability</td><td>-0.00</td><td style="background:rgba(185,28,28,0.11)">0.05</td><td>81.2</td><td>76.6</td></tr>
+<tr><td>halstead_volume</td><td>0.00</td><td style="background:rgba(185,28,28,0.13)">-0.13</td><td>32.6</td><td>36.0</td></tr>
+<tr><td>halstead_difficulty</td><td>0.00</td><td style="background:rgba(185,28,28,0.12)">-0.08</td><td>1.0</td><td>1.5</td></tr>
+<tr><td>halstead_effort</td><td>0.00</td><td style="background:rgba(185,28,28,0.12)">-0.11</td><td>27.7</td><td>54.8</td></tr>
+</table>
+<h2>Real smelly-code structural profile (no clean group)</h2>
+<p class="note">For these five smells the reused data has smelly examples but no clean ones, so no detection strength can be computed &mdash; only the profile of the real smelly code.</p>
+<table><tr><th>smell</th><th>n</th><th>sloc</th><th>cyclomatic</th><th>maintainability</th><th>halstead_volume</th><th>halstead_difficulty</th><th>halstead_effort</th></tr>
+<tr><td><code>broad_except</code></td><td>860</td><td>28.0</td><td>7.0</td><td>68.6</td><td>33.0</td><td>1.5</td><td>47.5</td></tr>
+<tr><td><code>complex_conditional</code></td><td>223</td><td>127.0</td><td>47.0</td><td>45.4</td><td>703.7</td><td>7.7</td><td>3406.7</td></tr>
+<tr><td><code>dead_code</code></td><td>348</td><td>10.0</td><td>1.0</td><td>100.0</td><td>0.0</td><td>0.0</td><td>0.0</td></tr>
+<tr><td><code>deep_nesting</code></td><td>136</td><td>308.0</td><td>94.0</td><td>34.7</td><td>1185.3</td><td>8.5</td><td>10228.8</td></tr>
+<tr><td><code>mutable_default</code></td><td>489</td><td>13.0</td><td>2.0</td><td>90.0</td><td>12.0</td><td>0.5</td><td>7.0</td></tr>
+</table><p class='note'>Values are medians of the real smelly code.</p>
+<h2>Data provenance</h2><table><tr><th>smell</th><th>real smelly</th><th>real clean</th></tr>
+<tr><td><code>broad_except</code></td><td>860</td><td>0</td></tr>
+<tr><td><code>complex_conditional</code></td><td>223</td><td>0</td></tr>
+<tr><td><code>dead_code</code></td><td>348</td><td>0</td></tr>
+<tr><td><code>deep_nesting</code></td><td>136</td><td>0</td></tr>
+<tr><td><code>long_method</code></td><td>472</td><td>250</td></tr>
+<tr><td><code>long_parameter_list</code></td><td>950</td><td>247</td></tr>
+<tr><td><code>mutable_default</code></td><td>489</td><td>0</td></tr>
+</table>
+<p class="prov">Sources: CodeSmellData 1.0, CodeSmellData 2.0 (Pylint-labelled real GitHub methods), and PySmell (human-labelled; the only source of clean negatives).</p>
+</div></body></html>
