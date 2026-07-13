@@ -80,7 +80,8 @@ def cell(d, small=None):
         return '<td style="text-align:center;background:#f5f5f5">&mdash;</td>'
     if small:
         return (f'<td class="mono stat" style="background:{colour(d)}">'
-                f'{d:.2f}<div class="sub">{small}</div></td>')
+                f'<div class="stat-in"><span class="real">{d:.2f}</span>'
+                f'<div class="sub">{small}</div></div></td>')
     return f'<td class="mono" style="background:{colour(d)}">{d:.2f}</td>'
 
 
@@ -114,10 +115,12 @@ def main():
  th,td{padding:6px 8px;text-align:right;border-bottom:1px solid #eee}
  th:first-child,td:first-child{text-align:left}
  th{background:#f4f4f6;font-weight:600}
- td.stat{text-align:center}
+ td.stat{text-align:center;padding:9px 8px}
  .mono{font-variant-numeric:tabular-nums}
- .mono .sub{display:block;width:fit-content;margin:3px auto 0;font-size:10px;font-weight:400;
-            color:#3a3a3a;background:rgba(255,255,255,.62);border-radius:3px;padding:1px 5px}
+ .stat-in{display:flex;flex-direction:column;align-items:center;gap:6px;line-height:1.15}
+ .stat-in .real{font-size:13px;font-weight:600}
+ .mono .sub{font-size:10px;font-weight:400;color:#3a3a3a;
+            background:rgba(255,255,255,.62);border-radius:3px;padding:1px 6px}
  code{background:#f0f0f2;padding:1px 5px;border-radius:4px;font-size:12px}
  .v-strong{color:#15803d;font-weight:600} .v-mod{color:#b45309} .v-blind{color:#b91c1c}
  .scroll{overflow-x:auto}
