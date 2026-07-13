@@ -64,6 +64,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, os.pardir))
 REUSED = os.path.join(ROOT, "smell_injection", "reused.jsonl")
 CLEAN = os.path.join(ROOT, "smell_injection", "realworld_clean.jsonl")
+MINED = os.path.join(ROOT, "smell_injection", "realworld_smelly.jsonl")
 INJECTED_CSV = os.path.join(HERE, "panel_results.csv")
 OUT_CSV = os.path.join(HERE, "realworld_results.csv")
 OUT_HTML = os.path.join(HERE, "realworld_report.html")
@@ -86,6 +87,10 @@ def load_data():
             smelly[r["smell"]].append(r["code"])
         elif r.get("label") == "no":
             pysmell_clean[r["smell"]].append(r["code"])
+    if os.path.exists(MINED):                     # real examples of the smells the reused
+        for r in load_jsonl(MINED):               # (Pylint-era) datasets don't cover
+            if r.get("label") == "yes":
+                smelly[r["smell"]].append(r["code"])
     clean_pool = [r["code"] for r in load_jsonl(CLEAN)] if os.path.exists(CLEAN) else []
     return smelly, clean_pool, pysmell_clean
 
