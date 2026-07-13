@@ -113,7 +113,8 @@ def main():
  th:first-child,td:first-child{text-align:left}
  th{background:#f4f4f6;font-weight:600}
  .mono{font-variant-numeric:tabular-nums}
- .mono .sub{font-size:10px;color:#999;font-weight:400}
+ .mono .sub{display:inline-block;margin-top:2px;font-size:10px;font-weight:400;
+            color:#3a3a3a;background:rgba(255,255,255,.62);border-radius:3px;padding:0 4px}
  code{background:#f0f0f2;padding:1px 5px;border-radius:4px;font-size:12px}
  .v-strong{color:#15803d;font-weight:600} .v-mod{color:#b45309} .v-blind{color:#b91c1c}
  .scroll{overflow-x:auto}
