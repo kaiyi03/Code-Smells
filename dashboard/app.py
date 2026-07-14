@@ -54,6 +54,27 @@ TRUST_MAP = {row[0]: row for row in TRUST}   # smell -> (smell, structural, simi
 STRUCT = [m for m in PANEL if not m.needs_ref]
 SIM = [m for m in PANEL if m.needs_ref]
 
+# Pre-filled on first load so the first "Evaluate" visibly detects smells -- this
+# example trips three low-threshold detectors (mutable default, unused variable,
+# broad except); the reference and tests light up the similarity and correctness panels.
+EXAMPLE_CODE = """def scale(values, factor, seen=[]):
+    result = []
+    unused = 0
+    for v in values:
+        try:
+            result.append(v * factor)
+        except Exception:
+            pass
+    seen.append(len(result))
+    return result
+"""
+EXAMPLE_REF = """def scale(values, factor):
+    return [v * factor for v in values]
+"""
+EXAMPLE_TESTS = """assert scale([1, 2, 3], 2) == [2, 4, 6]
+assert scale([], 5) == []
+"""
+
 app = Flask(__name__)
 
 
@@ -120,7 +141,7 @@ PAGE = """<!doctype html><html lang="en"><head><meta charset="utf-8">
  .clean{display:inline-block;background:#dcfce7;color:#15803d;border-radius:999px;
         padding:3px 12px;font-size:13px;font-weight:600}
  .hint{font-size:12px;color:#555;margin:2px 0 0}
- .hint b{color:#1a1a1a}
+ .hint b{color:#1a1a1a} .hint a{color:#2563eb;text-decoration:none} .hint a:hover{text-decoration:underline}
  .pass{background:#dcfce7;color:#15803d} .fail{background:#fee2e2;color:#b91c1c}
  .timeout{background:#fef9c3;color:#a16207}
  .badge{display:inline-block;border-radius:999px;padding:4px 14px;font-size:13px;font-weight:600}
@@ -174,6 +195,12 @@ PAGE = """<!doctype html><html lang="en"><head><meta charset="utf-8">
      {% endfor %}
    {% else %}
      <span class="clean">No tracked smells detected</span>
+     <p class="hint" style="margin-top:10px">The detectors are strict and threshold-based &mdash; they
+     flag a smell only when code crosses a specific rule (nesting deeper than 5 levels, 6+ parameters,
+     a magic number inside a comparison, a mutable default argument, an unused variable, and so on).
+     Code that looks untidy to a human can still pass all twelve. The
+     <a href="https://kaiyi03.github.io/Code-Smells/smell_injection/smell_guide.html" target="_blank">smell
+     guide</a> shows exactly what each detector looks for.</p>
    {% endif %}
  </div>
 
@@ -231,6 +258,8 @@ def index():
     res = None
     if request.method == "POST" and code.strip():
         res = evaluate(code, ref, tests, run_tests)
+    elif request.method == "GET" and not code:      # first load: show a worked example
+        code, ref, tests = EXAMPLE_CODE, EXAMPLE_REF, EXAMPLE_TESTS
     return render_template_string(PAGE, code=code, ref=ref, tests=tests,
                                   run_tests=run_tests, res=res)
 
