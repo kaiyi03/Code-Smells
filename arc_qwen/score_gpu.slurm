@@ -26,8 +26,9 @@ export HF_HOME=/data/engs-applied-machine-learning/some5943/hf
 # Where the repo is checked out on ARC. Override with: REPO=/path sbatch ...
 REPO=${REPO:-~/Code-Smells}
 
-# The two model-based-measure packages (harmless if already installed).
-pip install -q bert-score code-bert-score || true
+# Measure packages the ARC env may not have yet (harmless if already installed):
+# the model-based ones plus the CPU measures added recently (cognitive complexity, zss).
+pip install -q bert-score code-bert-score cognitive_complexity zss || true
 
 # Code language model for perplexity (small + code-appropriate). Change to a bigger
 # code model, e.g. the Qwen coder, for a stronger signal.
