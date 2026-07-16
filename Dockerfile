@@ -7,6 +7,9 @@ WORKDIR /app
 # Dashboard dependencies only -- NOT torch/transformers/datasets (those are the GPU phase).
 COPY deploy/requirements-space.txt .
 RUN pip install --no-cache-dir -r requirements-space.txt
+# codebleu pins an old tree-sitter; install without deps so it can't downgrade the
+# others or fail the build (it works against the newer tree-sitter). Optional.
+RUN pip install --no-cache-dir --no-deps codebleu || true
 
 # WordNet for METEOR (optional; METEOR degrades to None without it, the app still runs).
 ENV NLTK_DATA=/usr/local/share/nltk_data

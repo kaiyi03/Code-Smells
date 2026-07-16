@@ -1,0 +1,13 @@
+# Keep the build context (and image) small: never copy these in.
+.git/
+.venv/
+node_modules/
+**/node_modules/
+_datasets_eval/
+__pycache__/
+**/__pycache__/
+*.pyc
+*.zip
+*.docx
+Admin/
+Research Papers/

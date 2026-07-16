@@ -6,6 +6,7 @@
 /*
 !/.gitignore
 !/.gitattributes
+!/.dockerignore
 !/README.md
 !/requirements.txt
 !/LICENSE

@@ -150,9 +150,13 @@ STRUCTURAL = [
 import re                                            # noqa: E402
 import sacrebleu                                     # noqa: E402
 import nltk                                          # noqa: E402
-from codebleu import calc_codebleu                   # noqa: E402
 from rouge_score import rouge_scorer                 # noqa: E402
 from nltk.translate.meteor_score import single_meteor_score  # noqa: E402
+
+try:                                                 # codebleu pins an old tree-sitter; keep it
+    from codebleu import calc_codebleu               # optional so a partial install still runs
+except Exception:                                    # the other similarity measures
+    calc_codebleu = None
 
 _rouge = rouge_scorer.RougeScorer(["rougeL"], use_stemmer=False)
 _word = re.compile(r"\w+|\S")
@@ -185,6 +189,8 @@ def _rouge_l(code, ref):
     return _rouge.score(ref, code)["rougeL"].fmeasure * 100
 
 def _codebleu(code, ref):
+    if calc_codebleu is None:
+        return None
     return calc_codebleu([ref], [code], lang="python")["codebleu"] * 100
 
 def _meteor(code, ref):
