@@ -1,0 +1,25 @@
+# Render Blueprint -- one-click deploy of the dashboard from this GitHub repo.
+# On render.com: New + -> Blueprint -> pick this repo -> Apply. Render reads this
+# file, builds, and gives you a public https URL. Auto-redeploys on every push.
+services:
+  - type: web
+    name: code-smell-dashboard
+    runtime: python
+    plan: free
+    # Install the dashboard deps (not torch); codebleu --no-deps and the WordNet
+    # corpus are best-effort (the app degrades gracefully without them).
+    buildCommand: >-
+      pip install -r deploy/requirements-space.txt &&
+      (pip install --no-deps codebleu || true) &&
+      (python -m nltk.downloader wordnet omw-1.4 || true)
+    startCommand: python dashboard/app.py
+    envVars:
+      - key: HOST            # bind all interfaces so Render can route to it
+        value: 0.0.0.0
+      - key: ALLOW_EXEC      # public demo: do NOT execute submitted code
+        value: "0"
+      - key: DASH_NO_BROWSER # it's a server; don't try to open a browser
+        value: "1"
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+    # Render sets $PORT automatically; the app reads it.
