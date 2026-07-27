@@ -77,7 +77,7 @@ GENERATIONS = os.path.join(HERE, "generations.jsonl")
 OUT_CSV = os.path.join(HERE, "evaluation_summary.csv")
 OUT_HTML = os.path.join(HERE, "evaluation_report.html")
 MODEL_LABEL = "Qwen2.5-Coder"
-BATCH = 16          # generate.py's batch size, for reconstructing per-batch time
+BATCH = 16          # fallback for runs made before generate.py recorded batch_index
 WORKERS = 8
 
 STRUCT = [m for m in PANEL if not m.needs_ref]
@@ -207,7 +207,8 @@ def main():
     rows = []
     batch_time = {}
     for i, g in enumerate(gens):
-        batch_time[i // BATCH] = g.get("batch_seconds") or 0.0
+        # one timing per generation batch; older runs predate batch_index
+        batch_time[g.get("batch_index", i // BATCH)] = g.get("batch_seconds") or 0.0
         cand, ref = sim_inputs(g, he)
         gen_m = {m.name: m.fn(g["generated_code"]) for m in STRUCT}
         gen_m.update({m.name: m.fn(cand, ref) for m in SIM})

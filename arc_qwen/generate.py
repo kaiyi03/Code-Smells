@@ -27,7 +27,9 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 MODEL = os.environ.get("GEN_MODEL", "Qwen/Qwen2.5-Coder-1.5B-Instruct")
 MAX_NEW = 512
-BATCH = 16
+# Keep this the same for every model: it sets how much work shares a forward pass,
+# so the tokens/second figure is only comparable across models at a fixed batch.
+BATCH = int(os.environ.get("GEN_BATCH", "8"))
 
 
 def load_tasks(limit=None):
@@ -104,6 +106,7 @@ def main():
                 n_tokens += n_out
                 fout.write(json.dumps({
                     "task_id": t["task_id"], "source": t["source"], "model": MODEL,
+                    "batch_index": i // BATCH, "batch_size": BATCH,
                     "generated_code": extract_code(g),
                     "raw_output": g,
                     "canonical_code": t["canonical"],
@@ -114,6 +117,8 @@ def main():
                 fout.flush()
             n_done += len(batch)
             print(f"  {n_done}/{len(tasks)}  ({dt:.1f}s/batch)", flush=True)
+            del enc, out, gen                    # the KV cache of a full 512-token
+            torch.cuda.empty_cache()             # generation is what fills the card
 
     total = time.time() - t0
     print(f"wrote {n_done} generations to {args.out} in {total:.0f}s "

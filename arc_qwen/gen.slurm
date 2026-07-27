@@ -25,9 +25,13 @@ export HF_HOME=/data/engs-applied-machine-learning/some5943/hf
 
 REPO=${REPO:-~/Code-Smells}
 export GEN_MODEL=${GEN_MODEL:-Qwen/Qwen2.5-Coder-1.5B-Instruct}
+export GEN_BATCH=${GEN_BATCH:-8}
+# 512 new tokens x a whole batch of KV cache is what fills a 16 GB card; this keeps
+# the freed blocks reusable instead of fragmenting the allocator.
+export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 
 echo "node: $(hostname)"
-echo "model: $GEN_MODEL"
+echo "model: $GEN_MODEL  (batch $GEN_BATCH)"
 nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
 cd "$REPO/arc_qwen"
 python generate.py "$@"
