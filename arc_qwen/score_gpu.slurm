@@ -44,13 +44,23 @@ nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
 python -c "import torch; print('cuda available:', torch.cuda.is_available())"
 
 cd "$REPO"
-echo "=== [1/2] benchmark detection strength (now incl. model measures) ==="
+echo "=== [1/3] benchmark detection strength (now incl. model measures) ==="
 python eval_tool/run_panel.py
 
-echo "=== [2/2] Qwen deployment scoring (now incl. model measures) ==="
-python arc_qwen/evaluate_generations.py
+echo "=== [2/3] Qwen deployment scoring (now incl. model measures) ==="
+python arc_qwen/evaluate_generations.py --label Qwen2.5-Coder-1.5B
+
+# Second model, if its generations are present. Same panel, same script, so the
+# two models' numbers are directly comparable.
+if [ -f arc_qwen/generations_deepseek.jsonl ]; then
+  echo "=== [3/3] DeepSeek deployment scoring ==="
+  python arc_qwen/evaluate_generations.py --tag deepseek --label DeepSeek-Coder-1.3B
+else
+  echo "=== [3/3] skipped: arc_qwen/generations_deepseek.jsonl not found ==="
+fi
 
 echo
 echo "DONE. Copy these back to your laptop and commit:"
-echo "  eval_tool/panel_results.csv          (detection strength, now with the 3 model measures)"
-echo "  arc_qwen/evaluation_summary.csv      (Qwen scoring, now with the 3 model measures)"
+echo "  eval_tool/panel_results.csv               (detection strength, with the 3 model measures)"
+echo "  arc_qwen/evaluation_summary.csv           (Qwen scoring)"
+echo "  arc_qwen/evaluation_summary_deepseek.csv  (second model, if it ran)"

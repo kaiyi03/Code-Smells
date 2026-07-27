@@ -1,9 +1,11 @@
 """
-Generate code for the benchmark tasks with Qwen (runs on an ARC GPU node).
+Generate code for the benchmark tasks with a code LLM (runs on an ARC GPU node).
 
-Loads Qwen2.5-Coder-1.5B-Instruct, prompts it to solve each MBPP / HumanEval
-task, and records the generated code plus generation cost. The output
-(generations.jsonl) is copied back to the laptop and scored with the eval panel.
+Loads the model named by GEN_MODEL (default Qwen2.5-Coder-1.5B-Instruct), prompts
+it to solve each MBPP / HumanEval task, and records the generated code plus
+generation cost. The output (generations*.jsonl) is copied back to the laptop and
+scored with the eval panel. Every model is run through this same script -- same
+prompts, same greedy decoding, same batch size -- so the results are comparable.
 
 Runs on a compute node (real memory + internet); the HF cache lives on the
 shared /data area so the model is downloaded once and reused.
@@ -101,7 +103,7 @@ def main():
                 n_out = int((ids != tok.pad_token_id).sum())
                 n_tokens += n_out
                 fout.write(json.dumps({
-                    "task_id": t["task_id"], "source": t["source"],
+                    "task_id": t["task_id"], "source": t["source"], "model": MODEL,
                     "generated_code": extract_code(g),
                     "raw_output": g,
                     "canonical_code": t["canonical"],

@@ -1,10 +1,10 @@
 """
-Evaluate the Qwen generations with the evaluation tool (deployment mode).
+Evaluate a model's generations with the evaluation tool (deployment mode).
 
 Where run_panel.py runs the measure panel over the INJECTED benchmark to learn
 which measures detect which smells, this points the SAME tools at a real model's
-output (arc_qwen/generations.jsonl) to answer the applied question: what does
-Qwen2.5-Coder's code actually look like?
+output (arc_qwen/generations*.jsonl) to answer the applied question: what does
+the model's code actually look like?
 
 For each generated solution it reports:
   * smell rate  -- run the smell detectors (pylint + ruff) on the generated code.
@@ -29,8 +29,13 @@ are reported per source; similarity is never pooled across the two.
 
 Writes evaluation_summary.csv (one row per generation) and evaluation_report.html.
 
+More than one model can be scored: --tag suffixes the outputs so each model keeps
+its own summary/report, and the same panel is applied to all of them, so the
+numbers are directly comparable.
+
 Run:  python arc_qwen/evaluate_generations.py            (auto-switches to venv)
       python arc_qwen/evaluate_generations.py --dup      (also run jscpd, slow)
+      python arc_qwen/evaluate_generations.py --tag deepseek --label DeepSeek-Coder-1.3B
 """
 
 import argparse
@@ -66,9 +71,12 @@ from measures import PANEL                                             # noqa: E
 from correctness import load_tests, build_program, run_program        # noqa: E402
 from build_injected import detect_many, has_duplicate, INJECTORS      # noqa: E402
 
+# Set by main() from --tag / --gen. The unsuffixed names are the first model
+# (Qwen2.5-Coder), so its existing outputs keep their paths.
 GENERATIONS = os.path.join(HERE, "generations.jsonl")
 OUT_CSV = os.path.join(HERE, "evaluation_summary.csv")
 OUT_HTML = os.path.join(HERE, "evaluation_report.html")
+MODEL_LABEL = "Qwen2.5-Coder"
 BATCH = 16          # generate.py's batch size, for reconstructing per-batch time
 WORKERS = 8
 
@@ -153,7 +161,23 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dup", action="store_true",
                     help="also run jscpd for duplicate_code (per-file, slow)")
+    ap.add_argument("--tag", default="",
+                    help="score a second model: reads generations_TAG.jsonl and "
+                         "writes evaluation_summary_TAG.csv / _report_TAG.html")
+    ap.add_argument("--gen", default="", help="explicit generations file (overrides --tag)")
+    ap.add_argument("--label", default="", help="model name to show in the report")
     args = ap.parse_args()
+
+    global GENERATIONS, OUT_CSV, OUT_HTML, MODEL_LABEL
+    if args.tag:
+        GENERATIONS = os.path.join(HERE, f"generations_{args.tag}.jsonl")
+        OUT_CSV = os.path.join(HERE, f"evaluation_summary_{args.tag}.csv")
+        OUT_HTML = os.path.join(HERE, f"evaluation_report_{args.tag}.html")
+        MODEL_LABEL = args.tag
+    if args.gen:
+        GENERATIONS = args.gen
+    if args.label:
+        MODEL_LABEL = args.label
 
     gens = load_generations()
     print(f"loaded {len(gens)} generations from {os.path.basename(GENERATIONS)}")
@@ -213,7 +237,7 @@ def main():
 
 def report_console(rows, by_src, SRCS, subset, batch_time):
     n = len(rows)
-    print("\n=== Qwen2.5-Coder evaluation ===\n")
+    print(f"\n=== {MODEL_LABEL} evaluation ===\n")
 
     print("Correctness (pass@1):")
     for src in ["overall"] + SRCS:
@@ -299,7 +323,7 @@ def write_html(rows, by_src, SRCS, subset, counts, batch_time):
 
     p = []
     p.append(f"""<!doctype html><html><head><meta charset="utf-8">
-<title>Qwen2.5-Coder &mdash; evaluation</title>
+<title>{MODEL_LABEL} &mdash; evaluation</title>
 <style>
  body{{font-family:-apple-system,Segoe UI,Roboto,sans-serif;margin:0;background:#fafafa;color:#1a1a1a;line-height:1.5}}
  .wrap{{max-width:1000px;margin:0 auto;padding:32px 26px 80px}}
@@ -324,7 +348,7 @@ def write_html(rows, by_src, SRCS, subset, counts, batch_time):
  code{{background:#f0f0f2;padding:1px 5px;border-radius:4px;font-size:12px}}
  @media(max-width:720px){{.tiles{{grid-template-columns:repeat(2,1fr)}}}}
 </style></head><body><div class="wrap">
-<h1>Qwen2.5-Coder &mdash; evaluation</h1>
+<h1>{MODEL_LABEL} &mdash; evaluation</h1>
 <p class="sub">The evaluation tool applied to {n} generated solutions
 (164 HumanEval + 500 MBPP). Smells via pylint/ruff; correctness by execution;
 similarity vs the canonical solution. HumanEval and MBPP are reported separately;
