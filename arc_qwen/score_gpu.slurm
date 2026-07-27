@@ -44,8 +44,12 @@ nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
 python -c "import torch; print('cuda available:', torch.cuda.is_available())"
 
 cd "$REPO"
-echo "=== [1/3] benchmark detection strength (now incl. model measures) ==="
-python eval_tool/run_panel.py
+if [ "${SKIP_PANEL:-0}" = "1" ]; then
+  echo "=== [1/3] skipped: SKIP_PANEL=1 (benchmark unchanged since the last run) ==="
+else
+  echo "=== [1/3] benchmark detection strength (now incl. model measures) ==="
+  python eval_tool/run_panel.py
+fi
 
 echo "=== [2/3] Qwen deployment scoring (now incl. model measures) ==="
 python arc_qwen/evaluate_generations.py --label Qwen2.5-Coder-1.5B

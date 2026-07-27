@@ -285,8 +285,12 @@ def report_console(rows, by_src, SRCS, subset, batch_time):
 
 
 def write_csv(rows):
+    # canon_* repeats the canonical solution's structure on every row. It's the same
+    # for every model (same tasks), but carrying it here keeps the summary
+    # self-contained -- compare_models.py can read one file per model and nothing else.
     cols = (["task_id", "source", "result", "n_smells", "smells"]
-            + [m.name for m in STRUCT] + [m.name for m in SIM] + ["n_output_tokens"])
+            + [m.name for m in STRUCT] + [m.name for m in SIM]
+            + [f"canon_{m.name}" for m in STRUCT] + ["n_output_tokens"])
     with open(OUT_CSV, "w", encoding="utf-8") as f:
         f.write(",".join(cols) + "\n")
         for r in rows:
@@ -294,6 +298,9 @@ def write_csv(rows):
                     ";".join(r["smells"])]
             for m in STRUCT + SIM:
                 v = r["gen"][m.name]
+                vals.append("" if v is None else f"{v:.3f}")
+            for m in STRUCT:
+                v = r["can_struct"][m.name]
                 vals.append("" if v is None else f"{v:.3f}")
             vals.append("" if r["n_output_tokens"] is None else str(r["n_output_tokens"]))
             f.write(",".join(vals) + "\n")
