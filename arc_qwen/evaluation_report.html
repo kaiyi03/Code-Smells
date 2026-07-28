@@ -1,5 +1,5 @@
 <!doctype html><html><head><meta charset="utf-8">
-<title>Qwen2.5-Coder &mdash; evaluation</title>
+<title>Qwen2.5-Coder-1.5B &mdash; evaluation</title>
 <style>
  body{font-family:-apple-system,Segoe UI,Roboto,sans-serif;margin:0;background:#fafafa;color:#1a1a1a;line-height:1.5}
  .wrap{max-width:1000px;margin:0 auto;padding:32px 26px 80px}
@@ -24,7 +24,7 @@
  code{background:#f0f0f2;padding:1px 5px;border-radius:4px;font-size:12px}
  @media(max-width:720px){.tiles{grid-template-columns:repeat(2,1fr)}}
 </style></head><body><div class="wrap">
-<h1>Qwen2.5-Coder &mdash; evaluation</h1>
+<h1>Qwen2.5-Coder-1.5B &mdash; evaluation</h1>
 <p class="sub">The evaluation tool applied to 664 generated solutions
 (164 HumanEval + 500 MBPP). Smells via pylint/ruff; correctness by execution;
 similarity vs the canonical solution. HumanEval and MBPP are reported separately;
@@ -32,8 +32,8 @@ HumanEval similarity is scored on the function body only (the model echoes the
 given signature + docstring, which would otherwise inflate it).</p>
 <div class="tiles">
 <div class="tile"><div class="v">57.4%</div><div class="k">pass@1</div><div class="d">381 of 664 pass their tests</div></div>
-<div class="tile"><div class="v">90.4%</div><div class="k">clean rate</div><div class="d">600 of 664 have no tracked smell</div></div>
-<div class="tile"><div class="v">35 / 23</div><div class="k">CodeBLEU humaneval / mbpp</div><div class="d">similarity to canonical (HE = body only)</div></div>
+<div class="tile"><div class="v">90.2%</div><div class="k">clean rate</div><div class="d">599 of 664 have no tracked smell</div></div>
+<div class="tile"><div class="v">34 / 23</div><div class="k">CodeBLEU humaneval / mbpp</div><div class="d">similarity to canonical (HE = body only)</div></div>
 <div class="tile"><div class="v">75</div><div class="k">tokens / solution</div><div class="d">mean output length</div></div>
 </div>
 <h2>Correctness (pass@1)</h2><table><tr><th>set</th><th>passed</th><th>tested</th><th>pass@1</th></tr>
@@ -42,74 +42,74 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>mbpp</td><td>272</td><td>500</td><td>54.4%</td></tr>
 </table>
 <h2>Smell rate</h2>
-<p class="note">Share of generations carrying each tracked smell, by source (11 detector smells; duplicate_code needs <code>--dup</code>).</p>
-<table><tr><th>smell</th><th>humaneval</th><th>mbpp</th><th>total</th><th></th></tr>
-<tr><td><b>any smell</b></td><td>36 (22.0%)</td><td>28 (5.6%)</td><td>64</td><td></td></tr>
-<tr><td><code>magic_number</code></td><td>32</td><td>18</td><td>50</td><td style="text-align:left"><span class="bar"><span style="width:8%"></span></span></td></tr>
-<tr><td><code>dead_code</code></td><td>7</td><td>4</td><td>11</td><td style="text-align:left"><span class="bar"><span style="width:2%"></span></span></td></tr>
-<tr><td><code>inefficient_loop</code></td><td>1</td><td>5</td><td>6</td><td style="text-align:left"><span class="bar"><span style="width:1%"></span></span></td></tr>
-<tr><td><code>long_parameter_list</code></td><td>0</td><td>1</td><td>1</td><td style="text-align:left"><span class="bar"><span style="width:0%"></span></span></td></tr>
+<p class="note">Share of generations carrying each tracked smell, by source (11 detector smells; duplicate_code needs <code>--dup</code>). The last column rescores the same code with any statements outside the definitions removed &mdash; 4 of 664 generations append something (typically their own test cases), and literals inside those are counted as smells in the code as emitted.</p>
+<table><tr><th>smell</th><th>humaneval</th><th>mbpp</th><th>total</th><th>definitions only</th></tr>
+<tr><td><b>any smell</b></td><td>36 (22.0%)</td><td>29 (5.8%)</td><td>65 (9.8%)</td><td>65 (9.8%)</td></tr>
+<tr><td><code>magic_number</code></td><td>32</td><td>18</td><td>50</td><td>50</td></tr>
+<tr><td><code>dead_code</code></td><td>7</td><td>4</td><td>11</td><td>11</td></tr>
+<tr><td><code>inefficient_loop</code></td><td>1</td><td>6</td><td>7</td><td>7</td></tr>
+<tr><td><code>long_parameter_list</code></td><td>0</td><td>1</td><td>1</td><td>1</td></tr>
 </table>
 <h2>Similarity to canonical (0&ndash;100, higher = closer)</h2>
 <p class="note">HumanEval scored on the function body only; MBPP on the full function. Not pooled &mdash; the two measure different things.</p>
 <table><tr><th>set</th><th>bleu</th><th>chrf</th><th>rouge_l</th><th>meteor</th><th>codebleu</th><th>ast_similarity</th><th>codebert_score</th><th>bertscore</th></tr>
-<tr><td>humaneval</td><td>32.4</td><td>47.0</td><td>50.6</td><td>nan</td><td>35.0</td><td>64.1</td><td>86.0</td><td>91.3</td></tr>
-<tr><td>mbpp</td><td>25.1</td><td>42.3</td><td>44.5</td><td>nan</td><td>22.8</td><td>61.3</td><td>82.4</td><td>90.0</td></tr>
+<tr><td>humaneval</td><td>31.6</td><td>46.5</td><td>50.1</td><td>nan</td><td>34.5</td><td>63.7</td><td>85.8</td><td>91.1</td></tr>
+<tr><td>mbpp</td><td>25.1</td><td>42.3</td><td>44.5</td><td>nan</td><td>22.8</td><td>61.2</td><td>82.4</td><td>90.0</td></tr>
 </table>
 <h2>Structure &mdash; generated vs canonical (mean)</h2>
 <table><tr><th>measure</th><th>humaneval gen</th><th>humaneval canon</th><th>mbpp gen</th><th>mbpp canon</th><th>blurb</th></tr>
 <tr><td>sloc</td><td>7.61</td><td>7.51</td><td>4.58</td><td>6.75</td><td style="text-align:left;color:#888;font-size:12px">source lines of code -- raw size</td></tr>
-<tr><td>cyclomatic</td><td>3.47</td><td>3.67</td><td>2.39</td><td>3.01</td><td style="text-align:left;color:#888;font-size:12px">cyclomatic complexity -- number of decision paths</td></tr>
-<tr><td>maintainability</td><td>79.82</td><td>82.53</td><td>87.31</td><td>77.84</td><td style="text-align:left;color:#888;font-size:12px">Radon maintainability index 0-100 (higher is better)</td></tr>
-<tr><td>halstead_volume</td><td>45.40</td><td>48.37</td><td>31.39</td><td>44.14</td><td style="text-align:left;color:#888;font-size:12px">Halstead volume -- program size</td></tr>
-<tr><td>halstead_difficulty</td><td>2.10</td><td>1.94</td><td>1.37</td><td>1.77</td><td style="text-align:left;color:#888;font-size:12px">Halstead difficulty -- reading/writing effort</td></tr>
-<tr><td>halstead_effort</td><td>163.89</td><td>161.76</td><td>113.13</td><td>177.69</td><td style="text-align:left;color:#888;font-size:12px">Halstead effort -- volume x difficulty</td></tr>
-<tr><td>cognitive</td><td>3.41</td><td>3.91</td><td>1.58</td><td>2.52</td><td style="text-align:left;color:#888;font-size:12px">cognitive complexity -- cyclomatic plus a nesting penalty</td></tr>
-<tr><td>comment_density</td><td>8.71</td><td>0.24</td><td>9.78</td><td>0.07</td><td style="text-align:left;color:#888;font-size:12px">comment lines per 100 source lines (documentation profile)</td></tr>
+<tr><td>cyclomatic</td><td>3.47</td><td>3.67</td><td>2.40</td><td>3.01</td><td style="text-align:left;color:#888;font-size:12px">cyclomatic complexity -- number of decision paths</td></tr>
+<tr><td>maintainability</td><td>79.84</td><td>82.53</td><td>87.36</td><td>77.84</td><td style="text-align:left;color:#888;font-size:12px">Radon maintainability index 0-100 (higher is better)</td></tr>
+<tr><td>halstead_volume</td><td>45.06</td><td>48.37</td><td>31.50</td><td>44.14</td><td style="text-align:left;color:#888;font-size:12px">Halstead volume -- program size</td></tr>
+<tr><td>halstead_difficulty</td><td>2.08</td><td>1.94</td><td>1.37</td><td>1.77</td><td style="text-align:left;color:#888;font-size:12px">Halstead difficulty -- reading/writing effort</td></tr>
+<tr><td>halstead_effort</td><td>162.04</td><td>161.76</td><td>113.57</td><td>177.69</td><td style="text-align:left;color:#888;font-size:12px">Halstead effort -- volume x difficulty</td></tr>
+<tr><td>cognitive</td><td>3.40</td><td>3.91</td><td>1.57</td><td>2.52</td><td style="text-align:left;color:#888;font-size:12px">cognitive complexity -- cyclomatic plus a nesting penalty</td></tr>
+<tr><td>comment_density</td><td>8.44</td><td>0.24</td><td>9.98</td><td>0.07</td><td style="text-align:left;color:#888;font-size:12px">comment lines per 100 source lines (documentation profile)</td></tr>
 <tr><td>api_calls</td><td>2.34</td><td>2.30</td><td>1.47</td><td>1.53</td><td style="text-align:left;color:#888;font-size:12px">distinct functions / APIs called (usage profile, not a smell)</td></tr>
-<tr><td>perplexity</td><td>3.00</td><td>3.60</td><td>4.08</td><td>4.32</td><td style="text-align:left;color:#888;font-size:12px">code LM perplexity -- how unnatural/surprising the code is (higher = worse)</td></tr>
+<tr><td>perplexity</td><td>3.00</td><td>3.60</td><td>4.07</td><td>4.32</td><td style="text-align:left;color:#888;font-size:12px">code LM perplexity -- how unnatural/surprising the code is (higher = worse)</td></tr>
 </table>
 <h2>Generation cost</h2><table><tr><th>set</th><th>mean tokens</th><th>median tokens</th></tr>
 <tr><td>overall</td><td>75</td><td>49</td></tr>
 <tr><td>humaneval</td><td>135</td><td>112</td></tr>
 <tr><td>mbpp</td><td>55</td><td>34</td></tr>
 </table>
-<p class="note">Total generation time 136s for 664 solutions (367 tok/s on the V100).</p>
+<p class="note">Total generation time 512s for 664 solutions (97 tok/s on the V100).</p>
 <h2>Every generation</h2><div class='scroll'><table><tr><th>task</th><th>source</th><th>result</th><th># smells</th><th>smells</th><th>CodeBLEU</th><th>sloc</th><th>tokens</th></tr>
 <tr><td>HumanEval_1</td><td>humaneval</td><td class="fail">fail</td><td>1</td><td style="text-align:left">magic_number</td><td>22.3</td><td>14</td><td>107</td></tr>
-<tr><td>HumanEval_10</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>100.0</td><td>13</td><td>254</td></tr>
+<tr><td>HumanEval_10</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>100.0</td><td>11</td><td>222</td></tr>
 <tr><td>HumanEval_101</td><td>humaneval</td><td class="fail">fail</td><td>1</td><td style="text-align:left">magic_number</td><td>11.7</td><td>2</td><td>129</td></tr>
 <tr><td>HumanEval_102</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>34.3</td><td>9</td><td>163</td></tr>
-<tr><td>HumanEval_103</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>36.2</td><td>6</td><td>57</td></tr>
+<tr><td>HumanEval_103</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>39.7</td><td>6</td><td>57</td></tr>
 <tr><td>HumanEval_104</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>6.5</td><td>9</td><td>72</td></tr>
 <tr><td>HumanEval_108</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>20.0</td><td>8</td><td>90</td></tr>
 <tr><td>HumanEval_109</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>38.2</td><td>11</td><td>152</td></tr>
 <tr><td>HumanEval_111</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>10.8</td><td>8</td><td>234</td></tr>
-<tr><td>HumanEval_113</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>24.8</td><td>6</td><td>250</td></tr>
+<tr><td>HumanEval_113</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>29.4</td><td>6</td><td>250</td></tr>
 <tr><td>HumanEval_114</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>15.1</td><td>8</td><td>71</td></tr>
 <tr><td>HumanEval_115</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>18.0</td><td>4</td><td>50</td></tr>
 <tr><td>HumanEval_117</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>9.2</td><td>7</td><td>81</td></tr>
-<tr><td>HumanEval_119</td><td>humaneval</td><td class="fail">fail</td><td>1</td><td style="text-align:left">magic_number</td><td>34.2</td><td>18</td><td>252</td></tr>
+<tr><td>HumanEval_119</td><td>humaneval</td><td class="fail">fail</td><td>1</td><td style="text-align:left">magic_number</td><td>32.4</td><td>18</td><td>252</td></tr>
 <tr><td>HumanEval_120</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>10.6</td><td>4</td><td>59</td></tr>
-<tr><td>HumanEval_126</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>12.6</td><td>7</td><td>295</td></tr>
-<tr><td>HumanEval_127</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>21.4</td><td>18</td><td>146</td></tr>
+<tr><td>HumanEval_126</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>17.8</td><td>7</td><td>295</td></tr>
+<tr><td>HumanEval_127</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>20.5</td><td>18</td><td>146</td></tr>
 <tr><td>HumanEval_130</td><td>humaneval</td><td class="fail">fail</td><td>1</td><td style="text-align:left">magic_number</td><td>38.6</td><td>14</td><td>346</td></tr>
-<tr><td>HumanEval_132</td><td>humaneval</td><td class="fail">fail</td><td>1</td><td style="text-align:left">magic_number</td><td>18.4</td><td>9</td><td>61</td></tr>
-<tr><td>HumanEval_134</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>28.9</td><td>9</td><td>240</td></tr>
+<tr><td>HumanEval_132</td><td>humaneval</td><td class="fail">fail</td><td>1</td><td style="text-align:left">magic_number</td><td>17.7</td><td>9</td><td>61</td></tr>
+<tr><td>HumanEval_134</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>21.7</td><td>8</td><td>229</td></tr>
 <tr><td>HumanEval_135</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>30.8</td><td>5</td><td>42</td></tr>
 <tr><td>HumanEval_137</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>19.9</td><td>11</td><td>86</td></tr>
 <tr><td>HumanEval_140</td><td>humaneval</td><td class="fail">fail</td><td>1</td><td style="text-align:left">magic_number</td><td>9.9</td><td>18</td><td>233</td></tr>
 <tr><td>HumanEval_141</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>6.0</td><td>4</td><td>261</td></tr>
-<tr><td>HumanEval_142</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>26.6</td><td>8</td><td>228</td></tr>
+<tr><td>HumanEval_142</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>27.7</td><td>8</td><td>228</td></tr>
 <tr><td>HumanEval_145</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>13.7</td><td></td><td>49</td></tr>
-<tr><td>HumanEval_146</td><td>humaneval</td><td class="fail">fail</td><td>1</td><td style="text-align:left">magic_number</td><td>32.0</td><td>6</td><td>71</td></tr>
+<tr><td>HumanEval_146</td><td>humaneval</td><td class="fail">fail</td><td>1</td><td style="text-align:left">magic_number</td><td>33.1</td><td>6</td><td>71</td></tr>
 <tr><td>HumanEval_148</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>37.6</td><td>8</td><td>301</td></tr>
-<tr><td>HumanEval_160</td><td>humaneval</td><td class="fail">fail</td><td>1</td><td style="text-align:left">magic_number</td><td>20.0</td><td>15</td><td>127</td></tr>
+<tr><td>HumanEval_160</td><td>humaneval</td><td class="fail">fail</td><td>1</td><td style="text-align:left">magic_number</td><td>16.6</td><td>15</td><td>127</td></tr>
 <tr><td>HumanEval_163</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>20.1</td><td>10</td><td>252</td></tr>
 <tr><td>HumanEval_26</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>18.8</td><td>9</td><td>58</td></tr>
 <tr><td>HumanEval_32</td><td>humaneval</td><td class="fail">fail</td><td>2</td><td style="text-align:left">dead_code, magic_number</td><td>100.0</td><td>15</td><td>371</td></tr>
 <tr><td>HumanEval_38</td><td>humaneval</td><td class="fail">fail</td><td>1</td><td style="text-align:left">magic_number</td><td>100.0</td><td>10</td><td>240</td></tr>
-<tr><td>HumanEval_39</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>32.8</td><td>17</td><td>141</td></tr>
+<tr><td>HumanEval_39</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>34.5</td><td>17</td><td>141</td></tr>
 <tr><td>HumanEval_54</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>55.0</td><td>2</td><td>32</td></tr>
 <tr><td>HumanEval_6</td><td>humaneval</td><td class="fail">fail</td><td>1</td><td style="text-align:left">magic_number</td><td>18.4</td><td>11</td><td>85</td></tr>
 <tr><td>HumanEval_64</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>27.4</td><td></td><td>512</td></tr>
@@ -117,7 +117,7 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>HumanEval_67</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>20.7</td><td>6</td><td>307</td></tr>
 <tr><td>HumanEval_69</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>12.0</td><td>7</td><td>44</td></tr>
 <tr><td>HumanEval_74</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>13.5</td><td>3</td><td>237</td></tr>
-<tr><td>HumanEval_75</td><td>humaneval</td><td class="fail">fail</td><td>1</td><td style="text-align:left">magic_number</td><td>29.7</td><td>19</td><td>207</td></tr>
+<tr><td>HumanEval_75</td><td>humaneval</td><td class="fail">fail</td><td>1</td><td style="text-align:left">magic_number</td><td>33.1</td><td>19</td><td>207</td></tr>
 <tr><td>HumanEval_77</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>16.4</td><td>2</td><td>128</td></tr>
 <tr><td>HumanEval_81</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>56.3</td><td>30</td><td>512</td></tr>
 <tr><td>HumanEval_83</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>63.7</td><td>5</td><td>132</td></tr>
@@ -129,7 +129,7 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>HumanEval_91</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>18.0</td><td>7</td><td>148</td></tr>
 <tr><td>HumanEval_93</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>21.6</td><td>13</td><td>212</td></tr>
 <tr><td>HumanEval_95</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>11.0</td><td>6</td><td>59</td></tr>
-<tr><td>HumanEval_98</td><td>humaneval</td><td class="fail">fail</td><td>1</td><td style="text-align:left">magic_number</td><td>11.1</td><td>2</td><td>102</td></tr>
+<tr><td>HumanEval_98</td><td>humaneval</td><td class="fail">fail</td><td>1</td><td style="text-align:left">magic_number</td><td>9.2</td><td>2</td><td>102</td></tr>
 <tr><td>HumanEval_99</td><td>humaneval</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>16.7</td><td>7</td><td>220</td></tr>
 <tr><td>mbpp_101</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>16.9</td><td>3</td><td>26</td></tr>
 <tr><td>mbpp_103</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>60.9</td><td>8</td><td>86</td></tr>
@@ -140,7 +140,7 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>mbpp_111</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>16.8</td><td>4</td><td>67</td></tr>
 <tr><td>mbpp_114</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>10.9</td><td>8</td><td>72</td></tr>
 <tr><td>mbpp_117</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>11.2</td><td>2</td><td>27</td></tr>
-<tr><td>mbpp_119</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>28.0</td><td>12</td><td>148</td></tr>
+<tr><td>mbpp_119</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>25.9</td><td>12</td><td>148</td></tr>
 <tr><td>mbpp_121</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>20.0</td><td>14</td><td>108</td></tr>
 <tr><td>mbpp_122</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>8.9</td><td>9</td><td>105</td></tr>
 <tr><td>mbpp_124</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>28.2</td><td>3</td><td>27</td></tr>
@@ -166,10 +166,10 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>mbpp_150</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>17.4</td><td>2</td><td>32</td></tr>
 <tr><td>mbpp_155</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>14.5</td><td>6</td><td>111</td></tr>
 <tr><td>mbpp_156</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>6.6</td><td>2</td><td>20</td></tr>
-<tr><td>mbpp_158</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>14.3</td><td>5</td><td>46</td></tr>
+<tr><td>mbpp_158</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>16.6</td><td>5</td><td>48</td></tr>
 <tr><td>mbpp_159</td><td>mbpp</td><td class="fail">fail</td><td>1</td><td style="text-align:left">magic_number</td><td>16.4</td><td>9</td><td>96</td></tr>
 <tr><td>mbpp_160</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>14.1</td><td>5</td><td>46</td></tr>
-<tr><td>mbpp_164</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>19.4</td><td>4</td><td>61</td></tr>
+<tr><td>mbpp_164</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>19.4</td><td>4</td><td>60</td></tr>
 <tr><td>mbpp_167</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>10.8</td><td>2</td><td>40</td></tr>
 <tr><td>mbpp_175</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>39.5</td><td>10</td><td>80</td></tr>
 <tr><td>mbpp_177</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>27.2</td><td>10</td><td>133</td></tr>
@@ -180,7 +180,7 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>mbpp_183</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>19.2</td><td>12</td><td>171</td></tr>
 <tr><td>mbpp_184</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>36.1</td><td>2</td><td>24</td></tr>
 <tr><td>mbpp_185</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>33.3</td><td>2</td><td>43</td></tr>
-<tr><td>mbpp_188</td><td>mbpp</td><td class="fail">fail</td><td>1</td><td style="text-align:left">magic_number</td><td>19.2</td><td>7</td><td>62</td></tr>
+<tr><td>mbpp_188</td><td>mbpp</td><td class="fail">fail</td><td>1</td><td style="text-align:left">magic_number</td><td>23.1</td><td>7</td><td>62</td></tr>
 <tr><td>mbpp_189</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>23.7</td><td>9</td><td>103</td></tr>
 <tr><td>mbpp_190</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>32.1</td><td>4</td><td>95</td></tr>
 <tr><td>mbpp_194</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>3.1</td><td>2</td><td>25</td></tr>
@@ -205,7 +205,7 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>mbpp_235</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>17.8</td><td>6</td><td>116</td></tr>
 <tr><td>mbpp_236</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>10.4</td><td>5</td><td>54</td></tr>
 <tr><td>mbpp_237</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>10.4</td><td>8</td><td>65</td></tr>
-<tr><td>mbpp_239</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>11.2</td><td>6</td><td>99</td></tr>
+<tr><td>mbpp_239</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>9.8</td><td>6</td><td>99</td></tr>
 <tr><td>mbpp_24</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>3.2</td><td>2</td><td>19</td></tr>
 <tr><td>mbpp_241</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>30.0</td><td>2</td><td>38</td></tr>
 <tr><td>mbpp_243</td><td>mbpp</td><td class="fail">fail</td><td>1</td><td style="text-align:left">dead_code</td><td>32.3</td><td>11</td><td>116</td></tr>
@@ -216,7 +216,7 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>mbpp_251</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>13.0</td><td>2</td><td>20</td></tr>
 <tr><td>mbpp_254</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>20.2</td><td>2</td><td>35</td></tr>
 <tr><td>mbpp_255</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>33.1</td><td>3</td><td>27</td></tr>
-<tr><td>mbpp_259</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>13.5</td><td>5</td><td>105</td></tr>
+<tr><td>mbpp_259</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>13.5</td><td>5</td><td>97</td></tr>
 <tr><td>mbpp_26</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>9.6</td><td>2</td><td>22</td></tr>
 <tr><td>mbpp_260</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>17.7</td><td>16</td><td>108</td></tr>
 <tr><td>mbpp_268</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>40.2</td><td>2</td><td>36</td></tr>
@@ -226,21 +226,21 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>mbpp_276</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>17.4</td><td>2</td><td>31</td></tr>
 <tr><td>mbpp_277</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>32.9</td><td>2</td><td>31</td></tr>
 <tr><td>mbpp_279</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>35.3</td><td>2</td><td>28</td></tr>
-<tr><td>mbpp_283</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>7.4</td><td>2</td><td>30</td></tr>
+<tr><td>mbpp_283</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>5.9</td><td>2</td><td>30</td></tr>
 <tr><td>mbpp_286</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>16.9</td><td>11</td><td>183</td></tr>
-<tr><td>mbpp_288</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>22.3</td><td>5</td><td>50</td></tr>
+<tr><td>mbpp_288</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>20.9</td><td>5</td><td>50</td></tr>
 <tr><td>mbpp_289</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>7.5</td><td>5</td><td>103</td></tr>
-<tr><td>mbpp_291</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>21.5</td><td>15</td><td>121</td></tr>
+<tr><td>mbpp_291</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>20.8</td><td>15</td><td>121</td></tr>
 <tr><td>mbpp_294</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>7.5</td><td>2</td><td>15</td></tr>
-<tr><td>mbpp_295</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>24.8</td><td>6</td><td>47</td></tr>
+<tr><td>mbpp_295</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>26.7</td><td>6</td><td>47</td></tr>
 <tr><td>mbpp_298</td><td>mbpp</td><td class="fail">fail</td><td>1</td><td style="text-align:left">inefficient_loop</td><td>32.0</td><td>6</td><td>48</td></tr>
 <tr><td>mbpp_299</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>14.4</td><td>6</td><td>98</td></tr>
 <tr><td>mbpp_300</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>5.6</td><td>2</td><td>128</td></tr>
 <tr><td>mbpp_301</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>53.9</td><td>5</td><td>41</td></tr>
 <tr><td>mbpp_302</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>17.5</td><td>6</td><td>103</td></tr>
-<tr><td>mbpp_303</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>16.3</td><td>7</td><td>63</td></tr>
-<tr><td>mbpp_304</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>26.2</td><td>28</td><td>310</td></tr>
-<tr><td>mbpp_305</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>22.1</td><td>4</td><td>29</td></tr>
+<tr><td>mbpp_303</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>20.8</td><td>4</td><td>121</td></tr>
+<tr><td>mbpp_304</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>25.4</td><td>28</td><td>310</td></tr>
+<tr><td>mbpp_305</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>24.2</td><td>4</td><td>29</td></tr>
 <tr><td>mbpp_306</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>33.5</td><td>9</td><td>131</td></tr>
 <tr><td>mbpp_307</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>16.2</td><td>2</td><td>33</td></tr>
 <tr><td>mbpp_308</td><td>mbpp</td><td class="fail">fail</td><td>1</td><td style="text-align:left">inefficient_loop</td><td>22.7</td><td>7</td><td>107</td></tr>
@@ -254,9 +254,9 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>mbpp_317</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>20.4</td><td>13</td><td>97</td></tr>
 <tr><td>mbpp_318</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>5.2</td><td>3</td><td>57</td></tr>
 <tr><td>mbpp_320</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>6.9</td><td>2</td><td>51</td></tr>
-<tr><td>mbpp_321</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>19.2</td><td>7</td><td>123</td></tr>
-<tr><td>mbpp_323</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>14.1</td><td>12</td><td>295</td></tr>
-<tr><td>mbpp_324</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>6.5</td><td>2</td><td>37</td></tr>
+<tr><td>mbpp_321</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>20.1</td><td>7</td><td>123</td></tr>
+<tr><td>mbpp_323</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>12.4</td><td>12</td><td>295</td></tr>
+<tr><td>mbpp_324</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>10.1</td><td>2</td><td>37</td></tr>
 <tr><td>mbpp_326</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>13.1</td><td>3</td><td>31</td></tr>
 <tr><td>mbpp_328</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>28.4</td><td>2</td><td>24</td></tr>
 <tr><td>mbpp_33</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>3.6</td><td>2</td><td>18</td></tr>
@@ -269,12 +269,12 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>mbpp_344</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>26.0</td><td>6</td><td>90</td></tr>
 <tr><td>mbpp_346</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>20.8</td><td>5</td><td>42</td></tr>
 <tr><td>mbpp_347</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>8.5</td><td>2</td><td>19</td></tr>
-<tr><td>mbpp_348</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>9.5</td><td>5</td><td>87</td></tr>
+<tr><td>mbpp_348</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>13.6</td><td>5</td><td>87</td></tr>
 <tr><td>mbpp_350</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>4.9</td><td>2</td><td>16</td></tr>
 <tr><td>mbpp_352</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>14.1</td><td>2</td><td>20</td></tr>
 <tr><td>mbpp_353</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>31.9</td><td>2</td><td>34</td></tr>
 <tr><td>mbpp_354</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>53.7</td><td>2</td><td>27</td></tr>
-<tr><td>mbpp_355</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>3.5</td><td>3</td><td>24</td></tr>
+<tr><td>mbpp_355</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>6.2</td><td>4</td><td>57</td></tr>
 <tr><td>mbpp_36</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>24.7</td><td>8</td><td>165</td></tr>
 <tr><td>mbpp_360</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>11.4</td><td>2</td><td>27</td></tr>
 <tr><td>mbpp_362</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>7.4</td><td>2</td><td>22</td></tr>
@@ -284,12 +284,12 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>mbpp_37</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>15.9</td><td>6</td><td>100</td></tr>
 <tr><td>mbpp_370</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>20.4</td><td>2</td><td>26</td></tr>
 <tr><td>mbpp_371</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>35.8</td><td>8</td><td>85</td></tr>
-<tr><td>mbpp_374</td><td>mbpp</td><td class="fail">fail</td><td>1</td><td style="text-align:left">inefficient_loop</td><td>27.0</td><td>10</td><td>81</td></tr>
+<tr><td>mbpp_374</td><td>mbpp</td><td class="fail">fail</td><td>1</td><td style="text-align:left">inefficient_loop</td><td>28.2</td><td>10</td><td>81</td></tr>
 <tr><td>mbpp_375</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>11.9</td><td>2</td><td>27</td></tr>
 <tr><td>mbpp_376</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>20.1</td><td>14</td><td>115</td></tr>
 <tr><td>mbpp_378</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>19.5</td><td>3</td><td>20</td></tr>
 <tr><td>mbpp_38</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>13.4</td><td>9</td><td>66</td></tr>
-<tr><td>mbpp_382</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>36.9</td><td>14</td><td>134</td></tr>
+<tr><td>mbpp_382</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>36.4</td><td>14</td><td>134</td></tr>
 <tr><td>mbpp_383</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>16.9</td><td>7</td><td>98</td></tr>
 <tr><td>mbpp_385</td><td>mbpp</td><td class="fail">fail</td><td>1</td><td style="text-align:left">magic_number</td><td>44.3</td><td>7</td><td>63</td></tr>
 <tr><td>mbpp_386</td><td>mbpp</td><td class="fail">fail</td><td>1</td><td style="text-align:left">magic_number</td><td>16.2</td><td>12</td><td>72</td></tr>
@@ -317,7 +317,7 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>mbpp_443</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>9.7</td><td>2</td><td>24</td></tr>
 <tr><td>mbpp_444</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>9.0</td><td>2</td><td>27</td></tr>
 <tr><td>mbpp_445</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>34.0</td><td>2</td><td>33</td></tr>
-<tr><td>mbpp_448</td><td>mbpp</td><td class="fail">fail</td><td>1</td><td style="text-align:left">magic_number</td><td>27.8</td><td>11</td><td>104</td></tr>
+<tr><td>mbpp_448</td><td>mbpp</td><td class="fail">fail</td><td>1</td><td style="text-align:left">magic_number</td><td>26.1</td><td>11</td><td>104</td></tr>
 <tr><td>mbpp_45</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>15.8</td><td>5</td><td>79</td></tr>
 <tr><td>mbpp_452</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>26.7</td><td>5</td><td>29</td></tr>
 <tr><td>mbpp_461</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>5.3</td><td>2</td><td>24</td></tr>
@@ -357,13 +357,13 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>mbpp_84</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>23.5</td><td>8</td><td>62</td></tr>
 <tr><td>mbpp_86</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>37.0</td><td>2</td><td>24</td></tr>
 <tr><td>mbpp_87</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>15.2</td><td>2</td><td>34</td></tr>
-<tr><td>mbpp_92</td><td>mbpp</td><td class="fail">fail</td><td>1</td><td style="text-align:left">magic_number</td><td>34.2</td><td>9</td><td>98</td></tr>
+<tr><td>mbpp_92</td><td>mbpp</td><td class="fail">fail</td><td>1</td><td style="text-align:left">magic_number</td><td>30.0</td><td>9</td><td>98</td></tr>
 <tr><td>mbpp_98</td><td>mbpp</td><td class="fail">fail</td><td>0</td><td style="text-align:left"></td><td>17.5</td><td>2</td><td>41</td></tr>
 <tr><td>HumanEval_0</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>32.1</td><td>7</td><td>165</td></tr>
 <tr><td>HumanEval_100</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>100.0</td><td>2</td><td>124</td></tr>
 <tr><td>HumanEval_105</td><td>humaneval</td><td class="pass">pass</td><td>1</td><td style="text-align:left">magic_number</td><td>12.4</td><td>14</td><td>182</td></tr>
-<tr><td>HumanEval_106</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>17.3</td><td>3</td><td>52</td></tr>
-<tr><td>HumanEval_107</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>51.1</td><td>12</td><td>101</td></tr>
+<tr><td>HumanEval_106</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>14.7</td><td>3</td><td>52</td></tr>
+<tr><td>HumanEval_107</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>57.6</td><td>12</td><td>101</td></tr>
 <tr><td>HumanEval_11</td><td>humaneval</td><td class="pass">pass</td><td>1</td><td style="text-align:left">dead_code</td><td>23.9</td><td>6</td><td>168</td></tr>
 <tr><td>HumanEval_110</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>19.1</td><td>7</td><td>311</td></tr>
 <tr><td>HumanEval_112</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>65.2</td><td>4</td><td>78</td></tr>
@@ -398,12 +398,12 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>HumanEval_156</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>25.4</td><td>12</td><td>261</td></tr>
 <tr><td>HumanEval_157</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>4.5</td><td>3</td><td>176</td></tr>
 <tr><td>HumanEval_158</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>17.0</td><td>10</td><td>90</td></tr>
-<tr><td>HumanEval_159</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>76.1</td><td>5</td><td>319</td></tr>
+<tr><td>HumanEval_159</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>16.6</td><td>4</td><td>327</td></tr>
 <tr><td>HumanEval_16</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>65.8</td><td>4</td><td>84</td></tr>
 <tr><td>HumanEval_161</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>16.9</td><td>13</td><td>101</td></tr>
 <tr><td>HumanEval_162</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>19.4</td><td>5</td><td>34</td></tr>
 <tr><td>HumanEval_17</td><td>humaneval</td><td class="pass">pass</td><td>1</td><td style="text-align:left">magic_number</td><td>11.0</td><td>3</td><td>201</td></tr>
-<tr><td>HumanEval_18</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>16.4</td><td>10</td><td>83</td></tr>
+<tr><td>HumanEval_18</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>17.8</td><td>10</td><td>83</td></tr>
 <tr><td>HumanEval_19</td><td>humaneval</td><td class="pass">pass</td><td>1</td><td style="text-align:left">dead_code</td><td>67.7</td><td>9</td><td>249</td></tr>
 <tr><td>HumanEval_2</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>33.9</td><td>2</td><td>91</td></tr>
 <tr><td>HumanEval_20</td><td>humaneval</td><td class="pass">pass</td><td>1</td><td style="text-align:left">magic_number</td><td>13.0</td><td>13</td><td>336</td></tr>
@@ -417,7 +417,7 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>HumanEval_29</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>58.2</td><td>3</td><td>40</td></tr>
 <tr><td>HumanEval_3</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>83.7</td><td>8</td><td>54</td></tr>
 <tr><td>HumanEval_30</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>57.4</td><td>3</td><td>36</td></tr>
-<tr><td>HumanEval_31</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>52.7</td><td>7</td><td>152</td></tr>
+<tr><td>HumanEval_31</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>49.6</td><td>7</td><td>152</td></tr>
 <tr><td>HumanEval_33</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>20.5</td><td>7</td><td>122</td></tr>
 <tr><td>HumanEval_34</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>45.5</td><td>3</td><td>92</td></tr>
 <tr><td>HumanEval_35</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>25.4</td><td>3</td><td>26</td></tr>
@@ -431,9 +431,9 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>HumanEval_44</td><td>humaneval</td><td class="pass">pass</td><td>1</td><td style="text-align:left">magic_number</td><td>39.2</td><td>9</td><td>83</td></tr>
 <tr><td>HumanEval_45</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>69.6</td><td>2</td><td>56</td></tr>
 <tr><td>HumanEval_46</td><td>humaneval</td><td class="pass">pass</td><td>1</td><td style="text-align:left">magic_number</td><td>19.2</td><td>10</td><td>105</td></tr>
-<tr><td>HumanEval_47</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>37.5</td><td>8</td><td>150</td></tr>
+<tr><td>HumanEval_47</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>37.5</td><td>9</td><td>153</td></tr>
 <tr><td>HumanEval_48</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>3.0</td><td>2</td><td>81</td></tr>
-<tr><td>HumanEval_49</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>27.5</td><td>11</td><td>189</td></tr>
+<tr><td>HumanEval_49</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>25.0</td><td>11</td><td>189</td></tr>
 <tr><td>HumanEval_5</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>38.0</td><td>8</td><td>128</td></tr>
 <tr><td>HumanEval_50</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>100.0</td><td>4</td><td>123</td></tr>
 <tr><td>HumanEval_51</td><td>humaneval</td><td class="pass">pass</td><td>1</td><td style="text-align:left">magic_number</td><td>44.8</td><td>2</td><td>141</td></tr>
@@ -443,11 +443,11 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>HumanEval_56</td><td>humaneval</td><td class="pass">pass</td><td>1</td><td style="text-align:left">magic_number</td><td>15.3</td><td>9</td><td>65</td></tr>
 <tr><td>HumanEval_57</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>13.3</td><td>3</td><td>58</td></tr>
 <tr><td>HumanEval_58</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>6.0</td><td>3</td><td>51</td></tr>
-<tr><td>HumanEval_59</td><td>humaneval</td><td class="pass">pass</td><td>1</td><td style="text-align:left">magic_number</td><td>20.6</td><td>11</td><td>201</td></tr>
+<tr><td>HumanEval_59</td><td>humaneval</td><td class="pass">pass</td><td>1</td><td style="text-align:left">magic_number</td><td>18.7</td><td>11</td><td>201</td></tr>
 <tr><td>HumanEval_60</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>36.6</td><td>2</td><td>115</td></tr>
 <tr><td>HumanEval_61</td><td>humaneval</td><td class="pass">pass</td><td>1</td><td style="text-align:left">magic_number</td><td>15.3</td><td>9</td><td>65</td></tr>
 <tr><td>HumanEval_62</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>28.7</td><td>3</td><td>39</td></tr>
-<tr><td>HumanEval_63</td><td>humaneval</td><td class="pass">pass</td><td>1</td><td style="text-align:left">magic_number</td><td>72.5</td><td>9</td><td>81</td></tr>
+<tr><td>HumanEval_63</td><td>humaneval</td><td class="pass">pass</td><td>1</td><td style="text-align:left">magic_number</td><td>25.9</td><td>12</td><td>97</td></tr>
 <tr><td>HumanEval_66</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>14.7</td><td>2</td><td>25</td></tr>
 <tr><td>HumanEval_68</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>28.1</td><td>13</td><td>101</td></tr>
 <tr><td>HumanEval_7</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>72.1</td><td>3</td><td>105</td></tr>
@@ -461,12 +461,12 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>HumanEval_8</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>29.0</td><td>9</td><td>75</td></tr>
 <tr><td>HumanEval_80</td><td>humaneval</td><td class="pass">pass</td><td>1</td><td style="text-align:left">magic_number</td><td>93.1</td><td>7</td><td>190</td></tr>
 <tr><td>HumanEval_82</td><td>humaneval</td><td class="pass">pass</td><td>1</td><td style="text-align:left">magic_number</td><td>62.0</td><td>9</td><td>164</td></tr>
-<tr><td>HumanEval_84</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>24.6</td><td>3</td><td>190</td></tr>
+<tr><td>HumanEval_84</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>38.2</td><td>3</td><td>186</td></tr>
 <tr><td>HumanEval_85</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>80.8</td><td>2</td><td>60</td></tr>
 <tr><td>HumanEval_9</td><td>humaneval</td><td class="pass">pass</td><td>1</td><td style="text-align:left">dead_code</td><td>21.3</td><td>10</td><td>158</td></tr>
 <tr><td>HumanEval_92</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>70.8</td><td>2</td><td>53</td></tr>
-<tr><td>HumanEval_94</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>19.9</td><td>14</td><td>111</td></tr>
-<tr><td>HumanEval_96</td><td>humaneval</td><td class="pass">pass</td><td>2</td><td style="text-align:left">inefficient_loop, magic_number</td><td>12.4</td><td>18</td><td>122</td></tr>
+<tr><td>HumanEval_94</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>20.6</td><td>14</td><td>111</td></tr>
+<tr><td>HumanEval_96</td><td>humaneval</td><td class="pass">pass</td><td>2</td><td style="text-align:left">inefficient_loop, magic_number</td><td>14.9</td><td>18</td><td>122</td></tr>
 <tr><td>HumanEval_97</td><td>humaneval</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>26.5</td><td>5</td><td>170</td></tr>
 <tr><td>mbpp_100</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>19.7</td><td>5</td><td>42</td></tr>
 <tr><td>mbpp_102</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>49.3</td><td>2</td><td>31</td></tr>
@@ -481,7 +481,7 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>mbpp_118</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>12.9</td><td>2</td><td>16</td></tr>
 <tr><td>mbpp_12</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>18.6</td><td>2</td><td>31</td></tr>
 <tr><td>mbpp_120</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>19.1</td><td>4</td><td>68</td></tr>
-<tr><td>mbpp_123</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>22.8</td><td>9</td><td>111</td></tr>
+<tr><td>mbpp_123</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>23.3</td><td>9</td><td>111</td></tr>
 <tr><td>mbpp_127</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>11.2</td><td>5</td><td>34</td></tr>
 <tr><td>mbpp_130</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>16.9</td><td>5</td><td>69</td></tr>
 <tr><td>mbpp_131</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>14.2</td><td>14</td><td>122</td></tr>
@@ -495,13 +495,13 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>mbpp_152</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>26.5</td><td>20</td><td>146</td></tr>
 <tr><td>mbpp_153</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>34.3</td><td>4</td><td>49</td></tr>
 <tr><td>mbpp_154</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>30.1</td><td>2</td><td>23</td></tr>
-<tr><td>mbpp_157</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>20.2</td><td>13</td><td>97</td></tr>
+<tr><td>mbpp_157</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>20.2</td><td>13</td><td>101</td></tr>
 <tr><td>mbpp_16</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>62.7</td><td>7</td><td>54</td></tr>
 <tr><td>mbpp_161</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>47.8</td><td>2</td><td>30</td></tr>
 <tr><td>mbpp_162</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>17.6</td><td>6</td><td>41</td></tr>
 <tr><td>mbpp_163</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>23.3</td><td>3</td><td>46</td></tr>
 <tr><td>mbpp_165</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>14.2</td><td>2</td><td>37</td></tr>
-<tr><td>mbpp_166</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>50.3</td><td>7</td><td>63</td></tr>
+<tr><td>mbpp_166</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>49.1</td><td>7</td><td>63</td></tr>
 <tr><td>mbpp_168</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>11.4</td><td>2</td><td>17</td></tr>
 <tr><td>mbpp_169</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>34.3</td><td>10</td><td>80</td></tr>
 <tr><td>mbpp_17</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>19.3</td><td>2</td><td>20</td></tr>
@@ -521,7 +521,7 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>mbpp_193</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>21.1</td><td>2</td><td>18</td></tr>
 <tr><td>mbpp_195</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>52.1</td><td>12</td><td>91</td></tr>
 <tr><td>mbpp_196</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>31.0</td><td>2</td><td>32</td></tr>
-<tr><td>mbpp_197</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>24.8</td><td>2</td><td>34</td></tr>
+<tr><td>mbpp_197</td><td>mbpp</td><td class="pass">pass</td><td>1</td><td style="text-align:left">inefficient_loop</td><td>17.3</td><td>5</td><td>46</td></tr>
 <tr><td>mbpp_200</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>34.4</td><td>3</td><td>35</td></tr>
 <tr><td>mbpp_201</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>36.1</td><td>2</td><td>24</td></tr>
 <tr><td>mbpp_203</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>10.1</td><td>2</td><td>25</td></tr>
@@ -529,7 +529,7 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>mbpp_207</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>38.1</td><td>10</td><td>147</td></tr>
 <tr><td>mbpp_208</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>24.0</td><td>4</td><td>37</td></tr>
 <tr><td>mbpp_210</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>23.1</td><td>4</td><td>38</td></tr>
-<tr><td>mbpp_212</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>11.3</td><td>2</td><td>31</td></tr>
+<tr><td>mbpp_212</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>14.6</td><td>2</td><td>31</td></tr>
 <tr><td>mbpp_215</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>13.0</td><td>12</td><td>85</td></tr>
 <tr><td>mbpp_217</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>19.8</td><td>7</td><td>43</td></tr>
 <tr><td>mbpp_22</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>17.9</td><td>7</td><td>42</td></tr>
@@ -542,7 +542,7 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>mbpp_228</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>23.2</td><td>3</td><td>88</td></tr>
 <tr><td>mbpp_23</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>4.9</td><td>2</td><td>27</td></tr>
 <tr><td>mbpp_230</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>27.1</td><td>2</td><td>20</td></tr>
-<tr><td>mbpp_231</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>20.8</td><td>5</td><td>117</td></tr>
+<tr><td>mbpp_231</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>21.8</td><td>5</td><td>117</td></tr>
 <tr><td>mbpp_232</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>15.4</td><td>2</td><td>23</td></tr>
 <tr><td>mbpp_234</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>12.4</td><td>2</td><td>19</td></tr>
 <tr><td>mbpp_238</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>19.7</td><td>2</td><td>30</td></tr>
@@ -554,7 +554,7 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>mbpp_250</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>11.5</td><td>2</td><td>19</td></tr>
 <tr><td>mbpp_252</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>32.8</td><td>3</td><td>25</td></tr>
 <tr><td>mbpp_253</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>11.7</td><td>2</td><td>23</td></tr>
-<tr><td>mbpp_256</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>38.7</td><td>13</td><td>97</td></tr>
+<tr><td>mbpp_256</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>32.5</td><td>13</td><td>97</td></tr>
 <tr><td>mbpp_257</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>13.1</td><td>2</td><td>18</td></tr>
 <tr><td>mbpp_258</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>10.8</td><td>2</td><td>28</td></tr>
 <tr><td>mbpp_261</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>18.6</td><td>3</td><td>60</td></tr>
@@ -565,8 +565,8 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>mbpp_266</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>13.4</td><td>2</td><td>24</td></tr>
 <tr><td>mbpp_267</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>29.4</td><td>2</td><td>31</td></tr>
 <tr><td>mbpp_269</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>27.4</td><td>2</td><td>15</td></tr>
-<tr><td>mbpp_270</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>23.6</td><td>2</td><td>44</td></tr>
-<tr><td>mbpp_271</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>10.6</td><td>2</td><td>36</td></tr>
+<tr><td>mbpp_270</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>25.1</td><td>2</td><td>44</td></tr>
+<tr><td>mbpp_271</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>11.9</td><td>2</td><td>36</td></tr>
 <tr><td>mbpp_272</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>26.2</td><td>2</td><td>22</td></tr>
 <tr><td>mbpp_273</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>14.7</td><td>2</td><td>33</td></tr>
 <tr><td>mbpp_278</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>33.6</td><td>7</td><td>44</td></tr>
@@ -577,7 +577,7 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>mbpp_284</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>24.0</td><td>2</td><td>23</td></tr>
 <tr><td>mbpp_285</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>62.7</td><td>7</td><td>50</td></tr>
 <tr><td>mbpp_287</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>33.4</td><td>2</td><td>33</td></tr>
-<tr><td>mbpp_29</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>20.0</td><td>10</td><td>202</td></tr>
+<tr><td>mbpp_29</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>22.4</td><td>10</td><td>202</td></tr>
 <tr><td>mbpp_290</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>24.2</td><td>2</td><td>28</td></tr>
 <tr><td>mbpp_292</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>24.4</td><td>2</td><td>17</td></tr>
 <tr><td>mbpp_293</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>27.5</td><td>3</td><td>29</td></tr>
@@ -604,7 +604,7 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>mbpp_345</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>16.1</td><td>2</td><td>35</td></tr>
 <tr><td>mbpp_349</td><td>mbpp</td><td class="pass">pass</td><td>1</td><td style="text-align:left">magic_number</td><td>10.5</td><td>2</td><td>31</td></tr>
 <tr><td>mbpp_35</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>60.8</td><td>2</td><td>21</td></tr>
-<tr><td>mbpp_351</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>25.8</td><td>8</td><td>69</td></tr>
+<tr><td>mbpp_351</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>25.1</td><td>8</td><td>69</td></tr>
 <tr><td>mbpp_356</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>27.0</td><td>2</td><td>28</td></tr>
 <tr><td>mbpp_357</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>11.3</td><td>2</td><td>22</td></tr>
 <tr><td>mbpp_358</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>41.7</td><td>2</td><td>34</td></tr>
@@ -636,7 +636,7 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>mbpp_404</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>20.1</td><td>2</td><td>18</td></tr>
 <tr><td>mbpp_405</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>30.8</td><td>2</td><td>21</td></tr>
 <tr><td>mbpp_406</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>8.3</td><td>2</td><td>32</td></tr>
-<tr><td>mbpp_407</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>12.8</td><td>13</td><td>243</td></tr>
+<tr><td>mbpp_407</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>12.2</td><td>13</td><td>238</td></tr>
 <tr><td>mbpp_409</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>14.9</td><td>3</td><td>63</td></tr>
 <tr><td>mbpp_41</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>25.5</td><td>2</td><td>28</td></tr>
 <tr><td>mbpp_411</td><td>mbpp</td><td class="pass">pass</td><td>1</td><td style="text-align:left">dead_code</td><td>57.9</td><td>3</td><td>34</td></tr>
@@ -646,9 +646,9 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>mbpp_418</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>11.6</td><td>2</td><td>18</td></tr>
 <tr><td>mbpp_419</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>12.3</td><td>2</td><td>26</td></tr>
 <tr><td>mbpp_42</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>19.4</td><td>9</td><td>115</td></tr>
-<tr><td>mbpp_420</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>14.6</td><td>2</td><td>34</td></tr>
+<tr><td>mbpp_420</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>16.1</td><td>2</td><td>34</td></tr>
 <tr><td>mbpp_421</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>4.6</td><td>2</td><td>21</td></tr>
-<tr><td>mbpp_422</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>16.7</td><td>2</td><td>34</td></tr>
+<tr><td>mbpp_422</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>20.2</td><td>2</td><td>34</td></tr>
 <tr><td>mbpp_424</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>9.5</td><td>2</td><td>23</td></tr>
 <tr><td>mbpp_425</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>9.4</td><td>2</td><td>28</td></tr>
 <tr><td>mbpp_426</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>25.5</td><td>2</td><td>28</td></tr>
@@ -667,7 +667,7 @@ given signature + docstring, which would otherwise inflate it).</p>
 <tr><td>mbpp_449</td><td>mbpp</td><td class="pass">pass</td><td>1</td><td style="text-align:left">long_parameter_list</td><td>31.1</td><td>8</td><td>176</td></tr>
 <tr><td>mbpp_450</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>32.0</td><td>2</td><td>27</td></tr>
 <tr><td>mbpp_451</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>48.9</td><td>3</td><td>26</td></tr>
-<tr><td>mbpp_453</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>11.3</td><td>6</td><td>56</td></tr>
+<tr><td>mbpp_453</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>10.7</td><td>6</td><td>56</td></tr>
 <tr><td>mbpp_454</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>62.0</td><td>7</td><td>50</td></tr>
 <tr><td>mbpp_455</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>7.9</td><td>2</td><td>42</td></tr>
 <tr><td>mbpp_456</td><td>mbpp</td><td class="pass">pass</td><td>0</td><td style="text-align:left"></td><td>28.3</td><td>2</td><td>25</td></tr>
