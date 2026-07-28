@@ -100,23 +100,32 @@ def stats(m):
     def block(rs):
         tested = [r for r in rs if r["result"] != "no-test"]
         smelly = [r for r in rs if int(r["n_smells"] or 0) > 0]
+        smelly_defs = [r for r in rs if int(r.get("n_smells_defs") or 0) > 0]
+        extra = [r for r in rs if int(r.get("n_extra_stmts") or 0) > 0]
         toks = [num(r, "n_output_tokens") for r in rs]
         return {
             "n": len(rs),
             "pass1": pct(sum(r["result"] == "pass" for r in tested), len(tested)),
             "smell_rate": pct(len(smelly), len(rs)),
+            # None (not 0) when the column predates the definitions-only split
+            "smell_rate_defs": pct(len(smelly_defs), len(rs)) if "n_smells_defs" in rs[0] else None,
+            "extra_rate": pct(len(extra), len(rs)) if "n_extra_stmts" in rs[0] else None,
             "tokens": mean(toks),
         }
 
     s["overall"] = block(rows)
     s["per_src"] = {src: block(rs) for src, rs in srcs.items()}
 
-    counts = {}
-    for r in rows:
-        for name in (r["smells"] or "").split(";"):
-            if name:
-                counts[name] = counts.get(name, 0) + 1
-    s["smells"] = counts
+    def tally(col):
+        out = {}
+        for r in rows:
+            for name in (r.get(col) or "").split(";"):
+                if name:
+                    out[name] = out.get(name, 0) + 1
+        return out
+
+    s["smells"] = tally("smells")
+    s["smells_defs"] = tally("smells_defs")
 
     s["sim"] = {src: {c: mean([num(r, c) for r in rs]) for c in SIM_SHOW if c in m["cols"]}
                 for src, rs in srcs.items()}
@@ -146,7 +155,19 @@ def replication(models, S):
     add("Distinct smells appearing at all (of 12)", [str(v) for v in seen],
         max(seen) - min(seen) <= 1)
 
-    # 3. is HumanEval smellier than MBPP
+    # 3. is the smell rate about the code, or about extra test code the model added
+    dirs, vals = [], []
+    for m in models:
+        o = S[m["tag"]]["overall"]
+        a, b = o["smell_rate"], o["smell_rate_defs"]
+        if a is None or b is None or not a:
+            dirs.append(None); vals.append("&mdash;")
+        else:
+            dirs.append(b >= 0.75 * a); vals.append(f"{a:.1f}% &rarr; {b:.1f}%")
+    add("Smell rate survives rescoring the definitions alone (keeps &ge;&nbsp;75%)", vals,
+        None if None in dirs else all(dirs))
+
+    # 4. is HumanEval smellier than MBPP
     dirs, vals = [], []
     for m in models:
         p = S[m["tag"]]["per_src"]
@@ -260,7 +281,9 @@ similarity is never pooled across them.</p>
     srcs = sorted({s for m in models for s in S[m["tag"]]["srcs"]})
     p.append('<div class="scrollx"><table>' + th_models(models, ""))
     for key, label, dp, suffix in [("pass1", "pass@1", 1, "%"),
-                                   ("smell_rate", "smell rate", 1, "%"),
+                                   ("smell_rate", "smell rate (as emitted)", 1, "%"),
+                                   ("smell_rate_defs", "smell rate (definitions only)", 1, "%"),
+                                   ("extra_rate", "adds statements outside the definitions", 1, "%"),
                                    ("tokens", "output tokens / solution", 0, "")]:
         p.append(f'<tr><td><b>{label}</b> &mdash; overall</td>'
                  + "".join(f"<td>{fmt(S[m['tag']]['overall'][key], dp)}{suffix}</td>"
@@ -278,11 +301,18 @@ similarity is never pooled across them.</p>
              + '. Blank means the smell never appeared &mdash; on single short functions '
              'most of the twelve cannot physically occur.</p>')
     all_smells = sorted({k for m in models for k in S[m["tag"]]["smells"]})
-    p.append('<div class="scrollx"><table>' + th_models(models, "smell"))
+    p.append('<div class="scrollx"><table><tr><th>smell</th>'
+             + "".join(f'<th>{m["label"]}<br>'
+                       '<span style="font-weight:400;color:#888">as emitted / definitions</span></th>'
+                       for m in models) + "</tr>")
     for name in all_smells:
-        p.append(f"<tr><td>{name}</td>"
-                 + "".join(f"<td>{S[m['tag']]['smells'].get(name) or '&mdash;'}</td>"
-                           for m in models) + "</tr>")
+        cells = ""
+        for m in models:
+            a = S[m["tag"]]["smells"].get(name)
+            b = S[m["tag"]]["smells_defs"].get(name)
+            cells += (f"<td>{a or '&mdash;'} <span style='color:#888'>/ {b or 0}</span></td>"
+                      if S[m["tag"]]["smells_defs"] else f"<td>{a or '&mdash;'}</td>")
+        p.append(f"<tr><td>{name}</td>{cells}</tr>")
     p.append("</table></div>")
 
     # --- similarity ---

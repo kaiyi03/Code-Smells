@@ -117,6 +117,29 @@ def _body_only(code):
     return "\n".join(ast.unparse(s) for s in body)
 
 
+DEFINITION_NODES = (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef,
+                    ast.Import, ast.ImportFrom)
+
+
+def definitions_only(code):
+    """(just the definitions, how many extra statements were dropped).
+
+    Models differ in what they volunteer around the answer: some return the
+    function alone, others append their own test cases or a demo call. Those
+    extras are real output -- they cost tokens and they ship to the user -- but
+    the literals inside an `assert f(10) == 40` are not a smell in the function.
+    Scoring both ways keeps the two apart. Unparseable code is left as-is."""
+    try:
+        tree = ast.parse(code)
+    except (SyntaxError, ValueError):
+        return code, 0
+    keep = [n for n in tree.body if isinstance(n, DEFINITION_NODES)]
+    extra = len(tree.body) - len(keep)
+    if not keep:
+        return code, extra
+    return ast.unparse(ast.Module(body=keep, type_ignores=[])), extra
+
+
 def _strip_prompt_lcp(gen, prompt):
     """Fallback: strip the longest common prefix that gen shares with the prompt."""
     i, n = 0, min(len(gen), len(prompt))
@@ -183,8 +206,14 @@ def main():
     print(f"loaded {len(gens)} generations from {os.path.basename(GENERATIONS)}")
 
     # --- smells: batched pylint + ruff over all generated code (11 smells) ---
+    # Twice: on everything the model emitted, and on the definitions alone. The
+    # difference is how much of the smell rate is test/demo code the model added.
     print("detecting smells (pylint + ruff, batched) ...")
     smells = detect_many({g["task_id"]: g["generated_code"] for g in gens})
+    defs = {g["task_id"]: definitions_only(g["generated_code"]) for g in gens}
+    n_extra = sum(1 for _, e in defs.values() if e)
+    smells_defs = detect_many({tid: code for tid, (code, _) in defs.items()})
+    print(f"  {n_extra}/{len(gens)} generations add statements outside the definitions")
     if args.dup:
         print("running jscpd per generation for duplicate_code (slow) ...")
         for g in gens:
@@ -216,6 +245,8 @@ def main():
         rows.append({
             "task_id": g["task_id"], "source": g["source"],
             "smells": sorted(smells.get(g["task_id"], set())),
+            "smells_defs": sorted(smells_defs.get(g["task_id"], set())),
+            "n_extra": defs[g["task_id"]][1],
             "result": passed.get(g["task_id"], "no-test"),
             "n_output_tokens": g.get("n_output_tokens"),
             "gen": gen_m, "can_struct": can_struct,
@@ -246,19 +277,25 @@ def report_console(rows, by_src, SRCS, subset, batch_time):
         ok = sum(r["result"] == "pass" for r in rs)
         print(f"  {src:10} {ok:>4}/{len(rs):<4} = {ok / len(rs) * 100:5.1f}%" if rs else f"  {src:10} n/a")
 
-    print("\nSmell rate (share of generations flagged):")
+    extra = sum(1 for r in rows if r["n_extra"])
+    print(f"\nSmell rate (share of generations flagged) -- as emitted, and with any "
+          f"\nstatements outside the definitions removed ({extra}/{n} generations have some):")
     for src in ["overall"] + SRCS:
         rs = subset(src)
         a = sum(1 for r in rs if r["smells"])
-        print(f"  {src:10} any smell {a:>4}/{len(rs):<4} = {a / len(rs) * 100:.1f}%")
+        b = sum(1 for r in rs if r["smells_defs"])
+        print(f"  {src:10} any smell {a:>4}/{len(rs):<4} = {a / len(rs) * 100:5.1f}%"
+              f"   definitions only {b:>4}/{len(rs):<4} = {b / len(rs) * 100:5.1f}%")
     per_src = {src: Counter(s for r in by_src[src] for s in r["smells"]) for src in SRCS}
     total = Counter(s for r in rows for s in r["smells"])
+    total_defs = Counter(s for r in rows for s in r["smells_defs"])
     if total:
-        print(f"  {'per smell':22}" + "".join(f"{src:>12}" for src in SRCS) + f"{'total':>8}")
+        print(f"  {'per smell':22}" + "".join(f"{src:>12}" for src in SRCS)
+              + f"{'total':>8}{'defs only':>11}")
         for smell in ALL_SMELLS:
             if total.get(smell):
                 print(f"    {smell:20}" + "".join(f"{per_src[src].get(smell, 0):>12}" for src in SRCS)
-                      + f"{total[smell]:>8}")
+                      + f"{total[smell]:>8}{total_defs.get(smell, 0):>11}")
 
     print("\nSimilarity to canonical (0-100; HumanEval = body only, MBPP = full):")
     print(f"  {'':10}" + "".join(f"{m.name:>10}" for m in SIM))
@@ -289,14 +326,16 @@ def write_csv(rows):
     # canon_* repeats the canonical solution's structure on every row. It's the same
     # for every model (same tasks), but carrying it here keeps the summary
     # self-contained -- compare_models.py can read one file per model and nothing else.
-    cols = (["task_id", "source", "result", "n_smells", "smells"]
+    cols = (["task_id", "source", "result", "n_smells", "smells",
+             "n_smells_defs", "smells_defs", "n_extra_stmts"]
             + [m.name for m in STRUCT] + [m.name for m in SIM]
             + [f"canon_{m.name}" for m in STRUCT] + ["n_output_tokens"])
     with open(OUT_CSV, "w", encoding="utf-8") as f:
         f.write(",".join(cols) + "\n")
         for r in rows:
             vals = [r["task_id"], r["source"], r["result"], str(len(r["smells"])),
-                    ";".join(r["smells"])]
+                    ";".join(r["smells"]), str(len(r["smells_defs"])),
+                    ";".join(r["smells_defs"]), str(r["n_extra"])]
             for m in STRUCT + SIM:
                 v = r["gen"][m.name]
                 vals.append("" if v is None else f"{v:.3f}")
@@ -377,18 +416,25 @@ given signature + docstring, which would otherwise inflate it).</p>
 
     # smell rate, per source
     p.append("<h2>Smell rate</h2>")
+    n_extra = sum(1 for r in rows if r["n_extra"])
     p.append('<p class="note">Share of generations carrying each tracked smell, by source '
-             '(11 detector smells; duplicate_code needs <code>--dup</code>).</p>')
+             '(11 detector smells; duplicate_code needs <code>--dup</code>). The last column '
+             f'rescores the same code with any statements outside the definitions removed &mdash; '
+             f'{n_extra} of {n} generations append something (typically their own test cases), '
+             'and literals inside those are counted as smells in the code as emitted.</p>')
     p.append("<table><tr><th>smell</th>" + "".join(f"<th>{s}</th>" for s in SRCS)
-             + "<th>total</th><th></th></tr>")
+             + "<th>total</th><th>definitions only</th></tr>")
     per_src = {src: Counter(s for r in by_src[src] for s in r["smells"]) for src in SRCS}
+    counts_defs = Counter(s for r in rows for s in r["smells_defs"])
     a_by_src = {src: sum(1 for r in by_src[src] if r["smells"]) for src in SRCS}
+    any_defs = sum(1 for r in rows if r["smells_defs"])
     any_row = "".join(f"<td>{a_by_src[s]} ({_pct(a_by_src[s], len(by_src[s]))})</td>" for s in SRCS)
-    p.append(f'<tr><td><b>any smell</b></td>{any_row}<td>{any_smell}</td><td></td></tr>')
+    p.append(f'<tr><td><b>any smell</b></td>{any_row}<td>{any_smell} ({_pct(any_smell, n)})</td>'
+             f'<td>{any_defs} ({_pct(any_defs, n)})</td></tr>')
     for smell, c in counts.most_common():
         cells = "".join(f"<td>{per_src[s].get(smell, 0)}</td>" for s in SRCS)
         p.append(f'<tr><td><code>{smell}</code></td>{cells}<td>{c}</td>'
-                 f'<td style="text-align:left"><span class="bar"><span style="width:{c / n * 100:.0f}%"></span></span></td></tr>')
+                 f'<td>{counts_defs.get(smell, 0)}</td></tr>')
     if not counts:
         p.append(f'<tr><td colspan="{len(SRCS) + 3}" style="text-align:left;color:#999">no tracked smells found</td></tr>')
     p.append("</table>")
