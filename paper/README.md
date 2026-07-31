@@ -5,7 +5,7 @@ abstract, contributions and research questions are written. Every other section
 carries a comment block listing what belongs in it and which results it draws on,
 so the sections can be written in any order.
 
-## Editing it on Overleaf (recommended)
+## Editing it on Overleaf
 
 Overleaf runs LaTeX in the browser, needs no install, and makes it easy to share
 a link for comments.
