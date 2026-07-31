@@ -18,6 +18,7 @@
 !/arc_qwen
 !/prompt_study
 !/paper
+!/.github
 !/dashboard
 !/deploy
 !/Dockerfile
@@ -47,6 +48,18 @@ node_modules/
 # The prompt set belongs to its authors and states no licence, so it is fetched
 # at run time (prompt_study/fetch_prompts.py) rather than redistributed here.
 prompt_study/prompts.jsonl
+
+# LaTeX build products (the PDF is built by CI, not committed)
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.log
+paper/*.out
+paper/*.pdf
+paper/*.fdb_latexmk
+paper/*.fls
+paper/*.synctex.gz
+paper/paper-overleaf.zip
 
 # build/backup artifacts
 *.zip

@@ -26,8 +26,23 @@ PROMPTS = os.path.join(HERE, "prompts.jsonl")
 MODEL = os.environ.get("GEN_MODEL", "Qwen/Qwen2.5-Coder-1.5B-Instruct")
 MAX_NEW = int(os.environ.get("GEN_MAX_TOKENS", "1024"))    # same budget as the Claude run
 BATCH = int(os.environ.get("GEN_BATCH", "8"))
-SYSTEM = ("Return only the Python code, in a single ```python code block. "
-          "Do not explain the code or add commentary outside the block.")
+
+# Two system prompts, differing in one instruction. The first run used `minimal`
+# and produced solutions in which nearly half the functions had `pass` bodies --
+# structurally clean because the work was never done. `full` asks for a complete
+# implementation, so the structural measures score written code rather than a
+# skeleton. Both are kept: the pair is a controlled comparison of one instruction,
+# and every generation records which it used.
+SYSTEMS = {
+    "minimal": ("Return only the Python code, in a single ```python code block. "
+                "Do not explain the code or add commentary outside the block."),
+    "full": ("Return only the Python code, in a single ```python code block. "
+             "Do not explain the code or add commentary outside the block. "
+             "Implement every function fully -- do not leave `pass`, `...`, or "
+             "placeholder bodies, and do not stub out work as a TODO."),
+}
+SYSTEM_MODE = os.environ.get("GEN_SYSTEM", "full")
+SYSTEM = SYSTEMS[SYSTEM_MODE]
 
 
 def extract_code(text):
@@ -45,6 +60,7 @@ def main():
     if args.limit:
         rows = rows[:args.limit]
 
+    print(f"system prompt: {SYSTEM_MODE}", flush=True)
     print(f"loading {MODEL} ...", flush=True)
     tok = AutoTokenizer.from_pretrained(MODEL)
     tok.padding_side = "left"
@@ -75,7 +91,7 @@ def main():
                 n_out = int((ids != tok.pad_token_id).sum())
                 n_tok += n_out
                 fout.write(json.dumps({
-                    **r, "model": MODEL,
+                    **r, "model": MODEL, "system_mode": SYSTEM_MODE,
                     "generated_code": extract_code(g), "raw_output": g,
                     "n_prompt_tokens": int(n_in), "n_output_tokens": n_out,
                     "batch_index": i // BATCH, "batch_size": BATCH,

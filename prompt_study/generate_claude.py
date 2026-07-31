@@ -34,8 +34,19 @@ PROMPTS = os.path.join(HERE, "prompts.jsonl")
 
 MODEL = os.environ.get("CLAUDE_MODEL", "claude-sonnet-5")
 MAX_TOKENS = int(os.environ.get("GEN_MAX_TOKENS", "1024"))   # same budget for every model
-SYSTEM = ("Return only the Python code, in a single ```python code block. "
-          "Do not explain the code or add commentary outside the block.")
+
+# Kept identical to prompt_study/generate_local.py -- a difference in the system
+# prompt between models would confound the comparison with the instruction.
+SYSTEMS = {
+    "minimal": ("Return only the Python code, in a single ```python code block. "
+                "Do not explain the code or add commentary outside the block."),
+    "full": ("Return only the Python code, in a single ```python code block. "
+             "Do not explain the code or add commentary outside the block. "
+             "Implement every function fully -- do not leave `pass`, `...`, or "
+             "placeholder bodies, and do not stub out work as a TODO."),
+}
+SYSTEM_MODE = os.environ.get("GEN_SYSTEM", "full")
+SYSTEM = SYSTEMS[SYSTEM_MODE]
 
 
 def load_prompts(limit=None):
@@ -96,7 +107,7 @@ def collect(client, batch_id, rows, out_path):
             n_ok += 1
             f.write(json.dumps({
                 **row,
-                "model": MODEL,
+                "model": MODEL, "system_mode": SYSTEM_MODE,
                 "generated_code": extract_code(text),
                 "raw_output": text,
                 "n_output_tokens": msg.usage.output_tokens,

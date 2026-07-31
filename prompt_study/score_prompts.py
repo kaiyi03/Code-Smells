@@ -40,6 +40,7 @@ def _bootstrap():
 _bootstrap()
 
 import argparse                                              # noqa: E402
+import ast                                                   # noqa: E402
 import csv                                                   # noqa: E402
 import glob                                                  # noqa: E402
 import json                                                  # noqa: E402
@@ -64,6 +65,39 @@ LABELS = {"qwen": "Qwen2.5-Coder-1.5B", "deepseek": "DeepSeek-Coder-1.3B",
 
 def load(path):
     return [json.loads(line) for line in open(path, encoding="utf-8")]
+
+
+def _is_stub(fn):
+    """A function whose body is only `pass`, `...`, or a docstring."""
+    body = [n for n in fn.body
+            if not (isinstance(n, ast.Expr)
+                    and isinstance(getattr(n, "value", None), ast.Constant)
+                    and isinstance(n.value.value, str))]              # drop the docstring
+    if not body:
+        return True
+    return all(isinstance(n, ast.Pass)
+               or (isinstance(n, ast.Expr)
+                   and isinstance(getattr(n, "value", None), ast.Constant)
+                   and n.value.value is Ellipsis)
+               for n in body)
+
+
+def completeness(code):
+    """(functions, stub functions, longest body in statements).
+
+    A structural measure cannot tell a well-decomposed solution from a skeleton
+    of empty functions -- both look small and simple. Code that was never written
+    cannot carry a smell, so every structural number here is reported next to how
+    much of the work was actually done."""
+    try:
+        tree = ast.parse(code)
+    except (SyntaxError, ValueError):
+        return None, None, None
+    fns = [n for n in ast.walk(tree)
+           if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))]
+    if not fns:
+        return 0, 0, 0
+    return len(fns), sum(1 for f in fns if _is_stub(f)), max(len(f.body) for f in fns)
 
 
 def mean(vals):
@@ -97,10 +131,13 @@ def score(rows, label, dup=True):
     out = []
     for r in rows:
         tid = r["task_id"]
+        n_fn, n_stub, longest = completeness(r["generated_code"])
         out.append({
             **{k: r.get(k) for k in ("task_id", "complexity", "domain",
-                                     "action_keyword", "n_output_tokens")},
+                                     "action_keyword", "n_output_tokens",
+                                     "system_mode")},
             "intended": r.get("intended_tracked") or [],
+            "n_functions": n_fn, "n_stub": n_stub, "longest_body": longest,
             "smells": sorted(emitted.get(tid, set())),
             "smells_defs": sorted(only.get(tid, set())),
             "n_extra": defs[tid][1],
@@ -117,6 +154,20 @@ def report(rows, label):
     print(f"\nSmell rate: as emitted {any_e}/{n} = {100 * any_e / n:.1f}%   "
           f"definitions only {any_d}/{n} = {100 * any_d / n:.1f}%   "
           f"({extra} add statements outside the definitions)")
+
+    # How much of the work was actually done. A skeleton of empty functions scores
+    # well on every structural measure, so this qualifies all of them.
+    ok = [r for r in rows if r["n_functions"] is not None]
+    fns = sum(r["n_functions"] for r in ok)
+    stubs = sum(r["n_stub"] for r in ok)
+    if fns:
+        allstub = sum(1 for r in ok if r["n_functions"] and r["n_stub"] == r["n_functions"])
+        print(f"\nCompleteness: {stubs}/{fns} functions are stubs "
+              f"({100 * stubs / fns:.1f}%);  {allstub}/{len(ok)} generations are "
+              f"entirely stubs;  longest function body: median "
+              f"{statistics.median([r['longest_body'] for r in ok])} statements, "
+              f"max {max(r['longest_body'] for r in ok)}")
+        print(f"              {len(rows) - len(ok)} generations did not parse")
 
     ce = Counter(s for r in rows for s in r["smells"])
     cd = Counter(s for r in rows for s in r["smells_defs"])
@@ -155,16 +206,19 @@ def report(rows, label):
 
 
 def write_csv(rows, path):
-    cols = (["task_id", "complexity", "domain", "action_keyword", "intended",
-             "n_smells", "smells", "n_smells_defs", "smells_defs", "n_extra_stmts"]
+    cols = (["task_id", "system_mode", "complexity", "domain", "action_keyword", "intended",
+             "n_smells", "smells", "n_smells_defs", "smells_defs", "n_extra_stmts",
+             "n_functions", "n_stub", "longest_body"]
             + [m.name for m in STRUCT] + ["n_output_tokens"])
     with open(path, "w", encoding="utf-8", newline="") as f:
         w = csv.writer(f)
         w.writerow(cols)
         for r in rows:
-            w.writerow([r["task_id"], r["complexity"], r["domain"], r["action_keyword"],
+            w.writerow([r["task_id"], r.get("system_mode"), r["complexity"], r["domain"],
+                        r["action_keyword"],
                         ";".join(r["intended"]), len(r["smells"]), ";".join(r["smells"]),
-                        len(r["smells_defs"]), ";".join(r["smells_defs"]), r["n_extra"]]
+                        len(r["smells_defs"]), ";".join(r["smells_defs"]), r["n_extra"],
+                        r["n_functions"], r["n_stub"], r["longest_body"]]
                        + ["" if r["struct"][m.name] is None else f"{r['struct'][m.name]:.3f}"
                           for m in STRUCT]
                        + [r["n_output_tokens"]])
