@@ -16,6 +16,8 @@
 !/smell_injection
 !/eval_tool
 !/arc_qwen
+!/prompt_study
+!/paper
 !/dashboard
 !/deploy
 !/Dockerfile
@@ -41,6 +43,10 @@ node_modules/
 # GitHub Pages: landing page + Jekyll opt-out (serve the HTML as-is)
 !/index.html
 !/.nojekyll
+
+# The prompt set belongs to its authors and states no licence, so it is fetched
+# at run time (prompt_study/fetch_prompts.py) rather than redistributed here.
+prompt_study/prompts.jsonl
 
 # build/backup artifacts
 *.zip

@@ -1,0 +1,293 @@
+% =====================================================================
+% Benchmarking and metrics for poorly structured LLM-generated code
+% Kai Yi Ng -- Machine Learning Research Group, University of Oxford
+%
+% Compile: pdflatex main -> bibtex main -> pdflatex main -> pdflatex main
+% (Overleaf does this automatically on Recompile.)
+% =====================================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{url}
+
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  breaklines=true,
+  frame=single,
+  framerule=0.3pt,
+  rulecolor=\color{gray!50},
+  showstringspaces=false,
+  language=Python,
+}
+
+\title{Which Measures Can See a Code Smell?\\
+       \large A Validation Protocol for Assessing the Structural Quality
+       of LLM-Generated Code}
+
+\author{Kai Yi Ng\\
+        Machine Learning Research Group\\
+        University of Oxford\\
+        \texttt{kaiyi.ng@some.ox.ac.uk}}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+% ---------------------------------------------------------------------
+\begin{abstract}
+Benchmarks for code-generating language models measure whether the generated code
+runs. They do not measure whether it is well built. Work that addresses the second
+question reaches for the structural metrics software engineering already has ---
+cyclomatic complexity, the maintainability index, Halstead measures, similarity
+scores --- and reports their values on model output. Those metrics were designed
+to describe human-written code, and their sensitivity to any particular structural
+defect has not been established. Reporting a metric is not the same as showing it
+can see what it is being used to detect.
+
+This paper supplies the missing step. We build a benchmark of 1{,}300 Python
+functions in which twelve structural defects are introduced one at a time into
+otherwise unchanged code, each confirmed by a static analyser and each verified by
+execution to preserve behaviour, and pair it with 4{,}300 real defective functions
+drawn from human-written repositories against a shared clean baseline. Measuring
+each metric on both sources answers two different questions --- whether changing
+only the defect moves the metric, and whether defective and clean code differ on it
+in the wild --- and detection requires yes to both.
+
+Applying the protocol to eighteen measures, we find that no single measure detects
+all twelve defects while every defect is detected by at least one, which is the
+empirical case for a panel rather than a composite quality score. We find that a
+substantial part of what looks like detection on real code is co-occurrence with
+size: metrics that provably cannot respond to a defect still separate defective
+from clean code, because defective functions are simply larger. We report a clean
+negative result for language-model perplexity, which does not distinguish
+structurally poor code from clean code on either source. Finally, applying the
+validated panel to the output of three models, we show that scoring raw model
+output conflates verbosity with structural quality: one model appeared two and a
+half times more defective than another almost entirely because it volunteered test
+cases the prompt did not request.
+\end{abstract}
+
+% ---------------------------------------------------------------------
+\section{Introduction}
+
+Language models now write a substantial share of new code, and the benchmarks used
+to judge them ask almost exclusively whether that code runs. HumanEval and MBPP
+score a generated function by executing it against unit tests; a model is better
+if a larger fraction of its solutions pass. This is a reasonable thing to measure
+and a poor proxy for the thing practitioners actually worry about. Code that passes
+its tests can still be code no one wants to maintain --- a function that does seven
+things, a conditional with six clauses, a constant with no name and no explanation.
+Correctness and structural quality are different properties, and only one of them
+is routinely benchmarked.
+
+The natural response is to reach for the metrics software engineering already has.
+Cyclomatic complexity, the Halstead measures, and the maintainability index have
+decades of use behind them; similarity measures such as BLEU and CodeBLEU compare
+generated code against a reference. Recent work does exactly this, computing these
+metrics over model output and drawing conclusions about how well models write. The
+step that is skipped is the one that licenses those conclusions. These metrics were
+designed to \emph{describe} human-written code in aggregate, not to \emph{detect}
+particular structural defects, and their sensitivity to any given defect is
+assumed rather than demonstrated. A metric that moves when defective and clean code
+are compared has not thereby been shown to respond to the defect --- only to
+something that differs between the two groups.
+
+That distinction is not academic, and it cannot be settled by observation alone.
+Defective code found in the wild differs from clean code in many ways at once. It
+is written by different people, in different projects, for different purposes --- and,
+most importantly, it is bigger. Every structural metric responds to size. So a
+metric can separate the two groups convincingly while being formally incapable of
+responding to the defect that defines them. Distinguishing the two requires an
+intervention: change only the defect, hold everything else fixed, and see whether
+the metric moves. Conversely, an intervention alone is not enough either. Code with
+a defect introduced deliberately is not code that acquired one naturally, and a
+metric validated only on synthetic edits may be responding to the habits of
+whatever produced them.
+
+We therefore validate on two sources at once. A controlled benchmark supplies the
+intervention: 1{,}300 Python functions in which each of twelve structural defects is
+introduced individually into otherwise unchanged code, with the defect confirmed by
+a static analyser and behaviour preservation confirmed by executing the function's
+own tests. A real-world layer supplies external validity: roughly 4{,}300 defective
+functions drawn from human-written repositories, compared against a common baseline
+of 1{,}000 clean functions mined from the same population. A measure is credited with
+detecting a defect only when it responds on both --- when the controlled experiment
+shows the defect causes the movement, and the real data shows the movement is
+present in code people actually wrote.
+
+The result is a three-way verdict for every measure and defect: the measure
+\emph{detects} the defect, it merely \emph{co-occurs} with it, or it is
+\emph{blind} to it. Most of what a purely observational study would report as
+detection falls into the middle category. We then apply the validated panel to the
+output of three code-generating models, which surfaces a measurement problem that
+only becomes visible with more than one model: apparent structural quality is
+partly a measure of how much a model volunteers beyond what was asked.
+
+\subsection{Contributions}
+
+\begin{enumerate}
+  \item \textbf{A validation protocol} that separates detection from correlation by
+        pairing a controlled injection benchmark with real labelled code, and a
+        single statistic --- detection strength --- reported on both so the two are
+        directly comparable.
+  \item \textbf{A labelled benchmark} of 1{,}300 Python functions covering twelve
+        structural defects, every example confirmed by a static analyser and
+        verified by execution to preserve behaviour, released openly.
+  \item \textbf{A validated verdict for eighteen measures}, showing that no single
+        measure covers all twelve defects, that every defect is covered by at
+        least one, and that structural and reference-based measures are
+        complementary rather than redundant.
+  \item \textbf{Two cautionary results.} Language-model perplexity does not
+        distinguish structurally poor code from clean code, so naturalness is not
+        a proxy for structural quality; and smell rates computed on raw model
+        output partly measure verbosity, which distorts multi-model comparison.
+  \item \textbf{An applied evaluation} of three code models against the validated
+        panel, and an open evaluation tool that applies the same panel to
+        arbitrary Python code.
+\end{enumerate}
+
+\subsection{Research questions}
+
+\begin{description}
+  \item[RQ1] Which measures are sensitive to which structural defects, and does
+             that sensitivity survive contact with real, human-written code?
+  \item[RQ2] What is the structural profile of LLM-generated code under the
+             validated panel, and does that profile hold across models?
+  \item[RQ3] Do prompts written to induce a structural defect actually induce it,
+             and does the number of tokens a model produces predict the structural
+             quality of what it produces?
+\end{description}
+
+% ---------------------------------------------------------------------
+\section{Background and related work}
+% TO WRITE. Four strands, and the gap this paper occupies:
+%
+%   (a) Code smells: Fowler's catalogue, and detector-based identification
+%       (Pylint, Ruff, jscpd). Position detectors as an operational definition,
+%       not ground truth -- this is what licenses using them to label the data.
+%   (b) Structural metrics: cyclomatic, Halstead, maintainability index, cognitive
+%       complexity. Note they were designed as descriptive aggregates over
+%       codebases, never validated as per-defect detectors. This is the gap.
+%   (c) Evaluating LLM-generated code: HumanEval/MBPP and pass@1; similarity
+%       measures (BLEU, CodeBLEU, CodeBERTScore); the correctness monoculture.
+%   (d) Structural quality of LLM output: the emerging strand. Velasco et al.
+%       measure propensity with a logit probe on already-smelly code, and state
+%       as an open question whether propensity predicts the quality of freely
+%       generated code -- which is what RQ2 answers.
+%
+% The gap sentence to land: prior work reports metric values on model output;
+% none first establishes which metrics are sensitive to which defects.
+
+% ---------------------------------------------------------------------
+\section{The benchmark}
+% TO WRITE.
+% 3.1 The twelve defects and why these twelve (common in LLM output AND
+%     mechanically confirmable -- both criteria are load-bearing).
+% 3.2 Sources of clean code: MBPP (993), HumanEval (178), CodeSearchNet (129).
+%     CodeSearchNet is needed because short tasks cannot host the larger defects.
+% 3.3 Injection: one defect per example, worked example (Table + listing).
+% 3.4 Two-stage verification: detector confirms the shape, execution confirms
+%     behaviour. All twelve at 100% behaviour-preserving. Include the
+%     inefficient-copy bug that only execution caught -- it makes the case for
+%     the second stage better than any argument.
+% 3.5 The real-code layer: the reused datasets are all-positive, so the clean
+%     baseline had to be mined (1,000 methods from 253,762 unlabelled). Per-defect
+%     counts table.
+
+% ---------------------------------------------------------------------
+\section{The measure panel}
+% TO WRITE. Five families and why the panel excludes the detectors themselves
+% (they produced the labels; evaluating them on their own labels is circular).
+% Table: measure, family, reference-free or not, direction.
+% The reference-free/reference-based split is the key structural fact: it
+% determines which measures can be validated on real code at all.
+
+% ---------------------------------------------------------------------
+\section{Validation protocol}
+% TO WRITE.
+% 5.1 Detection strength: (mean_defective - mean_clean) / pooled SD, oriented so
+%     positive = worse, capped at +/-5. Interpretation bands.
+% 5.2 Why unpaired rather than paired -- the paired form saturates on
+%     constant-shift injections (dead_code read 5.0 for one added line) and is
+%     not computable on real code, which has no twins. Unpaired makes the two
+%     sources directly comparable, which is the whole point.
+% 5.3 The three verdicts: Strong (both sources agree), Co-occurrence (real only
+%     -- the intervention shows the measure cannot see the defect), Blind.
+
+% ---------------------------------------------------------------------
+\section{RQ1: which measures detect which defects}
+% TO WRITE. The main results table (injected d vs real d per defect x measure),
+% the trust table, and the four disagreement patterns with worked examples:
+%   - both high            -> genuine detection (deep nesting / cyclomatic)
+%   - injected 0, real high -> co-occurrence (inefficient loop / cyclomatic:
+%                              the rewrite provably adds no branches)
+%   - injected high, real lower -> the injection was unrealistically uniform
+%   - both ~0              -> blind
+% Figures: detection-strength heatmap; injected-vs-real scatter.
+
+% ---------------------------------------------------------------------
+\section{RQ2: the structural profile of generated code}
+% TO WRITE. Three models on 664 benchmark tasks. pass@1, defect rates, structure
+% against the canonical solutions, cost. Two findings to lead with:
+%   - generated code is simpler and far more heavily commented than the canonical
+%     solutions, on every complexity measure, for every model;
+%   - only four or five of the twelve defects appear at all, because single short
+%     functions cannot host the rest. Frame as a scoped limitation of the task
+%     set, and the motivation for RQ3.
+% Then the verbosity confound: the as-emitted vs definitions-only split, the
+% mbpp_17 example, and why this distorts any multi-model comparison that scores
+% raw output.
+
+% ---------------------------------------------------------------------
+\section{RQ3: prompt-induced defects and token usage}
+% TO WRITE. 476 prompts written to induce a named defect, across three models.
+%   - induction rate: does a prompt engineered to provoke a defect provoke it?
+%     Measurable on the six defects shared between the two taxonomies.
+%   - does output length predict structural quality, controlling for the prompt's
+%     stated complexity?
+% NOTE for the write-up: in the prompt set, expected token depth is a perfect
+% relabelling of complexity (basic/intermediate/advanced -> low/medium/high, 1:1).
+% It therefore cannot serve as an independent variable; measured output tokens can.
+
+% ---------------------------------------------------------------------
+\section{Threats to validity}
+% TO WRITE.
+% Construct: detectors are the operational definition of a defect, not ground
+%   truth; the panel excludes them to avoid circularity, but the labels remain
+%   tool-derived.
+% Internal: injection may not reproduce how defects arise naturally -- which is
+%   precisely why the real-code layer exists; residual size confounding is
+%   reported rather than corrected, and marked as co-occurrence.
+% External: Python only; small instruct-tuned models plus one frontier model;
+%   the similarity family is validated on injected data alone, because real code
+%   has no clean reference.
+% Conclusion: single greedy generation per task, so no sampling variance is
+%   estimated.
+
+% ---------------------------------------------------------------------
+\section{Conclusion}
+% TO WRITE. The one-sentence version: before asking what a metric says about
+% LLM-generated code, establish what the metric can see -- and for most metrics
+% and most defects, the answer is less than it appears.
+
+% ---------------------------------------------------------------------
+\section*{Data and code availability}
+The benchmark, the evaluation tool, and every figure in this paper are available
+at \url{https://github.com/kaiyi03/Code-Smells}. An interactive version of the
+evaluation tool, which applies the same panel to arbitrary Python code, is at
+\url{https://code-smell-dashboard.onrender.com}.
+
+% ---------------------------------------------------------------------
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}
