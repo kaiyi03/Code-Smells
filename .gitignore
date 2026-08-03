@@ -18,6 +18,7 @@
 !/arc_qwen
 !/prompt_study
 !/paper
+!/analysis
 !/.github
 !/dashboard
 !/deploy
@@ -41,6 +42,7 @@ node_modules/
 !arc_qwen/evaluation_report_deepseek.html
 !arc_qwen/model_comparison.html
 !prompt_study/prompt_report.html
+!analysis/analysis_report.html
 
 # GitHub Pages: landing page + Jekyll opt-out (serve the HTML as-is)
 !/index.html
@@ -64,3 +66,9 @@ paper/paper-overleaf.zip
 
 # build/backup artifacts
 *.zip
+
+# Analysis figures: PNG for the page, PDF for the paper. Both are products of
+# analysis/make_analysis.py, kept so the report renders without rerunning it.
+!analysis/figures/*.png
+!analysis/figures/*.pdf
+!analysis/tables/*
