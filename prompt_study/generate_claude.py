@@ -90,10 +90,13 @@ def wait(client, batch_id):
         time.sleep(30)
 
 
-def collect(client, batch_id, rows, out_path):
+def collect(client, batch_id, rows, out_path, keep=()):
     by_id = {r["task_id"]: r for r in rows}
     n_ok = n_bad = 0
     with open(out_path, "w", encoding="utf-8") as f:
+        for r in keep:                                   # generations that already finished
+            f.write(json.dumps(r) + "\n")
+            n_ok += 1
         for result in client.messages.batches.results(batch_id):
             row = by_id.get(result.custom_id)
             if row is None:                                  # not from this submission
@@ -123,16 +126,33 @@ def main():
     ap.add_argument("--limit", type=int, help="only the first N prompts (trial run)")
     ap.add_argument("--batch", help="poll an existing batch instead of submitting a new one")
     ap.add_argument("--out", default=os.path.join(HERE, "generations_claude.jsonl"))
+    ap.add_argument("--redo-truncated", metavar="FILE",
+                    help="re-run only the generations in FILE that hit the token cap, "
+                         "and merge them with the ones that finished")
     args = ap.parse_args()
 
     client = anthropic.Anthropic()          # key from env, or an `ant auth login` profile
     rows = load_prompts(args.limit)
 
+    keep = []
+    if args.redo_truncated:
+        # max_tokens is a hard cutoff the model cannot see, so a generation that ended
+        # on its own under the old cap is exactly what it would produce under a higher
+        # one. Only the truncated ones need redoing, which is most of the cost saved.
+        prev = [json.loads(line) for line in open(args.redo_truncated, encoding="utf-8")]
+        keep = [r for r in prev if r.get("stop_reason") != "max_tokens"]
+        redo = {r["task_id"] for r in prev if r.get("stop_reason") == "max_tokens"}
+        rows = [r for r in rows if r["task_id"] in redo]
+        print(f"re-running {len(rows)} truncated of {len(prev)}; "
+              f"keeping {len(keep)} that finished (cap now {MAX_TOKENS})")
+        if not rows:
+            raise SystemExit("nothing was truncated -- nothing to do")
+
     batch_id = args.batch or submit(client, rows)
     batch = wait(client, batch_id)
     if batch.request_counts.errored:
         print(f"note: {batch.request_counts.errored} requests errored", file=sys.stderr)
-    collect(client, batch_id, rows, args.out)
+    collect(client, batch_id, rows, args.out, keep=keep)
 
 
 if __name__ == "__main__":
