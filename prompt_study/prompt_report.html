@@ -71,18 +71,20 @@ the half we have grounds to trust here.</p></div>
 <h2>Does the task set surface the defects?</h2>
 <div class="tiles">
 <div class="tile"><div class="v">11 / 12</div><div class="k">distinct defects</div><div class="k dim">vs 5 on short tasks</div></div>
-<div class="tile"><div class="v">48.1%</div><div class="k">smell rate</div><div class="k dim">vs 12.2% on short tasks</div></div>
-<div class="tile"><div class="v">27.2</div><div class="k">mean lines</div><div class="k dim">vs 6.6 on short tasks</div></div>
-<div class="tile"><div class="v">11.6</div><div class="k">mean branching</div><div class="k dim">vs 2.8 on short tasks</div></div>
+<div class="tile"><div class="v">48.7%</div><div class="k">smell rate</div><div class="k dim">vs 12.2% on short tasks</div></div>
+<div class="tile"><div class="v">30.4</div><div class="k">mean lines</div><div class="k dim">vs 6.6 on short tasks</div></div>
+<div class="tile"><div class="v">12.2</div><div class="k">mean branching</div><div class="k dim">vs 2.8 on short tasks</div></div>
 </div>
 <p class="note">Yes. The generated code is roughly four times longer and
 four times branchier than on the short-function benchmark, and twice as many of the twelve
 defects appear. The task set was the binding constraint, not the models.</p>
 <div class="scroll"><table><thead><tr><th>run</th><th>instruction</th><th>smell rate</th><th>defects seen</th><th>mean lines</th><th>mean branching</th><th>output tokens</th></tr></thead><tbody>
-<tr><td>Qwen2.5-Coder-1.5B</td><td class='dim'>minimal</td><td>46.0%</td><td>10 of 12</td><td>23.0</td><td>9.7</td><td>235</td></tr>
-<tr><td>Qwen2.5-Coder-1.5B</td><td class='dim'>implement fully</td><td>46.2%</td><td>9 of 12</td><td>27.2</td><td>11.6</td><td>284</td></tr>
-<tr><td>DeepSeek-Coder-1.3B</td><td class='dim'>minimal</td><td>45.6%</td><td>10 of 12</td><td>25.9</td><td>10.6</td><td>495</td></tr>
-<tr><td>DeepSeek-Coder-1.3B</td><td class='dim'>implement fully</td><td>48.1%</td><td>11 of 12</td><td>26.6</td><td>11.6</td><td>515</td></tr>
+<tr><td>Qwen2.5-Coder-1.5B</td><td class='dim'>minimal, 1k budget</td><td>46.0%</td><td>10 of 12</td><td>23.0</td><td>9.7</td><td>235</td></tr>
+<tr><td>Qwen2.5-Coder-1.5B</td><td class='dim'>implement fully, 1k budget</td><td>46.2%</td><td>9 of 12</td><td>27.2</td><td>11.6</td><td>284</td></tr>
+<tr><td>Qwen2.5-Coder-1.5B</td><td class='dim'>implement fully, 4k budget</td><td>46.6%</td><td>9 of 12</td><td>27.7</td><td>11.6</td><td>330</td></tr>
+<tr><td>DeepSeek-Coder-1.3B</td><td class='dim'>minimal, 1k budget</td><td>45.6%</td><td>10 of 12</td><td>25.9</td><td>10.6</td><td>495</td></tr>
+<tr><td>DeepSeek-Coder-1.3B</td><td class='dim'>implement fully, 1k budget</td><td>48.1%</td><td>11 of 12</td><td>26.6</td><td>11.6</td><td>515</td></tr>
+<tr><td>DeepSeek-Coder-1.3B</td><td class='dim'>implement fully, 4k budget</td><td>48.7%</td><td>11 of 12</td><td>30.4</td><td>12.2</td><td>589</td></tr>
 </tbody></table></div>
 <p class="note"><strong>Smell rate</strong> is the share of generations
 carrying at least one of the twelve defects, counted on the definitions only &mdash; any
@@ -94,10 +96,12 @@ skeleton of empty functions &mdash; both look short and simple. Code that was ne
 written cannot carry a defect, so a model can score well by not doing the work. Every
 structural number on this page is therefore reported next to how complete the code is.</p>
 <div class="scroll"><table><thead><tr><th>run</th><th>instruction</th><th>stub functions</th><th>all-stub generations</th><th>parsed</th></tr></thead><tbody>
-<tr><td>Qwen2.5-Coder-1.5B</td><td class='dim'>minimal</td><td class='warn'>17.1%</td><td>36 of 461</td><td>461 of 476</td></tr>
-<tr><td>Qwen2.5-Coder-1.5B</td><td class='dim'>implement fully</td><td class='warn'>14.7%</td><td>20 of 462</td><td>462 of 476</td></tr>
-<tr><td>DeepSeek-Coder-1.3B</td><td class='dim'>minimal</td><td class='warn'>18.4%</td><td>9 of 457</td><td>457 of 476</td></tr>
-<tr><td>DeepSeek-Coder-1.3B</td><td class='dim'>implement fully</td><td class='warn'>18.1%</td><td>12 of 455</td><td>455 of 476</td></tr>
+<tr><td>Qwen2.5-Coder-1.5B</td><td class='dim'>minimal, 1k budget</td><td class='warn'>17.1%</td><td>36 of 461</td><td>461 of 476</td></tr>
+<tr><td>Qwen2.5-Coder-1.5B</td><td class='dim'>implement fully, 1k budget</td><td class='warn'>14.7%</td><td>20 of 462</td><td>462 of 476</td></tr>
+<tr><td>Qwen2.5-Coder-1.5B</td><td class='dim'>implement fully, 4k budget</td><td class='warn'>14.7%</td><td>20 of 463</td><td>463 of 476</td></tr>
+<tr><td>DeepSeek-Coder-1.3B</td><td class='dim'>minimal, 1k budget</td><td class='warn'>18.4%</td><td>9 of 457</td><td>457 of 476</td></tr>
+<tr><td>DeepSeek-Coder-1.3B</td><td class='dim'>implement fully, 1k budget</td><td class='warn'>18.1%</td><td>12 of 455</td><td>455 of 476</td></tr>
+<tr><td>DeepSeek-Coder-1.3B</td><td class='dim'>implement fully, 4k budget</td><td class='warn'>17.6%</td><td>12 of 463</td><td>463 of 476</td></tr>
 </tbody></table></div>
 <p class="note">A <strong>stub</strong> is a function whose body is only
 <code>pass</code>, <code>...</code>, or a docstring. The two instructions differ in one
@@ -113,13 +117,13 @@ twelve a static analyser can confirm. Six overlap, so induction is measurable on
 <strong>152 of the 476</strong> prompts. The other 324 still contribute everything else on
 this page &mdash; the detectors fire on whatever they find, regardless of what the prompt
 was aiming at.</p>
-<div class="scroll"><table><thead><tr><th>targeted defect</th><th>prompts</th><th>Qwen2.5<br><span class='dim' style='font-weight:400'>minimal</span></th><th>Qwen2.5<br><span class='dim' style='font-weight:400'>implement fully</span></th><th>DeepSeek<br><span class='dim' style='font-weight:400'>minimal</span></th><th>DeepSeek<br><span class='dim' style='font-weight:400'>implement fully</span></th></tr></thead><tbody>
-<tr><td><code>long_method</code></td><td class='dim'>40</td><td class='bad'>0%</td><td class='bad'>0%</td><td class='bad'>0%</td><td class='bad'>0%</td></tr>
-<tr><td><code>long_parameter_list</code></td><td class='dim'>40</td><td class='good'>100%</td><td class='good'>95%</td><td class='good'>90%</td><td class='good'>85%</td></tr>
-<tr><td><code>duplicate_code</code></td><td class='dim'>20</td><td class='warn'>30%</td><td class='bad'>15%</td><td class='bad'>15%</td><td class='warn'>25%</td></tr>
-<tr><td><code>magic_number</code></td><td class='dim'>18</td><td class='warn'>50%</td><td class='warn'>56%</td><td class='bad'>17%</td><td class='bad'>17%</td></tr>
-<tr><td><code>deep_nesting</code></td><td class='dim'>18</td><td class='warn'>39%</td><td class='warn'>33%</td><td class='warn'>28%</td><td class='bad'>17%</td></tr>
-<tr><td><code>dead_code</code></td><td class='dim'>16</td><td class='warn'>50%</td><td class='warn'>31%</td><td class='bad'>19%</td><td class='bad'>19%</td></tr>
+<div class="scroll"><table><thead><tr><th>targeted defect</th><th>prompts</th><th>Qwen2.5<br><span class='dim' style='font-weight:400'>minimal, 1k budget</span></th><th>Qwen2.5<br><span class='dim' style='font-weight:400'>implement fully, 1k budget</span></th><th>Qwen2.5<br><span class='dim' style='font-weight:400'>implement fully, 4k budget</span></th><th>DeepSeek<br><span class='dim' style='font-weight:400'>minimal, 1k budget</span></th><th>DeepSeek<br><span class='dim' style='font-weight:400'>implement fully, 1k budget</span></th><th>DeepSeek<br><span class='dim' style='font-weight:400'>implement fully, 4k budget</span></th></tr></thead><tbody>
+<tr><td><code>long_method</code></td><td class='dim'>40</td><td class='bad'>0%</td><td class='bad'>0%</td><td class='bad'>0%</td><td class='bad'>0%</td><td class='bad'>0%</td><td class='bad'>0%</td></tr>
+<tr><td><code>long_parameter_list</code></td><td class='dim'>40</td><td class='good'>100%</td><td class='good'>95%</td><td class='good'>95%</td><td class='good'>90%</td><td class='good'>85%</td><td class='good'>90%</td></tr>
+<tr><td><code>duplicate_code</code></td><td class='dim'>20</td><td class='warn'>30%</td><td class='bad'>15%</td><td class='bad'>15%</td><td class='bad'>15%</td><td class='warn'>25%</td><td class='warn'>25%</td></tr>
+<tr><td><code>magic_number</code></td><td class='dim'>18</td><td class='warn'>50%</td><td class='warn'>56%</td><td class='warn'>56%</td><td class='bad'>17%</td><td class='bad'>17%</td><td class='bad'>17%</td></tr>
+<tr><td><code>deep_nesting</code></td><td class='dim'>18</td><td class='warn'>39%</td><td class='warn'>33%</td><td class='warn'>33%</td><td class='warn'>28%</td><td class='bad'>17%</td><td class='bad'>17%</td></tr>
+<tr><td><code>dead_code</code></td><td class='dim'>16</td><td class='warn'>50%</td><td class='warn'>31%</td><td class='warn'>31%</td><td class='bad'>19%</td><td class='bad'>19%</td><td class='bad'>19%</td></tr>
 </tbody></table></div>
 <p class="note">Read down a column: a prompt can reliably provoke some
 defects and reliably fail to provoke others. That spread is the finding &mdash; prompt
@@ -128,47 +132,59 @@ wording steers structural quality for some defects and not at all for others.</p
 <p class="note">Counts of generations carrying each defect, out of 476.
 A blank means the defect never appeared. Compare against the short-function benchmark,
 where only magic numbers, dead code, and occasional loop inefficiencies ever showed up.</p>
-<div class="scroll"><table><thead><tr><th>defect</th><th>Qwen2.5<br><span class='dim' style='font-weight:400'>minimal</span></th><th>Qwen2.5<br><span class='dim' style='font-weight:400'>implement fully</span></th><th>DeepSeek<br><span class='dim' style='font-weight:400'>minimal</span></th><th>DeepSeek<br><span class='dim' style='font-weight:400'>implement fully</span></th></tr></thead><tbody>
-<tr><td><code>long_method</code></td><td>3</td><td>3</td><td>&mdash;</td><td>1</td></tr>
-<tr><td><code>deep_nesting</code></td><td>10</td><td>8</td><td>6</td><td>4</td></tr>
-<tr><td><code>complex_conditional</code></td><td>1</td><td>&mdash;</td><td>2</td><td>4</td></tr>
-<tr><td><code>long_parameter_list</code></td><td>72</td><td>70</td><td>87</td><td>81</td></tr>
-<tr><td><code>mutable_default</code></td><td>&mdash;</td><td>2</td><td>1</td><td>&mdash;</td></tr>
-<tr><td><code>broad_except</code></td><td>5</td><td>5</td><td>9</td><td>4</td></tr>
-<tr><td><code>dead_code</code></td><td>66</td><td>73</td><td>61</td><td>70</td></tr>
-<tr><td><code>magic_number</code></td><td>97</td><td>106</td><td>70</td><td>77</td></tr>
-<tr><td><code>inefficient_loop</code></td><td>1</td><td>1</td><td>4</td><td>4</td></tr>
-<tr><td><code>inefficient_copy</code></td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>1</td></tr>
-<tr><td><code>perf_try_in_loop</code></td><td>1</td><td>&mdash;</td><td>2</td><td>1</td></tr>
-<tr><td><code>duplicate_code</code></td><td>21</td><td>22</td><td>32</td><td>41</td></tr>
+<div class="scroll"><table><thead><tr><th>defect</th><th>Qwen2.5<br><span class='dim' style='font-weight:400'>minimal, 1k budget</span></th><th>Qwen2.5<br><span class='dim' style='font-weight:400'>implement fully, 1k budget</span></th><th>Qwen2.5<br><span class='dim' style='font-weight:400'>implement fully, 4k budget</span></th><th>DeepSeek<br><span class='dim' style='font-weight:400'>minimal, 1k budget</span></th><th>DeepSeek<br><span class='dim' style='font-weight:400'>implement fully, 1k budget</span></th><th>DeepSeek<br><span class='dim' style='font-weight:400'>implement fully, 4k budget</span></th></tr></thead><tbody>
+<tr><td><code>long_method</code></td><td>3</td><td>3</td><td>3</td><td>&mdash;</td><td>1</td><td>4</td></tr>
+<tr><td><code>deep_nesting</code></td><td>10</td><td>8</td><td>8</td><td>6</td><td>4</td><td>4</td></tr>
+<tr><td><code>complex_conditional</code></td><td>1</td><td>&mdash;</td><td>&mdash;</td><td>2</td><td>4</td><td>4</td></tr>
+<tr><td><code>long_parameter_list</code></td><td>72</td><td>70</td><td>70</td><td>87</td><td>81</td><td>87</td></tr>
+<tr><td><code>mutable_default</code></td><td>&mdash;</td><td>2</td><td>2</td><td>1</td><td>&mdash;</td><td>&mdash;</td></tr>
+<tr><td><code>broad_except</code></td><td>5</td><td>5</td><td>5</td><td>9</td><td>4</td><td>4</td></tr>
+<tr><td><code>dead_code</code></td><td>66</td><td>73</td><td>74</td><td>61</td><td>70</td><td>72</td></tr>
+<tr><td><code>magic_number</code></td><td>97</td><td>106</td><td>106</td><td>70</td><td>77</td><td>81</td></tr>
+<tr><td><code>inefficient_loop</code></td><td>1</td><td>1</td><td>1</td><td>4</td><td>4</td><td>4</td></tr>
+<tr><td><code>inefficient_copy</code></td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>1</td><td>1</td></tr>
+<tr><td><code>perf_try_in_loop</code></td><td>1</td><td>&mdash;</td><td>&mdash;</td><td>2</td><td>1</td><td>1</td></tr>
+<tr><td><code>duplicate_code</code></td><td>21</td><td>22</td><td>24</td><td>32</td><td>41</td><td>42</td></tr>
 </tbody></table></div>
 <h2>Does structure track the prompt's stated difficulty?</h2>
 <p>Every prompt is labelled basic, intermediate or advanced by its authors.
 If those labels mean anything, the generated code should get measurably heavier as they
 rise &mdash; which is a check on the dataset as much as on the models.</p>
-<h3>Qwen2.5-Coder-1.5B <span class='dim' style='font-weight:400'>&mdash; minimal</span></h3>
+<h3>Qwen2.5-Coder-1.5B <span class='dim' style='font-weight:400'>&mdash; minimal, 1k budget</span></h3>
 <div class="scroll"><table><thead><tr><th>stated level</th><th>prompts</th><th>mean lines</th><th>mean branching</th><th>cognitive</th><th>output tokens</th><th>smell rate</th></tr></thead><tbody>
 <tr><td>basic</td><td class='dim'>173</td><td>17.5</td><td>7.9</td><td>2.5</td><td>175</td><td>35.3%</td></tr>
 <tr><td>intermediate</td><td class='dim'>157</td><td>24.3</td><td>9.7</td><td>3.7</td><td>252</td><td>49.7%</td></tr>
 <tr><td>advanced</td><td class='dim'>146</td><td>28.0</td><td>11.8</td><td>6.3</td><td>287</td><td>54.8%</td></tr>
 </tbody></table></div>
-<h3>Qwen2.5-Coder-1.5B <span class='dim' style='font-weight:400'>&mdash; implement fully</span></h3>
+<h3>Qwen2.5-Coder-1.5B <span class='dim' style='font-weight:400'>&mdash; implement fully, 1k budget</span></h3>
 <div class="scroll"><table><thead><tr><th>stated level</th><th>prompts</th><th>mean lines</th><th>mean branching</th><th>cognitive</th><th>output tokens</th><th>smell rate</th></tr></thead><tbody>
 <tr><td>basic</td><td class='dim'>173</td><td>21.2</td><td>8.7</td><td>2.8</td><td>211</td><td>37.6%</td></tr>
 <tr><td>intermediate</td><td class='dim'>157</td><td>26.5</td><td>11.6</td><td>4.4</td><td>293</td><td>50.3%</td></tr>
 <tr><td>advanced</td><td class='dim'>146</td><td>35.3</td><td>15.2</td><td>7.6</td><td>363</td><td>52.1%</td></tr>
 </tbody></table></div>
-<h3>DeepSeek-Coder-1.3B <span class='dim' style='font-weight:400'>&mdash; minimal</span></h3>
+<h3>Qwen2.5-Coder-1.5B <span class='dim' style='font-weight:400'>&mdash; implement fully, 4k budget</span></h3>
+<div class="scroll"><table><thead><tr><th>stated level</th><th>prompts</th><th>mean lines</th><th>mean branching</th><th>cognitive</th><th>output tokens</th><th>smell rate</th></tr></thead><tbody>
+<tr><td>basic</td><td class='dim'>173</td><td>21.2</td><td>8.7</td><td>2.8</td><td>211</td><td>37.6%</td></tr>
+<tr><td>intermediate</td><td class='dim'>157</td><td>27.3</td><td>11.6</td><td>4.4</td><td>332</td><td>51.6%</td></tr>
+<tr><td>advanced</td><td class='dim'>146</td><td>36.1</td><td>15.2</td><td>7.6</td><td>468</td><td>52.1%</td></tr>
+</tbody></table></div>
+<h3>DeepSeek-Coder-1.3B <span class='dim' style='font-weight:400'>&mdash; minimal, 1k budget</span></h3>
 <div class="scroll"><table><thead><tr><th>stated level</th><th>prompts</th><th>mean lines</th><th>mean branching</th><th>cognitive</th><th>output tokens</th><th>smell rate</th></tr></thead><tbody>
 <tr><td>basic</td><td class='dim'>173</td><td>20.2</td><td>8.3</td><td>2.6</td><td>403</td><td>30.1%</td></tr>
 <tr><td>intermediate</td><td class='dim'>157</td><td>27.0</td><td>11.2</td><td>3.7</td><td>517</td><td>52.9%</td></tr>
 <tr><td>advanced</td><td class='dim'>146</td><td>31.4</td><td>12.9</td><td>4.5</td><td>580</td><td>56.2%</td></tr>
 </tbody></table></div>
-<h3>DeepSeek-Coder-1.3B <span class='dim' style='font-weight:400'>&mdash; implement fully</span></h3>
+<h3>DeepSeek-Coder-1.3B <span class='dim' style='font-weight:400'>&mdash; implement fully, 1k budget</span></h3>
 <div class="scroll"><table><thead><tr><th>stated level</th><th>prompts</th><th>mean lines</th><th>mean branching</th><th>cognitive</th><th>output tokens</th><th>smell rate</th></tr></thead><tbody>
 <tr><td>basic</td><td class='dim'>173</td><td>21.5</td><td>8.8</td><td>2.7</td><td>429</td><td>35.8%</td></tr>
 <tr><td>intermediate</td><td class='dim'>157</td><td>28.4</td><td>12.7</td><td>4.2</td><td>547</td><td>52.9%</td></tr>
 <tr><td>advanced</td><td class='dim'>146</td><td>30.9</td><td>13.7</td><td>4.3</td><td>584</td><td>57.5%</td></tr>
+</tbody></table></div>
+<h3>DeepSeek-Coder-1.3B <span class='dim' style='font-weight:400'>&mdash; implement fully, 4k budget</span></h3>
+<div class="scroll"><table><thead><tr><th>stated level</th><th>prompts</th><th>mean lines</th><th>mean branching</th><th>cognitive</th><th>output tokens</th><th>smell rate</th></tr></thead><tbody>
+<tr><td>basic</td><td class='dim'>173</td><td>23.4</td><td>9.2</td><td>2.8</td><td>466</td><td>35.8%</td></tr>
+<tr><td>intermediate</td><td class='dim'>157</td><td>29.4</td><td>12.6</td><td>4.3</td><td>575</td><td>54.1%</td></tr>
+<tr><td>advanced</td><td class='dim'>146</td><td>39.7</td><td>15.5</td><td>6.0</td><td>749</td><td>58.2%</td></tr>
 </tbody></table></div>
 <p class="note">It does, consistently, in every run. Note that the dataset's
 separate <code>expected_token_depth</code> field is a one-to-one relabelling of this
@@ -186,6 +202,9 @@ ground truth, and the structural measures are evaluated against them rather than
 way round.</li>
 <li><strong>Two small instruct-tuned models.</strong> Findings here describe these models
 at this scale, not language models in general.</li>
+</ul>
+<h2>Runs left out</h2><ul>
+<li><strong>Claude Sonnet 5 (implement fully, 4k budget)</strong> &mdash; 78% of this run&#x27;s output was truncated by the token budget and does not parse. Structural measures on code that stops mid-statement are not measurements, so the run is excluded rather than shown with a caveat.</li>
 </ul>
 <p class="meta">Generated by <code>prompt_study/report.py</code> from <code>summary_*.csv</code>. Every figure on this page is computed from those files rather than written by hand.</p>
 </div></body></html>

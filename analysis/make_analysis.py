@@ -338,14 +338,23 @@ def fig_verbosity():
 # Figure 7 + 8 -- the prompt study (RQ3)
 # =====================================================================
 def _prompt_runs():
+    """The headline comparison: every model under one instruction and a token budget
+    that binds on none of them. A run whose output was mostly truncated is dropped --
+    structural measures on code that stops mid-statement are not measurements."""
     out = {}
-    for tag, label in [("qwen", "Qwen (minimal)"), ("qwenfull", "Qwen (implement fully)"),
-                       ("deepseek", "DeepSeek (minimal)"),
-                       ("deepseekfull", "DeepSeek (implement fully)"),
+    for tag, label in [("qwen4k", "Qwen2.5-Coder"),
+                       ("deepseek4k", "DeepSeek-Coder"),
                        ("claude", "Claude Sonnet 5")]:
         p = os.path.join(ROOT, "prompt_study", f"summary_{tag}.csv")
-        if os.path.exists(p):
-            out[label] = read(p)
+        if not os.path.exists(p):
+            continue
+        rows = read(p)
+        parsed = sum(1 for r in rows if r["n_functions"])
+        if parsed / len(rows) < 0.8:
+            print(f"  [excluded from fig7/fig8] {tag}: "
+                  f"{100 * (1 - parsed / len(rows)):.0f}% truncated")
+            continue
+        out[label] = rows
     return out
 
 

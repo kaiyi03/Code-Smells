@@ -1,0 +1,477 @@
+task_id,system_mode,complexity,domain,action_keyword,intended,n_smells,smells,n_smells_defs,smells_defs,n_extra_stmts,n_functions,n_stub,longest_body,sloc,cyclomatic,maintainability,halstead_volume,halstead_difficulty,halstead_effort,cognitive,comment_density,api_calls,n_output_tokens
+duplicated_code_advanced_004,full,advanced,Healthcare,Analyze,duplicate_code,0,,0,,0,,,,,,,,,,,,,1024
+primitive_obsession_basic_006,full,basic,E-commerce,Implement,,0,,0,,0,,,,31.000,,,,,,,0.000,,1024
+god_class_advanced_004,full,advanced,Healthcare,Implement,,0,,0,,0,,,,83.000,,,,,,,4.819,,1024
+global_state_basic_004,full,basic,Scientific Computing,Compare,,0,,0,,0,,,,,,,,,,,,,1024
+refused_bequest_intermediate_004,full,intermediate,General Software,Compare,,0,,0,,0,9,4,3,36.000,14.000,100.000,0.000,0.000,0.000,1.000,0.000,3.000,487
+synthetic_long_parameter_list_intermediate_002,full,intermediate,General Software,Implement,long_parameter_list,0,,0,,0,,,,61.000,,,,,,,9.836,,1024
+data_class_advanced_002,full,advanced,Healthcare,Evaluate,,0,,0,,0,,,,,,,,,,,,,1024
+data_clumps_advanced_001,full,advanced,Healthcare,Measure,,0,,0,,0,,,,,,,,,,,,,1024
+data_class_basic_005,full,basic,General Software,List,,1,long_parameter_list,1,long_parameter_list,0,25,0,12,64.000,27.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,696
+shotgun_surgery_intermediate_004,full,intermediate,General Software,Report,,0,,0,,0,,,,,,,,,,,,,1024
+comments_smell_intermediate_005,full,intermediate,General Software,List,,0,,0,,0,,,,,,,,,,,,,1024
+magic_numbers_intermediate_006,full,intermediate,Finance,Measure,magic_number,1,magic_number,1,magic_number,0,1,0,9,22.000,7.000,86.025,151.621,4.312,653.864,6.000,13.636,2.000,506
+message_chains_advanced_003,full,advanced,Scientific Computing,Write,,0,,0,,0,,,,71.000,,,,,,,0.000,,1024
+inappropriate_intimacy_basic_006,full,basic,E-commerce,Design,,1,magic_number,1,magic_number,0,6,0,6,34.000,19.000,49.697,139.316,3.889,541.783,8.000,0.000,1.000,444
+primitive_obsession_advanced_003,full,advanced,General Software,Implement,,0,,0,,0,,,,,,,,,,,,,1024
+shotgun_surgery_intermediate_002,full,intermediate,Healthcare,Compare,,0,,0,,0,,,,46.000,,,,,,,13.043,,1024
+inappropriate_intimacy_intermediate_001,full,intermediate,Finance,Implement,,0,,0,,0,,,,67.000,,,,,,,0.000,,1024
+speculative_generality_intermediate_004,full,intermediate,General Software,Analyze,,0,,0,,0,,,,56.000,,,,,,,17.857,,1024
+speculative_generality_intermediate_002,full,intermediate,Healthcare,Design,,0,,0,,0,,,,58.000,,,,,,,13.793,,1024
+god_class_intermediate_003,full,intermediate,General Software,Design,,0,,0,,0,,,,74.000,,,,,,,4.054,,1024
+synthetic_god_class_basic_002,full,basic,Healthcare,Measure,,0,,0,,0,,,,71.000,,,,,,,4.225,,1024
+shotgun_surgery_advanced_003,full,advanced,Scientific Computing,Compare,,0,,0,,0,,,,47.000,,,,,,,21.277,,1024
+comments_smell_basic_001,full,basic,E-commerce,Evaluate,,0,,0,,0,,,,27.000,,,,,,,118.519,,1024
+deep_nesting_basic_005,full,basic,General Software,Measure,deep_nesting,2,deep_nesting;magic_number,2,deep_nesting;magic_number,0,1,0,2,48.000,23.000,66.908,381.800,5.287,2018.769,51.000,12.500,6.000,870
+synthetic_god_class_intermediate_001,full,intermediate,Scientific Computing,Compare,,0,,0,,0,,,,89.000,,,,,,,0.000,,1024
+comments_smell_intermediate_001,full,intermediate,E-commerce,Measure,,0,,0,,0,,,,,,,,,,,,,1024
+duplicated_code_basic_007,full,basic,Finance,Recommend,duplicate_code,0,,0,,0,,,,70.000,,,,,,,0.000,,1024
+message_chains_basic_005,full,basic,General Software,Compare,,0,,0,,0,2,0,14,25.000,7.000,83.538,69.760,0.778,54.258,12.000,0.000,5.000,441
+deep_nesting_advanced_003,full,advanced,General Software,Write,deep_nesting,0,,0,,0,,,,46.000,,,,,,,17.391,,1024
+data_class_intermediate_002,full,intermediate,Healthcare,Analyze,,0,,0,,0,,,,,,,,,,,,,1024
+middle_man_basic_006,full,basic,E-commerce,Evaluate,,0,,0,,0,4,0,1,9.000,6.000,100.000,0.000,0.000,0.000,0.000,0.000,3.000,145
+parallel_inheritance_advanced_002,full,advanced,Healthcare,List,,0,,0,,0,,,,,,,,,,,,,1024
+deep_nesting_advanced_002,full,advanced,Scientific Computing,Analyze,deep_nesting,0,,0,,0,,,,86.000,,,,,,,1.163,,1024
+feature_envy_basic_001,full,basic,E-commerce,Compare,,1,inefficient_loop,1,inefficient_loop,0,1,0,18,35.000,21.000,74.250,128.927,4.000,515.710,14.000,0.000,7.000,573
+synthetic_long_method_intermediate_007,full,intermediate,General Software,Implement,long_method,0,,0,,0,,,,62.000,,,,,,,9.677,,1024
+message_chains_advanced_002,full,advanced,Healthcare,Measure,,1,magic_number,1,magic_number,0,1,0,21,74.000,15.000,61.245,157.891,6.188,976.951,19.000,0.000,7.000,966
+long_parameter_list_intermediate_007,full,intermediate,Scientific Computing,Recommend,long_parameter_list,0,,0,,0,,,,60.000,,,,,,,5.000,,1024
+deep_nesting_intermediate_004,full,intermediate,General Software,Report,deep_nesting,0,,0,,0,,,,51.000,,,,,,,3.922,,1024
+duplicated_code_advanced_002,full,advanced,E-commerce,Recommend,duplicate_code,0,,0,,0,,,,49.000,,,,,,,16.327,,1024
+data_class_basic_001,full,basic,E-commerce,Evaluate,,0,,0,,0,9,0,4,22.000,11.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,206
+global_state_basic_001,full,basic,E-commerce,Evaluate,,0,,0,,0,,,,73.000,,,,,,,12.329,,1024
+synthetic_long_method_intermediate_004,full,intermediate,Finance,Recommend,long_method,0,,0,,0,,,,29.000,,,,,,,10.345,,1024
+refused_bequest_basic_003,full,basic,Healthcare,Design,,0,,0,,0,8,0,1,20.000,13.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,315
+global_state_advanced_001,full,advanced,Finance,Compare,,0,,0,,0,,,,,,,,,,,,,1024
+lazy_class_advanced_003,full,advanced,Scientific Computing,List,,0,,0,,0,13,0,7,61.000,40.000,42.471,135.707,3.353,455.017,11.000,0.000,18.000,908
+incomplete_library_class_advanced_001,full,advanced,E-commerce,Report,,0,,0,,0,,,,,,,,,,,,,1024
+data_class_basic_002,full,basic,Finance,Analyze,,0,,0,,0,12,0,5,41.000,14.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,339
+inappropriate_intimacy_advanced_001,full,advanced,Healthcare,Measure,,0,,0,,0,,,,44.000,,,,,,,6.818,,1024
+switch_statements_advanced_002,full,advanced,Scientific Computing,Report,,0,,0,,0,,,,,,,,,,,,,1024
+long_parameter_list_basic_004,full,basic,Scientific Computing,Analyze,long_parameter_list,0,,0,,0,,,,,,,,,,,,,1024
+dead_code_basic_006,full,basic,E-commerce,Report,dead_code,0,,0,,0,5,0,6,32.000,13.000,78.420,123.794,4.500,557.073,5.000,0.000,3.000,734
+god_class_basic_004,full,basic,Scientific Computing,Analyze,,0,,0,,0,,,,65.000,,,,,,,9.231,,1024
+data_clumps_basic_006,full,basic,E-commerce,Recommend,,0,,0,,0,,,,,,,,,,,,,1024
+god_class_intermediate_006,full,intermediate,Healthcare,Write,,0,,0,,0,,,,64.000,,,,,,,15.625,,1024
+data_clumps_basic_003,full,basic,Healthcare,Analyze,,0,,0,,0,,,,56.000,,,,,,,1.786,,1024
+global_state_intermediate_003,full,intermediate,Scientific Computing,Design,,0,,0,,0,,,,50.000,,,,,,,26.000,,1024
+feature_envy_basic_002,full,basic,Finance,Compare,,0,,0,,0,,,,,,,,,,,,,1024
+global_state_intermediate_004,full,intermediate,General Software,Recommend,,0,,0,,0,,,,,,,,,,,,,1024
+magic_numbers_basic_002,full,basic,Finance,Measure,magic_number,1,magic_number,1,magic_number,0,1,0,1,2.000,2.000,83.142,27.000,1.800,48.600,1.000,0.000,0.000,33
+synthetic_god_class_intermediate_003,full,intermediate,E-commerce,Design,,0,,0,,0,,,,,,,,,,,,,1024
+switch_statements_intermediate_006,full,intermediate,Finance,List,,0,,0,,0,,,,,,,,,,,,,1024
+switch_statements_intermediate_005,full,intermediate,E-commerce,Design,,0,,0,,0,,,,64.000,,,,,,,0.000,,1024
+data_clumps_basic_002,full,basic,Finance,Measure,,0,,0,,0,,,,,,,,,,,,,1024
+feature_envy_advanced_005,full,advanced,Finance,Design,,0,,0,,0,,,,,,,,,,,,,1024
+duplicated_code_intermediate_004,full,intermediate,E-commerce,Evaluate,duplicate_code,0,,0,,0,,,,,,,,,,,,,1024
+god_class_intermediate_001,full,intermediate,Healthcare,Compare,,0,,0,,0,,,,65.000,,,,,,,13.846,,1024
+feature_envy_advanced_002,full,advanced,Scientific Computing,Implement,,0,,0,,0,,,,61.000,,,,,,,4.918,,1024
+synthetic_long_parameter_list_advanced_001,full,advanced,E-commerce,Recommend,long_parameter_list,0,,0,,0,,,,,,,,,,,,,1024
+deep_nesting_advanced_001,full,advanced,Healthcare,Implement,deep_nesting,0,,0,,0,,,,49.000,,,,,,,2.041,,1024
+refused_bequest_advanced_001,full,advanced,Finance,List,,0,,0,,0,,,,,,,,,,,,,1024
+deep_nesting_intermediate_001,full,intermediate,Finance,Report,deep_nesting,0,,0,,0,,,,48.000,,,,,,,8.333,,1024
+magic_numbers_basic_001,full,basic,E-commerce,Implement,magic_number,0,,0,,0,1,0,7,14.000,1.000,94.242,72.340,2.400,173.615,0.000,7.143,2.000,400
+global_state_advanced_004,full,advanced,General Software,Design,,0,,0,,0,,,,53.000,,,,,,,39.623,,1024
+long_parameter_list_basic_002,full,basic,Finance,Design,long_parameter_list,0,,0,,0,,,,39.000,,,,,,,0.000,,1024
+dead_code_basic_001,full,basic,E-commerce,Implement,dead_code,0,,0,,0,4,0,7,34.000,13.000,78.209,124.864,4.200,524.429,6.000,0.000,3.000,748
+shotgun_surgery_basic_006,full,basic,E-commerce,Recommend,,0,,0,,0,,,,27.000,,,,,,,55.556,,1024
+middle_man_intermediate_001,full,intermediate,Finance,Design,,0,,0,,0,,,,,,,,,,,,,1024
+god_class_basic_007,full,basic,Finance,List,,0,,0,,0,,,,,,,,,,,,,1024
+primitive_obsession_intermediate_004,full,intermediate,General Software,Compare,,0,,0,,0,,,,,,,,,,,,,1024
+synthetic_long_method_intermediate_006,full,intermediate,Scientific Computing,Design,long_method,0,,0,,0,,,,,,,,,,,,,1024
+incomplete_library_class_basic_004,full,basic,Scientific Computing,Design,,0,,0,,0,,,,77.000,,,,,,,0.000,,1024
+magic_numbers_intermediate_001,full,intermediate,Finance,Implement,magic_number,1,magic_number,1,magic_number,0,1,0,11,27.000,7.000,81.659,137.608,4.231,582.186,7.000,0.000,2.000,528
+god_class_basic_006,full,basic,E-commerce,Analyze,,0,,0,,0,,,,73.000,,,,,,,2.740,,1024
+duplicated_code_basic_004,full,basic,Scientific Computing,Recommend,duplicate_code,0,,0,,0,,,,86.000,,,,,,,0.000,,1024
+long_method_advanced_006,full,advanced,General Software,Compare,long_method,0,,0,,0,,,,67.000,,,,,,,13.433,,1024
+synthetic_long_parameter_list_intermediate_004,full,intermediate,Finance,Design,long_parameter_list,0,,0,,0,,,,,,,,,,,,,1024
+duplicated_code_basic_001,full,basic,E-commerce,Design,duplicate_code,1,magic_number,2,dead_code;magic_number,2,3,0,13,70.000,39.000,63.502,594.955,3.706,2204.832,36.000,1.429,9.000,1007
+data_class_advanced_005,full,advanced,E-commerce,Report,,0,,0,,0,,,,69.000,,,,,,,0.000,,1024
+inappropriate_intimacy_basic_005,full,basic,General Software,Evaluate,,0,,0,,0,,,,,,,,,,,,,1024
+data_class_intermediate_004,full,intermediate,General Software,Design,,1,long_parameter_list,1,long_parameter_list,0,9,0,8,27.000,11.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,303
+inappropriate_intimacy_basic_001,full,basic,E-commerce,Implement,,1,magic_number,1,magic_number,0,6,0,5,32.000,12.000,69.702,15.510,1.000,15.510,2.000,3.125,2.000,427
+synthetic_god_class_basic_007,full,basic,Healthcare,List,,0,,0,,0,,,,86.000,,,,,,,0.000,,1024
+god_class_advanced_006,full,advanced,General Software,Write,,0,,0,,0,,,,,,,,,,,,,1024
+switch_statements_intermediate_001,full,intermediate,Finance,Write,,0,,0,,0,,,,58.000,,,,,,,0.000,,1024
+alternative_classes_different_interfaces_advanced_001,full,advanced,Finance,List,,0,,0,,0,,,,67.000,,,,,,,0.000,,1024
+god_class_basic_001,full,basic,E-commerce,Implement,,0,,0,,0,,,,61.000,,,,,,,16.393,,1024
+synthetic_long_method_intermediate_002,full,intermediate,General Software,Design,long_method,0,,0,,0,,,,,,,,,,,,,1024
+long_method_basic_001,full,basic,E-commerce,Recommend,long_method,0,,0,,0,,,,,,,,,,,,,1024
+message_chains_basic_006,full,basic,E-commerce,Compare,,0,,0,,0,1,0,2,5.000,2.000,100.000,0.000,0.000,0.000,1.000,0.000,0.000,157
+speculative_generality_advanced_001,full,advanced,Finance,Implement,,0,,0,,0,,,,62.000,,,,,,,9.677,,1024
+message_chains_intermediate_001,full,intermediate,Finance,Write,,0,,0,,0,,,,,,,,,,,,,1024
+duplicated_code_advanced_001,full,advanced,General Software,Compare,duplicate_code,0,,0,,0,,,,62.000,,,,,,,14.516,,1024
+inappropriate_intimacy_advanced_003,full,advanced,General Software,Report,,0,,0,,0,,,,67.000,,,,,,,7.463,,1024
+message_chains_advanced_001,full,advanced,Finance,Evaluate,,0,,0,,0,,,,59.000,,,,,,,8.475,,1024
+middle_man_intermediate_002,full,intermediate,Healthcare,Evaluate,,0,,0,,0,6,0,1,13.000,8.000,100.000,0.000,0.000,0.000,0.000,0.000,5.000,253
+feature_envy_intermediate_006,full,intermediate,Finance,Evaluate,,0,,0,,0,,,,,,,,,,,,,1024
+synthetic_long_parameter_list_advanced_006,full,advanced,E-commerce,Evaluate,long_parameter_list,0,,0,,0,,,,,,,,,,,,,1024
+synthetic_long_method_basic_007,full,basic,Healthcare,Recommend,long_method,0,,0,,0,,,,,,,,,,,,,1024
+long_parameter_list_advanced_003,full,advanced,Finance,List,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,0,11,70.000,10.000,72.938,85.952,1.500,128.927,9.000,0.000,3.000,990
+data_clumps_advanced_002,full,advanced,Scientific Computing,Report,,0,,0,,0,,,,,,,,,,,,,1024
+lazy_class_advanced_002,full,advanced,Healthcare,Report,,0,,0,,0,12,0,5,66.000,42.000,40.172,198.168,5.318,1053.893,16.000,0.000,16.000,978
+middle_man_advanced_002,full,advanced,Healthcare,Compare,,0,,0,,0,,,,77.000,,,,,,,0.000,,1024
+middle_man_advanced_003,full,advanced,Scientific Computing,Implement,,0,,0,,0,,,,,,,,,,,,,1024
+long_parameter_list_basic_006,full,basic,E-commerce,Implement,long_parameter_list,0,,0,,0,,,,,,,,,,,,,1024
+feature_envy_intermediate_002,full,intermediate,Healthcare,Recommend,,0,,0,,0,,,,69.000,,,,,,,5.797,,1024
+parallel_inheritance_basic_006,full,basic,E-commerce,List,,0,,0,,0,,,,,,,,,,,,,1024
+long_parameter_list_basic_001,full,basic,E-commerce,List,long_parameter_list,0,,0,,0,,,,,,,,,,,,,1024
+refused_bequest_intermediate_001,full,intermediate,Finance,Design,,0,,0,,0,10,0,2,23.000,14.000,100.000,0.000,0.000,0.000,0.000,0.000,3.000,415
+global_state_advanced_005,full,advanced,E-commerce,Measure,,0,,0,,0,,,,,,,,,,,,,1024
+data_clumps_intermediate_001,full,intermediate,Finance,Recommend,,0,,0,,0,,,,,,,,,,,,,1024
+lazy_class_basic_004,full,basic,Scientific Computing,Write,,0,,0,,0,2,0,4,12.000,12.000,65.193,28.529,1.500,42.794,7.000,0.000,2.000,130
+long_parameter_list_basic_007,full,basic,Finance,Recommend,long_parameter_list,0,,0,,0,,,,40.000,,,,,,,0.000,,1024
+primitive_obsession_intermediate_002,full,intermediate,Healthcare,Measure,,0,,0,,0,,,,,,,,,,,,,1024
+shotgun_surgery_advanced_005,full,advanced,E-commerce,Recommend,,0,,0,,0,,,,37.000,,,,,,,16.216,,1024
+global_state_intermediate_001,full,intermediate,Finance,Design,,0,,0,,0,,,,50.000,,,,,,,20.000,,1024
+incomplete_library_class_intermediate_002,full,intermediate,Finance,Design,,0,,0,,0,,,,59.000,,,,,,,10.169,,1024
+synthetic_long_method_basic_003,full,basic,Scientific Computing,Report,long_method,0,,0,,0,,,,,,,,,,,,,1024
+long_parameter_list_intermediate_001,full,intermediate,Healthcare,Compare,long_parameter_list,0,,0,,0,,,,,,,,,,,,,1024
+duplicated_code_intermediate_003,full,intermediate,General Software,Measure,duplicate_code,0,,0,,0,,,,,,,,,,,,,1024
+comments_smell_advanced_004,full,advanced,Scientific Computing,Design,,0,,0,,0,,,,,,,,,,,,,1024
+parallel_inheritance_basic_004,full,basic,Scientific Computing,Implement,,0,,0,,0,,,,,,,,,,,,,1024
+synthetic_god_class_intermediate_002,full,intermediate,General Software,Recommend,,0,,0,,0,,,,69.000,,,,,,,2.899,,1024
+deep_nesting_basic_001,full,basic,E-commerce,Recommend,deep_nesting,1,magic_number,1,magic_number,0,1,0,8,29.000,10.000,77.293,278.631,3.810,1061.453,23.000,0.000,1.000,527
+alternative_classes_different_interfaces_basic_005,full,basic,General Software,Evaluate,,0,,0,,0,,,,67.000,,,,,,,0.000,,1024
+refused_bequest_basic_002,full,basic,Finance,Recommend,,0,,0,,0,3,0,1,7.000,5.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,149
+switch_statements_advanced_005,full,advanced,Finance,Report,,0,,0,,0,,,,42.000,,,,,,,2.381,,1024
+refused_bequest_intermediate_003,full,intermediate,Scientific Computing,List,,0,,0,,0,10,0,5,46.000,15.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,670
+god_class_intermediate_005,full,intermediate,Finance,Compare,,0,,0,,0,,,,,,,,,,,,,1024
+message_chains_intermediate_002,full,intermediate,Healthcare,Compare,,0,,0,,0,,,,55.000,,,,,,,1.818,,1024
+synthetic_god_class_basic_001,full,basic,Finance,Implement,,0,,0,,0,,,,72.000,,,,,,,1.389,,1024
+inappropriate_intimacy_advanced_006,full,advanced,Healthcare,Write,,0,,0,,0,,,,,,,,,,,,,1024
+magic_numbers_advanced_005,full,advanced,Finance,Report,magic_number,1,magic_number,1,magic_number,0,1,0,8,28.000,9.000,53.055,105.486,1.385,146.058,11.000,0.000,2.000,332
+magic_numbers_intermediate_004,full,intermediate,General Software,Recommend,magic_number,0,,0,,0,,,,,,,,,,,,,1024
+magic_numbers_advanced_004,full,advanced,E-commerce,List,magic_number,0,,0,,0,,,,61.000,,,,,,,0.000,,1024
+data_clumps_intermediate_002,full,intermediate,Healthcare,Recommend,,0,,0,,0,,,,44.000,,,,,,,18.182,,1024
+deep_nesting_intermediate_002,full,intermediate,Healthcare,Design,deep_nesting,0,,0,,0,,,,,,,,,,,,,1024
+dead_code_advanced_004,full,advanced,General Software,Compare,dead_code,0,,0,,0,,,,,,,,,,,,,1024
+alternative_classes_different_interfaces_advanced_003,full,advanced,Scientific Computing,Evaluate,,0,,0,,0,,,,86.000,,,,,,,2.326,,1024
+alternative_classes_different_interfaces_basic_002,full,basic,Finance,Compare,,0,,0,,0,,,,42.000,,,,,,,2.381,,1024
+dead_code_intermediate_004,full,intermediate,General Software,Analyze,dead_code,0,,0,,0,,,,63.000,,,,,,,4.762,,1024
+incomplete_library_class_advanced_003,full,advanced,Healthcare,List,,0,,0,,0,,,,,,,,,,,,,1024
+duplicated_code_basic_005,full,basic,General Software,Analyze,duplicate_code,0,,0,,0,,,,68.000,,,,,,,0.000,,1024
+shotgun_surgery_basic_002,full,basic,Finance,Write,,0,,0,,0,,,,49.000,,,,,,,12.245,,1024
+shotgun_surgery_advanced_004,full,advanced,General Software,Write,,0,,0,,0,,,,,,,,,,,,,1024
+feature_envy_intermediate_005,full,intermediate,E-commerce,Compare,,1,inefficient_loop,1,inefficient_loop,0,2,0,20,63.000,27.000,47.079,166.421,4.025,669.845,16.000,0.000,8.000,778
+inappropriate_intimacy_advanced_005,full,advanced,Finance,Write,,0,,0,,0,,,,60.000,,,,,,,10.000,,1024
+synthetic_long_method_basic_004,full,basic,General Software,Measure,long_method,0,,0,,0,,,,,,,,,,,,,1024
+dead_code_advanced_001,full,advanced,Finance,Measure,dead_code,0,,0,,0,,,,,,,,,,,,,1024
+data_clumps_advanced_006,full,advanced,Healthcare,Design,,0,,0,,0,,,,,,,,,,,,,1024
+god_class_advanced_003,full,advanced,Finance,List,,0,,0,,0,,,,,,,,,,,,,1024
+temporary_field_basic_003,full,basic,Healthcare,Analyze,,0,,0,,0,2,0,13,60.000,22.000,49.239,46.605,2.000,93.209,20.000,0.000,11.000,771
+inappropriate_intimacy_intermediate_004,full,intermediate,General Software,Evaluate,,1,magic_number,1,magic_number,0,10,0,9,43.000,26.000,64.923,169.216,3.600,609.177,11.000,11.628,2.000,866
+feature_envy_basic_003,full,basic,Healthcare,Design,,0,,0,,0,1,0,19,32.000,23.000,49.741,274.723,3.857,1059.646,10.000,0.000,6.000,581
+refused_bequest_advanced_004,full,advanced,General Software,Compare,,0,,0,,0,13,0,2,37.000,19.000,100.000,0.000,0.000,0.000,0.000,0.000,4.000,479
+switch_statements_basic_002,full,basic,Finance,Implement,,1,magic_number,1,magic_number,0,1,0,2,14.000,6.000,62.817,42.110,0.833,35.092,6.000,0.000,0.000,156
+parallel_inheritance_intermediate_002,full,intermediate,Healthcare,Write,,0,,0,,0,,,,46.000,,,,,,,17.391,,1024
+incomplete_library_class_advanced_004,full,advanced,Scientific Computing,Compare,,0,,0,,0,,,,,,,,,,,,,1024
+data_clumps_basic_001,full,basic,E-commerce,Report,,0,,0,,0,,,,,,,,,,,,,1024
+switch_statements_advanced_003,full,advanced,General Software,Compare,,0,,0,,0,,,,,,,,,,,,,1024
+synthetic_long_parameter_list_basic_006,full,basic,Finance,Implement,long_parameter_list,0,,0,,0,,,,,,,,,,,,,1024
+magic_numbers_intermediate_005,full,intermediate,E-commerce,Measure,magic_number,1,long_parameter_list,1,long_parameter_list,1,1,0,10,31.000,2.000,58.892,110.361,2.769,305.616,1.000,0.000,3.000,635
+data_class_intermediate_003,full,intermediate,Scientific Computing,Measure,,0,,0,,0,,,,71.000,,,,,,,1.408,,1024
+speculative_generality_advanced_004,full,advanced,General Software,Measure,,0,,0,,0,,,,,,,,,,,,,1024
+synthetic_long_parameter_list_intermediate_003,full,intermediate,E-commerce,Design,long_parameter_list,0,,0,,0,,,,,,,,,,,,,1024
+parallel_inheritance_basic_003,full,basic,Healthcare,Write,,0,,0,,0,,,,,,,,,,,,,1024
+synthetic_god_class_basic_003,full,basic,Scientific Computing,List,,0,,0,,0,,,,82.000,,,,,,,1.220,,1024
+shotgun_surgery_basic_005,full,basic,General Software,Implement,,0,,0,,0,,,,70.000,,,,,,,8.571,,1024
+inappropriate_intimacy_intermediate_006,full,intermediate,Finance,Implement,,0,,0,,0,,,,65.000,,,,,,,0.000,,1024
+feature_envy_basic_005,full,basic,General Software,Implement,,0,,0,,0,,,,69.000,,,,,,,7.246,,1024
+alternative_classes_different_interfaces_advanced_005,full,advanced,E-commerce,Compare,,0,,0,,0,,,,,,,,,,,,,1024
+synthetic_long_method_intermediate_001,full,intermediate,Scientific Computing,Implement,long_method,0,,0,,0,,,,39.000,,,,,,,7.692,,1024
+dead_code_advanced_005,full,advanced,E-commerce,Report,dead_code,0,,0,,0,,,,62.000,,,,,,,4.839,,1024
+switch_statements_advanced_001,full,advanced,Healthcare,Report,,0,,0,,0,,,,95.000,,,,,,,0.000,,1024
+long_method_intermediate_002,full,intermediate,Scientific Computing,Design,long_method,0,,0,,0,,,,56.000,,,,,,,0.000,,1024
+temporary_field_advanced_003,full,advanced,Scientific Computing,List,,0,,0,,0,,,,,,,,,,,,,1024
+primitive_obsession_advanced_005,full,advanced,Finance,List,,0,,0,,0,,,,,,,,,,,,,1024
+data_class_basic_006,full,basic,E-commerce,Measure,,0,,0,,0,9,0,4,22.000,11.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,198
+comments_smell_advanced_003,full,advanced,Healthcare,Report,,0,,0,,0,,,,,,,,,,,,,1024
+inappropriate_intimacy_intermediate_005,full,intermediate,E-commerce,Measure,,1,magic_number,1,magic_number,0,9,0,6,60.000,15.000,67.208,27.000,1.000,27.000,2.000,6.667,6.000,849
+magic_numbers_basic_003,full,basic,Healthcare,Recommend,magic_number,1,magic_number,1,magic_number,0,3,0,6,34.000,8.000,79.774,187.296,3.111,582.699,6.000,0.000,2.000,611
+duplicated_code_intermediate_005,full,intermediate,Finance,Implement,duplicate_code,0,,0,,0,,,,78.000,,,,,,,11.538,,1024
+long_parameter_list_advanced_006,full,advanced,General Software,Evaluate,long_parameter_list,0,,0,,0,,,,,,,,,,,,,1024
+temporary_field_advanced_001,full,advanced,Finance,Compare,,0,,0,,0,,,,73.000,,,,,,,1.370,,1024
+data_class_basic_004,full,basic,Scientific Computing,Analyze,,1,dead_code,1,dead_code,0,13,0,5,44.000,20.000,50.436,87.569,2.182,191.060,2.000,0.000,1.000,462
+switch_statements_intermediate_003,full,intermediate,Scientific Computing,Implement,,0,,0,,0,,,,,,,,,,,,,1024
+dead_code_advanced_003,full,advanced,Scientific Computing,Compare,dead_code,0,,0,,0,,,,,,,,,,,,,1024
+alternative_classes_different_interfaces_basic_006,full,basic,E-commerce,Compare,,0,,0,,0,3,0,5,35.000,19.000,56.981,11.610,1.000,11.610,21.000,0.000,10.000,404
+parallel_inheritance_basic_002,full,basic,Finance,Recommend,,0,,0,,0,,,,70.000,,,,,,,0.000,,1024
+synthetic_long_parameter_list_basic_007,full,basic,Healthcare,Recommend,long_parameter_list,0,,0,,0,,,,38.000,,,,,,,7.895,,1024
+data_clumps_basic_005,full,basic,General Software,Design,,0,,0,,0,,,,,,,,,,,,,1024
+data_class_advanced_004,full,advanced,General Software,Report,,0,,0,,0,,,,,,,,,,,,,1024
+synthetic_long_parameter_list_intermediate_001,full,intermediate,Scientific Computing,Compare,long_parameter_list,0,,0,,0,,,,43.000,,,,,,,18.605,,1024
+middle_man_basic_001,full,basic,E-commerce,Measure,,0,,0,,0,4,0,1,9.000,6.000,100.000,0.000,0.000,0.000,0.000,0.000,3.000,145
+speculative_generality_intermediate_005,full,intermediate,E-commerce,Design,,0,,0,,0,,,,55.000,,,,,,,16.364,,1024
+duplicated_code_intermediate_006,full,intermediate,Healthcare,Design,duplicate_code,0,,0,,0,,,,73.000,,,,,,,5.479,,1024
+primitive_obsession_intermediate_001,full,intermediate,Finance,List,,0,,0,,0,,,,,,,,,,,,,1024
+god_class_basic_002,full,basic,Finance,Measure,,0,,0,,0,,,,78.000,,,,,,,2.564,,1024
+synthetic_long_method_basic_005,full,basic,E-commerce,Measure,long_method,0,,0,,0,,,,,,,,,,,,,1024
+temporary_field_intermediate_003,full,intermediate,Scientific Computing,Recommend,,0,,0,,0,,,,44.000,,,,,,,4.545,,1024
+long_method_advanced_003,full,advanced,Finance,Write,long_method,0,,0,,0,,,,,,,,,,,,,1024
+data_class_basic_003,full,basic,Healthcare,Implement,,0,,0,,0,11,0,5,27.000,13.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,248
+synthetic_long_method_intermediate_005,full,intermediate,Healthcare,Measure,long_method,0,,0,,0,,,,,,,,,,,,,1024
+duplicated_code_basic_006,full,basic,E-commerce,Measure,duplicate_code,0,,0,,0,,,,51.000,,,,,,,5.882,,1024
+middle_man_basic_005,full,basic,General Software,Measure,,0,,0,,0,4,0,3,11.000,6.000,100.000,0.000,0.000,0.000,0.000,0.000,3.000,206
+god_class_advanced_005,full,advanced,Scientific Computing,Analyze,,0,,0,,0,,,,68.000,,,,,,,10.294,,1024
+synthetic_long_parameter_list_basic_002,full,basic,Healthcare,Design,long_parameter_list,0,,0,,0,,,,51.000,,,,,,,0.000,,1024
+speculative_generality_intermediate_001,full,intermediate,Finance,Measure,,0,,0,,0,,,,,,,,,,,,,1024
+long_method_advanced_002,full,advanced,E-commerce,Evaluate,long_method,0,,0,,0,,,,64.000,,,,,,,12.500,,1024
+feature_envy_advanced_006,full,advanced,Healthcare,Analyze,,0,,0,,0,,,,,,,,,,,,,1024
+middle_man_advanced_005,full,advanced,E-commerce,Evaluate,,0,,0,,0,,,,58.000,,,,,,,0.000,,1024
+middle_man_advanced_001,full,advanced,Finance,Write,,0,,0,,0,,,,73.000,,,,,,,0.000,,1024
+data_clumps_intermediate_005,full,intermediate,E-commerce,Write,,0,,0,,0,,,,,,,,,,,,,1024
+lazy_class_intermediate_005,full,intermediate,E-commerce,Measure,,0,,0,,0,,,,34.000,,,,,,,0.000,,1024
+middle_man_basic_002,full,basic,Finance,Write,,0,,0,,0,5,0,1,11.000,7.000,100.000,0.000,0.000,0.000,0.000,0.000,4.000,190
+switch_statements_intermediate_004,full,intermediate,General Software,Report,,0,,0,,0,,,,,,,,,,,,,1024
+duplicated_code_advanced_003,full,advanced,Finance,Compare,duplicate_code,0,,0,,0,,,,,,,,,,,,,1024
+switch_statements_basic_004,full,basic,Scientific Computing,Implement,,0,,0,,0,7,0,9,22.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,320
+speculative_generality_basic_006,full,basic,E-commerce,Report,,0,,0,,0,,,,,,,,,,,,,1024
+comments_smell_intermediate_003,full,intermediate,Healthcare,Measure,,0,,0,,0,,,,,,,,,,,,,1024
+synthetic_long_method_advanced_004,full,advanced,Scientific Computing,Report,long_method,0,,0,,0,,,,,,,,,,,,,1024
+comments_smell_advanced_002,full,advanced,Finance,Evaluate,,0,,0,,0,,,,,,,,,,,,,1024
+dead_code_intermediate_003,full,intermediate,Scientific Computing,Implement,dead_code,0,,0,,0,,,,57.000,,,,,,,12.281,,1024
+inappropriate_intimacy_basic_002,full,basic,Finance,Implement,,0,,0,,0,,,,71.000,,,,,,,0.000,,1024
+middle_man_intermediate_003,full,intermediate,Scientific Computing,Design,,0,,0,,0,9,0,1,20.000,11.000,100.000,0.000,0.000,0.000,0.000,0.000,8.000,476
+magic_numbers_advanced_002,full,advanced,Scientific Computing,Implement,magic_number,0,,0,,0,1,0,15,48.000,9.000,47.206,330.000,7.333,2420.000,12.000,0.000,2.000,902
+long_method_intermediate_006,full,intermediate,Healthcare,Design,long_method,0,,0,,0,,,,,,,,,,,,,1024
+middle_man_basic_004,full,basic,Scientific Computing,Analyze,,0,,0,,0,3,0,1,7.000,5.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,123
+global_state_advanced_003,full,advanced,Scientific Computing,Design,,0,,0,,0,,,,,,,,,,,,,1024
+data_clumps_basic_004,full,basic,Scientific Computing,Measure,,0,,0,,0,,,,,,,,,,,,,1024
+global_state_advanced_002,full,advanced,Healthcare,Evaluate,,0,,0,,0,,,,,,,,,,,,,1024
+god_class_basic_005,full,basic,General Software,Measure,,0,,0,,0,,,,78.000,,,,,,,0.000,,1024
+incomplete_library_class_intermediate_005,full,intermediate,General Software,Write,,0,,0,,0,,,,,,,,,,,,,1024
+inappropriate_intimacy_basic_003,full,basic,Healthcare,Design,,0,,0,,0,,,,56.000,,,,,,,0.000,,1024
+synthetic_long_parameter_list_basic_001,full,basic,Finance,List,long_parameter_list,0,,0,,0,,,,36.000,,,,,,,11.111,,1024
+refused_bequest_basic_005,full,basic,General Software,Recommend,,0,,0,,0,7,0,2,17.000,12.000,67.207,4.755,0.500,2.377,1.000,0.000,2.000,285
+refused_bequest_basic_004,full,basic,Scientific Computing,Measure,,0,,0,,0,10,0,4,36.000,18.000,51.535,60.944,3.929,239.424,4.000,0.000,6.000,513
+dead_code_advanced_002,full,advanced,Healthcare,Evaluate,dead_code,0,,0,,0,,,,55.000,,,,,,,14.545,,1024
+long_method_basic_002,full,basic,Finance,Analyze,long_method,0,,0,,0,,,,,,,,,,,,,1024
+alternative_classes_different_interfaces_advanced_002,full,advanced,Healthcare,Compare,,0,,0,,0,,,,,,,,,,,,,1024
+synthetic_long_parameter_list_basic_005,full,basic,E-commerce,Evaluate,long_parameter_list,0,,0,,0,,,,,,,,,,,,,1024
+primitive_obsession_basic_003,full,basic,Healthcare,Compare,,0,,0,,0,,,,46.000,,,,,,,15.217,,1024
+refused_bequest_basic_006,full,basic,E-commerce,Report,,0,,0,,0,21,0,3,52.000,29.000,60.939,106.198,3.462,367.609,6.000,1.923,10.000,1011
+long_parameter_list_intermediate_004,full,intermediate,E-commerce,Design,long_parameter_list,0,,0,,0,,,,,,,,,,,,,1024
+data_class_intermediate_005,full,intermediate,E-commerce,Measure,,0,,0,,0,,,,63.000,,,,,,,12.698,,1024
+temporary_field_intermediate_004,full,intermediate,General Software,Design,,0,,0,,0,9,0,8,46.000,11.000,100.000,0.000,0.000,0.000,0.000,2.174,5.000,670
+magic_numbers_intermediate_003,full,intermediate,Scientific Computing,Evaluate,magic_number,0,,0,,0,,,,,,,,,,,,,1024
+alternative_classes_different_interfaces_basic_004,full,basic,Scientific Computing,Implement,,0,,0,,0,,,,57.000,,,,,,,0.000,,1024
+duplicated_code_intermediate_002,full,intermediate,Scientific Computing,Recommend,duplicate_code,0,,0,,0,,,,,,,,,,,,,1024
+feature_envy_advanced_004,full,advanced,E-commerce,List,,0,,0,,0,,,,,,,,,,,,,1024
+global_state_basic_002,full,basic,Finance,Recommend,,0,,0,,0,,,,41.000,,,,,,,2.439,,1024
+dead_code_basic_002,full,basic,Finance,Evaluate,dead_code,0,,0,,1,3,0,5,21.000,5.000,60.811,114.694,1.688,193.546,2.000,0.000,3.000,846
+temporary_field_intermediate_002,full,intermediate,Healthcare,Compare,,0,,0,,0,,,,58.000,,,,,,,0.000,,1024
+speculative_generality_advanced_002,full,advanced,Healthcare,Analyze,,0,,0,,0,,,,56.000,,,,,,,21.429,,1024
+long_parameter_list_advanced_004,full,advanced,Healthcare,Report,long_parameter_list,0,,0,,0,,,,71.000,,,,,,,1.408,,1024
+middle_man_basic_003,full,basic,Healthcare,Analyze,,0,,0,,0,2,0,1,5.000,4.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,76
+global_state_intermediate_002,full,intermediate,Healthcare,Write,,0,,0,,0,,,,,,,,,,,,,1024
+middle_man_advanced_004,full,advanced,General Software,Implement,,0,,0,,0,,,,,,,,,,,,,1024
+feature_envy_basic_004,full,basic,Scientific Computing,Evaluate,,0,,0,,0,,,,49.000,,,,,,,8.163,,1024
+inappropriate_intimacy_advanced_002,full,advanced,Scientific Computing,Recommend,,0,,0,,0,,,,71.000,,,,,,,7.042,,1024
+data_clumps_intermediate_003,full,intermediate,Scientific Computing,Write,,0,,0,,0,,,,,,,,,,,,,1024
+shotgun_surgery_basic_003,full,basic,Healthcare,Measure,,0,,0,,0,,,,66.000,,,,,,,3.030,,1024
+data_clumps_intermediate_004,full,intermediate,General Software,Evaluate,,0,,0,,0,,,,45.000,,,,,,,28.889,,1024
+global_state_basic_006,full,basic,E-commerce,Recommend,,0,,0,,0,,,,,,,,,,,,,1024
+switch_statements_basic_003,full,basic,Healthcare,Analyze,,1,magic_number,1,magic_number,0,1,0,1,19.000,6.000,59.924,42.110,0.833,35.092,6.000,0.000,1.000,371
+magic_numbers_intermediate_002,full,intermediate,Healthcare,Evaluate,magic_number,1,magic_number,1,magic_number,0,1,0,14,24.000,4.000,53.357,192.568,4.667,898.653,5.000,0.000,2.000,375
+message_chains_intermediate_005,full,intermediate,E-commerce,Compare,,0,,0,,0,2,0,7,26.000,4.000,92.665,13.932,0.500,6.966,10.000,0.000,4.000,371
+lazy_class_intermediate_002,full,intermediate,Healthcare,Measure,,0,,0,,0,,,,,,,,,,,,,1024
+dead_code_intermediate_002,full,intermediate,Healthcare,Recommend,dead_code,0,,0,,0,,,,65.000,,,,,,,15.385,,1024
+duplicated_code_intermediate_007,full,intermediate,Scientific Computing,Measure,duplicate_code,0,,0,,0,,,,61.000,,,,,,,11.475,,1024
+speculative_generality_intermediate_003,full,intermediate,Scientific Computing,Analyze,,0,,0,,0,,,,55.000,,,,,,,14.545,,1024
+temporary_field_basic_001,full,basic,E-commerce,Design,,0,,0,,0,4,0,9,55.000,7.000,60.513,11.610,1.000,11.610,1.000,0.000,9.000,682
+parallel_inheritance_basic_005,full,basic,General Software,Analyze,,0,,0,,0,,,,58.000,,,,,,,0.000,,1024
+duplicated_code_intermediate_001,full,intermediate,Healthcare,Analyze,duplicate_code,0,,0,,0,,,,69.000,,,,,,,13.043,,1024
+switch_statements_basic_001,full,basic,E-commerce,Design,,1,magic_number,1,magic_number,0,1,0,1,13.000,6.000,63.519,42.110,0.833,35.092,6.000,0.000,0.000,137
+data_class_advanced_001,full,advanced,Finance,Evaluate,,0,,0,,0,,,,,,,,,,,,,1024
+synthetic_long_parameter_list_advanced_004,full,advanced,Scientific Computing,Report,long_parameter_list,0,,0,,0,,,,,,,,,,,,,1024
+lazy_class_advanced_001,full,advanced,Finance,Measure,,0,,0,,0,,,,68.000,,,,,,,0.000,,1024
+deep_nesting_basic_006,full,basic,E-commerce,Evaluate,deep_nesting,1,magic_number,1,magic_number,0,1,0,3,25.000,8.000,79.189,230.753,2.667,615.341,17.000,12.000,1.000,526
+synthetic_long_parameter_list_intermediate_006,full,intermediate,Scientific Computing,Measure,long_parameter_list,0,,0,,0,,,,47.000,,,,,,,0.000,,1024
+speculative_generality_basic_002,full,basic,Finance,Implement,,0,,0,,0,,,,,,,,,,,,,1024
+primitive_obsession_basic_005,full,basic,General Software,Design,,0,,0,,0,,,,56.000,,,,,,,3.571,,1024
+long_parameter_list_advanced_001,full,advanced,General Software,Recommend,long_parameter_list,0,,0,,0,,,,,,,,,,,,,1024
+alternative_classes_different_interfaces_intermediate_005,full,intermediate,E-commerce,Evaluate,,0,,0,,0,4,0,3,22.000,16.000,100.000,0.000,0.000,0.000,3.000,4.545,3.000,597
+synthetic_long_method_advanced_001,full,advanced,E-commerce,Implement,long_method,0,,0,,0,,,,,,,,,,,,,1024
+long_method_basic_004,full,basic,Scientific Computing,Measure,long_method,0,,0,,0,,,,78.000,,,,,,,0.000,,1024
+duplicated_code_advanced_005,full,advanced,Scientific Computing,Compare,duplicate_code,0,,0,,0,,,,58.000,,,,,,,3.448,,1024
+comments_smell_intermediate_004,full,intermediate,Scientific Computing,Design,,0,,0,,0,,,,33.000,,,,,,,69.697,,1024
+long_parameter_list_basic_003,full,basic,Healthcare,Report,long_parameter_list,0,,0,,0,,,,35.000,,,,,,,5.714,,1024
+message_chains_intermediate_003,full,intermediate,Scientific Computing,Analyze,,0,,0,,1,2,0,3,61.000,14.000,75.590,96.000,1.500,144.000,11.000,3.279,6.000,946
+inappropriate_intimacy_basic_004,full,basic,Scientific Computing,List,,0,,0,,0,12,0,5,47.000,24.000,46.565,116.692,3.857,450.098,7.000,0.000,6.000,821
+synthetic_long_parameter_list_basic_004,full,basic,General Software,Analyze,long_parameter_list,0,,0,,0,,,,,,,,,,,,,1024
+god_class_advanced_002,full,advanced,E-commerce,Design,,0,,0,,0,,,,,,,,,,,,,1024
+long_method_basic_007,full,basic,Finance,Recommend,long_method,0,,0,,0,,,,51.000,,,,,,,1.961,,1024
+alternative_classes_different_interfaces_intermediate_003,full,intermediate,Scientific Computing,Design,,0,,0,,0,,,,75.000,,,,,,,0.000,,1024
+duplicated_code_basic_003,full,basic,Healthcare,Analyze,duplicate_code,0,,0,,0,,,,64.000,,,,,,,0.000,,1024
+lazy_class_basic_002,full,basic,Finance,Measure,,0,,0,,0,1,0,2,6.000,5.000,80.514,2.000,0.500,1.000,1.000,0.000,3.000,108
+incomplete_library_class_basic_001,full,basic,E-commerce,Write,,0,,0,,0,,,,,,,,,,,,,1024
+long_method_basic_003,full,basic,Healthcare,Report,long_method,0,,0,,0,,,,,,,,,,,,,1024
+magic_numbers_advanced_001,full,advanced,Healthcare,Design,magic_number,0,,0,,0,,,,,,,,,,,,,1024
+synthetic_long_parameter_list_intermediate_005,full,intermediate,Healthcare,Recommend,long_parameter_list,0,,0,,0,,,,,,,,,,,,,1024
+temporary_field_basic_004,full,basic,Scientific Computing,Recommend,,1,magic_number,1,magic_number,0,4,0,4,50.000,13.000,49.353,99.404,3.214,319.514,8.000,0.000,6.000,660
+synthetic_long_method_basic_001,full,basic,Finance,Recommend,long_method,0,,0,,0,,,,,,,,,,,,,1024
+deep_nesting_basic_002,full,basic,Finance,Implement,deep_nesting,1,long_parameter_list,1,long_parameter_list,0,1,0,10,24.000,6.000,84.443,43.185,1.714,74.032,5.000,20.833,3.000,698
+switch_statements_intermediate_002,full,intermediate,Healthcare,Recommend,,0,,0,,0,,,,59.000,,,,,,,0.000,,1024
+temporary_field_intermediate_001,full,intermediate,Finance,List,,0,,0,,0,,,,,,,,,,,,,1024
+lazy_class_advanced_004,full,advanced,General Software,Implement,,0,,0,,1,9,0,1,43.000,19.000,64.099,39.863,1.000,39.863,0.000,4.651,14.000,777
+message_chains_advanced_005,full,advanced,E-commerce,Measure,,1,broad_except,1,broad_except,1,14,0,2,70.000,41.000,78.609,4.755,0.500,2.377,2.000,2.857,15.000,894
+data_class_advanced_003,full,advanced,Scientific Computing,Write,,0,,0,,0,,,,,,,,,,,,,1024
+god_class_advanced_001,full,advanced,General Software,Implement,,0,,0,,0,,,,85.000,,,,,,,0.000,,1024
+parallel_inheritance_intermediate_005,full,intermediate,E-commerce,Analyze,,0,,0,,0,,,,61.000,,,,,,,9.836,,1024
+synthetic_long_parameter_list_advanced_002,full,advanced,Finance,Evaluate,long_parameter_list,0,,0,,0,,,,69.000,,,,,,,1.449,,1024
+long_method_basic_005,full,basic,General Software,Measure,long_method,0,,0,,0,,,,,,,,,,,,,1024
+switch_statements_advanced_006,full,advanced,Healthcare,Implement,,0,,0,,0,,,,81.000,,,,,,,2.469,,1024
+primitive_obsession_intermediate_003,full,intermediate,Scientific Computing,Measure,,0,,0,,0,,,,,,,,,,,,,1024
+primitive_obsession_basic_001,full,basic,E-commerce,Design,,0,,0,,0,1,0,10,31.000,5.000,92.882,18.095,1.000,18.095,6.000,9.677,6.000,707
+deep_nesting_advanced_004,full,advanced,E-commerce,Analyze,deep_nesting,0,,0,,0,,,,,,,,,,,,,1024
+lazy_class_basic_006,full,basic,E-commerce,Compare,,0,,0,,0,4,0,2,12.000,6.000,67.450,15.510,1.000,15.510,0.000,0.000,0.000,111
+long_parameter_list_advanced_002,full,advanced,E-commerce,Evaluate,long_parameter_list,0,,0,,0,,,,,,,,,,,,,1024
+magic_numbers_basic_005,full,basic,General Software,Compare,magic_number,2,dead_code;magic_number,2,dead_code;magic_number,0,1,0,3,45.000,7.000,82.672,54.000,0.857,46.286,7.000,0.000,0.000,643
+deep_nesting_intermediate_003,full,intermediate,Scientific Computing,Recommend,deep_nesting,0,,0,,0,,,,,,,,,,,,,1024
+global_state_basic_005,full,basic,General Software,Evaluate,,0,,0,,0,,,,63.000,,,,,,,11.111,,1024
+inappropriate_intimacy_advanced_004,full,advanced,E-commerce,Implement,,0,,0,,0,,,,67.000,,,,,,,4.478,,1024
+parallel_inheritance_intermediate_001,full,intermediate,Finance,Design,,0,,0,,0,,,,68.000,,,,,,,8.824,,1024
+middle_man_intermediate_004,full,intermediate,General Software,Compare,,0,,0,,0,9,0,2,46.000,14.000,84.759,4.755,0.500,2.377,1.000,0.000,6.000,803
+lazy_class_advanced_005,full,advanced,E-commerce,Recommend,,0,,0,,0,,,,,,,,,,,,,1024
+speculative_generality_advanced_003,full,advanced,Scientific Computing,Write,,0,,0,,0,,,,,,,,,,,,,1024
+long_method_intermediate_001,full,intermediate,Healthcare,Implement,long_method,0,,0,,0,,,,46.000,,,,,,,6.522,,1024
+comments_smell_advanced_001,full,advanced,E-commerce,Evaluate,,0,,0,,0,,,,8.000,,,,,,,112.500,,1024
+shotgun_surgery_intermediate_001,full,intermediate,Finance,Write,,0,,0,,0,,,,34.000,,,,,,,38.235,,1024
+data_clumps_advanced_003,full,advanced,General Software,Evaluate,,0,,0,,0,,,,,,,,,,,,,1024
+primitive_obsession_advanced_006,full,advanced,Healthcare,Evaluate,,0,,0,,0,,,,,,,,,,,,,1024
+long_parameter_list_basic_005,full,basic,General Software,Evaluate,long_parameter_list,0,,0,,0,,,,53.000,,,,,,,0.000,,1024
+global_state_intermediate_005,full,intermediate,E-commerce,Recommend,,0,,0,,0,,,,61.000,,,,,,,29.508,,1024
+alternative_classes_different_interfaces_intermediate_001,full,intermediate,Finance,Analyze,,0,,0,,0,,,,78.000,,,,,,,0.000,,1024
+primitive_obsession_advanced_001,full,advanced,Healthcare,Analyze,,0,,0,,0,,,,37.000,,,,,,,56.757,,1024
+comments_smell_basic_002,full,basic,Finance,Compare,,0,,0,,0,,,,6.000,,,,,,,400.000,,1024
+magic_numbers_basic_004,full,basic,Scientific Computing,Measure,magic_number,1,magic_number,1,magic_number,0,1,0,4,14.000,5.000,61.185,75.284,2.333,175.663,5.000,0.000,0.000,136
+synthetic_god_class_basic_004,full,basic,General Software,Analyze,,0,,0,,0,,,,65.000,,,,,,,4.615,,1024
+comments_smell_intermediate_002,full,intermediate,Finance,Report,,0,,0,,0,,,,,,,,,,,,,1024
+primitive_obsession_basic_002,full,basic,Finance,Recommend,,0,,0,,0,,,,,,,,,,,,,1024
+message_chains_basic_002,full,basic,Finance,Implement,,0,,0,,0,1,0,9,21.000,7.000,88.137,60.918,2.000,121.835,8.000,0.000,5.000,515
+incomplete_library_class_intermediate_001,full,intermediate,E-commerce,Analyze,,0,,0,,0,,,,60.000,,,,,,,1.667,,1024
+primitive_obsession_basic_004,full,basic,Scientific Computing,Design,,0,,0,,0,,,,,,,,,,,,,1024
+long_parameter_list_intermediate_002,full,intermediate,Scientific Computing,Implement,long_parameter_list,0,,0,,0,,,,,,,,,,,,,1024
+deep_nesting_advanced_006,full,advanced,Healthcare,Write,deep_nesting,0,,0,,0,,,,58.000,,,,,,,1.724,,1024
+duplicated_code_basic_002,full,basic,Finance,Measure,duplicate_code,0,,0,,0,,,,,,,,,,,,,1024
+lazy_class_basic_005,full,basic,General Software,Recommend,,0,,0,,0,1,0,1,3.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,41
+temporary_field_basic_006,full,basic,E-commerce,Compare,,0,,0,,0,3,0,16,58.000,21.000,49.072,57.110,2.778,158.640,11.000,0.000,13.000,723
+speculative_generality_basic_005,full,basic,General Software,Measure,,0,,0,,0,,,,92.000,,,,,,,0.000,,1024
+lazy_class_intermediate_001,full,intermediate,Finance,Analyze,,0,,0,,1,6,0,4,38.000,18.000,76.652,53.774,1.500,80.662,4.000,0.000,9.000,891
+lazy_class_basic_001,full,basic,E-commerce,Compare,,0,,0,,0,1,0,1,3.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,38
+switch_statements_basic_006,full,basic,E-commerce,Recommend,,1,magic_number,1,magic_number,0,1,0,1,23.000,6.000,58.114,42.110,0.833,35.092,6.000,0.000,1.000,394
+parallel_inheritance_advanced_005,full,advanced,E-commerce,Analyze,,0,,0,,0,,,,,,,,,,,,,1024
+speculative_generality_basic_003,full,basic,Healthcare,Evaluate,,0,,0,,0,,,,,,,,,,,,,1024
+synthetic_long_method_advanced_002,full,advanced,Finance,Evaluate,long_method,0,,0,,0,,,,26.000,,,,,,,11.538,,1024
+primitive_obsession_intermediate_005,full,intermediate,E-commerce,Report,,0,,0,,0,,,,,,,,,,,,,1024
+message_chains_advanced_004,full,advanced,General Software,Implement,,0,,0,,0,,,,,,,,,,,,,1024
+parallel_inheritance_advanced_001,full,advanced,Finance,Measure,,0,,0,,0,,,,76.000,,,,,,,11.842,,1024
+parallel_inheritance_advanced_004,full,advanced,General Software,Write,,0,,0,,0,,,,65.000,,,,,,,9.231,,1024
+parallel_inheritance_intermediate_004,full,intermediate,General Software,Report,,0,,0,,0,,,,68.000,,,,,,,4.412,,1024
+temporary_field_advanced_005,full,advanced,E-commerce,Compare,,0,,0,,0,,,,71.000,,,,,,,1.408,,1024
+incomplete_library_class_basic_002,full,basic,Finance,Evaluate,,0,,0,,0,,,,45.000,,,,,,,2.222,,1024
+feature_envy_intermediate_001,full,intermediate,Finance,Implement,,0,,0,,0,,,,,,,,,,,,,1024
+synthetic_long_method_basic_006,full,basic,Finance,Write,long_method,0,,0,,0,,,,42.000,,,,,,,2.381,,1024
+shotgun_surgery_advanced_002,full,advanced,Healthcare,Measure,,0,,0,,0,,,,58.000,,,,,,,10.345,,1024
+switch_statements_basic_005,full,basic,General Software,Report,,1,magic_number,1,magic_number,0,1,0,5,48.000,21.000,66.438,1419.094,5.692,8077.922,24.000,22.917,4.000,984
+deep_nesting_intermediate_006,full,intermediate,Finance,Report,deep_nesting,0,,0,,0,,,,,,,,,,,,,1024
+god_class_intermediate_002,full,intermediate,Scientific Computing,Recommend,,0,,0,,0,,,,,,,,,,,,,1024
+comments_smell_basic_003,full,basic,Healthcare,Design,,0,,0,,0,,,,35.000,,,,,,,57.143,,1024
+synthetic_long_method_advanced_005,full,advanced,General Software,List,long_method,0,,0,,0,,,,55.000,,,,,,,10.909,,1024
+long_method_intermediate_004,full,intermediate,E-commerce,Recommend,long_method,0,,0,,0,,,,55.000,,,,,,,18.182,,1024
+incomplete_library_class_intermediate_004,full,intermediate,Scientific Computing,Write,,0,,0,,0,,,,50.000,,,,,,,10.000,,1024
+synthetic_long_parameter_list_basic_003,full,basic,Scientific Computing,Report,long_parameter_list,0,,0,,0,,,,,,,,,,,,,1024
+refused_bequest_advanced_002,full,advanced,Healthcare,Evaluate,,0,,0,,0,5,0,1,11.000,7.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,283
+speculative_generality_basic_004,full,basic,Scientific Computing,Write,,0,,0,,0,,,,83.000,,,,,,,0.000,,1024
+incomplete_library_class_basic_003,full,basic,Healthcare,Write,,0,,0,,0,,,,52.000,,,,,,,5.769,,1024
+incomplete_library_class_intermediate_003,full,intermediate,Healthcare,Recommend,,0,,0,,0,,,,,,,,,,,,,1024
+primitive_obsession_advanced_004,full,advanced,E-commerce,List,,0,,0,,0,,,,,,,,,,,,,1024
+incomplete_library_class_advanced_002,full,advanced,Finance,Measure,,0,,0,,0,,,,,,,,,,,,,1024
+comments_smell_basic_005,full,basic,General Software,List,,0,,0,,0,,,,,,,,,,,,,1024
+shotgun_surgery_intermediate_003,full,intermediate,Scientific Computing,Design,,0,,0,,0,,,,51.000,,,,,,,33.333,,1024
+long_method_intermediate_005,full,intermediate,Finance,Measure,long_method,0,,0,,0,,,,49.000,,,,,,,0.000,,1024
+duplicated_code_advanced_006,full,advanced,General Software,Measure,duplicate_code,0,,0,,0,,,,58.000,,,,,,,5.172,,1024
+message_chains_basic_001,full,basic,E-commerce,Report,,0,,0,,1,6,0,2,28.000,17.000,89.258,4.755,0.500,2.377,1.000,0.000,6.000,424
+refused_bequest_intermediate_005,full,intermediate,E-commerce,Recommend,,0,,0,,0,6,0,9,29.000,8.000,100.000,0.000,0.000,0.000,0.000,6.897,5.000,612
+long_method_basic_006,full,basic,E-commerce,Write,long_method,0,,0,,0,,,,53.000,,,,,,,0.000,,1024
+alternative_classes_different_interfaces_basic_003,full,basic,Healthcare,List,,1,broad_except,1,broad_except,0,8,0,6,97.000,35.000,45.915,13.932,0.500,6.966,24.000,0.000,13.000,1020
+magic_numbers_basic_006,full,basic,E-commerce,Evaluate,magic_number,0,,0,,0,1,0,5,11.000,1.000,70.223,39.863,1.714,68.337,0.000,0.000,0.000,124
+lazy_class_intermediate_004,full,intermediate,General Software,Report,,0,,0,,0,7,0,4,31.000,26.000,45.291,289.985,4.071,1180.655,9.000,0.000,3.000,654
+lazy_class_basic_003,full,basic,Healthcare,Report,,0,,0,,0,1,0,1,4.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,95
+data_clumps_intermediate_006,full,intermediate,Finance,Implement,,0,,0,,0,,,,51.000,,,,,,,17.647,,1024
+incomplete_library_class_basic_005,full,basic,General Software,Implement,,0,,0,,0,,,,44.000,,,,,,,22.727,,1024
+feature_envy_advanced_003,full,advanced,General Software,Implement,,0,,0,,0,,,,68.000,,,,,,,0.000,,1024
+feature_envy_advanced_001,full,advanced,Healthcare,Report,,0,,0,,0,,,,56.000,,,,,,,0.000,,1024
+shotgun_surgery_intermediate_005,full,intermediate,E-commerce,Measure,,0,,0,,0,,,,,,,,,,,,,1024
+speculative_generality_advanced_005,full,advanced,E-commerce,Design,,0,,0,,0,,,,71.000,,,,,,,8.451,,1024
+primitive_obsession_intermediate_006,full,intermediate,Finance,List,,0,,0,,0,,,,56.000,,,,,,,10.714,,1024
+alternative_classes_different_interfaces_advanced_004,full,advanced,General Software,Compare,,0,,0,,0,,,,,,,,,,,,,1024
+refused_bequest_intermediate_002,full,intermediate,Healthcare,Design,,0,,0,,0,8,0,1,18.000,12.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,275
+shotgun_surgery_basic_001,full,basic,E-commerce,Recommend,,0,,0,,0,,,,26.000,,,,,,,69.231,,1024
+alternative_classes_different_interfaces_intermediate_002,full,intermediate,Healthcare,Compare,,0,,0,,0,,,,,,,,,,,,,1024
+inappropriate_intimacy_intermediate_002,full,intermediate,Healthcare,Implement,,0,,0,,0,21,0,4,53.000,27.000,51.186,15.510,1.000,15.510,2.000,0.000,6.000,855
+long_parameter_list_advanced_005,full,advanced,Scientific Computing,Implement,long_parameter_list,0,,0,,0,,,,56.000,,,,,,,7.143,,1024
+global_state_basic_003,full,basic,Healthcare,Recommend,,0,,0,,0,,,,,,,,,,,,,1024
+long_method_advanced_001,full,advanced,General Software,Implement,long_method,0,,0,,0,,,,,,,,,,,,,1024
+long_method_intermediate_003,full,intermediate,General Software,Analyze,long_method,0,,0,,0,,,,,,,,,,,,,1024
+switch_statements_advanced_004,full,advanced,E-commerce,Analyze,,0,,0,,0,,,,,,,,,,,,,1024
+synthetic_long_parameter_list_advanced_003,full,advanced,Healthcare,List,long_parameter_list,0,,0,,0,,,,69.000,,,,,,,0.000,,1024
+temporary_field_advanced_002,full,advanced,Healthcare,List,,0,,0,,0,,,,,,,,,,,,,1024
+alternative_classes_different_interfaces_basic_001,full,basic,E-commerce,Compare,,0,,0,,0,3,0,5,36.000,19.000,56.721,11.610,1.000,11.610,21.000,0.000,11.000,417
+alternative_classes_different_interfaces_intermediate_004,full,intermediate,General Software,Design,,0,,0,,0,,,,,,,,,,,,,1024
+parallel_inheritance_basic_001,full,basic,E-commerce,Recommend,,0,,0,,0,,,,,,,,,,,,,1024
+temporary_field_intermediate_005,full,intermediate,E-commerce,Report,,0,,0,,0,,,,63.000,,,,,,,1.587,,1024
+dead_code_intermediate_005,full,intermediate,E-commerce,Analyze,dead_code,0,,0,,0,,,,,,,,,,,,,1024
+dead_code_basic_004,full,basic,Scientific Computing,Compare,dead_code,0,,0,,0,,,,38.000,,,,,,,26.316,,1024
+comments_smell_basic_004,full,basic,Scientific Computing,Report,,1,magic_number,1,magic_number,0,1,0,10,16.000,7.000,79.776,58.603,2.500,146.508,7.000,125.000,4.000,650
+dead_code_basic_005,full,basic,General Software,Write,dead_code,0,,0,,0,,,,,,,,,,,,,1024
+synthetic_long_method_intermediate_003,full,intermediate,E-commerce,Analyze,long_method,0,,0,,0,,,,68.000,,,,,,,0.000,,1024
+message_chains_basic_004,full,basic,Scientific Computing,Measure,,0,,0,,0,3,0,4,26.000,6.000,81.287,39.863,1.714,68.337,10.000,0.000,7.000,701
+shotgun_surgery_advanced_001,full,advanced,Finance,Report,,0,,0,,0,,,,,,,,,,,,,1024
+deep_nesting_basic_004,full,basic,Scientific Computing,Measure,deep_nesting,1,broad_except,1,broad_except,1,1,0,4,46.000,9.000,72.749,134.886,3.385,456.538,5.000,0.000,2.000,891
+parallel_inheritance_intermediate_003,full,intermediate,Scientific Computing,Write,,0,,0,,0,,,,53.000,,,,,,,11.321,,1024
+synthetic_long_parameter_list_intermediate_007,full,intermediate,General Software,Recommend,long_parameter_list,0,,0,,0,,,,54.000,,,,,,,1.852,,1024
+refused_bequest_advanced_005,full,advanced,E-commerce,Design,,0,,0,,0,10,0,1,34.000,15.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,709
+synthetic_long_method_advanced_003,full,advanced,Healthcare,Write,long_method,0,,0,,0,,,,,,,,,,,,,1024
+inappropriate_intimacy_intermediate_003,full,intermediate,Scientific Computing,Write,,0,,0,,0,,,,73.000,,,,,,,5.479,,1024
+temporary_field_advanced_004,full,advanced,General Software,Report,,0,,0,,0,,,,,,,,,,,,,1024
+deep_nesting_basic_003,full,basic,Healthcare,Write,deep_nesting,0,,0,,0,1,0,3,10.000,5.000,100.000,0.000,0.000,0.000,10.000,0.000,3.000,315
+synthetic_god_class_basic_005,full,basic,E-commerce,Measure,,0,,0,,0,,,,74.000,,,,,,,0.000,,1024
+synthetic_long_method_advanced_006,full,advanced,E-commerce,Compare,long_method,0,,0,,0,,,,88.000,,,,,,,0.000,,1024
+lazy_class_intermediate_003,full,intermediate,Scientific Computing,Evaluate,,0,,0,,0,,,,,,,,,,,,,1024
+middle_man_intermediate_005,full,intermediate,E-commerce,Compare,,0,,0,,0,,,,49.000,,,,,,,0.000,,1024
+temporary_field_basic_005,full,basic,General Software,Design,,0,,0,,0,6,0,7,62.000,11.000,54.464,20.897,0.750,15.673,3.000,0.000,1.000,820
+long_parameter_list_intermediate_003,full,intermediate,General Software,Design,long_parameter_list,0,,0,,0,,,,,,,,,,,,,1024
+parallel_inheritance_advanced_003,full,advanced,Scientific Computing,Design,,0,,0,,0,,,,,,,,,,,,,1024
+long_method_advanced_005,full,advanced,Scientific Computing,List,long_method,0,,0,,0,,,,44.000,,,,,,,13.636,,1024
+synthetic_long_method_basic_002,full,basic,Healthcare,Analyze,long_method,0,,0,,0,,,,59.000,,,,,,,0.000,,1024
+magic_numbers_advanced_006,full,advanced,Healthcare,Recommend,magic_number,0,,0,,0,,,,,,,,,,,,,1024
+data_clumps_advanced_004,full,advanced,E-commerce,Recommend,,0,,0,,0,,,,54.000,,,,,,,18.519,,1024
+speculative_generality_basic_001,full,basic,E-commerce,Compare,,0,,0,,0,,,,,,,,,,,,,1024
+temporary_field_basic_002,full,basic,Finance,Report,,0,,0,,0,,,,39.000,,,,,,,12.821,,1024
+deep_nesting_advanced_005,full,advanced,Finance,Evaluate,deep_nesting,1,deep_nesting,1,deep_nesting,1,1,0,2,39.000,9.000,88.749,4.755,0.500,2.377,44.000,0.000,3.000,722
+dead_code_basic_003,full,basic,Healthcare,Write,dead_code,0,,0,,0,,,,,,,,,,,,,1024
+long_method_intermediate_007,full,intermediate,Scientific Computing,Implement,long_method,0,,0,,0,,,,,,,,,,,,,1024
+god_class_intermediate_007,full,intermediate,Scientific Computing,Write,,0,,0,,0,,,,64.000,,,,,,,1.562,,1024
+primitive_obsession_advanced_002,full,advanced,Scientific Computing,Recommend,,0,,0,,0,,,,,,,,,,,,,1024
+feature_envy_basic_006,full,basic,E-commerce,Report,,0,,0,,0,,,,38.000,,,,,,,15.789,,1024
+dead_code_intermediate_001,full,intermediate,Finance,Evaluate,dead_code,0,,0,,0,,,,,,,,,,,,,1024
+synthetic_god_class_basic_006,full,basic,Finance,Analyze,,0,,0,,0,,,,94.000,,,,,,,0.000,,1024
+message_chains_basic_003,full,basic,Healthcare,Write,,0,,0,,1,1,0,7,79.000,11.000,79.288,49.829,1.000,49.829,21.000,0.000,5.000,881
+refused_bequest_basic_001,full,basic,E-commerce,Measure,,0,,0,,0,,,,49.000,,,,,,,2.041,,1024
+magic_numbers_advanced_003,full,advanced,General Software,Compare,magic_number,0,,0,,0,,,,,,,,,,,,,1024
+deep_nesting_intermediate_005,full,intermediate,E-commerce,List,deep_nesting,0,,0,,0,,,,59.000,,,,,,,13.559,,1024
+feature_envy_intermediate_003,full,intermediate,Scientific Computing,Report,,0,,0,,0,,,,59.000,,,,,,,8.475,,1024
+long_parameter_list_intermediate_006,full,intermediate,Healthcare,Measure,long_parameter_list,0,,0,,0,,,,43.000,,,,,,,0.000,,1024
+data_clumps_advanced_005,full,advanced,Finance,Recommend,,0,,0,,0,,,,,,,,,,,,,1024
+long_method_advanced_004,full,advanced,Healthcare,Report,long_method,0,,0,,0,,,,43.000,,,,,,,18.605,,1024
+synthetic_long_parameter_list_advanced_005,full,advanced,General Software,Implement,long_parameter_list,0,,0,,0,,,,53.000,,,,,,,1.887,,1024
+long_parameter_list_intermediate_005,full,intermediate,Finance,Recommend,long_parameter_list,0,,0,,0,,,,,,,,,,,,,1024
+refused_bequest_advanced_003,full,advanced,Scientific Computing,List,,0,,0,,0,12,4,4,54.000,16.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,714
+feature_envy_intermediate_004,full,intermediate,General Software,Recommend,,0,,0,,0,,,,,,,,,,,,,1024
+shotgun_surgery_basic_004,full,basic,Scientific Computing,Write,,0,,0,,0,,,,,,,,,,,,,1024
+message_chains_intermediate_004,full,intermediate,General Software,Report,,1,broad_except,1,broad_except,0,1,0,6,29.000,8.000,89.827,20.897,2.000,41.795,12.000,0.000,3.000,404
+god_class_intermediate_004,full,intermediate,E-commerce,Measure,,0,,0,,0,,,,78.000,,,,,,,2.564,,1024
+god_class_basic_003,full,basic,Healthcare,List,,0,,0,,0,,,,77.000,,,,,,,1.299,,1024
+data_class_intermediate_001,full,intermediate,Finance,Recommend,,0,,0,,0,,,,63.000,,,,,,,6.349,,1024
