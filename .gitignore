@@ -40,6 +40,7 @@ node_modules/
 !arc_qwen/evaluation_report.html
 !arc_qwen/evaluation_report_deepseek.html
 !arc_qwen/model_comparison.html
+!prompt_study/prompt_report.html
 
 # GitHub Pages: landing page + Jekyll opt-out (serve the HTML as-is)
 !/index.html

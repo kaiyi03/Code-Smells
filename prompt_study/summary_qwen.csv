@@ -1,477 +1,477 @@
-task_id,complexity,domain,action_keyword,intended,n_smells,smells,n_smells_defs,smells_defs,n_extra_stmts,sloc,cyclomatic,maintainability,halstead_volume,halstead_difficulty,halstead_effort,cognitive,comment_density,api_calls,n_output_tokens
-long_method_basic_001,basic,E-commerce,Recommend,long_method,1,dead_code,1,dead_code,0,25.000,9.000,96.362,2.000,0.500,1.000,1.000,56.000,7.000,250
-long_method_basic_002,basic,Finance,Analyze,long_method,2,dead_code;magic_number,2,dead_code;magic_number,3,39.000,17.000,65.125,148.603,3.316,492.738,6.000,10.256,19.000,455
-long_method_basic_003,basic,Healthcare,Report,long_method,2,dead_code;magic_number,2,dead_code;magic_number,0,39.000,13.000,73.929,99.404,3.214,319.514,11.000,20.513,12.000,399
-long_method_basic_004,basic,Scientific Computing,Measure,long_method,1,dead_code,1,dead_code,0,49.000,5.000,82.335,4.755,0.500,2.377,0.000,24.490,29.000,622
-long_method_basic_005,basic,General Software,Measure,long_method,0,,0,,0,13.000,3.000,95.037,22.459,1.875,42.110,2.000,53.846,7.000,151
-long_method_basic_006,basic,E-commerce,Write,long_method,1,magic_number,1,magic_number,0,57.000,22.000,51.806,171.176,3.429,586.889,23.000,1.754,5.000,547
-long_method_basic_007,basic,Finance,Recommend,long_method,0,,0,,0,24.000,9.000,100.000,0.000,0.000,0.000,2.000,62.500,8.000,290
-long_method_intermediate_001,intermediate,Healthcare,Implement,long_method,0,,0,,0,28.000,7.000,100.000,0.000,0.000,0.000,1.000,64.286,16.000,443
-long_method_intermediate_002,intermediate,Scientific Computing,Design,long_method,1,dead_code,1,dead_code,0,12.000,3.000,95.191,25.850,1.500,38.774,2.000,66.667,8.000,351
-long_method_intermediate_003,intermediate,General Software,Analyze,long_method,1,dead_code,1,dead_code,0,22.000,7.000,85.988,33.688,0.500,16.844,6.000,31.818,7.000,219
-long_method_intermediate_004,intermediate,E-commerce,Recommend,long_method,1,dead_code,1,dead_code,0,22.000,7.000,100.000,0.000,0.000,0.000,0.000,54.545,6.000,223
-long_method_intermediate_005,intermediate,Finance,Measure,long_method,1,magic_number,1,magic_number,1,19.000,5.000,86.598,39.863,2.667,106.302,2.000,31.579,13.000,265
-long_method_intermediate_006,intermediate,Healthcare,Design,long_method,1,dead_code,1,dead_code,6,85.000,18.000,68.324,24.000,1.500,36.000,4.000,15.294,28.000,955
-long_method_intermediate_007,intermediate,Scientific Computing,Implement,long_method,0,,0,,0,28.000,7.000,100.000,0.000,0.000,0.000,1.000,64.286,16.000,443
-long_method_advanced_001,advanced,General Software,Implement,long_method,0,,0,,0,17.000,,,,,,,94.118,,248
-long_method_advanced_002,advanced,E-commerce,Evaluate,long_method,1,dead_code,1,dead_code,0,24.000,14.000,84.233,81.749,3.545,289.838,3.000,50.000,10.000,483
-long_method_advanced_003,advanced,Finance,Write,long_method,1,duplicate_code,1,duplicate_code,0,116.000,,,,,,,0.000,,1024
-long_method_advanced_004,advanced,Healthcare,Report,long_method,1,dead_code,1,dead_code,0,33.000,8.000,84.137,28.529,1.500,42.794,0.000,84.848,12.000,609
-long_method_advanced_005,advanced,Scientific Computing,List,long_method,1,magic_number,1,magic_number,0,20.000,8.000,86.484,57.359,1.500,86.039,7.000,40.000,8.000,229
-long_method_advanced_006,advanced,General Software,Compare,long_method,1,dead_code,1,dead_code,0,21.000,1.000,79.440,483.411,6.136,2966.383,0.000,33.333,3.000,531
-long_parameter_list_basic_001,basic,E-commerce,List,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,17.000,1.000,100.000,0.000,0.000,0.000,0.000,11.765,0.000,155
-long_parameter_list_basic_002,basic,Finance,Design,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,29.000,5.000,100.000,0.000,0.000,0.000,4.000,24.138,15.000,352
-long_parameter_list_basic_003,basic,Healthcare,Report,long_parameter_list,2,long_parameter_list;magic_number,2,long_parameter_list;magic_number,0,17.000,7.000,83.356,86.039,4.000,344.156,7.000,23.529,1.000,204
-long_parameter_list_basic_004,basic,Scientific Computing,Analyze,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,49
-long_parameter_list_basic_005,basic,General Software,Evaluate,long_parameter_list,2,long_parameter_list;magic_number,2,long_parameter_list;magic_number,0,7.000,2.000,100.000,4.755,0.500,2.377,2.000,42.857,3.000,178
-long_parameter_list_basic_006,basic,E-commerce,Implement,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,46
-long_parameter_list_basic_007,basic,Finance,Recommend,long_parameter_list,2,long_parameter_list;magic_number,2,long_parameter_list;magic_number,0,19.000,4.000,92.505,12.000,0.667,8.000,4.000,42.105,11.000,227
-long_parameter_list_intermediate_001,intermediate,Healthcare,Compare,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,19.000,1.000,100.000,0.000,0.000,0.000,0.000,5.263,0.000,182
-long_parameter_list_intermediate_002,intermediate,Scientific Computing,Implement,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,61
-long_parameter_list_intermediate_003,intermediate,General Software,Design,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,20.000,1.000,100.000,0.000,0.000,0.000,0.000,5.000,0.000,203
-long_parameter_list_intermediate_004,intermediate,E-commerce,Design,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,62
-long_parameter_list_intermediate_005,intermediate,Finance,Recommend,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,67
-long_parameter_list_intermediate_006,intermediate,Healthcare,Measure,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,19.000,1.000,100.000,0.000,0.000,0.000,0.000,5.263,0.000,182
-long_parameter_list_intermediate_007,intermediate,Scientific Computing,Recommend,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,61
-long_parameter_list_advanced_001,advanced,General Software,Recommend,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,95
-long_parameter_list_advanced_002,advanced,E-commerce,Evaluate,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,88
-long_parameter_list_advanced_003,advanced,Finance,List,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,25.000,1.000,100.000,0.000,0.000,0.000,0.000,4.000,0.000,292
-long_parameter_list_advanced_004,advanced,Healthcare,Report,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,96
-long_parameter_list_advanced_005,advanced,Scientific Computing,Implement,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,109
-long_parameter_list_advanced_006,advanced,General Software,Evaluate,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,95
-god_class_basic_001,basic,E-commerce,Implement,,0,,0,,0,30.000,15.000,66.535,89.206,2.500,223.016,5.000,6.667,1.000,258
-god_class_basic_002,basic,Finance,Measure,,1,magic_number,1,magic_number,0,23.000,16.000,82.124,66.417,2.000,132.834,3.000,30.435,6.000,336
-god_class_basic_003,basic,Healthcare,List,,0,,0,,0,25.000,16.000,71.123,57.110,2.000,114.221,2.000,8.000,3.000,271
-god_class_basic_004,basic,Scientific Computing,Analyze,,0,,0,,4,19.000,10.000,79.670,4.755,0.500,2.377,4.000,5.263,8.000,200
-god_class_basic_005,basic,General Software,Measure,,0,,0,,0,7.000,,,,,,,85.714,,132
-god_class_basic_006,basic,E-commerce,Analyze,,1,dead_code,1,dead_code,0,37.000,17.000,81.712,2.000,0.500,1.000,5.000,13.514,10.000,343
-god_class_basic_007,basic,Finance,List,,0,,0,,0,54.000,22.000,57.430,39.863,1.000,39.863,9.000,1.852,2.000,452
-god_class_intermediate_001,intermediate,Healthcare,Compare,,0,,0,,0,26.000,11.000,100.000,0.000,0.000,0.000,0.000,30.769,14.000,303
-god_class_intermediate_002,intermediate,Scientific Computing,Recommend,,0,,0,,0,52.000,22.000,61.989,208.076,4.083,849.645,10.000,9.615,1.000,502
-god_class_intermediate_003,intermediate,General Software,Design,,0,,0,,0,32.000,13.000,83.665,4.755,0.500,2.377,2.000,18.750,2.000,281
-god_class_intermediate_004,intermediate,E-commerce,Measure,,0,,0,,0,26.000,11.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,232
-god_class_intermediate_005,intermediate,Finance,Compare,,0,,0,,0,77.000,29.000,50.520,68.532,1.000,68.532,12.000,1.299,3.000,637
-god_class_intermediate_006,intermediate,Healthcare,Write,,0,,0,,0,26.000,11.000,100.000,0.000,0.000,0.000,0.000,30.769,14.000,303
-god_class_intermediate_007,intermediate,Scientific Computing,Write,,0,,0,,0,52.000,22.000,61.989,208.076,4.083,849.645,10.000,9.615,1.000,502
-god_class_advanced_001,advanced,General Software,Implement,,1,magic_number,1,magic_number,0,55.000,28.000,56.883,239.111,4.769,1140.374,18.000,7.273,5.000,498
-god_class_advanced_002,advanced,E-commerce,Design,,0,,0,,0,32.000,13.000,100.000,0.000,0.000,0.000,0.000,0.000,10.000,153
-god_class_advanced_003,advanced,Finance,List,,0,,0,,0,41.000,25.000,66.618,151.304,1.000,151.304,11.000,14.634,1.000,506
-god_class_advanced_004,advanced,Healthcare,Implement,,0,,0,,0,40.000,16.000,54.699,15.510,1.000,15.510,5.000,0.000,16.000,320
-god_class_advanced_005,advanced,Scientific Computing,Analyze,,0,,0,,0,32.000,13.000,100.000,0.000,0.000,0.000,0.000,0.000,3.000,244
-god_class_advanced_006,advanced,General Software,Write,,0,,0,,0,35.000,16.000,100.000,0.000,0.000,0.000,2.000,0.000,3.000,299
-feature_envy_basic_001,basic,E-commerce,Compare,,0,,0,,0,5.000,4.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,71
-feature_envy_basic_002,basic,Finance,Compare,,0,,0,,0,14.000,8.000,62.817,42.110,0.833,35.092,2.000,0.000,1.000,157
-feature_envy_basic_003,basic,Healthcare,Design,,1,magic_number,1,magic_number,0,18.000,9.000,55.829,183.317,3.095,567.410,3.000,0.000,2.000,177
-feature_envy_basic_004,basic,Scientific Computing,Evaluate,,0,,0,,0,5.000,4.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,67
-feature_envy_basic_005,basic,General Software,Implement,,0,,0,,0,3.000,3.000,100.000,0.000,0.000,0.000,0.000,33.333,0.000,28
-feature_envy_basic_006,basic,E-commerce,Report,,2,dead_code;magic_number,2,dead_code;magic_number,0,19.000,13.000,70.014,118.942,3.393,403.553,6.000,5.263,0.000,167
-feature_envy_intermediate_001,intermediate,Finance,Implement,,0,,0,,0,9.000,7.000,100.000,4.755,0.500,2.377,1.000,44.444,2.000,157
-feature_envy_intermediate_002,intermediate,Healthcare,Recommend,,0,,0,,0,10.000,3.000,100.000,0.000,0.000,0.000,0.000,80.000,1.000,167
-feature_envy_intermediate_003,intermediate,Scientific Computing,Report,,0,,0,,0,12.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,94
-feature_envy_intermediate_004,intermediate,General Software,Recommend,,0,,0,,0,14.000,7.000,95.384,4.755,0.500,2.377,1.000,35.714,3.000,177
-feature_envy_intermediate_005,intermediate,E-commerce,Compare,,0,,0,,0,16.000,12.000,100.000,0.000,0.000,0.000,5.000,0.000,0.000,136
-feature_envy_intermediate_006,intermediate,Finance,Evaluate,,0,,0,,0,9.000,7.000,100.000,4.755,0.500,2.377,1.000,44.444,2.000,157
-feature_envy_advanced_001,advanced,Healthcare,Report,,0,,0,,0,27.000,22.000,79.508,131.183,2.639,346.178,17.000,37.037,1.000,328
-feature_envy_advanced_002,advanced,Scientific Computing,Implement,,1,dead_code,1,dead_code,0,17.000,9.000,87.571,53.774,1.667,89.624,1.000,88.235,3.000,315
-feature_envy_advanced_003,advanced,General Software,Implement,,1,magic_number,1,magic_number,0,11.000,9.000,89.525,66.608,2.667,177.621,4.000,27.273,1.000,148
-feature_envy_advanced_004,advanced,E-commerce,List,,1,dead_code,1,dead_code,0,16.000,9.000,93.477,4.755,0.500,2.377,4.000,25.000,2.000,160
-feature_envy_advanced_005,advanced,Finance,Design,,1,long_parameter_list,1,long_parameter_list,0,13.000,4.000,100.000,0.000,0.000,0.000,0.000,76.923,1.000,258
-feature_envy_advanced_006,advanced,Healthcare,Analyze,,0,,0,,0,27.000,22.000,79.508,131.183,2.639,346.178,17.000,37.037,1.000,328
-data_clumps_basic_001,basic,E-commerce,Report,,0,,0,,0,6.000,3.000,100.000,0.000,0.000,0.000,0.000,50.000,1.000,146
-data_clumps_basic_002,basic,Finance,Measure,,0,,0,,7,15.000,4.000,91.977,10.000,0.500,5.000,0.000,26.667,5.000,322
-data_clumps_basic_003,basic,Healthcare,Analyze,,0,,0,,3,14.000,2.000,86.640,201.909,3.682,743.392,0.000,42.857,8.000,323
-data_clumps_basic_004,basic,Scientific Computing,Measure,,1,magic_number,1,magic_number,9,20.000,5.000,79.771,51.891,1.111,57.657,3.000,15.000,4.000,177
-data_clumps_basic_005,basic,General Software,Design,,0,,0,,0,10.000,5.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,120
-data_clumps_basic_006,basic,E-commerce,Recommend,,3,dead_code;duplicate_code;magic_number,3,dead_code;duplicate_code;magic_number,0,42.000,16.000,77.785,100.078,1.000,100.078,16.000,47.619,5.000,556
-data_clumps_intermediate_001,intermediate,Finance,Recommend,,1,duplicate_code,1,duplicate_code,0,42.000,14.000,46.144,319.316,3.529,1126.997,10.000,0.000,1.000,395
-data_clumps_intermediate_002,intermediate,Healthcare,Recommend,,1,magic_number,1,magic_number,0,21.000,17.000,66.294,177.872,4.000,711.489,9.000,4.762,5.000,241
-data_clumps_intermediate_003,intermediate,Scientific Computing,Write,,1,long_parameter_list,1,long_parameter_list,0,6.000,3.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,86
-data_clumps_intermediate_004,intermediate,General Software,Evaluate,,1,long_parameter_list,1,long_parameter_list,0,19.000,6.000,94.218,4.755,0.500,2.377,2.000,21.053,6.000,217
-data_clumps_intermediate_005,intermediate,E-commerce,Write,,1,long_parameter_list,1,long_parameter_list,0,6.000,3.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,94
-data_clumps_intermediate_006,intermediate,Finance,Implement,,1,duplicate_code,1,duplicate_code,0,42.000,14.000,46.144,319.316,3.529,1126.997,10.000,0.000,1.000,395
-data_clumps_advanced_001,advanced,Healthcare,Measure,,1,long_parameter_list,1,long_parameter_list,0,20.000,7.000,100.000,0.000,0.000,0.000,0.000,15.000,0.000,255
-data_clumps_advanced_002,advanced,Scientific Computing,Report,,1,long_parameter_list,1,long_parameter_list,0,26.000,15.000,58.366,18.575,0.500,9.288,4.000,0.000,5.000,403
-data_clumps_advanced_003,advanced,General Software,Evaluate,,0,,0,,0,14.000,7.000,100.000,0.000,0.000,0.000,0.000,0.000,8.000,116
-data_clumps_advanced_004,advanced,E-commerce,Recommend,,0,,0,,0,13.000,8.000,100.000,0.000,0.000,0.000,0.000,30.769,1.000,104
-data_clumps_advanced_005,advanced,Finance,Recommend,,1,long_parameter_list,1,long_parameter_list,0,20.000,7.000,100.000,0.000,0.000,0.000,0.000,15.000,0.000,255
-data_clumps_advanced_006,advanced,Healthcare,Design,,1,long_parameter_list,1,long_parameter_list,0,26.000,15.000,58.366,18.575,0.500,9.288,4.000,0.000,5.000,403
-duplicated_code_basic_001,basic,E-commerce,Design,duplicate_code,0,,0,,0,10.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,155
-duplicated_code_basic_002,basic,Finance,Measure,duplicate_code,0,,0,,0,6.000,3.000,73.070,25.266,0.500,12.633,0.000,0.000,0.000,52
-duplicated_code_basic_003,basic,Healthcare,Analyze,duplicate_code,0,,0,,0,14.000,4.000,62.297,57.059,0.750,42.794,2.000,0.000,0.000,147
-duplicated_code_basic_004,basic,Scientific Computing,Recommend,duplicate_code,0,,0,,0,37.000,9.000,100.000,0.000,0.000,0.000,6.000,0.000,6.000,275
-duplicated_code_basic_005,basic,General Software,Analyze,duplicate_code,0,,1,duplicate_code,0,20.000,12.000,91.299,6.340,0.500,3.170,2.000,30.000,3.000,183
-duplicated_code_basic_006,basic,E-commerce,Measure,duplicate_code,0,,0,,0,19.000,6.000,100.000,0.000,0.000,0.000,3.000,0.000,3.000,220
-duplicated_code_basic_007,basic,Finance,Recommend,duplicate_code,0,,0,,0,10.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,155
-duplicated_code_intermediate_001,intermediate,Healthcare,Analyze,duplicate_code,2,dead_code;duplicate_code,2,dead_code;duplicate_code,0,57.000,13.000,67.556,33.688,0.500,16.844,6.000,7.018,5.000,400
-duplicated_code_intermediate_002,intermediate,Scientific Computing,Recommend,duplicate_code,0,,0,,5,41.000,12.000,62.227,105.486,4.500,474.687,5.000,4.878,8.000,345
-duplicated_code_intermediate_003,intermediate,General Software,Measure,duplicate_code,1,dead_code,1,dead_code,0,29.000,10.000,57.001,27.000,1.000,27.000,3.000,0.000,2.000,270
-duplicated_code_intermediate_004,intermediate,E-commerce,Evaluate,duplicate_code,2,dead_code;magic_number,2,dead_code;magic_number,0,16.000,3.000,92.645,28.529,1.500,42.794,0.000,56.250,5.000,250
-duplicated_code_intermediate_005,intermediate,Finance,Implement,duplicate_code,3,broad_except;duplicate_code;magic_number,3,broad_except;duplicate_code;magic_number,0,54.000,18.000,64.193,58.810,1.111,65.345,14.000,7.407,10.000,434
-duplicated_code_intermediate_006,intermediate,Healthcare,Design,duplicate_code,2,dead_code;duplicate_code,2,dead_code;duplicate_code,0,57.000,13.000,67.556,33.688,0.500,16.844,6.000,7.018,5.000,400
-duplicated_code_intermediate_007,intermediate,Scientific Computing,Measure,duplicate_code,0,,0,,5,41.000,12.000,62.227,105.486,4.500,474.687,5.000,4.878,8.000,345
-duplicated_code_advanced_001,advanced,General Software,Compare,duplicate_code,0,,0,,0,28.000,14.000,79.822,167.179,2.095,350.279,11.000,42.857,0.000,340
-duplicated_code_advanced_002,advanced,E-commerce,Recommend,duplicate_code,1,duplicate_code,1,duplicate_code,0,30.000,21.000,100.000,0.000,0.000,0.000,0.000,13.333,4.000,255
-duplicated_code_advanced_003,advanced,Finance,Compare,duplicate_code,1,duplicate_code,1,duplicate_code,0,43.000,27.000,69.803,25.266,0.500,12.633,11.000,9.302,7.000,415
-duplicated_code_advanced_004,advanced,Healthcare,Analyze,duplicate_code,1,magic_number,1,magic_number,0,21.000,18.000,81.333,20.897,0.750,15.673,3.000,14.286,4.000,202
-duplicated_code_advanced_005,advanced,Scientific Computing,Compare,duplicate_code,1,magic_number,1,magic_number,0,24.000,9.000,87.257,28.074,1.200,33.688,7.000,41.667,9.000,289
-duplicated_code_advanced_006,advanced,General Software,Measure,duplicate_code,0,,0,,0,28.000,14.000,79.822,167.179,2.095,350.279,11.000,42.857,0.000,340
-dead_code_basic_001,basic,E-commerce,Implement,dead_code,1,magic_number,1,magic_number,0,18.000,10.000,82.223,39.863,1.714,68.337,5.000,16.667,2.000,142
-dead_code_basic_002,basic,Finance,Evaluate,dead_code,0,,0,,0,6.000,5.000,100.000,13.932,0.500,6.966,0.000,33.333,1.000,81
-dead_code_basic_003,basic,Healthcare,Write,dead_code,0,,0,,0,8.000,,,,,,,200.000,,225
-dead_code_basic_004,basic,Scientific Computing,Compare,dead_code,0,,0,,2,8.000,3.000,75.155,4.755,0.500,2.377,1.000,0.000,3.000,46
-dead_code_basic_005,basic,General Software,Write,dead_code,0,,0,,0,15.000,5.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,126
-dead_code_basic_006,basic,E-commerce,Report,dead_code,1,magic_number,1,magic_number,0,18.000,10.000,82.223,39.863,1.714,68.337,5.000,16.667,2.000,142
-dead_code_intermediate_001,intermediate,Finance,Evaluate,dead_code,0,,0,,6,30.000,9.000,82.072,13.932,0.500,6.966,3.000,20.000,7.000,379
-dead_code_intermediate_002,intermediate,Healthcare,Recommend,dead_code,2,inefficient_loop;magic_number,3,dead_code;inefficient_loop;magic_number,6,43.000,14.000,82.208,12.000,0.667,8.000,4.000,30.233,12.000,440
-dead_code_intermediate_003,intermediate,Scientific Computing,Implement,dead_code,1,magic_number,2,dead_code;magic_number,5,38.000,18.000,87.082,4.755,0.500,2.377,2.000,34.211,14.000,450
-dead_code_intermediate_004,intermediate,General Software,Analyze,dead_code,1,magic_number,1,magic_number,8,38.000,11.000,73.205,39.863,1.714,68.337,0.000,13.158,18.000,438
-dead_code_intermediate_005,intermediate,E-commerce,Analyze,dead_code,2,dead_code;magic_number,2,dead_code;magic_number,2,40.000,9.000,81.743,25.266,0.500,12.633,4.000,32.500,11.000,421
-dead_code_advanced_001,advanced,Finance,Measure,dead_code,1,dead_code,1,dead_code,0,29.000,13.000,100.000,0.000,0.000,0.000,0.000,24.138,1.000,306
-dead_code_advanced_002,advanced,Healthcare,Evaluate,dead_code,1,magic_number,2,dead_code;magic_number,17,48.000,8.000,79.388,41.513,1.500,62.270,4.000,35.417,14.000,557
-dead_code_advanced_003,advanced,Scientific Computing,Compare,dead_code,0,,1,dead_code,3,11.000,4.000,100.000,0.000,0.000,0.000,0.000,36.364,4.000,119
-dead_code_advanced_004,advanced,General Software,Compare,dead_code,0,,1,dead_code,10,14.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,8.000,215
-dead_code_advanced_005,advanced,E-commerce,Report,dead_code,1,dead_code,1,dead_code,0,29.000,13.000,100.000,0.000,0.000,0.000,0.000,24.138,1.000,306
-speculative_generality_basic_001,basic,E-commerce,Compare,,0,,0,,0,8.000,6.000,100.000,0.000,0.000,0.000,0.000,12.500,1.000,65
-speculative_generality_basic_002,basic,Finance,Implement,,0,,0,,0,25.000,10.000,59.197,27.000,1.000,27.000,6.000,0.000,1.000,227
-speculative_generality_basic_003,basic,Healthcare,Evaluate,,1,dead_code,1,dead_code,5,27.000,10.000,100.000,0.000,0.000,0.000,5.000,3.704,14.000,227
-speculative_generality_basic_004,basic,Scientific Computing,Write,,0,,0,,3,24.000,12.000,100.000,0.000,0.000,0.000,2.000,4.167,8.000,185
-speculative_generality_basic_005,basic,General Software,Measure,,1,magic_number,1,magic_number,0,53.000,30.000,58.433,226.178,1.571,355.423,20.000,7.547,14.000,480
-speculative_generality_basic_006,basic,E-commerce,Report,,0,,0,,0,8.000,6.000,100.000,0.000,0.000,0.000,0.000,12.500,1.000,65
-speculative_generality_intermediate_001,intermediate,Finance,Measure,,1,magic_number,1,magic_number,2,50.000,29.000,57.724,42.110,0.833,35.092,6.000,2.000,9.000,510
-speculative_generality_intermediate_002,intermediate,Healthcare,Design,,2,dead_code;magic_number,2,dead_code;magic_number,3,14.000,6.000,89.560,4.755,0.500,2.377,2.000,14.286,5.000,120
-speculative_generality_intermediate_003,intermediate,Scientific Computing,Analyze,,1,magic_number,1,magic_number,1,25.000,11.000,82.067,15.510,1.000,15.510,7.000,20.000,7.000,353
-speculative_generality_intermediate_004,intermediate,General Software,Analyze,,2,broad_except;dead_code,2,broad_except;dead_code,5,42.000,11.000,71.663,2.000,0.500,1.000,5.000,2.381,12.000,293
-speculative_generality_intermediate_005,intermediate,E-commerce,Design,,1,dead_code,1,dead_code,4,10.000,3.000,72.138,4.755,0.500,2.377,0.000,0.000,4.000,77
-speculative_generality_advanced_001,advanced,Finance,Implement,,0,,0,,4,21.000,10.000,74.764,62.907,3.438,216.244,4.000,9.524,7.000,222
-speculative_generality_advanced_002,advanced,Healthcare,Analyze,,0,,0,,0,26.000,10.000,79.913,20.897,0.750,15.673,5.000,15.385,1.000,402
-speculative_generality_advanced_003,advanced,Scientific Computing,Write,,1,duplicate_code,1,duplicate_code,0,119.000,,,,,,,0.000,,1024
-speculative_generality_advanced_004,advanced,General Software,Measure,,0,,0,,0,20.000,11.000,90.691,4.755,0.500,2.377,1.000,25.000,1.000,209
-speculative_generality_advanced_005,advanced,E-commerce,Design,,0,,0,,4,21.000,10.000,74.764,62.907,3.438,216.244,4.000,9.524,7.000,222
-primitive_obsession_basic_001,basic,E-commerce,Design,,0,,0,,0,3.000,1.000,100.000,0.000,0.000,0.000,0.000,33.333,1.000,58
-primitive_obsession_basic_002,basic,Finance,Recommend,,0,,0,,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,24
-primitive_obsession_basic_003,basic,Healthcare,Compare,,1,magic_number,1,magic_number,0,8.000,2.000,75.290,4.755,0.500,2.377,1.000,0.000,3.000,73
-primitive_obsession_basic_004,basic,Scientific Computing,Design,,0,,0,,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,25
-primitive_obsession_basic_005,basic,General Software,Design,,0,,0,,0,10.000,3.000,100.000,4.755,0.500,2.377,3.000,40.000,3.000,123
-primitive_obsession_basic_006,basic,E-commerce,Implement,,0,,0,,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,25
-primitive_obsession_intermediate_001,intermediate,Finance,List,,1,long_parameter_list,1,long_parameter_list,7,15.000,3.000,100.000,0.000,0.000,0.000,0.000,6.667,2.000,146
-primitive_obsession_intermediate_002,intermediate,Healthcare,Measure,,1,long_parameter_list,1,long_parameter_list,0,12.000,4.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,138
-primitive_obsession_intermediate_003,intermediate,Scientific Computing,Measure,,0,,0,,0,17.000,,,,,,,0.000,,138
-primitive_obsession_intermediate_004,intermediate,General Software,Compare,,0,,1,dead_code,7,27.000,9.000,100.000,0.000,0.000,0.000,0.000,22.222,10.000,257
-primitive_obsession_intermediate_005,intermediate,E-commerce,Report,,1,long_parameter_list,1,long_parameter_list,8,17.000,3.000,100.000,0.000,0.000,0.000,0.000,5.882,2.000,163
-primitive_obsession_intermediate_006,intermediate,Finance,List,,1,long_parameter_list,1,long_parameter_list,7,15.000,3.000,100.000,0.000,0.000,0.000,0.000,6.667,2.000,146
-primitive_obsession_advanced_001,advanced,Healthcare,Analyze,,1,long_parameter_list,1,long_parameter_list,0,36.000,14.000,55.774,53.774,1.000,53.774,5.000,0.000,1.000,318
-primitive_obsession_advanced_002,advanced,Scientific Computing,Recommend,,1,long_parameter_list,1,long_parameter_list,0,38.000,17.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,325
-primitive_obsession_advanced_003,advanced,General Software,Implement,,1,magic_number,1,magic_number,0,21.000,12.000,56.577,77.662,2.500,194.154,5.000,0.000,4.000,234
-primitive_obsession_advanced_004,advanced,E-commerce,List,,1,long_parameter_list,1,long_parameter_list,4,25.000,8.000,73.470,10.000,1.500,15.000,3.000,4.000,6.000,298
-primitive_obsession_advanced_005,advanced,Finance,List,,1,long_parameter_list,1,long_parameter_list,0,36.000,14.000,55.774,53.774,1.000,53.774,5.000,0.000,1.000,318
-primitive_obsession_advanced_006,advanced,Healthcare,Evaluate,,1,long_parameter_list,1,long_parameter_list,0,38.000,17.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,325
-switch_statements_basic_001,basic,E-commerce,Design,,1,magic_number,1,magic_number,0,13.000,6.000,63.519,42.110,0.833,35.092,6.000,0.000,0.000,103
-switch_statements_basic_002,basic,Finance,Implement,,1,magic_number,1,magic_number,0,13.000,6.000,63.519,42.110,0.833,35.092,6.000,0.000,0.000,109
-switch_statements_basic_003,basic,Healthcare,Analyze,,1,magic_number,1,magic_number,0,13.000,6.000,63.519,42.110,0.833,35.092,6.000,0.000,1.000,102
-switch_statements_basic_004,basic,Scientific Computing,Implement,,0,,0,,0,9.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,90
-switch_statements_basic_005,basic,General Software,Report,,1,magic_number,1,magic_number,0,9.000,4.000,94.923,59.795,1.500,89.692,4.000,44.444,0.000,123
-switch_statements_basic_006,basic,E-commerce,Recommend,,1,magic_number,1,magic_number,0,13.000,6.000,92.371,42.110,0.833,35.092,6.000,46.154,1.000,144
-switch_statements_intermediate_001,intermediate,Finance,Write,,1,magic_number,1,magic_number,0,75.000,31.000,36.902,375.293,1.765,662.282,51.000,0.000,0.000,608
-switch_statements_intermediate_002,intermediate,Healthcare,Recommend,,1,magic_number,1,magic_number,0,31.000,21.000,46.065,450.034,1.436,646.203,26.000,0.000,0.000,313
-switch_statements_intermediate_003,intermediate,Scientific Computing,Implement,,2,long_method;magic_number,2,long_method;magic_number,0,71.000,29.000,38.177,319.818,2.154,688.838,49.000,0.000,1.000,573
-switch_statements_intermediate_004,intermediate,General Software,Report,,1,magic_number,1,magic_number,0,37.000,15.000,48.525,150.568,1.273,191.633,27.000,0.000,0.000,290
-switch_statements_intermediate_005,intermediate,E-commerce,Design,,1,magic_number,1,magic_number,0,20.000,12.000,54.241,178.413,1.647,293.857,16.000,0.000,5.000,196
-switch_statements_intermediate_006,intermediate,Finance,List,,1,magic_number,1,magic_number,0,75.000,31.000,36.902,375.293,1.765,662.282,51.000,0.000,0.000,608
-switch_statements_advanced_001,advanced,Healthcare,Report,,3,dead_code;long_parameter_list;magic_number,3,dead_code;long_parameter_list;magic_number,0,20.000,9.000,78.630,262.331,3.750,983.741,8.000,25.000,0.000,224
-switch_statements_advanced_002,advanced,Scientific Computing,Report,,4,duplicate_code;long_method;long_parameter_list;magic_number,4,duplicate_code;long_method;long_parameter_list;magic_number,0,163.000,71.000,23.420,480.000,2.667,1280.000,115.000,0.000,0.000,991
-switch_statements_advanced_003,advanced,General Software,Compare,,5,deep_nesting;duplicate_code;long_method;long_parameter_list;magic_number,5,deep_nesting;duplicate_code;long_method;long_parameter_list;magic_number,0,114.000,40.000,30.818,505.666,2.053,1037.945,159.000,0.000,0.000,682
-switch_statements_advanced_004,advanced,E-commerce,Analyze,,1,duplicate_code,1,duplicate_code,0,125.000,,,,,,,0.000,,1024
-switch_statements_advanced_005,advanced,Finance,Report,,4,deep_nesting;duplicate_code;long_parameter_list;magic_number,4,deep_nesting;duplicate_code;long_parameter_list;magic_number,0,61.000,23.000,51.070,120.000,1.429,171.429,80.000,1.639,0.000,589
-switch_statements_advanced_006,advanced,Healthcare,Implement,,3,dead_code;long_parameter_list;magic_number,3,dead_code;long_parameter_list;magic_number,0,20.000,9.000,78.630,262.331,3.750,983.741,8.000,25.000,0.000,224
-parallel_inheritance_basic_001,basic,E-commerce,Recommend,,0,,0,,0,38.000,30.000,100.000,0.000,0.000,0.000,6.000,0.000,3.000,259
-parallel_inheritance_basic_002,basic,Finance,Recommend,,0,,0,,0,17.000,16.000,100.000,0.000,0.000,0.000,0.000,17.647,2.000,120
-parallel_inheritance_basic_003,basic,Healthcare,Write,,0,,0,,0,27.000,21.000,100.000,0.000,0.000,0.000,0.000,11.111,2.000,221
-parallel_inheritance_basic_004,basic,Scientific Computing,Implement,,0,,0,,0,26.000,25.000,100.000,0.000,0.000,0.000,0.000,0.000,6.000,160
-parallel_inheritance_basic_005,basic,General Software,Analyze,,0,,0,,0,21.000,21.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,120
-parallel_inheritance_basic_006,basic,E-commerce,List,,0,,0,,0,38.000,30.000,100.000,0.000,0.000,0.000,6.000,0.000,3.000,259
-parallel_inheritance_intermediate_001,intermediate,Finance,Design,,0,,0,,0,36.000,36.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,226
-parallel_inheritance_intermediate_002,intermediate,Healthcare,Write,,1,duplicate_code,1,duplicate_code,0,65.000,34.000,51.911,6.000,1.500,9.000,0.000,0.000,16.000,501
-parallel_inheritance_intermediate_003,intermediate,Scientific Computing,Write,,0,,0,,0,14.000,13.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,121
-parallel_inheritance_intermediate_004,intermediate,General Software,Report,,0,,0,,0,18.000,15.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,105
-parallel_inheritance_intermediate_005,intermediate,E-commerce,Analyze,,0,,0,,0,18.000,15.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,116
-parallel_inheritance_advanced_001,advanced,Finance,Measure,,0,,0,,0,65.000,40.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,340
-parallel_inheritance_advanced_002,advanced,Healthcare,List,,0,,0,,0,37.000,31.000,100.000,0.000,0.000,0.000,0.000,0.000,3.000,283
-parallel_inheritance_advanced_003,advanced,Scientific Computing,Design,,0,,0,,0,23.000,19.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,163
-parallel_inheritance_advanced_004,advanced,General Software,Write,,0,,0,,0,26.000,22.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,163
-parallel_inheritance_advanced_005,advanced,E-commerce,Analyze,,0,,0,,0,65.000,40.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,340
-lazy_class_basic_001,basic,E-commerce,Compare,,0,,0,,0,3.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,22
-lazy_class_basic_002,basic,Finance,Measure,,1,dead_code,1,dead_code,0,4.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,30
-lazy_class_basic_003,basic,Healthcare,Report,,0,,0,,0,5.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,63
-lazy_class_basic_004,basic,Scientific Computing,Write,,0,,0,,0,5.000,4.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,41
-lazy_class_basic_005,basic,General Software,Recommend,,0,,0,,0,3.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,19
-lazy_class_basic_006,basic,E-commerce,Compare,,0,,0,,0,8.000,6.000,69.605,27.000,1.800,48.600,1.000,0.000,0.000,54
-lazy_class_intermediate_001,intermediate,Finance,Analyze,,0,,0,,0,9.000,9.000,100.000,0.000,0.000,0.000,1.000,0.000,2.000,61
-lazy_class_intermediate_002,intermediate,Healthcare,Measure,,0,,0,,0,14.000,9.000,71.179,4.755,0.500,2.377,0.000,0.000,1.000,101
-lazy_class_intermediate_003,intermediate,Scientific Computing,Evaluate,,1,magic_number,1,magic_number,0,17.000,12.000,59.375,57.110,2.000,114.221,0.000,0.000,4.000,156
-lazy_class_intermediate_004,intermediate,General Software,Report,,0,,0,,0,13.000,10.000,65.006,27.000,1.800,48.600,0.000,0.000,1.000,93
-lazy_class_intermediate_005,intermediate,E-commerce,Measure,,0,,0,,0,13.000,10.000,100.000,0.000,0.000,0.000,0.000,7.692,2.000,97
-lazy_class_advanced_001,advanced,Finance,Measure,,1,magic_number,1,magic_number,0,19.000,19.000,58.064,68.000,3.300,224.400,1.000,0.000,2.000,169
-lazy_class_advanced_002,advanced,Healthcare,Report,,1,magic_number,1,magic_number,0,19.000,22.000,70.542,87.568,3.500,306.489,4.000,5.263,2.000,211
-lazy_class_advanced_003,advanced,Scientific Computing,List,,0,,0,,0,30.000,20.000,55.050,39.863,1.714,68.337,3.000,0.000,9.000,233
-lazy_class_advanced_004,advanced,General Software,Implement,,0,,0,,0,28.000,20.000,57.132,25.266,0.500,12.633,0.000,0.000,3.000,211
-lazy_class_advanced_005,advanced,E-commerce,Recommend,,1,magic_number,1,magic_number,0,19.000,19.000,58.064,68.000,3.300,224.400,1.000,0.000,2.000,169
-temporary_field_basic_001,basic,E-commerce,Design,,0,,0,,0,35.000,4.000,83.752,4.755,0.500,2.377,0.000,5.714,5.000,363
-temporary_field_basic_002,basic,Finance,Report,,1,magic_number,1,magic_number,0,22.000,10.000,78.938,76.000,2.727,207.273,4.000,18.182,5.000,243
-temporary_field_basic_003,basic,Healthcare,Analyze,,0,,0,,0,5.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,35
-temporary_field_basic_004,basic,Scientific Computing,Recommend,,0,,0,,0,5.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,38
-temporary_field_basic_005,basic,General Software,Design,,1,magic_number,1,magic_number,0,12.000,7.000,90.118,12.000,0.667,8.000,3.000,16.667,1.000,96
-temporary_field_basic_006,basic,E-commerce,Compare,,0,,0,,0,35.000,4.000,83.752,4.755,0.500,2.377,0.000,5.714,5.000,363
-temporary_field_intermediate_001,intermediate,Finance,List,,0,,0,,0,8.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,63
-temporary_field_intermediate_002,intermediate,Healthcare,Compare,,0,,0,,0,8.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,70
-temporary_field_intermediate_003,intermediate,Scientific Computing,Recommend,,0,,0,,0,8.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,65
-temporary_field_intermediate_004,intermediate,General Software,Design,,0,,0,,0,17.000,8.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,147
-temporary_field_intermediate_005,intermediate,E-commerce,Report,,0,,0,,0,7.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,53
-temporary_field_advanced_001,advanced,Finance,Compare,,0,,0,,0,12.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,93
-temporary_field_advanced_002,advanced,Healthcare,List,,0,,0,,0,28.000,6.000,100.000,0.000,0.000,0.000,2.000,21.429,1.000,337
-temporary_field_advanced_003,advanced,Scientific Computing,List,,0,,0,,11,32.000,4.000,100.000,0.000,0.000,0.000,0.000,9.375,3.000,296
-temporary_field_advanced_004,advanced,General Software,Report,,0,,0,,0,11.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,91
-temporary_field_advanced_005,advanced,E-commerce,Compare,,0,,0,,0,12.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,93
-message_chains_basic_001,basic,E-commerce,Report,,0,,0,,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,22
-message_chains_basic_002,basic,Finance,Implement,,1,magic_number,1,magic_number,0,12.000,3.000,90.387,12.000,0.667,8.000,3.000,16.667,0.000,126
-message_chains_basic_003,basic,Healthcare,Write,,0,,0,,0,5.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,50
-message_chains_basic_004,basic,Scientific Computing,Measure,,0,,0,,0,3.000,1.000,100.000,0.000,0.000,0.000,0.000,33.333,0.000,46
-message_chains_basic_005,basic,General Software,Compare,,1,magic_number,1,magic_number,0,5.000,4.000,72.641,44.973,1.000,44.973,3.000,0.000,0.000,61
-message_chains_basic_006,basic,E-commerce,Compare,,0,,0,,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,22
-message_chains_intermediate_001,intermediate,Finance,Write,,1,magic_number,1,magic_number,0,2.000,1.000,88.557,4.755,0.500,2.377,0.000,0.000,0.000,29
-message_chains_intermediate_002,intermediate,Healthcare,Compare,,0,,0,,0,3.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,49
-message_chains_intermediate_003,intermediate,Scientific Computing,Analyze,,0,,0,,0,7.000,1.000,100.000,2.000,0.500,1.000,0.000,28.571,2.000,125
-message_chains_intermediate_004,intermediate,General Software,Report,,1,magic_number,1,magic_number,0,14.000,5.000,87.399,12.000,0.667,8.000,7.000,14.286,0.000,110
-message_chains_intermediate_005,intermediate,E-commerce,Compare,,0,,0,,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,24
-message_chains_advanced_001,advanced,Finance,Evaluate,,2,dead_code;magic_number,2,dead_code;magic_number,0,14.000,6.000,88.232,53.774,2.500,134.436,10.000,28.571,1.000,214
-message_chains_advanced_002,advanced,Healthcare,Measure,,0,,0,,0,13.000,5.000,88.352,39.863,2.667,106.302,7.000,23.077,0.000,149
-message_chains_advanced_003,advanced,Scientific Computing,Write,,0,,0,,0,10.000,,,,,,,10.000,,181
-message_chains_advanced_004,advanced,General Software,Implement,,0,,0,,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,32
-message_chains_advanced_005,advanced,E-commerce,Measure,,1,magic_number,1,magic_number,0,8.000,2.000,75.290,4.755,0.500,2.377,2.000,0.000,2.000,74
-middle_man_basic_001,basic,E-commerce,Measure,,0,,0,,0,9.000,6.000,100.000,0.000,0.000,0.000,0.000,0.000,3.000,75
-middle_man_basic_002,basic,Finance,Write,,0,,0,,0,11.000,7.000,100.000,0.000,0.000,0.000,0.000,0.000,4.000,97
-middle_man_basic_003,basic,Healthcare,Analyze,,0,,0,,0,7.000,5.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,57
-middle_man_basic_004,basic,Scientific Computing,Analyze,,0,,0,,0,7.000,5.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,60
-middle_man_basic_005,basic,General Software,Measure,,0,,0,,0,11.000,6.000,100.000,0.000,0.000,0.000,0.000,0.000,4.000,107
-middle_man_basic_006,basic,E-commerce,Evaluate,,0,,0,,0,9.000,6.000,100.000,0.000,0.000,0.000,0.000,0.000,3.000,75
-middle_man_intermediate_001,intermediate,Finance,Design,,0,,0,,0,27.000,15.000,100.000,0.000,0.000,0.000,0.000,0.000,12.000,249
-middle_man_intermediate_002,intermediate,Healthcare,Evaluate,,0,,0,,0,13.000,8.000,100.000,0.000,0.000,0.000,0.000,0.000,5.000,136
-middle_man_intermediate_003,intermediate,Scientific Computing,Design,,0,,0,,0,17.000,10.000,100.000,0.000,0.000,0.000,0.000,0.000,7.000,136
-middle_man_intermediate_004,intermediate,General Software,Compare,,0,,0,,0,11.000,7.000,100.000,0.000,0.000,0.000,0.000,0.000,5.000,114
-middle_man_intermediate_005,intermediate,E-commerce,Compare,,0,,0,,0,11.000,7.000,100.000,0.000,0.000,0.000,0.000,0.000,4.000,87
-middle_man_advanced_001,advanced,Finance,Write,,0,,0,,0,17.000,8.000,100.000,0.000,0.000,0.000,0.000,0.000,5.000,167
-middle_man_advanced_002,advanced,Healthcare,Compare,,0,,0,,0,14.000,7.000,100.000,0.000,0.000,0.000,0.000,0.000,4.000,136
-middle_man_advanced_003,advanced,Scientific Computing,Implement,,0,,0,,0,13.000,4.000,100.000,0.000,0.000,0.000,0.000,0.000,6.000,134
-middle_man_advanced_004,advanced,General Software,Implement,,0,,0,,0,14.000,7.000,100.000,0.000,0.000,0.000,0.000,0.000,8.000,122
-middle_man_advanced_005,advanced,E-commerce,Evaluate,,0,,0,,0,25.000,19.000,86.759,4.755,0.500,2.377,3.000,16.000,7.000,219
-inappropriate_intimacy_basic_001,basic,E-commerce,Implement,,0,,0,,0,7.000,6.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,64
-inappropriate_intimacy_basic_002,basic,Finance,Implement,,0,,0,,0,24.000,13.000,59.085,22.459,1.875,42.110,2.000,0.000,3.000,163
-inappropriate_intimacy_basic_003,basic,Healthcare,Design,,0,,0,,0,12.000,8.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,95
-inappropriate_intimacy_basic_004,basic,Scientific Computing,List,,0,,0,,0,15.000,9.000,65.981,12.000,2.000,24.000,2.000,0.000,2.000,112
-inappropriate_intimacy_basic_005,basic,General Software,Evaluate,,0,,0,,0,26.000,12.000,60.367,12.000,0.667,8.000,2.000,0.000,9.000,201
-inappropriate_intimacy_basic_006,basic,E-commerce,Design,,0,,0,,0,7.000,6.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,64
-inappropriate_intimacy_intermediate_001,intermediate,Finance,Implement,,0,,0,,0,41.000,26.000,62.001,173.065,3.273,566.394,18.000,7.317,3.000,430
-inappropriate_intimacy_intermediate_002,intermediate,Healthcare,Implement,,0,,0,,0,35.000,16.000,100.000,0.000,0.000,0.000,0.000,0.000,3.000,270
-inappropriate_intimacy_intermediate_003,intermediate,Scientific Computing,Write,,0,,0,,0,24.000,13.000,63.806,4.755,0.500,2.377,2.000,0.000,3.000,207
-inappropriate_intimacy_intermediate_004,intermediate,General Software,Evaluate,,1,dead_code,1,dead_code,0,29.000,13.000,77.405,72.000,2.000,144.000,1.000,20.690,5.000,354
-inappropriate_intimacy_intermediate_005,intermediate,E-commerce,Measure,,0,,0,,0,14.000,10.000,100.000,0.000,0.000,0.000,0.000,0.000,4.000,94
-inappropriate_intimacy_intermediate_006,intermediate,Finance,Implement,,0,,0,,0,47.000,26.000,59.780,173.065,3.273,566.394,20.000,6.383,2.000,441
-inappropriate_intimacy_advanced_001,advanced,Healthcare,Measure,,0,,0,,0,27.000,19.000,62.421,4.755,0.500,2.377,0.000,0.000,0.000,230
-inappropriate_intimacy_advanced_002,advanced,Scientific Computing,Recommend,,0,,0,,0,25.000,14.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,189
-inappropriate_intimacy_advanced_003,advanced,General Software,Report,,0,,0,,7,38.000,21.000,65.155,13.932,0.500,6.966,4.000,2.632,12.000,308
-inappropriate_intimacy_advanced_004,advanced,E-commerce,Implement,,0,,0,,7,20.000,12.000,100.000,0.000,0.000,0.000,0.000,5.000,6.000,187
-inappropriate_intimacy_advanced_005,advanced,Finance,Write,,0,,0,,4,24.000,11.000,82.368,15.510,1.000,15.510,2.000,16.667,7.000,194
-inappropriate_intimacy_advanced_006,advanced,Healthcare,Write,,0,,0,,0,27.000,19.000,62.421,4.755,0.500,2.377,0.000,0.000,0.000,230
-alternative_classes_different_interfaces_basic_001,basic,E-commerce,Compare,,0,,0,,0,11.000,8.000,100.000,0.000,0.000,0.000,0.000,9.091,4.000,104
-alternative_classes_different_interfaces_basic_002,basic,Finance,Compare,,0,,0,,0,6.000,6.000,100.000,0.000,0.000,0.000,0.000,33.333,1.000,76
-alternative_classes_different_interfaces_basic_003,basic,Healthcare,List,,2,broad_except;duplicate_code,1,broad_except,0,36.000,12.000,100.000,0.000,0.000,0.000,2.000,0.000,5.000,220
-alternative_classes_different_interfaces_basic_004,basic,Scientific Computing,Implement,,0,,0,,0,13.000,8.000,100.000,0.000,0.000,0.000,0.000,0.000,5.000,117
-alternative_classes_different_interfaces_basic_005,basic,General Software,Evaluate,,0,,0,,0,20.000,8.000,100.000,0.000,0.000,0.000,0.000,0.000,3.000,134
-alternative_classes_different_interfaces_basic_006,basic,E-commerce,Compare,,0,,0,,0,11.000,8.000,100.000,0.000,0.000,0.000,0.000,9.091,4.000,104
-alternative_classes_different_interfaces_intermediate_001,intermediate,Finance,Analyze,,0,,0,,0,15.000,12.000,100.000,0.000,0.000,0.000,0.000,40.000,0.000,133
-alternative_classes_different_interfaces_intermediate_002,intermediate,Healthcare,Compare,,1,dead_code,1,dead_code,0,23.000,12.000,100.000,0.000,0.000,0.000,0.000,0.000,10.000,236
-alternative_classes_different_interfaces_intermediate_003,intermediate,Scientific Computing,Design,,0,,0,,0,9.000,9.000,100.000,0.000,0.000,0.000,0.000,33.333,0.000,102
-alternative_classes_different_interfaces_intermediate_004,intermediate,General Software,Design,,0,,0,,0,9.000,9.000,100.000,0.000,0.000,0.000,0.000,33.333,0.000,89
-alternative_classes_different_interfaces_intermediate_005,intermediate,E-commerce,Evaluate,,0,,0,,0,28.000,17.000,58.608,16.253,1.333,21.671,3.000,0.000,9.000,238
-alternative_classes_different_interfaces_advanced_001,advanced,Finance,List,,0,,0,,0,29.000,12.000,100.000,0.000,0.000,0.000,0.000,6.897,2.000,250
-alternative_classes_different_interfaces_advanced_002,advanced,Healthcare,Compare,,1,magic_number,1,magic_number,0,17.000,13.000,86.099,12.000,0.667,8.000,3.000,17.647,3.000,193
-alternative_classes_different_interfaces_advanced_003,advanced,Scientific Computing,Evaluate,,0,,0,,0,15.000,12.000,100.000,0.000,0.000,0.000,0.000,20.000,0.000,152
-alternative_classes_different_interfaces_advanced_004,advanced,General Software,Compare,,0,,0,,0,30.000,12.000,100.000,0.000,0.000,0.000,0.000,0.000,13.000,241
-alternative_classes_different_interfaces_advanced_005,advanced,E-commerce,Compare,,1,dead_code,1,dead_code,0,26.000,12.000,100.000,0.000,0.000,0.000,0.000,0.000,9.000,262
-incomplete_library_class_basic_001,basic,E-commerce,Write,,2,dead_code;magic_number,2,dead_code;magic_number,0,11.000,5.000,91.014,46.605,2.000,93.209,2.000,27.273,3.000,120
-incomplete_library_class_basic_002,basic,Finance,Evaluate,,1,magic_number,1,magic_number,0,16.000,9.000,62.984,39.863,1.714,68.337,5.000,0.000,4.000,125
-incomplete_library_class_basic_003,basic,Healthcare,Write,,0,,0,,1,14.000,4.000,83.832,4.755,0.500,2.377,2.000,7.143,7.000,147
-incomplete_library_class_basic_004,basic,Scientific Computing,Design,,2,broad_except;perf_try_in_loop,2,broad_except;perf_try_in_loop,3,40.000,14.000,61.318,48.432,3.750,181.620,7.000,2.500,10.000,319
-incomplete_library_class_basic_005,basic,General Software,Implement,,1,dead_code,1,dead_code,0,11.000,6.000,88.972,4.755,0.500,2.377,7.000,9.091,7.000,128
-incomplete_library_class_intermediate_001,intermediate,E-commerce,Analyze,,0,,0,,4,34.000,21.000,60.843,256.464,7.562,1939.510,6.000,5.882,6.000,330
-incomplete_library_class_intermediate_002,intermediate,Finance,Design,,0,,0,,0,76.000,,,,,,,0.000,,1024
-incomplete_library_class_intermediate_003,intermediate,Healthcare,Recommend,,0,,0,,0,19.000,9.000,72.197,55.507,1.500,83.260,0.000,5.263,6.000,213
-incomplete_library_class_intermediate_004,intermediate,Scientific Computing,Write,,1,magic_number,1,magic_number,9,24.000,8.000,77.437,82.045,2.545,208.841,3.000,16.667,11.000,271
-incomplete_library_class_intermediate_005,intermediate,General Software,Write,,1,dead_code,1,dead_code,4,20.000,6.000,78.946,4.755,0.500,2.377,1.000,5.000,9.000,209
-incomplete_library_class_advanced_001,advanced,E-commerce,Report,,1,dead_code,1,dead_code,0,31.000,15.000,71.278,103.726,3.429,355.633,2.000,12.903,7.000,390
-incomplete_library_class_advanced_002,advanced,Finance,Measure,,1,magic_number,1,magic_number,5,30.000,9.000,79.468,4.755,0.500,2.377,3.000,10.000,10.000,300
-incomplete_library_class_advanced_003,advanced,Healthcare,List,,2,dead_code;magic_number,2,dead_code;magic_number,0,26.000,11.000,83.293,12.000,0.667,8.000,3.000,19.231,5.000,238
-incomplete_library_class_advanced_004,advanced,Scientific Computing,Compare,,1,dead_code,1,dead_code,5,18.000,2.000,100.000,0.000,0.000,0.000,0.000,16.667,11.000,221
-data_class_basic_001,basic,E-commerce,Evaluate,,0,,0,,0,38.000,15.000,54.770,18.575,0.500,9.288,4.000,0.000,2.000,255
-data_class_basic_002,basic,Finance,Analyze,,0,,0,,0,22.000,8.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,135
-data_class_basic_003,basic,Healthcare,Implement,,0,,0,,0,37.000,13.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,233
-data_class_basic_004,basic,Scientific Computing,Analyze,,0,,0,,0,17.000,8.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,118
-data_class_basic_005,basic,General Software,List,,0,,0,,0,7.000,5.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,56
-data_class_basic_006,basic,E-commerce,Measure,,0,,0,,0,38.000,15.000,54.770,18.575,0.500,9.288,4.000,0.000,2.000,255
-data_class_intermediate_001,intermediate,Finance,Recommend,,1,long_parameter_list,1,long_parameter_list,0,77.000,22.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,527
-data_class_intermediate_002,intermediate,Healthcare,Analyze,,1,long_parameter_list,1,long_parameter_list,0,21.000,4.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,175
-data_class_intermediate_003,intermediate,Scientific Computing,Measure,,1,long_parameter_list,1,long_parameter_list,0,19.000,8.000,61.634,24.000,1.500,36.000,1.000,0.000,2.000,155
-data_class_intermediate_004,intermediate,General Software,Design,,1,long_parameter_list,1,long_parameter_list,0,34.000,11.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,225
-data_class_intermediate_005,intermediate,E-commerce,Measure,,0,,0,,0,47.000,18.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,317
-data_class_advanced_001,advanced,Finance,Evaluate,,0,,0,,0,75.000,25.000,100.000,0.000,0.000,0.000,1.000,0.000,15.000,569
-data_class_advanced_002,advanced,Healthcare,Evaluate,,0,,0,,0,72.000,23.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,464
-data_class_advanced_003,advanced,Scientific Computing,Write,,1,long_parameter_list,1,long_parameter_list,0,58.000,19.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,406
-data_class_advanced_004,advanced,General Software,Report,,0,,0,,0,12.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,87
-data_class_advanced_005,advanced,E-commerce,Report,,0,,0,,0,47.000,21.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,339
-refused_bequest_basic_001,basic,E-commerce,Measure,,0,,0,,0,17.000,10.000,61.926,27.000,1.500,40.500,2.000,0.000,6.000,107
-refused_bequest_basic_002,basic,Finance,Recommend,,0,,0,,0,7.000,5.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,73
-refused_bequest_basic_003,basic,Healthcare,Design,,0,,0,,0,7.000,5.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,39
-refused_bequest_basic_004,basic,Scientific Computing,Measure,,0,,0,,0,9.000,6.000,100.000,0.000,0.000,0.000,0.000,0.000,3.000,83
-refused_bequest_basic_005,basic,General Software,Recommend,,0,,0,,0,7.000,5.000,100.000,0.000,0.000,0.000,0.000,28.571,2.000,60
-refused_bequest_basic_006,basic,E-commerce,Report,,0,,0,,0,17.000,10.000,61.926,27.000,1.500,40.500,2.000,0.000,6.000,107
-refused_bequest_intermediate_001,intermediate,Finance,Design,,0,,0,,0,11.000,7.000,100.000,0.000,0.000,0.000,0.000,0.000,3.000,103
-refused_bequest_intermediate_002,intermediate,Healthcare,Design,,0,,0,,0,4.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,3.000,58
-refused_bequest_intermediate_003,intermediate,Scientific Computing,List,,0,,0,,0,7.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,63
-refused_bequest_intermediate_004,intermediate,General Software,Compare,,0,,0,,0,11.000,7.000,100.000,0.000,0.000,0.000,0.000,9.091,2.000,85
-refused_bequest_intermediate_005,intermediate,E-commerce,Recommend,,0,,0,,0,6.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,63
-refused_bequest_advanced_001,advanced,Finance,List,,0,,0,,0,9.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,96
-refused_bequest_advanced_002,advanced,Healthcare,Evaluate,,0,,0,,0,13.000,8.000,100.000,0.000,0.000,0.000,0.000,0.000,3.000,127
-refused_bequest_advanced_003,advanced,Scientific Computing,List,,0,,0,,0,7.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,70
-refused_bequest_advanced_004,advanced,General Software,Compare,,0,,0,,0,4.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,52
-refused_bequest_advanced_005,advanced,E-commerce,Design,,0,,0,,0,8.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,60
-comments_smell_basic_001,basic,E-commerce,Evaluate,,0,,0,,3,11.000,3.000,87.041,15.510,1.000,15.510,4.000,72.727,2.000,275
-comments_smell_basic_002,basic,Finance,Compare,,0,,0,,0,8.000,5.000,100.000,0.000,0.000,0.000,0.000,25.000,0.000,289
-comments_smell_basic_003,basic,Healthcare,Design,,0,,0,,1,9.000,3.000,86.660,36.000,2.400,86.400,2.000,44.444,3.000,160
-comments_smell_basic_004,basic,Scientific Computing,Report,,0,,0,,0,3.000,2.000,100.000,4.755,0.500,2.377,1.000,66.667,0.000,49
-comments_smell_basic_005,basic,General Software,List,,0,,0,,0,9.000,4.000,63.663,24.000,1.500,36.000,1.000,11.111,3.000,198
-comments_smell_intermediate_001,intermediate,E-commerce,Measure,,1,dead_code,1,dead_code,4,37.000,5.000,83.182,108.000,4.091,441.818,3.000,18.919,4.000,599
-comments_smell_intermediate_002,intermediate,Finance,Report,,1,duplicate_code,1,duplicate_code,0,,,,,,,,,,1024
-comments_smell_intermediate_003,intermediate,Healthcare,Measure,,1,magic_number,1,magic_number,1,35.000,9.000,86.147,15.510,1.000,15.510,1.000,45.714,16.000,471
-comments_smell_intermediate_004,intermediate,Scientific Computing,Design,,0,,0,,3,15.000,1.000,100.000,0.000,0.000,0.000,0.000,46.667,7.000,285
-comments_smell_intermediate_005,intermediate,General Software,List,,0,,0,,1,19.000,1.000,90.725,25.266,1.200,30.319,0.000,47.368,10.000,524
-comments_smell_advanced_001,advanced,E-commerce,Evaluate,,1,duplicate_code,1,duplicate_code,0,48.000,,,,,,,93.750,,1024
-comments_smell_advanced_002,advanced,Finance,Evaluate,,2,deep_nesting;magic_number,2,deep_nesting;magic_number,3,55.000,9.000,80.679,28.529,1.500,42.794,31.000,16.364,6.000,603
-comments_smell_advanced_003,advanced,Healthcare,Report,,1,dead_code,1,dead_code,0,14.000,1.000,100.000,0.000,0.000,0.000,0.000,57.143,7.000,431
-comments_smell_advanced_004,advanced,Scientific Computing,Design,,0,,1,dead_code,21,36.000,1.000,85.699,20.897,0.750,15.673,6.000,41.667,11.000,498
-magic_numbers_basic_001,basic,E-commerce,Implement,magic_number,0,,0,,0,5.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,57
-magic_numbers_basic_002,basic,Finance,Measure,magic_number,1,magic_number,1,magic_number,0,2.000,2.000,83.142,27.000,1.800,48.600,1.000,0.000,0.000,28
-magic_numbers_basic_003,basic,Healthcare,Recommend,magic_number,0,,0,,0,2.000,1.000,88.557,4.755,0.500,2.377,0.000,0.000,0.000,19
-magic_numbers_basic_004,basic,Scientific Computing,Measure,magic_number,1,magic_number,1,magic_number,0,9.000,4.000,65.737,69.760,1.750,122.081,4.000,0.000,0.000,78
-magic_numbers_basic_005,basic,General Software,Compare,magic_number,1,magic_number,1,magic_number,0,15.000,7.000,61.273,54.000,0.857,46.286,7.000,0.000,0.000,116
-magic_numbers_basic_006,basic,E-commerce,Evaluate,magic_number,0,,0,,0,5.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,57
-magic_numbers_intermediate_001,intermediate,Finance,Implement,magic_number,2,dead_code;magic_number,2,dead_code;magic_number,0,21.000,7.000,54.867,155.589,5.143,800.174,6.000,0.000,2.000,192
-magic_numbers_intermediate_002,intermediate,Healthcare,Evaluate,magic_number,1,long_parameter_list,1,long_parameter_list,0,7.000,3.000,66.797,112.588,3.462,389.728,2.000,0.000,0.000,96
-magic_numbers_intermediate_003,intermediate,Scientific Computing,Evaluate,magic_number,2,complex_conditional;magic_number,2,complex_conditional;magic_number,0,9.000,11.000,84.998,259.461,1.694,439.409,8.000,11.111,0.000,154
-magic_numbers_intermediate_004,intermediate,General Software,Recommend,magic_number,0,,0,,0,2.000,1.000,78.505,129.658,3.333,432.193,0.000,0.000,1.000,79
-magic_numbers_intermediate_005,intermediate,E-commerce,Measure,magic_number,0,,0,,0,6.000,1.000,70.773,53.774,1.667,89.624,0.000,0.000,0.000,96
-magic_numbers_intermediate_006,intermediate,Finance,Measure,magic_number,2,dead_code;magic_number,2,dead_code;magic_number,0,21.000,7.000,54.867,155.589,5.143,800.174,6.000,0.000,2.000,192
-magic_numbers_advanced_001,advanced,Healthcare,Design,magic_number,1,magic_number,1,magic_number,0,32.000,10.000,79.561,151.304,3.667,554.780,5.000,40.625,6.000,442
-magic_numbers_advanced_002,advanced,Scientific Computing,Implement,magic_number,0,,0,,7,13.000,1.000,76.284,116.692,1.588,185.334,0.000,7.692,2.000,216
-magic_numbers_advanced_003,advanced,General Software,Compare,magic_number,0,,0,,2,19.000,7.000,87.071,77.709,2.100,163.189,3.000,26.316,5.000,363
-magic_numbers_advanced_004,advanced,E-commerce,List,magic_number,0,,0,,1,14.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,7.000,137
-magic_numbers_advanced_005,advanced,Finance,Report,magic_number,2,dead_code;magic_number,2,dead_code;magic_number,6,20.000,4.000,78.002,88.811,1.455,129.179,4.000,15.000,3.000,281
-magic_numbers_advanced_006,advanced,Healthcare,Recommend,magic_number,1,magic_number,1,magic_number,0,32.000,10.000,79.561,151.304,3.667,554.780,5.000,40.625,6.000,442
-deep_nesting_basic_001,basic,E-commerce,Recommend,deep_nesting,1,magic_number,1,magic_number,0,11.000,3.000,65.441,43.020,2.000,86.039,3.000,0.000,0.000,93
-deep_nesting_basic_002,basic,Finance,Implement,deep_nesting,0,,0,,0,21.000,10.000,90.549,18.575,0.500,9.288,4.000,47.619,5.000,197
-deep_nesting_basic_003,basic,Healthcare,Write,deep_nesting,0,,0,,0,6.000,5.000,100.000,0.000,0.000,0.000,10.000,16.667,1.000,76
-deep_nesting_basic_004,basic,Scientific Computing,Measure,deep_nesting,0,,0,,0,17.000,5.000,85.023,25.266,2.250,56.849,6.000,17.647,1.000,143
-deep_nesting_basic_005,basic,General Software,Measure,deep_nesting,1,magic_number,1,magic_number,0,12.000,7.000,92.912,46.605,2.000,93.209,5.000,50.000,8.000,187
-deep_nesting_basic_006,basic,E-commerce,Evaluate,deep_nesting,1,magic_number,1,magic_number,0,11.000,3.000,65.441,43.020,2.000,86.039,3.000,0.000,0.000,93
-deep_nesting_intermediate_001,intermediate,Finance,Report,deep_nesting,0,,0,,0,29.000,14.000,86.257,25.850,0.500,12.925,6.000,48.276,7.000,278
-deep_nesting_intermediate_002,intermediate,Healthcare,Design,deep_nesting,2,deep_nesting;magic_number,2,deep_nesting;magic_number,1,18.000,8.000,84.565,39.863,2.667,106.302,23.000,22.222,8.000,220
-deep_nesting_intermediate_003,intermediate,Scientific Computing,Recommend,deep_nesting,1,magic_number,1,magic_number,0,33.000,20.000,66.806,436.778,1.350,589.650,24.000,15.152,0.000,294
-deep_nesting_intermediate_004,intermediate,General Software,Report,deep_nesting,1,magic_number,1,magic_number,6,21.000,5.000,82.848,70.324,2.182,153.434,6.000,28.571,11.000,291
-deep_nesting_intermediate_005,intermediate,E-commerce,List,deep_nesting,2,broad_except;magic_number,2,broad_except;magic_number,0,30.000,6.000,80.655,33.688,1.600,53.901,5.000,20.000,5.000,250
-deep_nesting_intermediate_006,intermediate,Finance,Report,deep_nesting,0,,0,,0,29.000,14.000,86.257,25.850,0.500,12.925,6.000,48.276,7.000,278
-deep_nesting_advanced_001,advanced,Healthcare,Implement,deep_nesting,3,deep_nesting;long_parameter_list;magic_number,3,deep_nesting;long_parameter_list;magic_number,0,11.000,9.000,93.933,4.755,0.500,2.377,36.000,18.182,0.000,101
-deep_nesting_advanced_002,advanced,Scientific Computing,Analyze,deep_nesting,2,deep_nesting;long_parameter_list,2,deep_nesting;long_parameter_list,0,11.000,9.000,100.000,0.000,0.000,0.000,36.000,0.000,0.000,90
-deep_nesting_advanced_003,advanced,General Software,Write,deep_nesting,2,deep_nesting;long_parameter_list,2,deep_nesting;long_parameter_list,0,10.000,8.000,100.000,0.000,0.000,0.000,28.000,0.000,0.000,100
-deep_nesting_advanced_004,advanced,E-commerce,Analyze,deep_nesting,2,dead_code;deep_nesting,2,dead_code;deep_nesting,4,42.000,7.000,100.000,0.000,0.000,0.000,23.000,35.714,6.000,376
-deep_nesting_advanced_005,advanced,Finance,Evaluate,deep_nesting,1,deep_nesting,1,deep_nesting,1,24.000,8.000,100.000,0.000,0.000,0.000,35.000,33.333,2.000,164
-deep_nesting_advanced_006,advanced,Healthcare,Write,deep_nesting,3,deep_nesting;long_parameter_list;magic_number,3,deep_nesting;long_parameter_list;magic_number,0,11.000,9.000,93.933,4.755,0.500,2.377,36.000,18.182,0.000,101
-global_state_basic_001,basic,E-commerce,Evaluate,,0,,0,,5,38.000,11.000,100.000,0.000,0.000,0.000,0.000,5.263,2.000,244
-global_state_basic_002,basic,Finance,Recommend,,0,,0,,1,11.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,70
-global_state_basic_003,basic,Healthcare,Recommend,,0,,0,,3,12.000,3.000,66.504,25.266,0.500,12.633,0.000,0.000,0.000,71
-global_state_basic_004,basic,Scientific Computing,Compare,,0,,0,,1,6.000,2.000,100.000,0.000,0.000,0.000,0.000,16.667,0.000,54
-global_state_basic_005,basic,General Software,Evaluate,,0,,0,,3,26.000,8.000,68.454,39.863,1.714,68.337,4.000,3.846,5.000,218
-global_state_basic_006,basic,E-commerce,Recommend,,0,,0,,5,38.000,11.000,100.000,0.000,0.000,0.000,0.000,5.263,2.000,244
-global_state_intermediate_001,intermediate,Finance,Design,,0,,0,,5,5.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,28
-global_state_intermediate_002,intermediate,Healthcare,Write,,0,,0,,5,5.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,27
-global_state_intermediate_003,intermediate,Scientific Computing,Design,,0,,0,,5,5.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,29
-global_state_intermediate_004,intermediate,General Software,Recommend,,0,,0,,5,11.000,3.000,100.000,0.000,0.000,0.000,0.000,27.273,0.000,74
-global_state_intermediate_005,intermediate,E-commerce,Recommend,,0,,0,,5,5.000,1.000,100.000,0.000,0.000,0.000,0.000,20.000,0.000,38
-global_state_advanced_001,advanced,Finance,Compare,,0,,0,,10,10.000,1.000,100.000,0.000,0.000,0.000,0.000,10.000,0.000,57
-global_state_advanced_002,advanced,Healthcare,Evaluate,,0,,0,,9,9.000,1.000,100.000,0.000,0.000,0.000,0.000,11.111,0.000,58
-global_state_advanced_003,advanced,Scientific Computing,Design,,1,dead_code,1,dead_code,9,32.000,10.000,73.039,15.510,1.000,15.510,2.000,6.250,1.000,264
-global_state_advanced_004,advanced,General Software,Design,,0,,0,,8,8.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,45
-global_state_advanced_005,advanced,E-commerce,Measure,,0,,0,,10,10.000,1.000,100.000,0.000,0.000,0.000,0.000,10.000,0.000,57
-shotgun_surgery_basic_001,basic,E-commerce,Recommend,,0,,0,,0,10.000,5.000,100.000,0.000,0.000,0.000,0.000,10.000,2.000,98
-shotgun_surgery_basic_002,basic,Finance,Write,,0,,0,,0,26.000,12.000,87.894,4.755,0.500,2.377,1.000,23.077,9.000,232
-shotgun_surgery_basic_003,basic,Healthcare,Measure,,1,duplicate_code,1,duplicate_code,0,61.000,39.000,58.869,41.795,1.500,62.692,0.000,4.918,6.000,504
-shotgun_surgery_basic_004,basic,Scientific Computing,Write,,0,,0,,1,31.000,9.000,85.302,4.755,0.500,2.377,0.000,19.355,11.000,358
-shotgun_surgery_basic_005,basic,General Software,Implement,,1,broad_except,0,,1,29.000,15.000,100.000,0.000,0.000,0.000,0.000,10.345,5.000,351
-shotgun_surgery_basic_006,basic,E-commerce,Recommend,,0,,0,,0,10.000,5.000,100.000,0.000,0.000,0.000,0.000,10.000,2.000,98
-shotgun_surgery_intermediate_001,intermediate,Finance,Write,,0,,0,,0,28.000,22.000,100.000,0.000,0.000,0.000,0.000,57.143,3.000,367
-shotgun_surgery_intermediate_002,intermediate,Healthcare,Compare,,0,,0,,0,27.000,,,,,,,18.519,,201
-shotgun_surgery_intermediate_003,intermediate,Scientific Computing,Design,,0,,0,,13,50.000,27.000,100.000,0.000,0.000,0.000,0.000,14.000,12.000,444
-shotgun_surgery_intermediate_004,intermediate,General Software,Report,,0,,0,,0,21.000,21.000,100.000,0.000,0.000,0.000,0.000,33.333,0.000,159
-shotgun_surgery_intermediate_005,intermediate,E-commerce,Measure,,0,,0,,0,23.000,8.000,100.000,0.000,0.000,0.000,0.000,13.043,4.000,187
-shotgun_surgery_advanced_001,advanced,Finance,Report,,1,magic_number,1,magic_number,0,45.000,41.000,79.977,33.688,0.667,22.459,6.000,46.667,3.000,474
-shotgun_surgery_advanced_002,advanced,Healthcare,Measure,,0,,0,,0,30.000,30.000,100.000,0.000,0.000,0.000,0.000,63.333,0.000,363
-shotgun_surgery_advanced_003,advanced,Scientific Computing,Compare,,0,,0,,0,33.000,32.000,89.760,4.755,0.500,2.377,1.000,57.576,2.000,488
-shotgun_surgery_advanced_004,advanced,General Software,Write,,0,,0,,0,51.000,42.000,73.496,41.513,2.286,94.887,4.000,21.569,8.000,536
-shotgun_surgery_advanced_005,advanced,E-commerce,Recommend,,0,,0,,0,13.000,4.000,100.000,0.000,0.000,0.000,0.000,7.692,0.000,129
-synthetic_long_method_basic_001,basic,Finance,Recommend,long_method,1,dead_code,1,dead_code,0,25.000,9.000,96.362,2.000,0.500,1.000,1.000,56.000,7.000,250
-synthetic_long_method_basic_002,basic,Healthcare,Analyze,long_method,2,dead_code;magic_number,2,dead_code;magic_number,3,39.000,17.000,65.125,148.603,3.316,492.738,6.000,10.256,19.000,455
-synthetic_long_method_basic_003,basic,Scientific Computing,Report,long_method,2,dead_code;magic_number,2,dead_code;magic_number,0,39.000,13.000,73.929,99.404,3.214,319.514,11.000,20.513,12.000,399
-synthetic_long_method_basic_004,basic,General Software,Measure,long_method,1,dead_code,1,dead_code,0,49.000,5.000,82.335,4.755,0.500,2.377,0.000,24.490,29.000,622
-synthetic_long_method_basic_005,basic,E-commerce,Measure,long_method,0,,0,,0,13.000,3.000,95.037,22.459,1.875,42.110,2.000,53.846,7.000,151
-synthetic_long_method_basic_006,basic,Finance,Write,long_method,1,magic_number,1,magic_number,0,57.000,22.000,51.806,171.176,3.429,586.889,23.000,1.754,5.000,547
-synthetic_long_method_basic_007,basic,Healthcare,Recommend,long_method,0,,0,,0,24.000,9.000,100.000,0.000,0.000,0.000,2.000,62.500,8.000,290
-synthetic_long_method_intermediate_001,intermediate,Scientific Computing,Implement,long_method,0,,0,,0,28.000,7.000,100.000,0.000,0.000,0.000,1.000,64.286,16.000,443
-synthetic_long_method_intermediate_002,intermediate,General Software,Design,long_method,1,dead_code,1,dead_code,0,12.000,3.000,95.191,25.850,1.500,38.774,2.000,66.667,8.000,351
-synthetic_long_method_intermediate_003,intermediate,E-commerce,Analyze,long_method,1,dead_code,1,dead_code,0,36.000,14.000,82.526,33.688,0.500,16.844,6.000,38.889,7.000,347
-synthetic_long_method_intermediate_004,intermediate,Finance,Recommend,long_method,1,dead_code,1,dead_code,0,22.000,7.000,100.000,0.000,0.000,0.000,0.000,54.545,6.000,223
-synthetic_long_method_intermediate_005,intermediate,Healthcare,Measure,long_method,1,magic_number,1,magic_number,1,19.000,5.000,86.598,39.863,2.667,106.302,2.000,31.579,13.000,265
-synthetic_long_method_intermediate_006,intermediate,Scientific Computing,Design,long_method,1,dead_code,1,dead_code,6,85.000,18.000,68.324,24.000,1.500,36.000,4.000,15.294,28.000,955
-synthetic_long_method_intermediate_007,intermediate,General Software,Implement,long_method,0,,0,,0,28.000,7.000,100.000,0.000,0.000,0.000,1.000,64.286,16.000,443
-synthetic_long_method_advanced_001,advanced,E-commerce,Implement,long_method,0,,0,,0,17.000,,,,,,,94.118,,248
-synthetic_long_method_advanced_002,advanced,Finance,Evaluate,long_method,1,dead_code,1,dead_code,0,24.000,14.000,84.233,81.749,3.545,289.838,3.000,50.000,10.000,483
-synthetic_long_method_advanced_003,advanced,Healthcare,Write,long_method,1,duplicate_code,1,duplicate_code,0,116.000,,,,,,,0.000,,1024
-synthetic_long_method_advanced_004,advanced,Scientific Computing,Report,long_method,1,dead_code,1,dead_code,0,33.000,8.000,84.137,28.529,1.500,42.794,0.000,84.848,12.000,609
-synthetic_long_method_advanced_005,advanced,General Software,List,long_method,1,magic_number,1,magic_number,0,20.000,8.000,86.484,57.359,1.500,86.039,7.000,40.000,8.000,229
-synthetic_long_method_advanced_006,advanced,E-commerce,Compare,long_method,1,dead_code,1,dead_code,8,26.000,7.000,100.000,0.000,0.000,0.000,0.000,30.769,8.000,244
-synthetic_long_parameter_list_basic_001,basic,Finance,List,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,17.000,1.000,100.000,0.000,0.000,0.000,0.000,11.765,0.000,155
-synthetic_long_parameter_list_basic_002,basic,Healthcare,Design,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,29.000,5.000,100.000,0.000,0.000,0.000,4.000,24.138,15.000,352
-synthetic_long_parameter_list_basic_003,basic,Scientific Computing,Report,long_parameter_list,2,long_parameter_list;magic_number,2,long_parameter_list;magic_number,0,17.000,7.000,83.356,86.039,4.000,344.156,7.000,23.529,1.000,204
-synthetic_long_parameter_list_basic_004,basic,General Software,Analyze,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,49
-synthetic_long_parameter_list_basic_005,basic,E-commerce,Evaluate,long_parameter_list,2,long_parameter_list;magic_number,2,long_parameter_list;magic_number,0,7.000,2.000,100.000,4.755,0.500,2.377,2.000,42.857,3.000,178
-synthetic_long_parameter_list_basic_006,basic,Finance,Implement,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,46
-synthetic_long_parameter_list_basic_007,basic,Healthcare,Recommend,long_parameter_list,2,long_parameter_list;magic_number,2,long_parameter_list;magic_number,0,19.000,4.000,92.505,12.000,0.667,8.000,4.000,42.105,11.000,227
-synthetic_long_parameter_list_intermediate_001,intermediate,Scientific Computing,Compare,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,19.000,1.000,100.000,0.000,0.000,0.000,0.000,5.263,0.000,182
-synthetic_long_parameter_list_intermediate_002,intermediate,General Software,Implement,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,61
-synthetic_long_parameter_list_intermediate_003,intermediate,E-commerce,Design,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,20.000,1.000,100.000,0.000,0.000,0.000,0.000,5.000,0.000,203
-synthetic_long_parameter_list_intermediate_004,intermediate,Finance,Design,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,62
-synthetic_long_parameter_list_intermediate_005,intermediate,Healthcare,Recommend,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,67
-synthetic_long_parameter_list_intermediate_006,intermediate,Scientific Computing,Measure,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,19.000,1.000,100.000,0.000,0.000,0.000,0.000,5.263,0.000,182
-synthetic_long_parameter_list_intermediate_007,intermediate,General Software,Recommend,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,61
-synthetic_long_parameter_list_advanced_001,advanced,E-commerce,Recommend,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,95
-synthetic_long_parameter_list_advanced_002,advanced,Finance,Evaluate,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,88
-synthetic_long_parameter_list_advanced_003,advanced,Healthcare,List,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,25.000,1.000,100.000,0.000,0.000,0.000,0.000,4.000,0.000,292
-synthetic_long_parameter_list_advanced_004,advanced,Scientific Computing,Report,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,96
-synthetic_long_parameter_list_advanced_005,advanced,General Software,Implement,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,109
-synthetic_long_parameter_list_advanced_006,advanced,E-commerce,Evaluate,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,95
-synthetic_god_class_basic_001,basic,Finance,Implement,,1,duplicate_code,1,duplicate_code,0,41.000,21.000,59.981,137.549,2.000,275.098,9.000,4.878,6.000,382
-synthetic_god_class_basic_002,basic,Healthcare,Measure,,1,magic_number,1,magic_number,0,23.000,16.000,82.124,66.417,2.000,132.834,3.000,30.435,6.000,336
-synthetic_god_class_basic_003,basic,Scientific Computing,List,,0,,0,,0,25.000,16.000,71.123,57.110,2.000,114.221,2.000,8.000,3.000,271
-synthetic_god_class_basic_004,basic,General Software,Analyze,,0,,0,,4,19.000,10.000,79.670,4.755,0.500,2.377,4.000,5.263,8.000,200
-synthetic_god_class_basic_005,basic,E-commerce,Measure,,0,,0,,0,7.000,,,,,,,85.714,,132
-synthetic_god_class_basic_006,basic,Finance,Analyze,,1,dead_code,1,dead_code,0,37.000,17.000,81.712,2.000,0.500,1.000,5.000,13.514,10.000,343
-synthetic_god_class_basic_007,basic,Healthcare,List,,0,,0,,0,54.000,22.000,57.430,39.863,1.000,39.863,9.000,1.852,2.000,452
-synthetic_god_class_intermediate_001,intermediate,Scientific Computing,Compare,,0,,0,,0,26.000,11.000,100.000,0.000,0.000,0.000,0.000,30.769,14.000,303
-synthetic_god_class_intermediate_002,intermediate,General Software,Recommend,,0,,0,,0,52.000,22.000,61.989,208.076,4.083,849.645,10.000,9.615,1.000,502
-synthetic_god_class_intermediate_003,intermediate,E-commerce,Design,,0,,0,,0,32.000,13.000,83.665,4.755,0.500,2.377,2.000,18.750,2.000,281
+task_id,system_mode,complexity,domain,action_keyword,intended,n_smells,smells,n_smells_defs,smells_defs,n_extra_stmts,n_functions,n_stub,longest_body,sloc,cyclomatic,maintainability,halstead_volume,halstead_difficulty,halstead_effort,cognitive,comment_density,api_calls,n_output_tokens
+long_method_basic_001,,basic,E-commerce,Recommend,long_method,1,dead_code,1,dead_code,0,8,7,8,25.000,9.000,96.362,2.000,0.500,1.000,1.000,56.000,7.000,250
+long_method_basic_002,,basic,Finance,Analyze,long_method,2,dead_code;magic_number,2,dead_code;magic_number,3,7,0,14,39.000,17.000,65.125,148.603,3.316,492.738,6.000,10.256,19.000,455
+long_method_basic_003,,basic,Healthcare,Report,long_method,2,dead_code;magic_number,2,dead_code;magic_number,0,5,2,4,39.000,13.000,73.929,99.404,3.214,319.514,11.000,20.513,12.000,399
+long_method_basic_004,,basic,Scientific Computing,Measure,long_method,1,dead_code,1,dead_code,0,1,0,41,49.000,5.000,82.335,4.755,0.500,2.377,0.000,24.490,29.000,622
+long_method_basic_005,,basic,General Software,Measure,long_method,0,,0,,0,1,0,10,13.000,3.000,95.037,22.459,1.875,42.110,2.000,53.846,7.000,151
+long_method_basic_006,,basic,E-commerce,Write,long_method,1,magic_number,1,magic_number,0,7,0,3,57.000,22.000,51.806,171.176,3.429,586.889,23.000,1.754,5.000,547
+long_method_basic_007,,basic,Finance,Recommend,long_method,0,,0,,0,8,4,1,24.000,9.000,100.000,0.000,0.000,0.000,2.000,62.500,8.000,290
+long_method_intermediate_001,,intermediate,Healthcare,Implement,long_method,0,,0,,0,6,0,4,28.000,7.000,100.000,0.000,0.000,0.000,1.000,64.286,16.000,443
+long_method_intermediate_002,,intermediate,Scientific Computing,Design,long_method,1,dead_code,1,dead_code,0,1,0,9,12.000,3.000,95.191,25.850,1.500,38.774,2.000,66.667,8.000,351
+long_method_intermediate_003,,intermediate,General Software,Analyze,long_method,1,dead_code,1,dead_code,0,1,0,13,22.000,7.000,85.988,33.688,0.500,16.844,6.000,31.818,7.000,219
+long_method_intermediate_004,,intermediate,E-commerce,Recommend,long_method,1,dead_code,1,dead_code,0,7,6,6,22.000,7.000,100.000,0.000,0.000,0.000,0.000,54.545,6.000,223
+long_method_intermediate_005,,intermediate,Finance,Measure,long_method,1,magic_number,1,magic_number,1,1,0,13,19.000,5.000,86.598,39.863,2.667,106.302,2.000,31.579,13.000,265
+long_method_intermediate_006,,intermediate,Healthcare,Design,long_method,1,dead_code,1,dead_code,6,9,6,12,85.000,18.000,68.324,24.000,1.500,36.000,4.000,15.294,28.000,955
+long_method_intermediate_007,,intermediate,Scientific Computing,Implement,long_method,0,,0,,0,6,0,4,28.000,7.000,100.000,0.000,0.000,0.000,1.000,64.286,16.000,443
+long_method_advanced_001,,advanced,General Software,Implement,long_method,0,,0,,0,,,,17.000,,,,,,,94.118,,248
+long_method_advanced_002,,advanced,E-commerce,Evaluate,long_method,1,dead_code,1,dead_code,0,5,0,10,24.000,14.000,84.233,81.749,3.545,289.838,3.000,50.000,10.000,483
+long_method_advanced_003,,advanced,Finance,Write,long_method,1,duplicate_code,1,duplicate_code,0,,,,116.000,,,,,,,0.000,,1024
+long_method_advanced_004,,advanced,Healthcare,Report,long_method,1,dead_code,1,dead_code,0,8,3,7,33.000,8.000,84.137,28.529,1.500,42.794,0.000,84.848,12.000,609
+long_method_advanced_005,,advanced,Scientific Computing,List,long_method,1,magic_number,1,magic_number,0,1,0,12,20.000,8.000,86.484,57.359,1.500,86.039,7.000,40.000,8.000,229
+long_method_advanced_006,,advanced,General Software,Compare,long_method,1,dead_code,1,dead_code,0,1,0,18,21.000,1.000,79.440,483.411,6.136,2966.383,0.000,33.333,3.000,531
+long_parameter_list_basic_001,,basic,E-commerce,List,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,0,2,17.000,1.000,100.000,0.000,0.000,0.000,0.000,11.765,0.000,155
+long_parameter_list_basic_002,,basic,Finance,Design,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,0,11,29.000,5.000,100.000,0.000,0.000,0.000,4.000,24.138,15.000,352
+long_parameter_list_basic_003,,basic,Healthcare,Report,long_parameter_list,2,long_parameter_list;magic_number,2,long_parameter_list;magic_number,0,1,0,7,17.000,7.000,83.356,86.039,4.000,344.156,7.000,23.529,1.000,204
+long_parameter_list_basic_004,,basic,Scientific Computing,Analyze,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,1,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,49
+long_parameter_list_basic_005,,basic,General Software,Evaluate,long_parameter_list,2,long_parameter_list;magic_number,2,long_parameter_list;magic_number,0,1,0,3,7.000,2.000,100.000,4.755,0.500,2.377,2.000,42.857,3.000,178
+long_parameter_list_basic_006,,basic,E-commerce,Implement,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,1,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,46
+long_parameter_list_basic_007,,basic,Finance,Recommend,long_parameter_list,2,long_parameter_list;magic_number,2,long_parameter_list;magic_number,0,1,0,11,19.000,4.000,92.505,12.000,0.667,8.000,4.000,42.105,11.000,227
+long_parameter_list_intermediate_001,,intermediate,Healthcare,Compare,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,0,2,19.000,1.000,100.000,0.000,0.000,0.000,0.000,5.263,0.000,182
+long_parameter_list_intermediate_002,,intermediate,Scientific Computing,Implement,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,1,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,61
+long_parameter_list_intermediate_003,,intermediate,General Software,Design,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,0,2,20.000,1.000,100.000,0.000,0.000,0.000,0.000,5.000,0.000,203
+long_parameter_list_intermediate_004,,intermediate,E-commerce,Design,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,1,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,62
+long_parameter_list_intermediate_005,,intermediate,Finance,Recommend,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,1,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,67
+long_parameter_list_intermediate_006,,intermediate,Healthcare,Measure,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,0,2,19.000,1.000,100.000,0.000,0.000,0.000,0.000,5.263,0.000,182
+long_parameter_list_intermediate_007,,intermediate,Scientific Computing,Recommend,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,1,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,61
+long_parameter_list_advanced_001,,advanced,General Software,Recommend,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,1,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,95
+long_parameter_list_advanced_002,,advanced,E-commerce,Evaluate,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,1,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,88
+long_parameter_list_advanced_003,,advanced,Finance,List,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,0,2,25.000,1.000,100.000,0.000,0.000,0.000,0.000,4.000,0.000,292
+long_parameter_list_advanced_004,,advanced,Healthcare,Report,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,1,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,96
+long_parameter_list_advanced_005,,advanced,Scientific Computing,Implement,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,1,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,109
+long_parameter_list_advanced_006,,advanced,General Software,Evaluate,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,1,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,95
+god_class_basic_001,,basic,E-commerce,Implement,,0,,0,,0,8,2,3,30.000,15.000,66.535,89.206,2.500,223.016,5.000,6.667,1.000,258
+god_class_basic_002,,basic,Finance,Measure,,1,magic_number,1,magic_number,0,8,0,3,23.000,16.000,82.124,66.417,2.000,132.834,3.000,30.435,6.000,336
+god_class_basic_003,,basic,Healthcare,List,,0,,0,,0,7,2,4,25.000,16.000,71.123,57.110,2.000,114.221,2.000,8.000,3.000,271
+god_class_basic_004,,basic,Scientific Computing,Analyze,,0,,0,,4,4,0,2,19.000,10.000,79.670,4.755,0.500,2.377,4.000,5.263,8.000,200
+god_class_basic_005,,basic,General Software,Measure,,0,,0,,0,,,,7.000,,,,,,,85.714,,132
+god_class_basic_006,,basic,E-commerce,Analyze,,1,dead_code,1,dead_code,0,10,5,3,37.000,17.000,81.712,2.000,0.500,1.000,5.000,13.514,10.000,343
+god_class_basic_007,,basic,Finance,List,,0,,0,,0,14,1,6,54.000,22.000,57.430,39.863,1.000,39.863,9.000,1.852,2.000,452
+god_class_intermediate_001,,intermediate,Healthcare,Compare,,0,,0,,0,9,1,8,26.000,11.000,100.000,0.000,0.000,0.000,0.000,30.769,14.000,303
+god_class_intermediate_002,,intermediate,Scientific Computing,Recommend,,0,,0,,0,11,5,4,52.000,22.000,61.989,208.076,4.083,849.645,10.000,9.615,1.000,502
+god_class_intermediate_003,,intermediate,General Software,Design,,0,,0,,0,10,6,9,32.000,13.000,83.665,4.755,0.500,2.377,2.000,18.750,2.000,281
+god_class_intermediate_004,,intermediate,E-commerce,Measure,,0,,0,,0,9,0,8,26.000,11.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,232
+god_class_intermediate_005,,intermediate,Finance,Compare,,0,,0,,0,10,1,9,77.000,29.000,50.520,68.532,1.000,68.532,12.000,1.299,3.000,637
+god_class_intermediate_006,,intermediate,Healthcare,Write,,0,,0,,0,9,1,8,26.000,11.000,100.000,0.000,0.000,0.000,0.000,30.769,14.000,303
+god_class_intermediate_007,,intermediate,Scientific Computing,Write,,0,,0,,0,11,5,4,52.000,22.000,61.989,208.076,4.083,849.645,10.000,9.615,1.000,502
+god_class_advanced_001,,advanced,General Software,Implement,,1,magic_number,1,magic_number,0,11,0,6,55.000,28.000,56.883,239.111,4.769,1140.374,18.000,7.273,5.000,498
+god_class_advanced_002,,advanced,E-commerce,Design,,0,,0,,0,1,0,10,32.000,13.000,100.000,0.000,0.000,0.000,0.000,0.000,10.000,153
+god_class_advanced_003,,advanced,Finance,List,,0,,0,,0,11,0,3,41.000,25.000,66.618,151.304,1.000,151.304,11.000,14.634,1.000,506
+god_class_advanced_004,,advanced,Healthcare,Implement,,0,,0,,0,11,0,10,40.000,16.000,54.699,15.510,1.000,15.510,5.000,0.000,16.000,320
+god_class_advanced_005,,advanced,Scientific Computing,Analyze,,0,,0,,0,11,0,10,32.000,13.000,100.000,0.000,0.000,0.000,0.000,0.000,3.000,244
+god_class_advanced_006,,advanced,General Software,Write,,0,,0,,0,12,0,9,35.000,16.000,100.000,0.000,0.000,0.000,2.000,0.000,3.000,299
+feature_envy_basic_001,,basic,E-commerce,Compare,,0,,0,,0,2,0,1,5.000,4.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,71
+feature_envy_basic_002,,basic,Finance,Compare,,0,,0,,0,3,0,7,14.000,8.000,62.817,42.110,0.833,35.092,2.000,0.000,1.000,157
+feature_envy_basic_003,,basic,Healthcare,Design,,1,magic_number,1,magic_number,0,3,0,7,18.000,9.000,55.829,183.317,3.095,567.410,3.000,0.000,2.000,177
+feature_envy_basic_004,,basic,Scientific Computing,Evaluate,,0,,0,,0,2,0,1,5.000,4.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,67
+feature_envy_basic_005,,basic,General Software,Implement,,0,,0,,0,1,1,1,3.000,3.000,100.000,0.000,0.000,0.000,0.000,33.333,0.000,28
+feature_envy_basic_006,,basic,E-commerce,Report,,2,dead_code;magic_number,2,dead_code;magic_number,0,1,0,10,19.000,13.000,70.014,118.942,3.393,403.553,6.000,5.263,0.000,167
+feature_envy_intermediate_001,,intermediate,Finance,Implement,,0,,0,,0,2,0,5,9.000,7.000,100.000,4.755,0.500,2.377,1.000,44.444,2.000,157
+feature_envy_intermediate_002,,intermediate,Healthcare,Recommend,,0,,0,,0,1,0,8,10.000,3.000,100.000,0.000,0.000,0.000,0.000,80.000,1.000,167
+feature_envy_intermediate_003,,intermediate,Scientific Computing,Report,,0,,0,,0,1,0,2,12.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,94
+feature_envy_intermediate_004,,intermediate,General Software,Recommend,,0,,0,,0,2,0,9,14.000,7.000,95.384,4.755,0.500,2.377,1.000,35.714,3.000,177
+feature_envy_intermediate_005,,intermediate,E-commerce,Compare,,0,,0,,0,2,0,7,16.000,12.000,100.000,0.000,0.000,0.000,5.000,0.000,0.000,136
+feature_envy_intermediate_006,,intermediate,Finance,Evaluate,,0,,0,,0,2,0,5,9.000,7.000,100.000,4.755,0.500,2.377,1.000,44.444,2.000,157
+feature_envy_advanced_001,,advanced,Healthcare,Report,,0,,0,,0,3,1,9,27.000,22.000,79.508,131.183,2.639,346.178,17.000,37.037,1.000,328
+feature_envy_advanced_002,,advanced,Scientific Computing,Implement,,1,dead_code,1,dead_code,0,1,0,14,17.000,9.000,87.571,53.774,1.667,89.624,1.000,88.235,3.000,315
+feature_envy_advanced_003,,advanced,General Software,Implement,,1,magic_number,1,magic_number,0,2,0,2,11.000,9.000,89.525,66.608,2.667,177.621,4.000,27.273,1.000,148
+feature_envy_advanced_004,,advanced,E-commerce,List,,1,dead_code,1,dead_code,0,1,0,11,16.000,9.000,93.477,4.755,0.500,2.377,4.000,25.000,2.000,160
+feature_envy_advanced_005,,advanced,Finance,Design,,1,long_parameter_list,1,long_parameter_list,0,2,0,9,13.000,4.000,100.000,0.000,0.000,0.000,0.000,76.923,1.000,258
+feature_envy_advanced_006,,advanced,Healthcare,Analyze,,0,,0,,0,3,1,9,27.000,22.000,79.508,131.183,2.639,346.178,17.000,37.037,1.000,328
+data_clumps_basic_001,,basic,E-commerce,Report,,0,,0,,0,3,0,1,6.000,3.000,100.000,0.000,0.000,0.000,0.000,50.000,1.000,146
+data_clumps_basic_002,,basic,Finance,Measure,,0,,0,,7,2,0,3,15.000,4.000,91.977,10.000,0.500,5.000,0.000,26.667,5.000,322
+data_clumps_basic_003,,basic,Healthcare,Analyze,,0,,0,,3,2,0,7,14.000,2.000,86.640,201.909,3.682,743.392,0.000,42.857,8.000,323
+data_clumps_basic_004,,basic,Scientific Computing,Measure,,1,magic_number,1,magic_number,9,3,0,1,20.000,5.000,79.771,51.891,1.111,57.657,3.000,15.000,4.000,177
+data_clumps_basic_005,,basic,General Software,Design,,0,,0,,0,5,5,1,10.000,5.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,120
+data_clumps_basic_006,,basic,E-commerce,Recommend,,3,dead_code;duplicate_code;magic_number,3,dead_code;duplicate_code;magic_number,0,4,0,5,42.000,16.000,77.785,100.078,1.000,100.078,16.000,47.619,5.000,556
+data_clumps_intermediate_001,,intermediate,Finance,Recommend,,1,duplicate_code,1,duplicate_code,0,5,0,3,42.000,14.000,46.144,319.316,3.529,1126.997,10.000,0.000,1.000,395
+data_clumps_intermediate_002,,intermediate,Healthcare,Recommend,,1,magic_number,1,magic_number,0,4,0,4,21.000,17.000,66.294,177.872,4.000,711.489,9.000,4.762,5.000,241
+data_clumps_intermediate_003,,intermediate,Scientific Computing,Write,,1,long_parameter_list,1,long_parameter_list,0,3,3,1,6.000,3.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,86
+data_clumps_intermediate_004,,intermediate,General Software,Evaluate,,1,long_parameter_list,1,long_parameter_list,0,3,0,2,19.000,6.000,94.218,4.755,0.500,2.377,2.000,21.053,6.000,217
+data_clumps_intermediate_005,,intermediate,E-commerce,Write,,1,long_parameter_list,1,long_parameter_list,0,3,3,1,6.000,3.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,94
+data_clumps_intermediate_006,,intermediate,Finance,Implement,,1,duplicate_code,1,duplicate_code,0,5,0,3,42.000,14.000,46.144,319.316,3.529,1126.997,10.000,0.000,1.000,395
+data_clumps_advanced_001,,advanced,Healthcare,Measure,,1,long_parameter_list,1,long_parameter_list,0,5,3,10,20.000,7.000,100.000,0.000,0.000,0.000,0.000,15.000,0.000,255
+data_clumps_advanced_002,,advanced,Scientific Computing,Report,,1,long_parameter_list,1,long_parameter_list,0,9,0,4,26.000,15.000,58.366,18.575,0.500,9.288,4.000,0.000,5.000,403
+data_clumps_advanced_003,,advanced,General Software,Evaluate,,0,,0,,0,5,0,4,14.000,7.000,100.000,0.000,0.000,0.000,0.000,0.000,8.000,116
+data_clumps_advanced_004,,advanced,E-commerce,Recommend,,0,,0,,0,6,4,1,13.000,8.000,100.000,0.000,0.000,0.000,0.000,30.769,1.000,104
+data_clumps_advanced_005,,advanced,Finance,Recommend,,1,long_parameter_list,1,long_parameter_list,0,5,3,10,20.000,7.000,100.000,0.000,0.000,0.000,0.000,15.000,0.000,255
+data_clumps_advanced_006,,advanced,Healthcare,Design,,1,long_parameter_list,1,long_parameter_list,0,9,0,4,26.000,15.000,58.366,18.575,0.500,9.288,4.000,0.000,5.000,403
+duplicated_code_basic_001,,basic,E-commerce,Design,duplicate_code,0,,0,,0,3,0,2,10.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,155
+duplicated_code_basic_002,,basic,Finance,Measure,duplicate_code,0,,0,,0,3,0,1,6.000,3.000,73.070,25.266,0.500,12.633,0.000,0.000,0.000,52
+duplicated_code_basic_003,,basic,Healthcare,Analyze,duplicate_code,0,,0,,0,2,0,3,14.000,4.000,62.297,57.059,0.750,42.794,2.000,0.000,0.000,147
+duplicated_code_basic_004,,basic,Scientific Computing,Recommend,duplicate_code,0,,0,,0,3,0,1,37.000,9.000,100.000,0.000,0.000,0.000,6.000,0.000,6.000,275
+duplicated_code_basic_005,,basic,General Software,Analyze,duplicate_code,0,,1,duplicate_code,0,6,4,3,20.000,12.000,91.299,6.340,0.500,3.170,2.000,30.000,3.000,183
+duplicated_code_basic_006,,basic,E-commerce,Measure,duplicate_code,0,,0,,0,3,0,1,19.000,6.000,100.000,0.000,0.000,0.000,3.000,0.000,3.000,220
+duplicated_code_basic_007,,basic,Finance,Recommend,duplicate_code,0,,0,,0,3,0,2,10.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,155
+duplicated_code_intermediate_001,,intermediate,Healthcare,Analyze,duplicate_code,2,dead_code;duplicate_code,2,dead_code;duplicate_code,0,7,4,8,57.000,13.000,67.556,33.688,0.500,16.844,6.000,7.018,5.000,400
+duplicated_code_intermediate_002,,intermediate,Scientific Computing,Recommend,duplicate_code,0,,0,,5,4,0,8,41.000,12.000,62.227,105.486,4.500,474.687,5.000,4.878,8.000,345
+duplicated_code_intermediate_003,,intermediate,General Software,Measure,duplicate_code,1,dead_code,1,dead_code,0,4,0,6,29.000,10.000,57.001,27.000,1.000,27.000,3.000,0.000,2.000,270
+duplicated_code_intermediate_004,,intermediate,E-commerce,Evaluate,duplicate_code,2,dead_code;magic_number,2,dead_code;magic_number,0,3,0,4,16.000,3.000,92.645,28.529,1.500,42.794,0.000,56.250,5.000,250
+duplicated_code_intermediate_005,,intermediate,Finance,Implement,duplicate_code,3,broad_except;duplicate_code;magic_number,3,broad_except;duplicate_code;magic_number,0,7,0,4,54.000,18.000,64.193,58.810,1.111,65.345,14.000,7.407,10.000,434
+duplicated_code_intermediate_006,,intermediate,Healthcare,Design,duplicate_code,2,dead_code;duplicate_code,2,dead_code;duplicate_code,0,7,4,8,57.000,13.000,67.556,33.688,0.500,16.844,6.000,7.018,5.000,400
+duplicated_code_intermediate_007,,intermediate,Scientific Computing,Measure,duplicate_code,0,,0,,5,4,0,8,41.000,12.000,62.227,105.486,4.500,474.687,5.000,4.878,8.000,345
+duplicated_code_advanced_001,,advanced,General Software,Compare,duplicate_code,0,,0,,0,3,0,5,28.000,14.000,79.822,167.179,2.095,350.279,11.000,42.857,0.000,340
+duplicated_code_advanced_002,,advanced,E-commerce,Recommend,duplicate_code,1,duplicate_code,1,duplicate_code,0,7,4,4,30.000,21.000,100.000,0.000,0.000,0.000,0.000,13.333,4.000,255
+duplicated_code_advanced_003,,advanced,Finance,Compare,duplicate_code,1,duplicate_code,1,duplicate_code,0,9,0,3,43.000,27.000,69.803,25.266,0.500,12.633,11.000,9.302,7.000,415
+duplicated_code_advanced_004,,advanced,Healthcare,Analyze,duplicate_code,1,magic_number,1,magic_number,0,5,3,3,21.000,18.000,81.333,20.897,0.750,15.673,3.000,14.286,4.000,202
+duplicated_code_advanced_005,,advanced,Scientific Computing,Compare,duplicate_code,1,magic_number,1,magic_number,0,3,0,10,24.000,9.000,87.257,28.074,1.200,33.688,7.000,41.667,9.000,289
+duplicated_code_advanced_006,,advanced,General Software,Measure,duplicate_code,0,,0,,0,3,0,5,28.000,14.000,79.822,167.179,2.095,350.279,11.000,42.857,0.000,340
+dead_code_basic_001,,basic,E-commerce,Implement,dead_code,1,magic_number,1,magic_number,0,4,0,1,18.000,10.000,82.223,39.863,1.714,68.337,5.000,16.667,2.000,142
+dead_code_basic_002,,basic,Finance,Evaluate,dead_code,0,,0,,0,3,1,1,6.000,5.000,100.000,13.932,0.500,6.966,0.000,33.333,1.000,81
+dead_code_basic_003,,basic,Healthcare,Write,dead_code,0,,0,,0,,,,8.000,,,,,,,200.000,,225
+dead_code_basic_004,,basic,Scientific Computing,Compare,dead_code,0,,0,,2,2,0,1,8.000,3.000,75.155,4.755,0.500,2.377,1.000,0.000,3.000,46
+dead_code_basic_005,,basic,General Software,Write,dead_code,0,,0,,0,3,0,2,15.000,5.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,126
+dead_code_basic_006,,basic,E-commerce,Report,dead_code,1,magic_number,1,magic_number,0,4,0,1,18.000,10.000,82.223,39.863,1.714,68.337,5.000,16.667,2.000,142
+dead_code_intermediate_001,,intermediate,Finance,Evaluate,dead_code,0,,0,,6,5,0,3,30.000,9.000,82.072,13.932,0.500,6.966,3.000,20.000,7.000,379
+dead_code_intermediate_002,,intermediate,Healthcare,Recommend,dead_code,2,inefficient_loop;magic_number,3,dead_code;inefficient_loop;magic_number,6,8,0,4,43.000,14.000,82.208,12.000,0.667,8.000,4.000,30.233,12.000,440
+dead_code_intermediate_003,,intermediate,Scientific Computing,Implement,dead_code,1,magic_number,2,dead_code;magic_number,5,8,0,4,38.000,18.000,87.082,4.755,0.500,2.377,2.000,34.211,14.000,450
+dead_code_intermediate_004,,intermediate,General Software,Analyze,dead_code,1,magic_number,1,magic_number,8,9,0,4,38.000,11.000,73.205,39.863,1.714,68.337,0.000,13.158,18.000,438
+dead_code_intermediate_005,,intermediate,E-commerce,Analyze,dead_code,2,dead_code;magic_number,2,dead_code;magic_number,2,7,0,2,40.000,9.000,81.743,25.266,0.500,12.633,4.000,32.500,11.000,421
+dead_code_advanced_001,,advanced,Finance,Measure,dead_code,1,dead_code,1,dead_code,0,11,0,5,29.000,13.000,100.000,0.000,0.000,0.000,0.000,24.138,1.000,306
+dead_code_advanced_002,,advanced,Healthcare,Evaluate,dead_code,1,magic_number,2,dead_code;magic_number,17,4,0,3,48.000,8.000,79.388,41.513,1.500,62.270,4.000,35.417,14.000,557
+dead_code_advanced_003,,advanced,Scientific Computing,Compare,dead_code,0,,1,dead_code,3,2,1,2,11.000,4.000,100.000,0.000,0.000,0.000,0.000,36.364,4.000,119
+dead_code_advanced_004,,advanced,General Software,Compare,dead_code,0,,1,dead_code,10,0,0,0,14.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,8.000,215
+dead_code_advanced_005,,advanced,E-commerce,Report,dead_code,1,dead_code,1,dead_code,0,11,0,5,29.000,13.000,100.000,0.000,0.000,0.000,0.000,24.138,1.000,306
+speculative_generality_basic_001,,basic,E-commerce,Compare,,0,,0,,0,2,1,1,8.000,6.000,100.000,0.000,0.000,0.000,0.000,12.500,1.000,65
+speculative_generality_basic_002,,basic,Finance,Implement,,0,,0,,0,4,0,2,25.000,10.000,59.197,27.000,1.000,27.000,6.000,0.000,1.000,227
+speculative_generality_basic_003,,basic,Healthcare,Evaluate,,1,dead_code,1,dead_code,5,5,0,2,27.000,10.000,100.000,0.000,0.000,0.000,5.000,3.704,14.000,227
+speculative_generality_basic_004,,basic,Scientific Computing,Write,,0,,0,,3,6,0,3,24.000,12.000,100.000,0.000,0.000,0.000,2.000,4.167,8.000,185
+speculative_generality_basic_005,,basic,General Software,Measure,,1,magic_number,1,magic_number,0,4,0,2,53.000,30.000,58.433,226.178,1.571,355.423,20.000,7.547,14.000,480
+speculative_generality_basic_006,,basic,E-commerce,Report,,0,,0,,0,2,1,1,8.000,6.000,100.000,0.000,0.000,0.000,0.000,12.500,1.000,65
+speculative_generality_intermediate_001,,intermediate,Finance,Measure,,1,magic_number,1,magic_number,2,12,1,3,50.000,29.000,57.724,42.110,0.833,35.092,6.000,2.000,9.000,510
+speculative_generality_intermediate_002,,intermediate,Healthcare,Design,,2,dead_code;magic_number,2,dead_code;magic_number,3,3,1,1,14.000,6.000,89.560,4.755,0.500,2.377,2.000,14.286,5.000,120
+speculative_generality_intermediate_003,,intermediate,Scientific Computing,Analyze,,1,magic_number,1,magic_number,1,4,0,10,25.000,11.000,82.067,15.510,1.000,15.510,7.000,20.000,7.000,353
+speculative_generality_intermediate_004,,intermediate,General Software,Analyze,,2,broad_except;dead_code,2,broad_except;dead_code,5,4,0,6,42.000,11.000,71.663,2.000,0.500,1.000,5.000,2.381,12.000,293
+speculative_generality_intermediate_005,,intermediate,E-commerce,Design,,1,dead_code,1,dead_code,4,1,0,1,10.000,3.000,72.138,4.755,0.500,2.377,0.000,0.000,4.000,77
+speculative_generality_advanced_001,,advanced,Finance,Implement,,0,,0,,4,3,1,3,21.000,10.000,74.764,62.907,3.438,216.244,4.000,9.524,7.000,222
+speculative_generality_advanced_002,,advanced,Healthcare,Analyze,,0,,0,,0,5,0,5,26.000,10.000,79.913,20.897,0.750,15.673,5.000,15.385,1.000,402
+speculative_generality_advanced_003,,advanced,Scientific Computing,Write,,1,duplicate_code,1,duplicate_code,0,,,,119.000,,,,,,,0.000,,1024
+speculative_generality_advanced_004,,advanced,General Software,Measure,,0,,0,,0,8,5,2,20.000,11.000,90.691,4.755,0.500,2.377,1.000,25.000,1.000,209
+speculative_generality_advanced_005,,advanced,E-commerce,Design,,0,,0,,4,3,1,3,21.000,10.000,74.764,62.907,3.438,216.244,4.000,9.524,7.000,222
+primitive_obsession_basic_001,,basic,E-commerce,Design,,0,,0,,0,1,0,2,3.000,1.000,100.000,0.000,0.000,0.000,0.000,33.333,1.000,58
+primitive_obsession_basic_002,,basic,Finance,Recommend,,0,,0,,0,1,0,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,24
+primitive_obsession_basic_003,,basic,Healthcare,Compare,,1,magic_number,1,magic_number,0,1,0,6,8.000,2.000,75.290,4.755,0.500,2.377,1.000,0.000,3.000,73
+primitive_obsession_basic_004,,basic,Scientific Computing,Design,,0,,0,,0,1,0,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,25
+primitive_obsession_basic_005,,basic,General Software,Design,,0,,0,,0,1,0,4,10.000,3.000,100.000,4.755,0.500,2.377,3.000,40.000,3.000,123
+primitive_obsession_basic_006,,basic,E-commerce,Implement,,0,,0,,0,1,0,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,25
+primitive_obsession_intermediate_001,,intermediate,Finance,List,,1,long_parameter_list,1,long_parameter_list,7,1,0,6,15.000,3.000,100.000,0.000,0.000,0.000,0.000,6.667,2.000,146
+primitive_obsession_intermediate_002,,intermediate,Healthcare,Measure,,1,long_parameter_list,1,long_parameter_list,0,2,0,7,12.000,4.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,138
+primitive_obsession_intermediate_003,,intermediate,Scientific Computing,Measure,,0,,0,,0,,,,17.000,,,,,,,0.000,,138
+primitive_obsession_intermediate_004,,intermediate,General Software,Compare,,0,,1,dead_code,7,7,0,5,27.000,9.000,100.000,0.000,0.000,0.000,0.000,22.222,10.000,257
+primitive_obsession_intermediate_005,,intermediate,E-commerce,Report,,1,long_parameter_list,1,long_parameter_list,8,1,0,7,17.000,3.000,100.000,0.000,0.000,0.000,0.000,5.882,2.000,163
+primitive_obsession_intermediate_006,,intermediate,Finance,List,,1,long_parameter_list,1,long_parameter_list,7,1,0,6,15.000,3.000,100.000,0.000,0.000,0.000,0.000,6.667,2.000,146
+primitive_obsession_advanced_001,,advanced,Healthcare,Analyze,,1,long_parameter_list,1,long_parameter_list,0,6,0,3,36.000,14.000,55.774,53.774,1.000,53.774,5.000,0.000,1.000,318
+primitive_obsession_advanced_002,,advanced,Scientific Computing,Recommend,,1,long_parameter_list,1,long_parameter_list,0,15,0,8,38.000,17.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,325
+primitive_obsession_advanced_003,,advanced,General Software,Implement,,1,magic_number,1,magic_number,0,4,0,7,21.000,12.000,56.577,77.662,2.500,194.154,5.000,0.000,4.000,234
+primitive_obsession_advanced_004,,advanced,E-commerce,List,,1,long_parameter_list,1,long_parameter_list,4,4,0,9,25.000,8.000,73.470,10.000,1.500,15.000,3.000,4.000,6.000,298
+primitive_obsession_advanced_005,,advanced,Finance,List,,1,long_parameter_list,1,long_parameter_list,0,6,0,3,36.000,14.000,55.774,53.774,1.000,53.774,5.000,0.000,1.000,318
+primitive_obsession_advanced_006,,advanced,Healthcare,Evaluate,,1,long_parameter_list,1,long_parameter_list,0,15,0,8,38.000,17.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,325
+switch_statements_basic_001,,basic,E-commerce,Design,,1,magic_number,1,magic_number,0,1,0,1,13.000,6.000,63.519,42.110,0.833,35.092,6.000,0.000,0.000,103
+switch_statements_basic_002,,basic,Finance,Implement,,1,magic_number,1,magic_number,0,1,0,1,13.000,6.000,63.519,42.110,0.833,35.092,6.000,0.000,0.000,109
+switch_statements_basic_003,,basic,Healthcare,Analyze,,1,magic_number,1,magic_number,0,1,0,1,13.000,6.000,63.519,42.110,0.833,35.092,6.000,0.000,1.000,102
+switch_statements_basic_004,,basic,Scientific Computing,Implement,,0,,0,,0,1,0,2,9.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,90
+switch_statements_basic_005,,basic,General Software,Report,,1,magic_number,1,magic_number,0,1,0,1,9.000,4.000,94.923,59.795,1.500,89.692,4.000,44.444,0.000,123
+switch_statements_basic_006,,basic,E-commerce,Recommend,,1,magic_number,1,magic_number,0,1,0,1,13.000,6.000,92.371,42.110,0.833,35.092,6.000,46.154,1.000,144
+switch_statements_intermediate_001,,intermediate,Finance,Write,,1,magic_number,1,magic_number,0,1,0,1,75.000,31.000,36.902,375.293,1.765,662.282,51.000,0.000,0.000,608
+switch_statements_intermediate_002,,intermediate,Healthcare,Recommend,,1,magic_number,1,magic_number,0,1,0,1,31.000,21.000,46.065,450.034,1.436,646.203,26.000,0.000,0.000,313
+switch_statements_intermediate_003,,intermediate,Scientific Computing,Implement,,2,long_method;magic_number,2,long_method;magic_number,0,1,0,1,71.000,29.000,38.177,319.818,2.154,688.838,49.000,0.000,1.000,573
+switch_statements_intermediate_004,,intermediate,General Software,Report,,1,magic_number,1,magic_number,0,1,0,1,37.000,15.000,48.525,150.568,1.273,191.633,27.000,0.000,0.000,290
+switch_statements_intermediate_005,,intermediate,E-commerce,Design,,1,magic_number,1,magic_number,0,1,0,1,20.000,12.000,54.241,178.413,1.647,293.857,16.000,0.000,5.000,196
+switch_statements_intermediate_006,,intermediate,Finance,List,,1,magic_number,1,magic_number,0,1,0,1,75.000,31.000,36.902,375.293,1.765,662.282,51.000,0.000,0.000,608
+switch_statements_advanced_001,,advanced,Healthcare,Report,,3,dead_code;long_parameter_list;magic_number,3,dead_code;long_parameter_list;magic_number,0,1,0,7,20.000,9.000,78.630,262.331,3.750,983.741,8.000,25.000,0.000,224
+switch_statements_advanced_002,,advanced,Scientific Computing,Report,,4,duplicate_code;long_method;long_parameter_list;magic_number,4,duplicate_code;long_method;long_parameter_list;magic_number,0,1,0,1,163.000,71.000,23.420,480.000,2.667,1280.000,115.000,0.000,0.000,991
+switch_statements_advanced_003,,advanced,General Software,Compare,,5,deep_nesting;duplicate_code;long_method;long_parameter_list;magic_number,5,deep_nesting;duplicate_code;long_method;long_parameter_list;magic_number,0,1,0,1,114.000,40.000,30.818,505.666,2.053,1037.945,159.000,0.000,0.000,682
+switch_statements_advanced_004,,advanced,E-commerce,Analyze,,1,duplicate_code,1,duplicate_code,0,,,,125.000,,,,,,,0.000,,1024
+switch_statements_advanced_005,,advanced,Finance,Report,,4,deep_nesting;duplicate_code;long_parameter_list;magic_number,4,deep_nesting;duplicate_code;long_parameter_list;magic_number,0,1,0,1,61.000,23.000,51.070,120.000,1.429,171.429,80.000,1.639,0.000,589
+switch_statements_advanced_006,,advanced,Healthcare,Implement,,3,dead_code;long_parameter_list;magic_number,3,dead_code;long_parameter_list;magic_number,0,1,0,7,20.000,9.000,78.630,262.331,3.750,983.741,8.000,25.000,0.000,224
+parallel_inheritance_basic_001,,basic,E-commerce,Recommend,,0,,0,,0,10,1,2,38.000,30.000,100.000,0.000,0.000,0.000,6.000,0.000,3.000,259
+parallel_inheritance_basic_002,,basic,Finance,Recommend,,0,,0,,0,6,4,1,17.000,16.000,100.000,0.000,0.000,0.000,0.000,17.647,2.000,120
+parallel_inheritance_basic_003,,basic,Healthcare,Write,,0,,0,,0,7,3,3,27.000,21.000,100.000,0.000,0.000,0.000,0.000,11.111,2.000,221
+parallel_inheritance_basic_004,,basic,Scientific Computing,Implement,,0,,0,,0,9,4,1,26.000,25.000,100.000,0.000,0.000,0.000,0.000,0.000,6.000,160
+parallel_inheritance_basic_005,,basic,General Software,Analyze,,0,,0,,0,7,1,1,21.000,21.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,120
+parallel_inheritance_basic_006,,basic,E-commerce,List,,0,,0,,0,10,1,2,38.000,30.000,100.000,0.000,0.000,0.000,6.000,0.000,3.000,259
+parallel_inheritance_intermediate_001,,intermediate,Finance,Design,,0,,0,,0,12,3,1,36.000,36.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,226
+parallel_inheritance_intermediate_002,,intermediate,Healthcare,Write,,1,duplicate_code,1,duplicate_code,0,22,2,4,65.000,34.000,51.911,6.000,1.500,9.000,0.000,0.000,16.000,501
+parallel_inheritance_intermediate_003,,intermediate,Scientific Computing,Write,,0,,0,,0,4,0,1,14.000,13.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,121
+parallel_inheritance_intermediate_004,,intermediate,General Software,Report,,0,,0,,0,4,0,1,18.000,15.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,105
+parallel_inheritance_intermediate_005,,intermediate,E-commerce,Analyze,,0,,0,,0,4,0,1,18.000,15.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,116
+parallel_inheritance_advanced_001,,advanced,Finance,Measure,,0,,0,,0,5,5,1,65.000,40.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,340
+parallel_inheritance_advanced_002,,advanced,Healthcare,List,,0,,0,,0,10,0,3,37.000,31.000,100.000,0.000,0.000,0.000,0.000,0.000,3.000,283
+parallel_inheritance_advanced_003,,advanced,Scientific Computing,Design,,0,,0,,0,5,5,1,23.000,19.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,163
+parallel_inheritance_advanced_004,,advanced,General Software,Write,,0,,0,,0,6,0,1,26.000,22.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,163
+parallel_inheritance_advanced_005,,advanced,E-commerce,Analyze,,0,,0,,0,5,5,1,65.000,40.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,340
+lazy_class_basic_001,,basic,E-commerce,Compare,,0,,0,,0,1,0,1,3.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,22
+lazy_class_basic_002,,basic,Finance,Measure,,1,dead_code,1,dead_code,0,1,0,1,4.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,30
+lazy_class_basic_003,,basic,Healthcare,Report,,0,,0,,0,1,0,2,5.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,63
+lazy_class_basic_004,,basic,Scientific Computing,Write,,0,,0,,0,2,0,1,5.000,4.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,41
+lazy_class_basic_005,,basic,General Software,Recommend,,0,,0,,0,1,0,1,3.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,19
+lazy_class_basic_006,,basic,E-commerce,Compare,,0,,0,,0,3,0,1,8.000,6.000,69.605,27.000,1.800,48.600,1.000,0.000,0.000,54
+lazy_class_intermediate_001,,intermediate,Finance,Analyze,,0,,0,,0,3,0,1,9.000,9.000,100.000,0.000,0.000,0.000,1.000,0.000,2.000,61
+lazy_class_intermediate_002,,intermediate,Healthcare,Measure,,0,,0,,0,3,0,2,14.000,9.000,71.179,4.755,0.500,2.377,0.000,0.000,1.000,101
+lazy_class_intermediate_003,,intermediate,Scientific Computing,Evaluate,,1,magic_number,1,magic_number,0,6,0,3,17.000,12.000,59.375,57.110,2.000,114.221,0.000,0.000,4.000,156
+lazy_class_intermediate_004,,intermediate,General Software,Report,,0,,0,,0,4,0,1,13.000,10.000,65.006,27.000,1.800,48.600,0.000,0.000,1.000,93
+lazy_class_intermediate_005,,intermediate,E-commerce,Measure,,0,,0,,0,4,0,2,13.000,10.000,100.000,0.000,0.000,0.000,0.000,7.692,2.000,97
+lazy_class_advanced_001,,advanced,Finance,Measure,,1,magic_number,1,magic_number,0,7,0,1,19.000,19.000,58.064,68.000,3.300,224.400,1.000,0.000,2.000,169
+lazy_class_advanced_002,,advanced,Healthcare,Report,,1,magic_number,1,magic_number,0,6,0,1,19.000,22.000,70.542,87.568,3.500,306.489,4.000,5.263,2.000,211
+lazy_class_advanced_003,,advanced,Scientific Computing,List,,0,,0,,0,6,0,4,30.000,20.000,55.050,39.863,1.714,68.337,3.000,0.000,9.000,233
+lazy_class_advanced_004,,advanced,General Software,Implement,,0,,0,,0,10,0,3,28.000,20.000,57.132,25.266,0.500,12.633,0.000,0.000,3.000,211
+lazy_class_advanced_005,,advanced,E-commerce,Recommend,,1,magic_number,1,magic_number,0,7,0,1,19.000,19.000,58.064,68.000,3.300,224.400,1.000,0.000,2.000,169
+temporary_field_basic_001,,basic,E-commerce,Design,,0,,0,,0,2,0,3,35.000,4.000,83.752,4.755,0.500,2.377,0.000,5.714,5.000,363
+temporary_field_basic_002,,basic,Finance,Report,,1,magic_number,1,magic_number,0,5,0,3,22.000,10.000,78.938,76.000,2.727,207.273,4.000,18.182,5.000,243
+temporary_field_basic_003,,basic,Healthcare,Analyze,,0,,0,,0,1,0,3,5.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,35
+temporary_field_basic_004,,basic,Scientific Computing,Recommend,,0,,0,,0,1,0,3,5.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,38
+temporary_field_basic_005,,basic,General Software,Design,,1,magic_number,1,magic_number,0,2,0,3,12.000,7.000,90.118,12.000,0.667,8.000,3.000,16.667,1.000,96
+temporary_field_basic_006,,basic,E-commerce,Compare,,0,,0,,0,2,0,3,35.000,4.000,83.752,4.755,0.500,2.377,0.000,5.714,5.000,363
+temporary_field_intermediate_001,,intermediate,Finance,List,,0,,0,,0,1,0,6,8.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,63
+temporary_field_intermediate_002,,intermediate,Healthcare,Compare,,0,,0,,0,1,0,6,8.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,70
+temporary_field_intermediate_003,,intermediate,Scientific Computing,Recommend,,0,,0,,0,1,0,6,8.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,65
+temporary_field_intermediate_004,,intermediate,General Software,Design,,0,,0,,0,6,0,5,17.000,8.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,147
+temporary_field_intermediate_005,,intermediate,E-commerce,Report,,0,,0,,0,1,0,5,7.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,53
+temporary_field_advanced_001,,advanced,Finance,Compare,,0,,0,,0,1,0,10,12.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,93
+temporary_field_advanced_002,,advanced,Healthcare,List,,0,,0,,0,3,0,10,28.000,6.000,100.000,0.000,0.000,0.000,2.000,21.429,1.000,337
+temporary_field_advanced_003,,advanced,Scientific Computing,List,,0,,0,,11,2,0,9,32.000,4.000,100.000,0.000,0.000,0.000,0.000,9.375,3.000,296
+temporary_field_advanced_004,,advanced,General Software,Report,,0,,0,,0,1,0,9,11.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,91
+temporary_field_advanced_005,,advanced,E-commerce,Compare,,0,,0,,0,1,0,10,12.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,93
+message_chains_basic_001,,basic,E-commerce,Report,,0,,0,,0,1,0,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,22
+message_chains_basic_002,,basic,Finance,Implement,,1,magic_number,1,magic_number,0,1,0,3,12.000,3.000,90.387,12.000,0.667,8.000,3.000,16.667,0.000,126
+message_chains_basic_003,,basic,Healthcare,Write,,0,,0,,0,1,0,3,5.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,50
+message_chains_basic_004,,basic,Scientific Computing,Measure,,0,,0,,0,1,0,2,3.000,1.000,100.000,0.000,0.000,0.000,0.000,33.333,0.000,46
+message_chains_basic_005,,basic,General Software,Compare,,1,magic_number,1,magic_number,0,1,0,1,5.000,4.000,72.641,44.973,1.000,44.973,3.000,0.000,0.000,61
+message_chains_basic_006,,basic,E-commerce,Compare,,0,,0,,0,1,0,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,22
+message_chains_intermediate_001,,intermediate,Finance,Write,,1,magic_number,1,magic_number,0,1,0,1,2.000,1.000,88.557,4.755,0.500,2.377,0.000,0.000,0.000,29
+message_chains_intermediate_002,,intermediate,Healthcare,Compare,,0,,0,,0,1,0,2,3.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,49
+message_chains_intermediate_003,,intermediate,Scientific Computing,Analyze,,0,,0,,0,1,0,5,7.000,1.000,100.000,2.000,0.500,1.000,0.000,28.571,2.000,125
+message_chains_intermediate_004,,intermediate,General Software,Report,,1,magic_number,1,magic_number,0,1,0,6,14.000,5.000,87.399,12.000,0.667,8.000,7.000,14.286,0.000,110
+message_chains_intermediate_005,,intermediate,E-commerce,Compare,,0,,0,,0,1,0,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,24
+message_chains_advanced_001,,advanced,Finance,Evaluate,,2,dead_code;magic_number,2,dead_code;magic_number,0,1,0,1,14.000,6.000,88.232,53.774,2.500,134.436,10.000,28.571,1.000,214
+message_chains_advanced_002,,advanced,Healthcare,Measure,,0,,0,,0,1,0,9,13.000,5.000,88.352,39.863,2.667,106.302,7.000,23.077,0.000,149
+message_chains_advanced_003,,advanced,Scientific Computing,Write,,0,,0,,0,,,,10.000,,,,,,,10.000,,181
+message_chains_advanced_004,,advanced,General Software,Implement,,0,,0,,0,1,0,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,32
+message_chains_advanced_005,,advanced,E-commerce,Measure,,1,magic_number,1,magic_number,0,1,0,3,8.000,2.000,75.290,4.755,0.500,2.377,2.000,0.000,2.000,74
+middle_man_basic_001,,basic,E-commerce,Measure,,0,,0,,0,4,0,1,9.000,6.000,100.000,0.000,0.000,0.000,0.000,0.000,3.000,75
+middle_man_basic_002,,basic,Finance,Write,,0,,0,,0,5,0,1,11.000,7.000,100.000,0.000,0.000,0.000,0.000,0.000,4.000,97
+middle_man_basic_003,,basic,Healthcare,Analyze,,0,,0,,0,3,0,1,7.000,5.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,57
+middle_man_basic_004,,basic,Scientific Computing,Analyze,,0,,0,,0,3,0,1,7.000,5.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,60
+middle_man_basic_005,,basic,General Software,Measure,,0,,0,,0,4,0,3,11.000,6.000,100.000,0.000,0.000,0.000,0.000,0.000,4.000,107
+middle_man_basic_006,,basic,E-commerce,Evaluate,,0,,0,,0,4,0,1,9.000,6.000,100.000,0.000,0.000,0.000,0.000,0.000,3.000,75
+middle_man_intermediate_001,,intermediate,Finance,Design,,0,,0,,0,13,0,1,27.000,15.000,100.000,0.000,0.000,0.000,0.000,0.000,12.000,249
+middle_man_intermediate_002,,intermediate,Healthcare,Evaluate,,0,,0,,0,6,0,1,13.000,8.000,100.000,0.000,0.000,0.000,0.000,0.000,5.000,136
+middle_man_intermediate_003,,intermediate,Scientific Computing,Design,,0,,0,,0,8,0,1,17.000,10.000,100.000,0.000,0.000,0.000,0.000,0.000,7.000,136
+middle_man_intermediate_004,,intermediate,General Software,Compare,,0,,0,,0,5,0,1,11.000,7.000,100.000,0.000,0.000,0.000,0.000,0.000,5.000,114
+middle_man_intermediate_005,,intermediate,E-commerce,Compare,,0,,0,,0,5,0,1,11.000,7.000,100.000,0.000,0.000,0.000,0.000,0.000,4.000,87
+middle_man_advanced_001,,advanced,Finance,Write,,0,,0,,0,6,0,5,17.000,8.000,100.000,0.000,0.000,0.000,0.000,0.000,5.000,167
+middle_man_advanced_002,,advanced,Healthcare,Compare,,0,,0,,0,5,0,4,14.000,7.000,100.000,0.000,0.000,0.000,0.000,0.000,4.000,136
+middle_man_advanced_003,,advanced,Scientific Computing,Implement,,0,,0,,0,2,0,5,13.000,4.000,100.000,0.000,0.000,0.000,0.000,0.000,6.000,134
+middle_man_advanced_004,,advanced,General Software,Implement,,0,,0,,0,5,0,4,14.000,7.000,100.000,0.000,0.000,0.000,0.000,0.000,8.000,122
+middle_man_advanced_005,,advanced,E-commerce,Evaluate,,0,,0,,0,6,0,2,25.000,19.000,86.759,4.755,0.500,2.377,3.000,16.000,7.000,219
+inappropriate_intimacy_basic_001,,basic,E-commerce,Implement,,0,,0,,0,2,0,2,7.000,6.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,64
+inappropriate_intimacy_basic_002,,basic,Finance,Implement,,0,,0,,0,7,0,2,24.000,13.000,59.085,22.459,1.875,42.110,2.000,0.000,3.000,163
+inappropriate_intimacy_basic_003,,basic,Healthcare,Design,,0,,0,,0,4,0,3,12.000,8.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,95
+inappropriate_intimacy_basic_004,,basic,Scientific Computing,List,,0,,0,,0,4,0,2,15.000,9.000,65.981,12.000,2.000,24.000,2.000,0.000,2.000,112
+inappropriate_intimacy_basic_005,,basic,General Software,Evaluate,,0,,0,,0,7,0,2,26.000,12.000,60.367,12.000,0.667,8.000,2.000,0.000,9.000,201
+inappropriate_intimacy_basic_006,,basic,E-commerce,Design,,0,,0,,0,2,0,2,7.000,6.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,64
+inappropriate_intimacy_intermediate_001,,intermediate,Finance,Implement,,0,,0,,0,9,0,4,41.000,26.000,62.001,173.065,3.273,566.394,18.000,7.317,3.000,430
+inappropriate_intimacy_intermediate_002,,intermediate,Healthcare,Implement,,0,,0,,0,12,0,5,35.000,16.000,100.000,0.000,0.000,0.000,0.000,0.000,3.000,270
+inappropriate_intimacy_intermediate_003,,intermediate,Scientific Computing,Write,,0,,0,,0,8,0,3,24.000,13.000,63.806,4.755,0.500,2.377,2.000,0.000,3.000,207
+inappropriate_intimacy_intermediate_004,,intermediate,General Software,Evaluate,,1,dead_code,1,dead_code,0,8,3,6,29.000,13.000,77.405,72.000,2.000,144.000,1.000,20.690,5.000,354
+inappropriate_intimacy_intermediate_005,,intermediate,E-commerce,Measure,,0,,0,,0,6,0,1,14.000,10.000,100.000,0.000,0.000,0.000,0.000,0.000,4.000,94
+inappropriate_intimacy_intermediate_006,,intermediate,Finance,Implement,,0,,0,,0,9,0,4,47.000,26.000,59.780,173.065,3.273,566.394,20.000,6.383,2.000,441
+inappropriate_intimacy_advanced_001,,advanced,Healthcare,Measure,,0,,0,,0,11,0,2,27.000,19.000,62.421,4.755,0.500,2.377,0.000,0.000,0.000,230
+inappropriate_intimacy_advanced_002,,advanced,Scientific Computing,Recommend,,0,,0,,0,6,0,4,25.000,14.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,189
+inappropriate_intimacy_advanced_003,,advanced,General Software,Report,,0,,0,,7,10,0,2,38.000,21.000,65.155,13.932,0.500,6.966,4.000,2.632,12.000,308
+inappropriate_intimacy_advanced_004,,advanced,E-commerce,Implement,,0,,0,,7,4,0,2,20.000,12.000,100.000,0.000,0.000,0.000,0.000,5.000,6.000,187
+inappropriate_intimacy_advanced_005,,advanced,Finance,Write,,0,,0,,4,6,0,3,24.000,11.000,82.368,15.510,1.000,15.510,2.000,16.667,7.000,194
+inappropriate_intimacy_advanced_006,,advanced,Healthcare,Write,,0,,0,,0,11,0,2,27.000,19.000,62.421,4.755,0.500,2.377,0.000,0.000,0.000,230
+alternative_classes_different_interfaces_basic_001,,basic,E-commerce,Compare,,0,,0,,0,2,0,3,11.000,8.000,100.000,0.000,0.000,0.000,0.000,9.091,4.000,104
+alternative_classes_different_interfaces_basic_002,,basic,Finance,Compare,,0,,0,,0,2,0,1,6.000,6.000,100.000,0.000,0.000,0.000,0.000,33.333,1.000,76
+alternative_classes_different_interfaces_basic_003,,basic,Healthcare,List,,2,broad_except;duplicate_code,1,broad_except,0,4,0,2,36.000,12.000,100.000,0.000,0.000,0.000,2.000,0.000,5.000,220
+alternative_classes_different_interfaces_basic_004,,basic,Scientific Computing,Implement,,0,,0,,0,4,0,3,13.000,8.000,100.000,0.000,0.000,0.000,0.000,0.000,5.000,117
+alternative_classes_different_interfaces_basic_005,,basic,General Software,Evaluate,,0,,0,,0,4,0,4,20.000,8.000,100.000,0.000,0.000,0.000,0.000,0.000,3.000,134
+alternative_classes_different_interfaces_basic_006,,basic,E-commerce,Compare,,0,,0,,0,2,0,3,11.000,8.000,100.000,0.000,0.000,0.000,0.000,9.091,4.000,104
+alternative_classes_different_interfaces_intermediate_001,,intermediate,Finance,Analyze,,0,,0,,0,6,6,1,15.000,12.000,100.000,0.000,0.000,0.000,0.000,40.000,0.000,133
+alternative_classes_different_interfaces_intermediate_002,,intermediate,Healthcare,Compare,,1,dead_code,1,dead_code,0,6,0,2,23.000,12.000,100.000,0.000,0.000,0.000,0.000,0.000,10.000,236
+alternative_classes_different_interfaces_intermediate_003,,intermediate,Scientific Computing,Design,,0,,0,,0,3,3,1,9.000,9.000,100.000,0.000,0.000,0.000,0.000,33.333,0.000,102
+alternative_classes_different_interfaces_intermediate_004,,intermediate,General Software,Design,,0,,0,,0,3,3,1,9.000,9.000,100.000,0.000,0.000,0.000,0.000,33.333,0.000,89
+alternative_classes_different_interfaces_intermediate_005,,intermediate,E-commerce,Evaluate,,0,,0,,0,6,0,3,28.000,17.000,58.608,16.253,1.333,21.671,3.000,0.000,9.000,238
+alternative_classes_different_interfaces_advanced_001,,advanced,Finance,List,,0,,0,,0,6,2,5,29.000,12.000,100.000,0.000,0.000,0.000,0.000,6.897,2.000,250
+alternative_classes_different_interfaces_advanced_002,,advanced,Healthcare,Compare,,1,magic_number,1,magic_number,0,3,0,2,17.000,13.000,86.099,12.000,0.667,8.000,3.000,17.647,3.000,193
+alternative_classes_different_interfaces_advanced_003,,advanced,Scientific Computing,Evaluate,,0,,0,,0,6,3,1,15.000,12.000,100.000,0.000,0.000,0.000,0.000,20.000,0.000,152
+alternative_classes_different_interfaces_advanced_004,,advanced,General Software,Compare,,0,,0,,0,8,0,3,30.000,12.000,100.000,0.000,0.000,0.000,0.000,0.000,13.000,241
+alternative_classes_different_interfaces_advanced_005,,advanced,E-commerce,Compare,,1,dead_code,1,dead_code,0,6,0,3,26.000,12.000,100.000,0.000,0.000,0.000,0.000,0.000,9.000,262
+incomplete_library_class_basic_001,,basic,E-commerce,Write,,2,dead_code;magic_number,2,dead_code;magic_number,0,3,0,2,11.000,5.000,91.014,46.605,2.000,93.209,2.000,27.273,3.000,120
+incomplete_library_class_basic_002,,basic,Finance,Evaluate,,1,magic_number,1,magic_number,0,2,0,2,16.000,9.000,62.984,39.863,1.714,68.337,5.000,0.000,4.000,125
+incomplete_library_class_basic_003,,basic,Healthcare,Write,,0,,0,,1,2,0,3,14.000,4.000,83.832,4.755,0.500,2.377,2.000,7.143,7.000,147
+incomplete_library_class_basic_004,,basic,Scientific Computing,Design,,2,broad_except;perf_try_in_loop,2,broad_except;perf_try_in_loop,3,8,0,4,40.000,14.000,61.318,48.432,3.750,181.620,7.000,2.500,10.000,319
+incomplete_library_class_basic_005,,basic,General Software,Implement,,1,dead_code,1,dead_code,0,2,0,1,11.000,6.000,88.972,4.755,0.500,2.377,7.000,9.091,7.000,128
+incomplete_library_class_intermediate_001,,intermediate,E-commerce,Analyze,,0,,0,,4,13,0,2,34.000,21.000,60.843,256.464,7.562,1939.510,6.000,5.882,6.000,330
+incomplete_library_class_intermediate_002,,intermediate,Finance,Design,,0,,0,,0,,,,76.000,,,,,,,0.000,,1024
+incomplete_library_class_intermediate_003,,intermediate,Healthcare,Recommend,,0,,0,,0,7,0,1,19.000,9.000,72.197,55.507,1.500,83.260,0.000,5.263,6.000,213
+incomplete_library_class_intermediate_004,,intermediate,Scientific Computing,Write,,1,magic_number,1,magic_number,9,4,0,1,24.000,8.000,77.437,82.045,2.545,208.841,3.000,16.667,11.000,271
+incomplete_library_class_intermediate_005,,intermediate,General Software,Write,,1,dead_code,1,dead_code,4,2,0,6,20.000,6.000,78.946,4.755,0.500,2.377,1.000,5.000,9.000,209
+incomplete_library_class_advanced_001,,advanced,E-commerce,Report,,1,dead_code,1,dead_code,0,8,0,4,31.000,15.000,71.278,103.726,3.429,355.633,2.000,12.903,7.000,390
+incomplete_library_class_advanced_002,,advanced,Finance,Measure,,1,magic_number,1,magic_number,5,5,0,3,30.000,9.000,79.468,4.755,0.500,2.377,3.000,10.000,10.000,300
+incomplete_library_class_advanced_003,,advanced,Healthcare,List,,2,dead_code;magic_number,2,dead_code;magic_number,0,7,4,3,26.000,11.000,83.293,12.000,0.667,8.000,3.000,19.231,5.000,238
+incomplete_library_class_advanced_004,,advanced,Scientific Computing,Compare,,1,dead_code,1,dead_code,5,2,0,4,18.000,2.000,100.000,0.000,0.000,0.000,0.000,16.667,11.000,221
+data_class_basic_001,,basic,E-commerce,Evaluate,,0,,0,,0,9,0,4,38.000,15.000,54.770,18.575,0.500,9.288,4.000,0.000,2.000,255
+data_class_basic_002,,basic,Finance,Analyze,,0,,0,,0,6,0,5,22.000,8.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,135
+data_class_basic_003,,basic,Healthcare,Implement,,0,,0,,0,11,0,5,37.000,13.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,233
+data_class_basic_004,,basic,Scientific Computing,Analyze,,0,,0,,0,6,0,5,17.000,8.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,118
+data_class_basic_005,,basic,General Software,List,,0,,0,,0,3,0,1,7.000,5.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,56
+data_class_basic_006,,basic,E-commerce,Measure,,0,,0,,0,9,0,4,38.000,15.000,54.770,18.575,0.500,9.288,4.000,0.000,2.000,255
+data_class_intermediate_001,,intermediate,Finance,Recommend,,1,long_parameter_list,1,long_parameter_list,0,20,0,9,77.000,22.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,527
+data_class_intermediate_002,,intermediate,Healthcare,Analyze,,1,long_parameter_list,1,long_parameter_list,0,2,0,8,21.000,4.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,175
+data_class_intermediate_003,,intermediate,Scientific Computing,Measure,,1,long_parameter_list,1,long_parameter_list,0,3,0,9,19.000,8.000,61.634,24.000,1.500,36.000,1.000,0.000,2.000,155
+data_class_intermediate_004,,intermediate,General Software,Design,,1,long_parameter_list,1,long_parameter_list,0,9,0,8,34.000,11.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,225
+data_class_intermediate_005,,intermediate,E-commerce,Measure,,0,,0,,0,16,0,7,47.000,18.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,317
+data_class_advanced_001,,advanced,Finance,Evaluate,,0,,0,,0,21,0,11,75.000,25.000,100.000,0.000,0.000,0.000,1.000,0.000,15.000,569
+data_class_advanced_002,,advanced,Healthcare,Evaluate,,0,,0,,0,21,0,10,72.000,23.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,464
+data_class_advanced_003,,advanced,Scientific Computing,Write,,1,long_parameter_list,1,long_parameter_list,0,17,0,8,58.000,19.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,406
+data_class_advanced_004,,advanced,General Software,Report,,0,,0,,0,1,0,10,12.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,87
+data_class_advanced_005,,advanced,E-commerce,Report,,0,,0,,0,19,0,9,47.000,21.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,339
+refused_bequest_basic_001,,basic,E-commerce,Measure,,0,,0,,0,6,0,2,17.000,10.000,61.926,27.000,1.500,40.500,2.000,0.000,6.000,107
+refused_bequest_basic_002,,basic,Finance,Recommend,,0,,0,,0,3,0,1,7.000,5.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,73
+refused_bequest_basic_003,,basic,Healthcare,Design,,0,,0,,0,3,3,1,7.000,5.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,39
+refused_bequest_basic_004,,basic,Scientific Computing,Measure,,0,,0,,0,4,0,1,9.000,6.000,100.000,0.000,0.000,0.000,0.000,0.000,3.000,83
+refused_bequest_basic_005,,basic,General Software,Recommend,,0,,0,,0,3,2,1,7.000,5.000,100.000,0.000,0.000,0.000,0.000,28.571,2.000,60
+refused_bequest_basic_006,,basic,E-commerce,Report,,0,,0,,0,6,0,2,17.000,10.000,61.926,27.000,1.500,40.500,2.000,0.000,6.000,107
+refused_bequest_intermediate_001,,intermediate,Finance,Design,,0,,0,,0,5,0,1,11.000,7.000,100.000,0.000,0.000,0.000,0.000,0.000,3.000,103
+refused_bequest_intermediate_002,,intermediate,Healthcare,Design,,0,,0,,0,1,0,2,4.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,3.000,58
+refused_bequest_intermediate_003,,intermediate,Scientific Computing,List,,0,,0,,0,1,0,5,7.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,63
+refused_bequest_intermediate_004,,intermediate,General Software,Compare,,0,,0,,0,5,4,1,11.000,7.000,100.000,0.000,0.000,0.000,0.000,9.091,2.000,85
+refused_bequest_intermediate_005,,intermediate,E-commerce,Recommend,,0,,0,,0,1,0,1,6.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,63
+refused_bequest_advanced_001,,advanced,Finance,List,,0,,0,,0,1,0,7,9.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,96
+refused_bequest_advanced_002,,advanced,Healthcare,Evaluate,,0,,0,,0,6,0,1,13.000,8.000,100.000,0.000,0.000,0.000,0.000,0.000,3.000,127
+refused_bequest_advanced_003,,advanced,Scientific Computing,List,,0,,0,,0,1,0,5,7.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,70
+refused_bequest_advanced_004,,advanced,General Software,Compare,,0,,0,,0,1,0,2,4.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,52
+refused_bequest_advanced_005,,advanced,E-commerce,Design,,0,,0,,0,1,0,6,8.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,60
+comments_smell_basic_001,,basic,E-commerce,Evaluate,,0,,0,,3,1,0,4,11.000,3.000,87.041,15.510,1.000,15.510,4.000,72.727,2.000,275
+comments_smell_basic_002,,basic,Finance,Compare,,0,,0,,0,3,0,3,8.000,5.000,100.000,0.000,0.000,0.000,0.000,25.000,0.000,289
+comments_smell_basic_003,,basic,Healthcare,Design,,0,,0,,1,1,0,4,9.000,3.000,86.660,36.000,2.400,86.400,2.000,44.444,3.000,160
+comments_smell_basic_004,,basic,Scientific Computing,Report,,0,,0,,0,1,0,1,3.000,2.000,100.000,4.755,0.500,2.377,1.000,66.667,0.000,49
+comments_smell_basic_005,,basic,General Software,List,,0,,0,,0,3,0,3,9.000,4.000,63.663,24.000,1.500,36.000,1.000,11.111,3.000,198
+comments_smell_intermediate_001,,intermediate,E-commerce,Measure,,1,dead_code,1,dead_code,4,2,0,10,37.000,5.000,83.182,108.000,4.091,441.818,3.000,18.919,4.000,599
+comments_smell_intermediate_002,,intermediate,Finance,Report,,1,duplicate_code,1,duplicate_code,0,,,,,,,,,,,,,1024
+comments_smell_intermediate_003,,intermediate,Healthcare,Measure,,1,magic_number,1,magic_number,1,6,0,2,35.000,9.000,86.147,15.510,1.000,15.510,1.000,45.714,16.000,471
+comments_smell_intermediate_004,,intermediate,Scientific Computing,Design,,0,,0,,3,1,0,6,15.000,1.000,100.000,0.000,0.000,0.000,0.000,46.667,7.000,285
+comments_smell_intermediate_005,,intermediate,General Software,List,,0,,0,,1,1,0,9,19.000,1.000,90.725,25.266,1.200,30.319,0.000,47.368,10.000,524
+comments_smell_advanced_001,,advanced,E-commerce,Evaluate,,1,duplicate_code,1,duplicate_code,0,,,,48.000,,,,,,,93.750,,1024
+comments_smell_advanced_002,,advanced,Finance,Evaluate,,2,deep_nesting;magic_number,2,deep_nesting;magic_number,3,1,0,5,55.000,9.000,80.679,28.529,1.500,42.794,31.000,16.364,6.000,603
+comments_smell_advanced_003,,advanced,Healthcare,Report,,1,dead_code,1,dead_code,0,1,0,10,14.000,1.000,100.000,0.000,0.000,0.000,0.000,57.143,7.000,431
+comments_smell_advanced_004,,advanced,Scientific Computing,Design,,0,,1,dead_code,21,0,0,0,36.000,1.000,85.699,20.897,0.750,15.673,6.000,41.667,11.000,498
+magic_numbers_basic_001,,basic,E-commerce,Implement,magic_number,0,,0,,0,1,0,4,5.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,57
+magic_numbers_basic_002,,basic,Finance,Measure,magic_number,1,magic_number,1,magic_number,0,1,0,1,2.000,2.000,83.142,27.000,1.800,48.600,1.000,0.000,0.000,28
+magic_numbers_basic_003,,basic,Healthcare,Recommend,magic_number,0,,0,,0,1,0,1,2.000,1.000,88.557,4.755,0.500,2.377,0.000,0.000,0.000,19
+magic_numbers_basic_004,,basic,Scientific Computing,Measure,magic_number,1,magic_number,1,magic_number,0,1,0,1,9.000,4.000,65.737,69.760,1.750,122.081,4.000,0.000,0.000,78
+magic_numbers_basic_005,,basic,General Software,Compare,magic_number,1,magic_number,1,magic_number,0,1,0,1,15.000,7.000,61.273,54.000,0.857,46.286,7.000,0.000,0.000,116
+magic_numbers_basic_006,,basic,E-commerce,Evaluate,magic_number,0,,0,,0,1,0,4,5.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,57
+magic_numbers_intermediate_001,,intermediate,Finance,Implement,magic_number,2,dead_code;magic_number,2,dead_code;magic_number,0,1,0,12,21.000,7.000,54.867,155.589,5.143,800.174,6.000,0.000,2.000,192
+magic_numbers_intermediate_002,,intermediate,Healthcare,Evaluate,magic_number,1,long_parameter_list,1,long_parameter_list,0,1,0,4,7.000,3.000,66.797,112.588,3.462,389.728,2.000,0.000,0.000,96
+magic_numbers_intermediate_003,,intermediate,Scientific Computing,Evaluate,magic_number,2,complex_conditional;magic_number,2,complex_conditional;magic_number,0,1,0,1,9.000,11.000,84.998,259.461,1.694,439.409,8.000,11.111,0.000,154
+magic_numbers_intermediate_004,,intermediate,General Software,Recommend,magic_number,0,,0,,0,1,0,1,2.000,1.000,78.505,129.658,3.333,432.193,0.000,0.000,1.000,79
+magic_numbers_intermediate_005,,intermediate,E-commerce,Measure,magic_number,0,,0,,0,1,0,5,6.000,1.000,70.773,53.774,1.667,89.624,0.000,0.000,0.000,96
+magic_numbers_intermediate_006,,intermediate,Finance,Measure,magic_number,2,dead_code;magic_number,2,dead_code;magic_number,0,1,0,12,21.000,7.000,54.867,155.589,5.143,800.174,6.000,0.000,2.000,192
+magic_numbers_advanced_001,,advanced,Healthcare,Design,magic_number,1,magic_number,1,magic_number,0,6,5,16,32.000,10.000,79.561,151.304,3.667,554.780,5.000,40.625,6.000,442
+magic_numbers_advanced_002,,advanced,Scientific Computing,Implement,magic_number,0,,0,,7,1,0,5,13.000,1.000,76.284,116.692,1.588,185.334,0.000,7.692,2.000,216
+magic_numbers_advanced_003,,advanced,General Software,Compare,magic_number,0,,0,,2,1,0,5,19.000,7.000,87.071,77.709,2.100,163.189,3.000,26.316,5.000,363
+magic_numbers_advanced_004,,advanced,E-commerce,List,magic_number,0,,0,,1,1,0,3,14.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,7.000,137
+magic_numbers_advanced_005,,advanced,Finance,Report,magic_number,2,dead_code;magic_number,2,dead_code;magic_number,6,1,0,6,20.000,4.000,78.002,88.811,1.455,129.179,4.000,15.000,3.000,281
+magic_numbers_advanced_006,,advanced,Healthcare,Recommend,magic_number,1,magic_number,1,magic_number,0,6,5,16,32.000,10.000,79.561,151.304,3.667,554.780,5.000,40.625,6.000,442
+deep_nesting_basic_001,,basic,E-commerce,Recommend,deep_nesting,1,magic_number,1,magic_number,0,1,0,6,11.000,3.000,65.441,43.020,2.000,86.039,3.000,0.000,0.000,93
+deep_nesting_basic_002,,basic,Finance,Implement,deep_nesting,0,,0,,0,6,5,6,21.000,10.000,90.549,18.575,0.500,9.288,4.000,47.619,5.000,197
+deep_nesting_basic_003,,basic,Healthcare,Write,deep_nesting,0,,0,,0,1,0,1,6.000,5.000,100.000,0.000,0.000,0.000,10.000,16.667,1.000,76
+deep_nesting_basic_004,,basic,Scientific Computing,Measure,deep_nesting,0,,0,,0,1,0,1,17.000,5.000,85.023,25.266,2.250,56.849,6.000,17.647,1.000,143
+deep_nesting_basic_005,,basic,General Software,Measure,deep_nesting,1,magic_number,1,magic_number,0,1,0,6,12.000,7.000,92.912,46.605,2.000,93.209,5.000,50.000,8.000,187
+deep_nesting_basic_006,,basic,E-commerce,Evaluate,deep_nesting,1,magic_number,1,magic_number,0,1,0,6,11.000,3.000,65.441,43.020,2.000,86.039,3.000,0.000,0.000,93
+deep_nesting_intermediate_001,,intermediate,Finance,Report,deep_nesting,0,,0,,0,8,7,8,29.000,14.000,86.257,25.850,0.500,12.925,6.000,48.276,7.000,278
+deep_nesting_intermediate_002,,intermediate,Healthcare,Design,deep_nesting,2,deep_nesting;magic_number,2,deep_nesting;magic_number,1,1,0,1,18.000,8.000,84.565,39.863,2.667,106.302,23.000,22.222,8.000,220
+deep_nesting_intermediate_003,,intermediate,Scientific Computing,Recommend,deep_nesting,1,magic_number,1,magic_number,0,1,0,5,33.000,20.000,66.806,436.778,1.350,589.650,24.000,15.152,0.000,294
+deep_nesting_intermediate_004,,intermediate,General Software,Report,deep_nesting,1,magic_number,1,magic_number,6,1,0,6,21.000,5.000,82.848,70.324,2.182,153.434,6.000,28.571,11.000,291
+deep_nesting_intermediate_005,,intermediate,E-commerce,List,deep_nesting,2,broad_except;magic_number,2,broad_except;magic_number,0,1,0,1,30.000,6.000,80.655,33.688,1.600,53.901,5.000,20.000,5.000,250
+deep_nesting_intermediate_006,,intermediate,Finance,Report,deep_nesting,0,,0,,0,8,7,8,29.000,14.000,86.257,25.850,0.500,12.925,6.000,48.276,7.000,278
+deep_nesting_advanced_001,,advanced,Healthcare,Implement,deep_nesting,3,deep_nesting;long_parameter_list;magic_number,3,deep_nesting;long_parameter_list;magic_number,0,1,0,2,11.000,9.000,93.933,4.755,0.500,2.377,36.000,18.182,0.000,101
+deep_nesting_advanced_002,,advanced,Scientific Computing,Analyze,deep_nesting,2,deep_nesting;long_parameter_list,2,deep_nesting;long_parameter_list,0,1,0,2,11.000,9.000,100.000,0.000,0.000,0.000,36.000,0.000,0.000,90
+deep_nesting_advanced_003,,advanced,General Software,Write,deep_nesting,2,deep_nesting;long_parameter_list,2,deep_nesting;long_parameter_list,0,1,0,2,10.000,8.000,100.000,0.000,0.000,0.000,28.000,0.000,0.000,100
+deep_nesting_advanced_004,,advanced,E-commerce,Analyze,deep_nesting,2,dead_code;deep_nesting,2,dead_code;deep_nesting,4,1,0,3,42.000,7.000,100.000,0.000,0.000,0.000,23.000,35.714,6.000,376
+deep_nesting_advanced_005,,advanced,Finance,Evaluate,deep_nesting,1,deep_nesting,1,deep_nesting,1,1,0,1,24.000,8.000,100.000,0.000,0.000,0.000,35.000,33.333,2.000,164
+deep_nesting_advanced_006,,advanced,Healthcare,Write,deep_nesting,3,deep_nesting;long_parameter_list;magic_number,3,deep_nesting;long_parameter_list;magic_number,0,1,0,2,11.000,9.000,93.933,4.755,0.500,2.377,36.000,18.182,0.000,101
+global_state_basic_001,,basic,E-commerce,Evaluate,,0,,0,,5,11,0,7,38.000,11.000,100.000,0.000,0.000,0.000,0.000,5.263,2.000,244
+global_state_basic_002,,basic,Finance,Recommend,,0,,0,,1,3,0,1,11.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,70
+global_state_basic_003,,basic,Healthcare,Recommend,,0,,0,,3,3,0,2,12.000,3.000,66.504,25.266,0.500,12.633,0.000,0.000,0.000,71
+global_state_basic_004,,basic,Scientific Computing,Compare,,0,,0,,1,2,0,3,6.000,2.000,100.000,0.000,0.000,0.000,0.000,16.667,0.000,54
+global_state_basic_005,,basic,General Software,Evaluate,,0,,0,,3,3,0,4,26.000,8.000,68.454,39.863,1.714,68.337,4.000,3.846,5.000,218
+global_state_basic_006,,basic,E-commerce,Recommend,,0,,0,,5,11,0,7,38.000,11.000,100.000,0.000,0.000,0.000,0.000,5.263,2.000,244
+global_state_intermediate_001,,intermediate,Finance,Design,,0,,0,,5,0,0,0,5.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,28
+global_state_intermediate_002,,intermediate,Healthcare,Write,,0,,0,,5,0,0,0,5.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,27
+global_state_intermediate_003,,intermediate,Scientific Computing,Design,,0,,0,,5,0,0,0,5.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,29
+global_state_intermediate_004,,intermediate,General Software,Recommend,,0,,0,,5,3,3,1,11.000,3.000,100.000,0.000,0.000,0.000,0.000,27.273,0.000,74
+global_state_intermediate_005,,intermediate,E-commerce,Recommend,,0,,0,,5,0,0,0,5.000,1.000,100.000,0.000,0.000,0.000,0.000,20.000,0.000,38
+global_state_advanced_001,,advanced,Finance,Compare,,0,,0,,10,0,0,0,10.000,1.000,100.000,0.000,0.000,0.000,0.000,10.000,0.000,57
+global_state_advanced_002,,advanced,Healthcare,Evaluate,,0,,0,,9,0,0,0,9.000,1.000,100.000,0.000,0.000,0.000,0.000,11.111,0.000,58
+global_state_advanced_003,,advanced,Scientific Computing,Design,,1,dead_code,1,dead_code,9,9,0,2,32.000,10.000,73.039,15.510,1.000,15.510,2.000,6.250,1.000,264
+global_state_advanced_004,,advanced,General Software,Design,,0,,0,,8,0,0,0,8.000,1.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,45
+global_state_advanced_005,,advanced,E-commerce,Measure,,0,,0,,10,0,0,0,10.000,1.000,100.000,0.000,0.000,0.000,0.000,10.000,0.000,57
+shotgun_surgery_basic_001,,basic,E-commerce,Recommend,,0,,0,,0,5,0,1,10.000,5.000,100.000,0.000,0.000,0.000,0.000,10.000,2.000,98
+shotgun_surgery_basic_002,,basic,Finance,Write,,0,,0,,0,5,0,2,26.000,12.000,87.894,4.755,0.500,2.377,1.000,23.077,9.000,232
+shotgun_surgery_basic_003,,basic,Healthcare,Measure,,1,duplicate_code,1,duplicate_code,0,21,1,2,61.000,39.000,58.869,41.795,1.500,62.692,0.000,4.918,6.000,504
+shotgun_surgery_basic_004,,basic,Scientific Computing,Write,,0,,0,,1,2,0,1,31.000,9.000,85.302,4.755,0.500,2.377,0.000,19.355,11.000,358
+shotgun_surgery_basic_005,,basic,General Software,Implement,,1,broad_except,0,,1,9,2,2,29.000,15.000,100.000,0.000,0.000,0.000,0.000,10.345,5.000,351
+shotgun_surgery_basic_006,,basic,E-commerce,Recommend,,0,,0,,0,5,0,1,10.000,5.000,100.000,0.000,0.000,0.000,0.000,10.000,2.000,98
+shotgun_surgery_intermediate_001,,intermediate,Finance,Write,,0,,0,,0,8,7,1,28.000,22.000,100.000,0.000,0.000,0.000,0.000,57.143,3.000,367
+shotgun_surgery_intermediate_002,,intermediate,Healthcare,Compare,,0,,0,,0,,,,27.000,,,,,,,18.519,,201
+shotgun_surgery_intermediate_003,,intermediate,Scientific Computing,Design,,0,,0,,13,13,5,2,50.000,27.000,100.000,0.000,0.000,0.000,0.000,14.000,12.000,444
+shotgun_surgery_intermediate_004,,intermediate,General Software,Report,,0,,0,,0,7,7,1,21.000,21.000,100.000,0.000,0.000,0.000,0.000,33.333,0.000,159
+shotgun_surgery_intermediate_005,,intermediate,E-commerce,Measure,,0,,0,,0,2,0,1,23.000,8.000,100.000,0.000,0.000,0.000,0.000,13.043,4.000,187
+shotgun_surgery_advanced_001,,advanced,Finance,Report,,1,magic_number,1,magic_number,0,11,8,3,45.000,41.000,79.977,33.688,0.667,22.459,6.000,46.667,3.000,474
+shotgun_surgery_advanced_002,,advanced,Healthcare,Measure,,0,,0,,0,10,9,1,30.000,30.000,100.000,0.000,0.000,0.000,0.000,63.333,0.000,363
+shotgun_surgery_advanced_003,,advanced,Scientific Computing,Compare,,0,,0,,0,10,0,2,33.000,32.000,89.760,4.755,0.500,2.377,1.000,57.576,2.000,488
+shotgun_surgery_advanced_004,,advanced,General Software,Write,,0,,0,,0,13,0,4,51.000,42.000,73.496,41.513,2.286,94.887,4.000,21.569,8.000,536
+shotgun_surgery_advanced_005,,advanced,E-commerce,Recommend,,0,,0,,0,2,1,9,13.000,4.000,100.000,0.000,0.000,0.000,0.000,7.692,0.000,129
+synthetic_long_method_basic_001,,basic,Finance,Recommend,long_method,1,dead_code,1,dead_code,0,8,7,8,25.000,9.000,96.362,2.000,0.500,1.000,1.000,56.000,7.000,250
+synthetic_long_method_basic_002,,basic,Healthcare,Analyze,long_method,2,dead_code;magic_number,2,dead_code;magic_number,3,7,0,14,39.000,17.000,65.125,148.603,3.316,492.738,6.000,10.256,19.000,455
+synthetic_long_method_basic_003,,basic,Scientific Computing,Report,long_method,2,dead_code;magic_number,2,dead_code;magic_number,0,5,2,4,39.000,13.000,73.929,99.404,3.214,319.514,11.000,20.513,12.000,399
+synthetic_long_method_basic_004,,basic,General Software,Measure,long_method,1,dead_code,1,dead_code,0,1,0,41,49.000,5.000,82.335,4.755,0.500,2.377,0.000,24.490,29.000,622
+synthetic_long_method_basic_005,,basic,E-commerce,Measure,long_method,0,,0,,0,1,0,10,13.000,3.000,95.037,22.459,1.875,42.110,2.000,53.846,7.000,151
+synthetic_long_method_basic_006,,basic,Finance,Write,long_method,1,magic_number,1,magic_number,0,7,0,3,57.000,22.000,51.806,171.176,3.429,586.889,23.000,1.754,5.000,547
+synthetic_long_method_basic_007,,basic,Healthcare,Recommend,long_method,0,,0,,0,8,4,1,24.000,9.000,100.000,0.000,0.000,0.000,2.000,62.500,8.000,290
+synthetic_long_method_intermediate_001,,intermediate,Scientific Computing,Implement,long_method,0,,0,,0,6,0,4,28.000,7.000,100.000,0.000,0.000,0.000,1.000,64.286,16.000,443
+synthetic_long_method_intermediate_002,,intermediate,General Software,Design,long_method,1,dead_code,1,dead_code,0,1,0,9,12.000,3.000,95.191,25.850,1.500,38.774,2.000,66.667,8.000,351
+synthetic_long_method_intermediate_003,,intermediate,E-commerce,Analyze,long_method,1,dead_code,1,dead_code,0,8,7,13,36.000,14.000,82.526,33.688,0.500,16.844,6.000,38.889,7.000,347
+synthetic_long_method_intermediate_004,,intermediate,Finance,Recommend,long_method,1,dead_code,1,dead_code,0,7,6,6,22.000,7.000,100.000,0.000,0.000,0.000,0.000,54.545,6.000,223
+synthetic_long_method_intermediate_005,,intermediate,Healthcare,Measure,long_method,1,magic_number,1,magic_number,1,1,0,13,19.000,5.000,86.598,39.863,2.667,106.302,2.000,31.579,13.000,265
+synthetic_long_method_intermediate_006,,intermediate,Scientific Computing,Design,long_method,1,dead_code,1,dead_code,6,9,6,12,85.000,18.000,68.324,24.000,1.500,36.000,4.000,15.294,28.000,955
+synthetic_long_method_intermediate_007,,intermediate,General Software,Implement,long_method,0,,0,,0,6,0,4,28.000,7.000,100.000,0.000,0.000,0.000,1.000,64.286,16.000,443
+synthetic_long_method_advanced_001,,advanced,E-commerce,Implement,long_method,0,,0,,0,,,,17.000,,,,,,,94.118,,248
+synthetic_long_method_advanced_002,,advanced,Finance,Evaluate,long_method,1,dead_code,1,dead_code,0,5,0,10,24.000,14.000,84.233,81.749,3.545,289.838,3.000,50.000,10.000,483
+synthetic_long_method_advanced_003,,advanced,Healthcare,Write,long_method,1,duplicate_code,1,duplicate_code,0,,,,116.000,,,,,,,0.000,,1024
+synthetic_long_method_advanced_004,,advanced,Scientific Computing,Report,long_method,1,dead_code,1,dead_code,0,8,3,7,33.000,8.000,84.137,28.529,1.500,42.794,0.000,84.848,12.000,609
+synthetic_long_method_advanced_005,,advanced,General Software,List,long_method,1,magic_number,1,magic_number,0,1,0,12,20.000,8.000,86.484,57.359,1.500,86.039,7.000,40.000,8.000,229
+synthetic_long_method_advanced_006,,advanced,E-commerce,Compare,long_method,1,dead_code,1,dead_code,8,7,7,1,26.000,7.000,100.000,0.000,0.000,0.000,0.000,30.769,8.000,244
+synthetic_long_parameter_list_basic_001,,basic,Finance,List,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,0,2,17.000,1.000,100.000,0.000,0.000,0.000,0.000,11.765,0.000,155
+synthetic_long_parameter_list_basic_002,,basic,Healthcare,Design,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,0,11,29.000,5.000,100.000,0.000,0.000,0.000,4.000,24.138,15.000,352
+synthetic_long_parameter_list_basic_003,,basic,Scientific Computing,Report,long_parameter_list,2,long_parameter_list;magic_number,2,long_parameter_list;magic_number,0,1,0,7,17.000,7.000,83.356,86.039,4.000,344.156,7.000,23.529,1.000,204
+synthetic_long_parameter_list_basic_004,,basic,General Software,Analyze,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,1,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,49
+synthetic_long_parameter_list_basic_005,,basic,E-commerce,Evaluate,long_parameter_list,2,long_parameter_list;magic_number,2,long_parameter_list;magic_number,0,1,0,3,7.000,2.000,100.000,4.755,0.500,2.377,2.000,42.857,3.000,178
+synthetic_long_parameter_list_basic_006,,basic,Finance,Implement,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,1,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,46
+synthetic_long_parameter_list_basic_007,,basic,Healthcare,Recommend,long_parameter_list,2,long_parameter_list;magic_number,2,long_parameter_list;magic_number,0,1,0,11,19.000,4.000,92.505,12.000,0.667,8.000,4.000,42.105,11.000,227
+synthetic_long_parameter_list_intermediate_001,,intermediate,Scientific Computing,Compare,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,0,2,19.000,1.000,100.000,0.000,0.000,0.000,0.000,5.263,0.000,182
+synthetic_long_parameter_list_intermediate_002,,intermediate,General Software,Implement,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,1,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,61
+synthetic_long_parameter_list_intermediate_003,,intermediate,E-commerce,Design,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,0,2,20.000,1.000,100.000,0.000,0.000,0.000,0.000,5.000,0.000,203
+synthetic_long_parameter_list_intermediate_004,,intermediate,Finance,Design,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,1,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,62
+synthetic_long_parameter_list_intermediate_005,,intermediate,Healthcare,Recommend,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,1,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,67
+synthetic_long_parameter_list_intermediate_006,,intermediate,Scientific Computing,Measure,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,0,2,19.000,1.000,100.000,0.000,0.000,0.000,0.000,5.263,0.000,182
+synthetic_long_parameter_list_intermediate_007,,intermediate,General Software,Recommend,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,1,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,61
+synthetic_long_parameter_list_advanced_001,,advanced,E-commerce,Recommend,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,1,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,95
+synthetic_long_parameter_list_advanced_002,,advanced,Finance,Evaluate,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,1,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,88
+synthetic_long_parameter_list_advanced_003,,advanced,Healthcare,List,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,0,2,25.000,1.000,100.000,0.000,0.000,0.000,0.000,4.000,0.000,292
+synthetic_long_parameter_list_advanced_004,,advanced,Scientific Computing,Report,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,1,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,96
+synthetic_long_parameter_list_advanced_005,,advanced,General Software,Implement,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,1,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,109
+synthetic_long_parameter_list_advanced_006,,advanced,E-commerce,Evaluate,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,1,1,2.000,1.000,100.000,0.000,0.000,0.000,0.000,50.000,0.000,95
+synthetic_god_class_basic_001,,basic,Finance,Implement,,1,duplicate_code,1,duplicate_code,0,9,1,4,41.000,21.000,59.981,137.549,2.000,275.098,9.000,4.878,6.000,382
+synthetic_god_class_basic_002,,basic,Healthcare,Measure,,1,magic_number,1,magic_number,0,8,0,3,23.000,16.000,82.124,66.417,2.000,132.834,3.000,30.435,6.000,336
+synthetic_god_class_basic_003,,basic,Scientific Computing,List,,0,,0,,0,7,2,4,25.000,16.000,71.123,57.110,2.000,114.221,2.000,8.000,3.000,271
+synthetic_god_class_basic_004,,basic,General Software,Analyze,,0,,0,,4,4,0,2,19.000,10.000,79.670,4.755,0.500,2.377,4.000,5.263,8.000,200
+synthetic_god_class_basic_005,,basic,E-commerce,Measure,,0,,0,,0,,,,7.000,,,,,,,85.714,,132
+synthetic_god_class_basic_006,,basic,Finance,Analyze,,1,dead_code,1,dead_code,0,10,5,3,37.000,17.000,81.712,2.000,0.500,1.000,5.000,13.514,10.000,343
+synthetic_god_class_basic_007,,basic,Healthcare,List,,0,,0,,0,14,1,6,54.000,22.000,57.430,39.863,1.000,39.863,9.000,1.852,2.000,452
+synthetic_god_class_intermediate_001,,intermediate,Scientific Computing,Compare,,0,,0,,0,9,1,8,26.000,11.000,100.000,0.000,0.000,0.000,0.000,30.769,14.000,303
+synthetic_god_class_intermediate_002,,intermediate,General Software,Recommend,,0,,0,,0,11,5,4,52.000,22.000,61.989,208.076,4.083,849.645,10.000,9.615,1.000,502
+synthetic_god_class_intermediate_003,,intermediate,E-commerce,Design,,0,,0,,0,10,6,9,32.000,13.000,83.665,4.755,0.500,2.377,2.000,18.750,2.000,281
