@@ -47,8 +47,10 @@ a{color:var(--accent)}
 <p class="sub">What happens when models are asked for code that is structurally
 demanding by design, rather than for the short self-contained functions the
 correctness benchmarks use.</p>
-<p class="meta">476 Python prompts (Woo, 2026), each written to provoke a named
-structural defect. Two models, each run twice under different instructions.</p>
+<p class="meta">476 Python prompts, each written to provoke a named structural defect,
+from the <a href="https://github.com/rosawoo/code-smell">Code Smell Detection Dataset</a>
+(2026), used with permission and cited in the write-up. Two models, each run twice under
+different instructions.</p>
 <h2>Why this exists</h2>
 <p>The main evaluation uses MBPP and HumanEval, where a task is a single
 short function. That is a real limitation: most of the twelve defects cannot physically

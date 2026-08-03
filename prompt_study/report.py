@@ -166,8 +166,10 @@ def build(data):
 <p class="sub">What happens when models are asked for code that is structurally
 demanding by design, rather than for the short self-contained functions the
 correctness benchmarks use.</p>
-<p class="meta">476 Python prompts (Woo, 2026), each written to provoke a named
-structural defect. Two models, each run twice under different instructions.</p>"""]
+<p class="meta">476 Python prompts, each written to provoke a named structural defect,
+from the <a href="https://github.com/rosawoo/code-smell">Code Smell Detection Dataset</a>
+(2026), used with permission and cited in the write-up. Two models, each run twice under
+different instructions.</p>"""]
 
     # ---------------------------------------------------------------- context
     p.append("<h2>Why this exists</h2>")

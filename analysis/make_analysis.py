@@ -192,12 +192,14 @@ def fig_scatter():
     ax.set_xlabel("injected — does changing only the defect move the measure?")
     ax.set_ylabel("real — do defective and clean code differ on it?")
     ax.set_title("Detection versus co-occurrence", pad=8)
-    ax.text(-1.6, -1.45,
-            "Shaded band: changing only the defect moves the measure not at all,\n"
-            "yet real defective and clean code separate on it — the separation is\n"
-            "something else, mostly size. Points on the dashed line agree.",
-            fontsize=6.9, color="#555", va="bottom")
     ax.legend(title="verdict", loc="upper left", frameon=False)
+    # The explanation sits below the axes rather than inside them: in the data area
+    # it landed on top of the very points it describes.
+    fig.text(0.5, -0.015,
+             "Shaded band: changing only the defect moves the measure not at all, yet real "
+             "defective and clean code\nseparate on it — so the separation is something else, "
+             "mostly size. Points on the dashed line agree.",
+             ha="center", va="top", fontsize=7.4, color="#555")
     save(fig, "fig2_injected_vs_real")
 
 
