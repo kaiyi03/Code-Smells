@@ -71,7 +71,7 @@ I treat the detectors' output as an **operational definition** of each smell, no
 Given a piece of code, the tool computes a panel of independent measures:
 
 - **Structural** (reference-free): lines of code, cyclomatic complexity, cognitive complexity, maintainability index, Halstead volume/difficulty/effort (from Radon), plus comment-density and function/API-usage profiles.
-- **Similarity** (reference-based): BLEU, chrF, ROUGE-L, METEOR, CodeBLEU, and AST-skeleton similarity, against a correct reference.
+- **Similarity** (reference-based): BLEU, chrF, ROUGE-L, CodeBLEU, AST-skeleton similarity, CodeBERTScore and BERTScore, against a correct reference.
 - **Correctness** (execution): the function is run against its real test cases.
 
 To compare measures that live on different scales, I compute a single **detection-strength score** — a standardised effect size for how cleanly each measure separates smelly code from its clean twin (0 = blind, ~1 = clear, 5 = capped, i.e. essentially perfect). Concretely this is **Cohen's d** — the gap between the clean and smelly means divided by the pooled standard deviation (how much the measure naturally varies), capped at 5. The same statistic is computed on real labelled code, so the injected and real detection strengths are directly comparable. `run_panel.py` writes the results CSV; `run_realworld.py` adds the real-code side; `detection_report.py` merges both into one colour-coded report. 

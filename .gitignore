@@ -10,6 +10,7 @@
 !/README.md
 !/requirements.txt
 !/run.py
+!/view_generations.py
 !/render.yaml
 !/LICENSE
 !/docs
@@ -42,6 +43,7 @@ node_modules/
 !arc_qwen/evaluation_report_deepseek.html
 !arc_qwen/model_comparison.html
 !prompt_study/prompt_report.html
+!/generations.html
 !analysis/analysis_report.html
 
 # GitHub Pages: landing page + Jekyll opt-out (serve the HTML as-is)
