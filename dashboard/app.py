@@ -410,7 +410,7 @@ PAGE = """<!doctype html><html lang="en"><head><meta charset="utf-8">
        <p class="muted" style="margin-top:8px">100 = identical to the reference; lower = more divergence.</p>
      {% else %}
        <p class="muted">Add a reference solution above to compute similarity
-       (BLEU, chrF, ROUGE-L, METEOR, CodeBLEU, AST edit distance).</p>
+       (BLEU, chrF, ROUGE-L, CodeBLEU, AST similarity).</p>
      {% endif %}
    </div>
  </div>

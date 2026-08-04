@@ -149,9 +149,7 @@ STRUCTURAL = [
 
 import re                                            # noqa: E402
 import sacrebleu                                     # noqa: E402
-import nltk                                          # noqa: E402
 from rouge_score import rouge_scorer                 # noqa: E402
-from nltk.translate.meteor_score import single_meteor_score  # noqa: E402
 
 try:                                                 # codebleu pins an old tree-sitter; keep it
     from codebleu import calc_codebleu               # optional so a partial install still runs
@@ -161,22 +159,14 @@ except Exception:                                    # the other similarity meas
 _rouge = rouge_scorer.RougeScorer(["rougeL"], use_stemmer=False)
 _word = re.compile(r"\w+|\S")
 
-
-def _wordnet_available():
-    """METEOR needs the WordNet corpus. Check for it WITHOUT triggering a network
-    download at import time -- a failed download hangs the process (offline ARC, a
-    sandbox, no internet). If WordNet is genuinely absent, METEOR degrades to None and
-    the other five similarity measures carry on. Install it once, ahead of time, with:
-        python -m nltk.downloader wordnet omw-1.4"""
-    for res in ("corpora/wordnet", "corpora/omw-1.4"):
-        try:
-            nltk.data.find(res)
-        except LookupError:
-            return False
-    return True
-
-
-_WORDNET = _wordnet_available()
+# METEOR was removed from the panel (it produced only blanks in practice, and its
+# distinctive part adds nothing for code). Its score is unigram matching plus a
+# WordNet synonym stage: "buy" matches "purchase". Identifiers are not English --
+# `total` and `sum_` are not WordNet synonyms -- so on code the synonym stage is
+# dead weight and the rest duplicates what BLEU/chrF/ROUGE-L already measure.
+# Operationally it needs the WordNet corpus downloaded at run time, which offline
+# environments (ARC compute nodes, sandboxes) cannot do, so it returned None
+# everywhere it mattered. Six similarity measures remain.
 
 
 def _bleu(code, ref):
@@ -192,11 +182,6 @@ def _codebleu(code, ref):
     if calc_codebleu is None:
         return None
     return calc_codebleu([ref], [code], lang="python")["codebleu"] * 100
-
-def _meteor(code, ref):
-    if not _WORDNET:                                   # corpus missing -> degrade, don't crash
-        return None
-    return single_meteor_score(_word.findall(ref), _word.findall(code)) * 100
 
 def _ast_seq(code):
     """Pre-order (depth-first) sequence of AST node types -- the code's structural
@@ -231,8 +216,6 @@ SIMILARITY = [
             "chrF vs clean reference (character n-grams)"),
     Measure("rouge_l",  "similarity", "down", _safe(_rouge_l),  True,
             "ROUGE-L longest-common-subsequence overlap"),
-    Measure("meteor",   "similarity", "down", _safe(_meteor),   True,
-            "METEOR: unigram match with stems/synonyms + word-order penalty"),
     Measure("codebleu", "similarity", "down", _safe(_codebleu), True,
             "CodeBLEU: code-aware, includes AST + dataflow match"),
     Measure("ast_similarity", "similarity", "down", _safe(_ast_similarity), True,

@@ -29,11 +29,10 @@ REPO=${REPO:-~/Code-Smells}
 # The ARC env has torch/transformers (for generation) but not the measure deps.
 # Install them all (fast -- most are pure-Python wheels). codebleu goes in with
 # --no-deps so its old tree-sitter pin doesn't fight tree-sitter-python.
-pip install -q numpy radon pylint ruff sacrebleu rouge-score nltk \
+pip install -q numpy radon pylint ruff sacrebleu rouge-score \
     cognitive_complexity zss tree-sitter tree-sitter-python \
     bert-score code-bert-score || true
 pip install -q --no-deps codebleu || true
-python -m nltk.downloader -q wordnet omw-1.4 || true
 
 # Code language model for perplexity (small + code-appropriate). Change to a bigger
 # code model, e.g. the Qwen coder, for a stronger signal.

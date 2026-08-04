@@ -19,7 +19,7 @@ export HF_HOME=/data/engs-applied-machine-learning/some5943/hf
 REPO=${REPO:-~/Code-Smells}
 
 # Deps should persist from the scoring job, but reinstall cheaply just in case.
-pip install -q numpy radon pylint ruff sacrebleu rouge-score nltk \
+pip install -q numpy radon pylint ruff sacrebleu rouge-score \
     cognitive_complexity zss tree-sitter tree-sitter-python \
     bert-score code-bert-score || true
 pip install -q --no-deps codebleu || true

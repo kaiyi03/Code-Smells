@@ -62,7 +62,7 @@ each metric on both sources answers two different questions --- whether changing
 only the defect moves the metric, and whether defective and clean code differ on it
 in the wild --- and detection requires yes to both.
 
-Applying the protocol to eighteen measures, we find that no single measure detects
+Applying the protocol to seventeen measures, we find that no single measure detects
 all twelve defects while every defect is detected by at least one, which is the
 empirical case for a panel rather than a composite quality score. We find that a
 substantial part of what looks like detection on real code is co-occurrence with
@@ -142,7 +142,7 @@ partly a measure of how much a model volunteers beyond what was asked.
   \item \textbf{A labelled benchmark} of 1{,}300 Python functions covering twelve
         structural defects, every example confirmed by a static analyser and
         verified by execution to preserve behaviour, released openly.
-  \item \textbf{A validated verdict for eighteen measures}, showing that no single
+  \item \textbf{A validated verdict for seventeen measures}, showing that no single
         measure covers all twelve defects, that every defect is covered by at
         least one, and that structural and reference-based measures are
         complementary rather than redundant.
@@ -213,26 +213,274 @@ partly a measure of how much a model volunteers beyond what was asked.
 
 % ---------------------------------------------------------------------
 \section{Validation protocol}
-% TO WRITE.
-% 5.1 Detection strength: (mean_defective - mean_clean) / pooled SD, oriented so
-%     positive = worse, capped at +/-5. Interpretation bands.
-% 5.2 Why unpaired rather than paired -- the paired form saturates on
-%     constant-shift injections (dead_code read 5.0 for one added line) and is
-%     not computable on real code, which has no twins. Unpaired makes the two
-%     sources directly comparable, which is the whole point.
-% 5.3 The three verdicts: Strong (both sources agree), Co-occurrence (real only
-%     -- the intervention shows the measure cannot see the defect), Blind.
+\label{sec:protocol}
+
+The two halves of the benchmark produce two different kinds of evidence. The
+injected pairs support a causal question: if only the defect changes, does the
+measure move? The real-world layer supports an observational one: do defective
+and clean code, as people actually write them, differ on the measure? The
+protocol's job is to put both answers on a single scale, so that for every
+measure and every defect the two can be read side by side --- and, crucially, so
+that their \emph{disagreement} is visible, because the disagreement is where the
+information is.
+
+\subsection{Detection strength}
+\label{sec:detection-strength}
+
+The measures in the panel have incommensurable units: lines, branch counts, index
+points on a 0--100 scale, log-perplexities. To compare them at all, every result
+is expressed as a standardised mean difference,
+\begin{equation}
+  d \;=\; \frac{\bar{x}_{\text{defective}} - \bar{x}_{\text{clean}}}
+               {s_{\text{pooled}}},
+  \label{eq:d}
+\end{equation}
+which we call \emph{detection strength}: how far apart the defective and clean
+groups sit, in units of the code's natural variation \cite{cohen1988statistical}.
+Signs are oriented so that positive always means the defective group scored
+worse, regardless of the measure's native direction, and values are capped at
+$\pm 5$ --- beyond that point the groups barely overlap and the exact figure
+carries no additional information.
+
+As a reading aid we use the conventional bands: below $0.2$ negligible, $0.2$ to
+$0.5$ small, $0.5$ to $0.8$ medium, above $0.8$ large. These are conventions,
+not laws, but they give the tables a consistent vocabulary: a measure with
+$d = 1.4$ separates the groups dependably in aggregate; a measure with $d = 0.2$
+has technically nonzero signal that no practitioner could act on for a single
+file.
+
+Each estimate is reported with a 95\% confidence interval computed from the
+large-sample variance of a standardised difference between independent groups.
+Cells at the $\pm 5$ cap are reported without an interval: the cap is a
+statement that the separation is at least that large, not an estimate, and an
+interval around it would suggest precision that is not there. Of the 204
+defect--measure cells in the full grid, 23 sit at the cap.
+
+\subsection{Why the comparison is unpaired}
+\label{sec:unpaired}
+
+The injected benchmark invites a paired analysis --- every defective function has
+a clean twin, so the natural statistic seems to be the mean within-pair change
+divided by the spread of that change. We used exactly this at first, and it
+produces a subtle failure that is worth recording, because any benchmark built by
+programmatic injection will meet it.
+
+A paired effect size divides by the variability \emph{of the change}. An
+injector, being a program, often applies a near-identical edit every time: the
+dead-code injector adds one unused import; the magic-number injector introduces
+a constant. The change is then almost the same in every pair, its standard
+deviation approaches zero, and the paired statistic explodes regardless of how
+trivial the edit was. In our data, adding a single unused line scored $5.0$ ---
+the cap --- on lines of code, the same score as doubling the length of a
+function. The number was formally correct and completely misleading: it measured
+the injector's consistency, not the defect's visibility.
+
+The unpaired form of Equation~\ref{eq:d} divides instead by the spread of the
+code itself, so a one-line edit is negligible next to the natural variation in
+function length --- under it, the same dead-code cell falls from $5.0$ to
+$0.21$, which is the truthful answer. Two further properties make it the right
+choice. First, real code has no twins: a defective function found in the wild
+has no clean counterpart, so the real-world layer can only ever be analysed
+unpaired. Second, using the same estimand on both sources is what makes the two
+columns of every table in this paper directly comparable --- the comparison
+\emph{between} injected and real results is the protocol's entire point.
+The price is that pairing information is discarded on the injected side, where
+it would have added power; with a hundred pairs per defect, power is not the
+binding constraint, and comparability is worth more.
+
+\subsection{From two numbers to a verdict}
+\label{sec:verdicts}
+
+For each defect, reading the injected and real columns together yields one of
+three verdicts.
+
+\begin{description}
+  \item[Detects.] The measure responds on both sources. The intervention shows
+        the defect causes the movement; the real data shows the movement exists
+        in code people actually write.
+  \item[Co-occurs.] The real groups separate, but the intervention shows the
+        measure barely moves when only the defect changes. The separation is
+        real and \emph{is not the defect} --- it is something that travels with
+        the defect in the wild, usually size. This verdict is only reachable
+        because the controlled arm exists: an observational study cannot
+        distinguish it from detection, and this is the single most common
+        confusion the protocol is designed to catch.
+  \item[Blind.] Neither source shows a usable response. The defect is invisible
+        to the measure, and detecting it is a job for a rule-based detector.
+\end{description}
+
+The asymmetry deserves emphasis. A near-zero injected value next to a large real
+value is not a null result; it is a positive identification of a confound. When
+a measure that provably cannot respond to a defect still separates real
+defective code from clean code, the study has measured what the separation
+actually is --- and anything downstream that used that measure as a detector
+would be systematically rewarding the confound.
 
 % ---------------------------------------------------------------------
-\section{RQ1: which measures detect which defects}
-% TO WRITE. The main results table (injected d vs real d per defect x measure),
-% the trust table, and the four disagreement patterns with worked examples:
-%   - both high            -> genuine detection (deep nesting / cyclomatic)
-%   - injected 0, real high -> co-occurrence (inefficient loop / cyclomatic:
-%                              the rewrite provably adds no branches)
-%   - injected high, real lower -> the injection was unrealistically uniform
-%   - both ~0              -> blind
-% Figures: detection-strength heatmap; injected-vs-real scatter.
+\section{RQ1: which measures can see which defects}
+\label{sec:rq1}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/fig1_detection_heatmap.pdf}
+  \caption{Detection strength of every reference-free measure on every defect,
+  on the controlled injected pairs (left) and on real labelled code against the
+  shared clean baseline (right). Green is strong separation in the defective
+  direction; values are capped at $5$. Row labels are coloured by the final
+  verdict of Section~\ref{sec:verdicts}. The information is in the
+  \emph{differences} between the two panels, catalogued in
+  Section~\ref{sec:patterns}.}
+  \label{fig:heatmap}
+\end{figure}
+
+\begin{table}[t]
+  \centering
+  \small
+  \input{tables/detection}
+  \caption{The strongest real-world structural measure for each defect, with the
+  same measure's injected value and the resulting verdict. Brackets are 95\%
+  confidence intervals; capped values ($\pm 5$) are shown without one. Real
+  columns compare $n$ defective examples (92--950 per defect) against a shared
+  baseline of 1{,}000 clean functions from the same corpus.}
+  \label{tab:detection}
+\end{table}
+
+Figure~\ref{fig:heatmap} shows the full grid --- every reference-free measure
+against every defect, on both sources --- and Table~\ref{tab:detection} distils
+it to the strongest real-world measure per defect. Read naively, the right-hand
+panel alone would be encouraging: most defects separate from clean code on
+several measures. The left-hand panel is what disciplines that reading. This
+section walks through the four patterns the two panels form together, then what
+they imply for how structural quality should be measured at all.
+
+\subsection{Four patterns, four worked examples}
+\label{sec:patterns}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.74\textwidth]{figures/fig2_injected_vs_real.pdf}
+  \caption{Every defect--measure cell, injected against real. Points on the
+  dashed diagonal agree across sources. The shaded vertical band is the
+  co-occurrence region: the intervention shows the measure cannot respond to the
+  defect, yet real defective code separates from clean code on it.}
+  \label{fig:scatter}
+\end{figure}
+
+\paragraph{Genuine detection: both sources agree.}
+Deep nesting moves cyclomatic complexity at $d = 3.85$ $[3.39, 4.32]$ when
+injected and $5.0$ (capped) on real code; a complex conditional moves Halstead
+difficulty at $1.50$ $[1.18, 1.81]$ injected and $3.77$ $[3.56, 3.98]$ real.
+For these defects the causal and observational answers coincide, and the
+measures can be used as detectors with a clear conscience.
+
+\paragraph{Co-occurrence: the intervention says no, the wild says yes.}
+Rewriting a list comprehension as an explicit loop adds no branch, so cyclomatic
+complexity provably cannot respond to it --- and the injected value is exactly
+$0.00$ $[-0.28, 0.28]$. Yet on real code the same measure separates
+inefficient-loop functions from clean ones at $1.37$ $[1.23, 1.51]$. The
+resolution is in the group medians: real functions containing inefficient loops
+have a median of six branch points against the clean baseline's two, because
+functions that contain this defect are simply \emph{bigger}. The separation is
+real; it is a size effect wearing the defect's label. The same pattern, weaker,
+holds for \texttt{broad\_except} ($0.10 \to 1.19$) and \texttt{magic\_number}
+($0.54 \to 1.43$). A study without the controlled arm would report all three as
+detection --- this pattern is the paper's central caution, and it is the shaded
+band in Figure~\ref{fig:scatter}.
+
+\paragraph{Injection artefacts: the controlled arm can also overstate.}
+The disagreement runs the other way too, and it calibrates how far synthetic
+benchmarks can be trusted. Injected long methods score $5.0$ on lines of code
+--- the injector pads every function by a large, uniform amount --- but real
+long methods score $1.92$: still large, but noisier, because real long functions
+vary enormously in length. Conversely the same injector \emph{understates}
+Halstead difficulty ($0.54$ injected against $3.51$ $[3.34, 3.68]$ real):
+padding a function with straight-line statements makes it long without making it
+hard, whereas real long methods are long \emph{and} branchy \emph{and} dense.
+Injection gets the direction right and the magnitude wrong, in both directions
+--- which is precisely why it cannot be the only validation source.
+
+\paragraph{Blind: nothing to see.}
+For \texttt{long\_parameter\_list}, \texttt{mutable\_default} and
+\texttt{dead\_code}, no structural measure shows a usable response on either
+source --- the strongest real association for dead code is $0.31$ on a profiling
+measure, and the injected values sit at zero. These are signature-level defects:
+they change one token or one line, leave bulk and branching untouched, and are
+simply outside what aggregate structure can express. \texttt{duplicate\_code} is
+nominally visible ($1.06 \to 1.55$ on lines of code) but both numbers are the
+same size artefact --- doubling a block doubles its length --- so we classify it
+as blind and leave it to the clone detector.
+
+\subsection{The two families fail on different defects}
+\label{sec:complementarity}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.85\textwidth]{figures/fig4_family_coverage.pdf}
+  \caption{The best structural and best similarity measure per defect, on the
+  injected benchmark. The structural family is blind to the signature-level
+  defects at the bottom; the similarity family clears the large-effect line on
+  all twelve. No single measure covers everything.}
+  \label{fig:coverage}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.8\textwidth]{figures/fig3_measure_correlation.pdf}
+  \caption{Correlation of detection-strength profiles across the twelve defects.
+  The two diagonal blocks (structural, teal; similarity, purple) are internally
+  correlated and mutually near-independent: the families measure different
+  things, which is the empirical case for a panel over any single score.}
+  \label{fig:correlation}
+\end{figure}
+
+The reference-based family --- BLEU, chrF, ROUGE-L, CodeBLEU, AST similarity,
+CodeBERTScore, BERTScore --- sees the injected defects very differently: every
+one of its measures separates every one of the twelve defects by at least
+$d = 1.46$, with per-measure medians between $2.5$ and $4.7$. In particular it
+catches exactly the signature-level defects the structural family is blind to,
+because any edit, however structurally invisible, makes the code diverge from
+its reference. The complementarity is visible as block structure in
+Figure~\ref{fig:correlation}: measures agree strongly within a family and weakly
+across families, so the two families are not redundant readings of one
+underlying quantity.
+
+This coverage comes with a boundary that must be stated rather than footnoted:
+similarity measures require a known-good reference, which the injected
+benchmark has by construction and real code never does. Their validation is
+therefore injected-only, inheriting exactly the artefacts catalogued above.
+Together, Figures \ref{fig:coverage} and \ref{fig:correlation} give RQ1 its
+one-sentence answer: \emph{no single measure sees all twelve defects, every
+defect is seen by at least one, and the failures of the two families do not
+overlap} --- which is the empirical argument for evaluating structural quality
+with a panel rather than a composite score.
+
+\subsection{Perplexity: naturalness is not structural quality}
+\label{sec:perplexity}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.78\textwidth]{figures/fig9_perplexity.pdf}
+  \caption{Perplexity under a code language model, on both sources. No defect
+  clears even the small-effect band in the defective direction, and most values
+  are negative: defective code is slightly \emph{more} predictable than clean
+  code, because padding and duplication are the most predictable text there is.}
+  \label{fig:perplexity}
+\end{figure}
+
+A reasonable hypothesis is that defective code is unusual code, and a language
+model trained on a large code corpus should therefore find it more surprising.
+Perplexity under such a model is the one reference-free measure in the panel
+that could, in principle, see \emph{every} defect. It sees none of them
+(Figure~\ref{fig:perplexity}). Across all twelve defects its detection strength
+never exceeds $0.46$ in the defective direction on either source; the means are
+$-0.23$ injected and $-0.39$ real --- pointing the wrong way. The inversion has
+a mundane mechanism: the largest negative values belong to long methods
+($-1.24$) and duplicated code ($-1.03$), whose padding and repetition are
+precisely the easiest text to predict. The conclusion is a clean negative
+result with practical force, since fluency-based scores are routinely proposed
+as quality proxies: \emph{naturalness, as a language model measures it, is not
+structural quality --- and where the two correlate at all, the correlation runs
+backwards}.
 
 % ---------------------------------------------------------------------
 \section{RQ2: the structural profile of generated code}

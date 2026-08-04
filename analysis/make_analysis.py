@@ -420,6 +420,44 @@ def fig_induction():
 
 
 # =====================================================================
+# Figure 9 -- the perplexity negative result, on its own
+# =====================================================================
+def fig_perplexity():
+    """Perplexity is a named negative result, so it gets its own panel rather than
+    one column of the heatmap. The precise finding: no value clears even the
+    small-effect band in the defective direction, and most sit slightly below
+    zero -- padded and duplicated code is MORE predictable, not less."""
+    inj = [inj_d.get((s, "perplexity")) for s in SMELLS]
+    rl = [real_d.get((s, "perplexity")) for s in SMELLS]
+    y = np.arange(len(SMELLS))
+
+    fig, ax = plt.subplots(figsize=(6.8, 4.6))
+    ax.axvspan(-0.2, 0.2, color="#888", alpha=.12, zorder=0)
+    ax.axvline(0, lw=.8, color="#999", zorder=0)
+    ax.axvline(0.8, ls="--", lw=.9, color="#1b6b41", zorder=0)
+    ax.text(0.82, -0.45, "large effect — where the working\nstructural measures sit",
+            fontsize=6.8, color="#1b6b41", va="top")
+    for yy, a, b in zip(y, inj, rl):
+        if a is not None and b is not None:
+            ax.plot([a, b], [yy, yy], lw=.8, color="#bbb", zorder=1)
+    ax.scatter([v for v in inj if v is not None],
+               [yy for yy, v in zip(y, inj) if v is not None],
+               s=30, color="#0f6d6d", label="injected", zorder=2)
+    ax.scatter([v for v in rl if v is not None],
+               [yy for yy, v in zip(y, rl) if v is not None],
+               s=30, color="#b8860b", marker="s", label="real", zorder=2)
+    ax.set_yticks(y)
+    ax.set_yticklabels([s.replace("_", " ") for s in SMELLS])
+    ax.invert_yaxis()
+    ax.set_xlim(-1.6, 1.6)
+    ax.set_xlabel("detection strength of perplexity (shaded: negligible)")
+    ax.set_title("A code language model does not find defective code more surprising",
+                 fontsize=10, pad=8)
+    ax.legend(frameon=False, loc="lower right")
+    save(fig, "fig9_perplexity")
+
+
+# =====================================================================
 # Tables
 # =====================================================================
 def table_detection():
@@ -502,6 +540,26 @@ def stats_dump():
     print(f"  tables/detection_full.csv ({len(out)} rows, {n_capped} at the cap)")
 
 
+def copy_into_paper():
+    """The paper compiles standalone (Overleaf zip, CI checkout): its figures and
+    tables live under paper/ as committed copies of what this script produced."""
+    import shutil
+    pfig = os.path.join(ROOT, "paper", "figures")
+    ptab = os.path.join(ROOT, "paper", "tables")
+    os.makedirs(pfig, exist_ok=True)
+    os.makedirs(ptab, exist_ok=True)
+    n = 0
+    for f in os.listdir(FIG):
+        if f.endswith(".pdf"):
+            shutil.copy2(os.path.join(FIG, f), os.path.join(pfig, f))
+            n += 1
+    for f in os.listdir(TAB):
+        if f.endswith(".tex"):
+            shutil.copy2(os.path.join(TAB, f), os.path.join(ptab, f))
+            n += 1
+    print(f"\nCopied {n} files into paper/figures and paper/tables")
+
+
 if __name__ == "__main__":
     print("Figures:")
     fig_heatmap()
@@ -512,8 +570,10 @@ if __name__ == "__main__":
     fig_verbosity()
     fig_task_set()
     fig_induction()
+    fig_perplexity()
     print("\nTables:")
     table_detection()
     table_correctness()
     stats_dump()
+    copy_into_paper()
     print(f"\nWrote to {os.path.relpath(FIG, ROOT)} and {os.path.relpath(TAB, ROOT)}")

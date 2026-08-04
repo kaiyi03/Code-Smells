@@ -12,6 +12,5 @@ sacrebleu
 rouge-score
 tree-sitter
 tree-sitter-python
-nltk
 # codebleu is installed separately in the Dockerfile with --no-deps (it pins an old
 # tree-sitter that would otherwise downgrade the others / fail the build).
