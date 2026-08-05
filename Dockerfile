@@ -29,8 +29,10 @@ COPY eval_tool/ eval_tool/
 COPY smell_injection/*.py smell_injection/
 COPY smell_injection/realworld_clean.jsonl smell_injection/
 
-# Public-demo defaults: listen on all interfaces, HF's port, no code execution, no browser popup.
-ENV HOST=0.0.0.0 PORT=7860 ALLOW_EXEC=0 DASH_NO_BROWSER=1
+# Public-demo defaults: listen on all interfaces, HF's port, no code execution, no
+# browser popup. PYTHONSAFEPATH satisfies nltk's working-directory import guard
+# (the app also re-execs itself with -P if the flag is missing -- belt and braces).
+ENV HOST=0.0.0.0 PORT=7860 ALLOW_EXEC=0 DASH_NO_BROWSER=1 PYTHONSAFEPATH=1
 EXPOSE 7860
 
 CMD ["python", "dashboard/app.py"]

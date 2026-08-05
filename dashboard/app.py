@@ -41,7 +41,27 @@ def _bootstrap():
         raise SystemExit(subprocess.run([venv, os.path.abspath(__file__), *sys.argv[1:]]).returncode)
 
 
+def _safe_path():
+    """Re-launch with -P if the interpreter searches the working directory.
+
+    nltk (pulled in by rouge_score) refuses to import a dependency that resolves
+    from under the current working directory unless the interpreter was started
+    with -P / PYTHONSAFEPATH. Hosts like Render put the virtualenv inside the
+    project directory, which trips exactly that guard and killed the app at
+    startup. The flag cannot be set from inside a running interpreter, so the
+    one fix that no platform configuration can lose is to re-exec with it. The
+    app never needed the implicit working-directory path entry -- its own import
+    paths are added explicitly below."""
+    if getattr(sys.flags, "safe_path", False):
+        return                                          # already running with -P
+    env = dict(os.environ, PYTHONSAFEPATH="1")
+    raise SystemExit(subprocess.run(
+        [sys.executable, "-P", os.path.abspath(__file__), *sys.argv[1:]],
+        env=env).returncode)
+
+
 _bootstrap()
+_safe_path()
 
 sys.path.insert(0, os.path.join(ROOT, "eval_tool"))
 sys.path.insert(0, os.path.join(ROOT, "smell_injection"))

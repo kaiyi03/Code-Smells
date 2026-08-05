@@ -70,10 +70,12 @@ size: metrics that provably cannot respond to a defect still separate defective
 from clean code, because defective functions are simply larger. We report a clean
 negative result for language-model perplexity, which does not distinguish
 structurally poor code from clean code on either source. Finally, applying the
-validated panel to the output of three models, we show that scoring raw model
-output conflates verbosity with structural quality: one model appeared two and a
-half times more defective than another almost entirely because it volunteered test
-cases the prompt did not request.
+validated panel to the output of code-generating models, we show that scoring raw
+model output conflates verbosity with structural quality: of two models compared
+on the same benchmark, one appeared two and a half times more defective than the
+other almost entirely because it volunteered test cases the prompt did not
+request. Any comparison of models that skips this correction ranks them partly by
+how much they write.
 \end{abstract}
 
 % ---------------------------------------------------------------------
@@ -97,11 +99,13 @@ metrics over model output and drawing conclusions about how well models write. T
 step that is skipped is the one that licenses those conclusions. These metrics were
 designed to \emph{describe} human-written code in aggregate, not to \emph{detect}
 particular structural defects, and their sensitivity to any given defect is
-assumed rather than demonstrated. A metric that moves when defective and clean code
+assumed rather than demonstrated: we found no work that validates any of these
+metrics against individual defects, on either synthetic or natural code
+(Section~\ref{sec:related}). A metric that moves when defective and clean code
 are compared has not thereby been shown to respond to the defect --- only to
 something that differs between the two groups.
 
-That distinction is not academic, and it cannot be settled by observation alone.
+The distinction cannot be settled by observation alone.
 Defective code found in the wild differs from clean code in many ways at once. It
 is written by different people, in different projects, for different purposes --- and,
 most importantly, it is bigger. Every structural metric responds to size. So a

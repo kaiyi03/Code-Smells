@@ -9,9 +9,16 @@ services:
     # Install the dashboard deps (not torch). codebleu goes in with --no-deps because
     # it pins an old tree-sitter; its import is guarded, so a failure here is not fatal.
     # The WordNet download was removed along with METEOR -- nothing needs it now.
+    #
+    # jscpd is the one detector that is not a Python package, and duplicate_code is
+    # the one smell only it can find. Render's native images ship Node alongside
+    # Python, so it installs into smell_injection/node_modules -- the first place
+    # _find_jscpd() looks. Non-fatal on purpose: without it the dashboard covers
+    # eleven smells and says so, which beats a failed deploy.
     buildCommand: >-
       pip install -r deploy/requirements-space.txt &&
-      (pip install --no-deps codebleu || true)
+      (pip install --no-deps codebleu || true) &&
+      (cd smell_injection && npm install jscpd@4.0.5 || true)
     startCommand: python dashboard/app.py
     envVars:
       - key: HOST            # bind all interfaces so Render can route to it
