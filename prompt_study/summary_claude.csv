@@ -1,5 +1,5 @@
 task_id,system_mode,complexity,domain,action_keyword,intended,n_smells,smells,n_smells_defs,smells_defs,n_extra_stmts,n_functions,n_stub,longest_body,sloc,cyclomatic,maintainability,halstead_volume,halstead_difficulty,halstead_effort,cognitive,comment_density,api_calls,n_output_tokens
-refused_bequest_intermediate_004,full,intermediate,General Software,Compare,,0,,0,,0,9,4,3,36.000,14.000,100.000,0.000,0.000,0.000,1.000,0.000,3.000,487
+refused_bequest_intermediate_004,full,intermediate,General Software,Compare,,0,,0,,0,9,8,3,36.000,14.000,100.000,0.000,0.000,0.000,1.000,0.000,3.000,487
 data_class_basic_005,full,basic,General Software,List,,1,long_parameter_list,1,long_parameter_list,0,25,0,12,64.000,27.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,696
 magic_numbers_intermediate_006,full,intermediate,Finance,Measure,magic_number,1,magic_number,1,magic_number,0,1,0,9,22.000,7.000,86.025,151.621,4.312,653.864,6.000,13.636,2.000,506
 inappropriate_intimacy_basic_006,full,basic,E-commerce,Design,,1,magic_number,1,magic_number,0,6,0,6,34.000,19.000,49.697,139.316,3.889,541.783,8.000,0.000,1.000,444
@@ -24,7 +24,7 @@ message_chains_basic_006,full,basic,E-commerce,Compare,,0,,0,,0,1,0,2,5.000,2.00
 middle_man_intermediate_002,full,intermediate,Healthcare,Evaluate,,0,,0,,0,6,0,1,13.000,8.000,100.000,0.000,0.000,0.000,0.000,0.000,5.000,253
 long_parameter_list_advanced_003,full,advanced,Finance,List,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,0,11,70.000,10.000,72.938,85.952,1.500,128.927,9.000,0.000,3.000,990
 lazy_class_advanced_002,full,advanced,Healthcare,Report,,0,,0,,0,12,0,5,66.000,42.000,40.172,198.168,5.318,1053.893,16.000,0.000,16.000,978
-refused_bequest_intermediate_001,full,intermediate,Finance,Design,,0,,0,,0,10,0,2,23.000,14.000,100.000,0.000,0.000,0.000,0.000,0.000,3.000,415
+refused_bequest_intermediate_001,full,intermediate,Finance,Design,,0,,0,,0,10,8,2,23.000,14.000,100.000,0.000,0.000,0.000,0.000,0.000,3.000,415
 lazy_class_basic_004,full,basic,Scientific Computing,Write,,0,,0,,0,2,0,4,12.000,12.000,65.193,28.529,1.500,42.794,7.000,0.000,2.000,130
 deep_nesting_basic_001,full,basic,E-commerce,Recommend,deep_nesting,1,magic_number,1,magic_number,0,1,0,8,29.000,10.000,77.293,278.631,3.810,1061.453,23.000,0.000,1.000,527
 refused_bequest_basic_002,full,basic,Finance,Recommend,,0,,0,,0,3,0,1,7.000,5.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,149
@@ -50,7 +50,7 @@ switch_statements_basic_004,full,basic,Scientific Computing,Implement,,0,,0,,0,7
 middle_man_intermediate_003,full,intermediate,Scientific Computing,Design,,0,,0,,0,9,0,1,20.000,11.000,100.000,0.000,0.000,0.000,0.000,0.000,8.000,476
 magic_numbers_advanced_002,full,advanced,Scientific Computing,Implement,magic_number,0,,0,,0,1,0,15,48.000,9.000,47.206,330.000,7.333,2420.000,12.000,0.000,2.000,902
 middle_man_basic_004,full,basic,Scientific Computing,Analyze,,0,,0,,0,3,0,1,7.000,5.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,123
-refused_bequest_basic_005,full,basic,General Software,Recommend,,0,,0,,0,7,0,2,17.000,12.000,67.207,4.755,0.500,2.377,1.000,0.000,2.000,285
+refused_bequest_basic_005,full,basic,General Software,Recommend,,0,,0,,0,7,3,2,17.000,12.000,67.207,4.755,0.500,2.377,1.000,0.000,2.000,285
 refused_bequest_basic_004,full,basic,Scientific Computing,Measure,,0,,0,,0,10,0,4,36.000,18.000,51.535,60.944,3.929,239.424,4.000,0.000,6.000,513
 refused_bequest_basic_006,full,basic,E-commerce,Report,,0,,0,,0,21,0,3,52.000,29.000,60.939,106.198,3.462,367.609,6.000,1.923,10.000,1011
 temporary_field_intermediate_004,full,intermediate,General Software,Design,,0,,0,,0,9,0,8,46.000,11.000,100.000,0.000,0.000,0.000,0.000,2.174,5.000,670
@@ -82,25 +82,25 @@ lazy_class_intermediate_001,full,intermediate,Finance,Analyze,,0,,0,,1,6,0,4,38.
 lazy_class_basic_001,full,basic,E-commerce,Compare,,0,,0,,0,1,0,1,3.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,38
 switch_statements_basic_006,full,basic,E-commerce,Recommend,,1,magic_number,1,magic_number,0,1,0,1,23.000,6.000,58.114,42.110,0.833,35.092,6.000,0.000,1.000,394
 switch_statements_basic_005,full,basic,General Software,Report,,1,magic_number,1,magic_number,0,1,0,5,48.000,21.000,66.438,1419.094,5.692,8077.922,24.000,22.917,4.000,984
-refused_bequest_advanced_002,full,advanced,Healthcare,Evaluate,,0,,0,,0,5,0,1,11.000,7.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,283
+refused_bequest_advanced_002,full,advanced,Healthcare,Evaluate,,0,,0,,0,5,5,1,11.000,7.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,283
 message_chains_basic_001,full,basic,E-commerce,Report,,0,,0,,1,6,0,2,28.000,17.000,89.258,4.755,0.500,2.377,1.000,0.000,6.000,424
-refused_bequest_intermediate_005,full,intermediate,E-commerce,Recommend,,0,,0,,0,6,0,9,29.000,8.000,100.000,0.000,0.000,0.000,0.000,6.897,5.000,612
+refused_bequest_intermediate_005,full,intermediate,E-commerce,Recommend,,0,,0,,0,6,4,9,29.000,8.000,100.000,0.000,0.000,0.000,0.000,6.897,5.000,612
 alternative_classes_different_interfaces_basic_003,full,basic,Healthcare,List,,2,broad_except;duplicate_code,2,broad_except;duplicate_code,0,8,0,6,97.000,35.000,45.915,13.932,0.500,6.966,24.000,0.000,13.000,1020
 magic_numbers_basic_006,full,basic,E-commerce,Evaluate,magic_number,0,,0,,0,1,0,5,11.000,1.000,70.223,39.863,1.714,68.337,0.000,0.000,0.000,124
 lazy_class_intermediate_004,full,intermediate,General Software,Report,,0,,0,,0,7,0,4,31.000,26.000,45.291,289.985,4.071,1180.655,9.000,0.000,3.000,654
 lazy_class_basic_003,full,basic,Healthcare,Report,,0,,0,,0,1,0,1,4.000,3.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,95
-refused_bequest_intermediate_002,full,intermediate,Healthcare,Design,,0,,0,,0,8,0,1,18.000,12.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,275
+refused_bequest_intermediate_002,full,intermediate,Healthcare,Design,,0,,0,,0,8,4,1,18.000,12.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,275
 inappropriate_intimacy_intermediate_002,full,intermediate,Healthcare,Implement,,0,,0,,0,21,0,4,53.000,27.000,51.186,15.510,1.000,15.510,2.000,0.000,6.000,855
 alternative_classes_different_interfaces_basic_001,full,basic,E-commerce,Compare,,0,,0,,0,3,0,5,36.000,19.000,56.721,11.610,1.000,11.610,21.000,0.000,11.000,417
 comments_smell_basic_004,full,basic,Scientific Computing,Report,,1,magic_number,1,magic_number,0,1,0,10,16.000,7.000,79.776,58.603,2.500,146.508,7.000,125.000,4.000,650
 message_chains_basic_004,full,basic,Scientific Computing,Measure,,0,,0,,0,3,0,4,26.000,6.000,81.287,39.863,1.714,68.337,10.000,0.000,7.000,701
 deep_nesting_basic_004,full,basic,Scientific Computing,Measure,deep_nesting,1,broad_except,1,broad_except,1,1,0,4,46.000,9.000,72.749,134.886,3.385,456.538,5.000,0.000,2.000,891
-refused_bequest_advanced_005,full,advanced,E-commerce,Design,,0,,0,,0,10,0,1,34.000,15.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,709
+refused_bequest_advanced_005,full,advanced,E-commerce,Design,,0,,0,,0,10,5,1,34.000,15.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,709
 deep_nesting_basic_003,full,basic,Healthcare,Write,deep_nesting,0,,0,,0,1,0,3,10.000,5.000,100.000,0.000,0.000,0.000,10.000,0.000,3.000,315
 temporary_field_basic_005,full,basic,General Software,Design,,1,duplicate_code,0,,0,6,0,7,62.000,11.000,54.464,20.897,0.750,15.673,3.000,0.000,1.000,820
 deep_nesting_advanced_005,full,advanced,Finance,Evaluate,deep_nesting,1,deep_nesting,1,deep_nesting,1,1,0,2,39.000,9.000,88.749,4.755,0.500,2.377,44.000,0.000,3.000,722
 message_chains_basic_003,full,basic,Healthcare,Write,,1,duplicate_code,0,,1,1,0,7,79.000,11.000,79.288,49.829,1.000,49.829,21.000,0.000,5.000,881
-refused_bequest_advanced_003,full,advanced,Scientific Computing,List,,0,,0,,0,12,4,4,54.000,16.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,714
+refused_bequest_advanced_003,full,advanced,Scientific Computing,List,,0,,0,,0,12,8,4,54.000,16.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,714
 message_chains_intermediate_004,full,intermediate,General Software,Report,,1,broad_except,1,broad_except,0,1,0,6,29.000,8.000,89.827,20.897,2.000,41.795,12.000,0.000,3.000,404
 synthetic_god_class_basic_002,full,basic,Healthcare,Measure,,3,broad_except;long_parameter_list;magic_number,3,broad_except;long_parameter_list;magic_number,0,24,0,13,307.000,94.000,22.596,913.299,8.256,7540.569,49.000,0.651,37.000,4417
 message_chains_intermediate_002,full,intermediate,Healthcare,Compare,,0,,0,,0,3,0,16,86.000,16.000,71.210,182.679,4.800,876.862,29.000,4.651,10.000,1494
@@ -132,11 +132,11 @@ god_class_advanced_006,full,advanced,General Software,Write,,0,,0,,0,,,,573.000,
 long_parameter_list_advanced_006,full,advanced,General Software,Evaluate,long_parameter_list,6,dead_code;inefficient_loop;long_method;long_parameter_list;magic_number;perf_try_in_loop,6,dead_code;inefficient_loop;long_method;long_parameter_list;magic_number;perf_try_in_loop,0,7,0,53,224.000,32.000,41.134,926.346,8.077,7482.024,121.000,1.786,26.000,3858
 duplicated_code_intermediate_003,full,intermediate,General Software,Measure,duplicate_code,2,duplicate_code;magic_number,2,duplicate_code;magic_number,3,6,0,16,144.000,28.000,62.204,299.132,3.562,1065.657,26.000,19.444,11.000,2653
 shotgun_surgery_intermediate_003,full,intermediate,Scientific Computing,Design,,3,dead_code;duplicate_code;magic_number,3,dead_code;duplicate_code;magic_number,2,40,0,6,411.000,127.000,31.012,1542.722,5.268,8127.513,64.000,5.839,48.000,7738
-speculative_generality_intermediate_003,full,intermediate,Scientific Computing,Analyze,,4,broad_except;dead_code;magic_number;perf_try_in_loop,3,broad_except;dead_code;perf_try_in_loop,3,40,0,7,358.000,131.000,40.523,646.750,8.708,5631.608,58.000,5.307,52.000,6561
+speculative_generality_intermediate_003,full,intermediate,Scientific Computing,Analyze,,4,broad_except;dead_code;magic_number;perf_try_in_loop,3,broad_except;dead_code;perf_try_in_loop,3,40,1,7,358.000,131.000,40.523,646.750,8.708,5631.608,58.000,5.307,52.000,6561
 global_state_basic_004,full,basic,Scientific Computing,Compare,,1,duplicate_code,2,dead_code;duplicate_code,4,18,0,12,198.000,34.000,41.907,331.002,3.889,1287.231,14.000,1.010,23.000,3113
 primitive_obsession_basic_005,full,basic,General Software,Design,,2,complex_conditional;magic_number,2,complex_conditional;magic_number,0,1,0,7,36.000,15.000,81.354,189.461,2.812,532.860,8.000,0.000,12.000,620
 feature_envy_advanced_001,full,advanced,Healthcare,Report,,2,long_method;magic_number,2,long_method;magic_number,0,2,1,36,127.000,69.000,45.379,607.043,6.848,4156.923,58.000,7.087,8.000,2979
-speculative_generality_advanced_005,full,advanced,E-commerce,Design,,2,duplicate_code;long_parameter_list,3,dead_code;duplicate_code;long_parameter_list,3,47,2,12,425.000,127.000,28.147,1364.738,10.400,14193.277,41.000,9.412,64.000,7689
+speculative_generality_advanced_005,full,advanced,E-commerce,Design,,2,duplicate_code;long_parameter_list,3,dead_code;duplicate_code;long_parameter_list,3,47,12,12,425.000,127.000,28.147,1364.738,10.400,14193.277,41.000,9.412,64.000,7689
 long_method_advanced_006,full,advanced,General Software,Compare,long_method,1,duplicate_code,1,duplicate_code,0,,,,463.000,,,,,,,7.559,,8192
 data_clumps_intermediate_005,full,intermediate,E-commerce,Write,,3,dead_code;duplicate_code;long_parameter_list,2,dead_code;long_parameter_list,0,21,0,7,207.000,47.000,53.672,594.540,8.727,5188.717,34.000,4.831,25.000,4517
 duplicated_code_advanced_006,full,advanced,General Software,Measure,duplicate_code,1,duplicate_code,1,duplicate_code,0,,,,414.000,,,,,,,16.184,,8192
@@ -181,7 +181,7 @@ incomplete_library_class_basic_001,full,basic,E-commerce,Write,,2,duplicate_code
 switch_statements_advanced_001,full,advanced,Healthcare,Report,,1,duplicate_code,1,duplicate_code,0,,,,621.000,,,,,,,0.000,,8192
 synthetic_god_class_basic_003,full,basic,Scientific Computing,List,,2,long_parameter_list;magic_number,2,long_parameter_list;magic_number,0,39,0,13,297.000,122.000,20.302,1568.453,10.157,15930.030,80.000,4.040,45.000,4471
 data_class_intermediate_005,full,intermediate,E-commerce,Measure,,1,long_parameter_list,1,long_parameter_list,0,29,0,7,104.000,44.000,52.827,137.608,2.000,275.215,13.000,7.692,12.000,1683
-parallel_inheritance_basic_002,full,basic,Finance,Recommend,,2,inefficient_loop;long_parameter_list,2,inefficient_loop;long_parameter_list,0,25,0,6,153.000,56.000,32.765,353.598,4.426,1565.193,6.000,0.000,15.000,2184
+parallel_inheritance_basic_002,full,basic,Finance,Recommend,,2,inefficient_loop;long_parameter_list,2,inefficient_loop;long_parameter_list,0,25,2,6,153.000,56.000,32.765,353.598,4.426,1565.193,6.000,0.000,15.000,2184
 synthetic_god_class_basic_007,full,basic,Healthcare,List,,4,broad_except;duplicate_code;inefficient_loop;long_parameter_list,4,broad_except;duplicate_code;inefficient_loop;long_parameter_list,0,49,0,15,438.000,170.000,8.677,1800.216,9.410,16939.733,88.000,1.826,42.000,6738
 parallel_inheritance_advanced_004,full,advanced,General Software,Write,,2,duplicate_code;magic_number,1,magic_number,0,51,6,7,357.000,174.000,30.379,782.391,4.606,3603.741,29.000,7.843,53.000,6082
 synthetic_long_method_advanced_004,full,advanced,Scientific Computing,Report,long_method,0,,0,,0,,,,424.000,,,,,,,7.311,,8192
@@ -199,7 +199,7 @@ duplicated_code_intermediate_005,full,intermediate,Finance,Implement,duplicate_c
 data_clumps_advanced_004,full,advanced,E-commerce,Recommend,,4,dead_code;duplicate_code;long_parameter_list;magic_number,4,dead_code;duplicate_code;long_parameter_list;magic_number,9,14,0,17,523.000,45.000,48.733,848.063,6.829,5791.519,27.000,5.927,34.000,6887
 switch_statements_advanced_005,full,advanced,Finance,Report,,5,deep_nesting;duplicate_code;long_method;long_parameter_list;magic_number,5,deep_nesting;duplicate_code;long_method;long_parameter_list;magic_number,0,1,0,14,193.000,48.000,37.632,738.617,9.931,7335.228,107.000,2.073,3.000,3381
 dead_code_intermediate_004,full,intermediate,General Software,Analyze,dead_code,3,dead_code;duplicate_code;magic_number,3,dead_code;duplicate_code;magic_number,1,31,0,16,388.000,120.000,29.884,3019.323,10.541,31825.299,87.000,3.608,59.000,7232
-parallel_inheritance_intermediate_002,full,intermediate,Healthcare,Write,,2,dead_code;duplicate_code,2,dead_code;duplicate_code,0,46,0,8,249.000,109.000,33.137,1057.550,7.953,8410.377,19.000,8.032,33.000,5491
+parallel_inheritance_intermediate_002,full,intermediate,Healthcare,Write,,2,dead_code;duplicate_code,2,dead_code;duplicate_code,0,46,6,8,249.000,109.000,33.137,1057.550,7.953,8410.377,19.000,8.032,33.000,5491
 god_class_basic_006,full,basic,E-commerce,Analyze,,3,broad_except;dead_code;duplicate_code,3,broad_except;dead_code;duplicate_code,0,34,0,15,498.000,126.000,12.973,1231.558,8.208,10108.068,127.000,1.807,61.000,7675
 speculative_generality_basic_003,full,basic,Healthcare,Evaluate,,4,duplicate_code;long_parameter_list;magic_number;perf_try_in_loop,3,long_parameter_list;magic_number;perf_try_in_loop,4,32,0,13,354.000,125.000,20.500,737.255,7.532,5552.821,109.000,0.000,71.000,4846
 parallel_inheritance_advanced_002,full,advanced,Healthcare,List,,1,magic_number,1,magic_number,0,63,7,7,343.000,200.000,22.622,1632.267,9.643,15739.714,42.000,6.122,24.000,6292
@@ -212,7 +212,7 @@ god_class_basic_005,full,basic,General Software,Measure,,4,broad_except;duplicat
 feature_envy_basic_002,full,basic,Finance,Compare,,3,duplicate_code;long_parameter_list;magic_number,3,duplicate_code;long_parameter_list;magic_number,0,9,0,13,228.000,75.000,18.717,991.778,10.603,10515.765,95.000,0.000,25.000,3298
 lazy_class_advanced_001,full,advanced,Finance,Measure,,1,magic_number,1,magic_number,1,8,0,5,72.000,42.000,41.629,213.673,5.417,1157.398,12.000,0.000,22.000,1062
 parallel_inheritance_basic_003,full,basic,Healthcare,Write,,2,long_parameter_list;magic_number,2,long_parameter_list;magic_number,1,20,2,8,205.000,99.000,36.926,1268.553,8.131,10315.004,41.000,8.293,31.000,3678
-parallel_inheritance_basic_005,full,basic,General Software,Analyze,,1,broad_except,1,broad_except,1,21,0,4,132.000,55.000,49.372,105.416,3.750,395.309,12.000,6.818,21.000,2326
+parallel_inheritance_basic_005,full,basic,General Software,Analyze,,1,broad_except,1,broad_except,1,21,2,4,132.000,55.000,49.372,105.416,3.750,395.309,12.000,6.818,21.000,2326
 god_class_advanced_004,full,advanced,Healthcare,Implement,,3,dead_code;long_parameter_list;magic_number,3,dead_code;long_parameter_list;magic_number,0,53,1,16,445.000,154.000,14.041,2194.615,10.849,23810.071,80.000,2.472,48.000,7342
 synthetic_long_method_advanced_005,full,advanced,General Software,List,long_method,1,duplicate_code,1,duplicate_code,0,,,,,,,,,,,,,8192
 alternative_classes_different_interfaces_advanced_001,full,advanced,Finance,List,,3,duplicate_code;long_parameter_list;magic_number,3,duplicate_code;long_parameter_list;magic_number,0,11,0,16,133.000,56.000,56.922,687.071,4.992,3429.985,31.000,0.000,13.000,2819
@@ -230,7 +230,7 @@ shotgun_surgery_advanced_004,full,advanced,General Software,Write,,0,,0,,2,36,0,
 synthetic_long_method_basic_005,full,basic,E-commerce,Measure,long_method,4,broad_except;dead_code;long_parameter_list;magic_number,4,broad_except;dead_code;long_parameter_list;magic_number,0,4,0,24,127.000,39.000,56.530,881.239,9.886,8712.251,34.000,7.874,22.000,2499
 dead_code_basic_005,full,basic,General Software,Write,dead_code,2,duplicate_code;magic_number,1,magic_number,0,16,0,9,151.000,43.000,53.954,728.724,8.706,6344.187,26.000,7.285,13.000,2638
 god_class_intermediate_004,full,intermediate,E-commerce,Measure,,5,broad_except;dead_code;long_parameter_list;magic_number;perf_try_in_loop,5,broad_except;dead_code;long_parameter_list;magic_number;perf_try_in_loop,0,34,0,13,383.000,85.000,27.150,627.155,4.638,2909.033,30.000,2.872,37.000,6253
-speculative_generality_basic_004,full,basic,Scientific Computing,Write,,2,long_parameter_list;magic_number,2,long_parameter_list;magic_number,1,48,2,13,272.000,95.000,33.966,404.424,3.378,1366.297,25.000,2.574,25.000,4463
+speculative_generality_basic_004,full,basic,Scientific Computing,Write,,2,long_parameter_list;magic_number,2,long_parameter_list;magic_number,1,48,14,13,272.000,95.000,33.966,404.424,3.378,1366.297,25.000,2.574,25.000,4463
 long_method_basic_003,full,basic,Healthcare,Report,long_method,3,broad_except;dead_code;long_parameter_list,3,broad_except;dead_code;long_parameter_list,4,13,0,6,250.000,53.000,51.161,320.150,5.162,1652.537,36.000,7.200,56.000,4696
 long_method_basic_004,full,basic,Scientific Computing,Measure,long_method,4,broad_except;duplicate_code;long_method;long_parameter_list,4,broad_except;dead_code;long_method;long_parameter_list,3,2,0,18,302.000,40.000,41.873,552.911,10.000,5529.113,68.000,7.616,65.000,4754
 long_parameter_list_intermediate_006,full,intermediate,Healthcare,Measure,long_parameter_list,1,long_parameter_list,1,long_parameter_list,0,1,0,17,67.000,36.000,41.015,596.596,2.727,1627.080,40.000,0.000,3.000,1206
@@ -254,7 +254,7 @@ deep_nesting_advanced_002,full,advanced,Scientific Computing,Analyze,deep_nestin
 god_class_intermediate_001,full,intermediate,Healthcare,Compare,,5,broad_except;dead_code;long_method;long_parameter_list;magic_number,5,broad_except;dead_code;long_method;long_parameter_list;magic_number,0,52,0,16,376.000,163.000,13.423,1402.433,8.851,12413.430,115.000,2.394,80.000,5200
 global_state_intermediate_004,full,intermediate,General Software,Recommend,,1,magic_number,2,dead_code;magic_number,6,24,0,8,164.000,55.000,56.713,427.533,5.128,2192.349,34.000,7.317,35.000,3177
 long_method_basic_005,full,basic,General Software,Measure,long_method,3,broad_except;long_parameter_list;magic_number,3,broad_except;long_parameter_list;magic_number,0,7,0,19,135.000,44.000,56.704,903.724,9.536,8617.655,38.000,7.407,26.000,2862
-speculative_generality_basic_005,full,basic,General Software,Measure,,5,broad_except;dead_code;duplicate_code;long_parameter_list;perf_try_in_loop,5,broad_except;dead_code;duplicate_code;long_parameter_list;perf_try_in_loop,1,65,1,13,516.000,185.000,14.445,761.594,6.553,4990.443,123.000,0.388,52.000,7143
+speculative_generality_basic_005,full,basic,General Software,Measure,,5,broad_except;dead_code;duplicate_code;long_parameter_list;perf_try_in_loop,5,broad_except;dead_code;duplicate_code;long_parameter_list;perf_try_in_loop,1,65,7,13,516.000,185.000,14.445,761.594,6.553,4990.443,123.000,0.388,52.000,7143
 data_clumps_basic_005,full,basic,General Software,Design,,2,long_parameter_list;magic_number,2,long_parameter_list;magic_number,0,13,0,7,81.000,46.000,36.698,576.000,3.807,2192.842,26.000,0.000,10.000,1191
 comments_smell_basic_003,full,basic,Healthcare,Design,,0,,1,dead_code,4,2,0,14,66.000,15.000,73.916,91.738,3.500,321.084,17.000,45.455,18.000,1536
 shotgun_surgery_basic_004,full,basic,Scientific Computing,Write,,1,duplicate_code,1,duplicate_code,5,20,0,7,100.000,30.000,77.926,4.755,0.500,2.377,0.000,27.000,20.000,3184
@@ -309,7 +309,7 @@ middle_man_intermediate_005,full,intermediate,E-commerce,Compare,,0,,0,,0,34,0,6
 inappropriate_intimacy_advanced_006,full,advanced,Healthcare,Write,,2,long_parameter_list;magic_number,2,long_parameter_list;magic_number,1,23,0,11,219.000,58.000,43.784,1160.162,10.238,11877.161,28.000,5.479,24.000,4261
 long_method_basic_007,full,basic,Finance,Recommend,long_method,2,broad_except;magic_number,3,broad_except;dead_code;magic_number,6,8,0,10,195.000,41.000,54.731,438.934,4.455,1955.251,29.000,2.564,30.000,4012
 inappropriate_intimacy_basic_002,full,basic,Finance,Implement,,1,duplicate_code,0,,0,20,0,6,101.000,37.000,46.950,314.876,4.403,1386.469,21.000,3.960,5.000,1600
-shotgun_surgery_advanced_001,full,advanced,Finance,Report,,3,dead_code;duplicate_code;magic_number,3,dead_code;duplicate_code;magic_number,6,68,0,11,381.000,144.000,35.990,649.758,9.000,5847.822,30.000,21.785,61.000,7914
+shotgun_surgery_advanced_001,full,advanced,Finance,Report,,3,dead_code;duplicate_code;magic_number,3,dead_code;duplicate_code;magic_number,6,68,8,11,381.000,144.000,35.990,649.758,9.000,5847.822,30.000,21.785,61.000,7914
 god_class_intermediate_006,full,intermediate,Healthcare,Write,,4,broad_except;long_method;magic_number;perf_try_in_loop,4,broad_except;long_method;magic_number;perf_try_in_loop,0,56,0,10,438.000,217.000,11.200,1324.911,7.095,9400.244,133.000,1.598,94.000,5914
 god_class_advanced_005,full,advanced,Scientific Computing,Analyze,,1,duplicate_code,1,duplicate_code,0,,,,462.000,,,,,,,7.143,,8192
 alternative_classes_different_interfaces_advanced_003,full,advanced,Scientific Computing,Evaluate,,0,,0,,0,9,0,10,91.000,43.000,63.327,274.006,3.200,876.819,22.000,3.297,15.000,1733
@@ -329,10 +329,10 @@ duplicated_code_intermediate_007,full,intermediate,Scientific Computing,Measure,
 synthetic_god_class_basic_001,full,basic,Finance,Implement,,2,duplicate_code;magic_number,2,duplicate_code;magic_number,0,35,0,18,374.000,102.000,22.443,1123.214,6.000,6739.281,57.000,4.011,37.000,5736
 shotgun_surgery_advanced_002,full,advanced,Healthcare,Measure,,1,duplicate_code,1,duplicate_code,0,,,,379.000,,,,,,,10.818,,8192
 dead_code_intermediate_003,full,intermediate,Scientific Computing,Implement,dead_code,1,duplicate_code,0,,1,28,0,14,258.000,76.000,44.208,714.414,8.333,5953.447,31.000,8.527,19.000,4869
-parallel_inheritance_intermediate_003,full,intermediate,Scientific Computing,Write,,0,,0,,0,60,1,7,219.000,120.000,39.959,293.018,4.632,1357.364,10.000,10.502,37.000,4276
-speculative_generality_advanced_004,full,advanced,General Software,Measure,,5,broad_except;dead_code;duplicate_code;magic_number;perf_try_in_loop,5,broad_except;dead_code;duplicate_code;magic_number;perf_try_in_loop,4,65,0,12,445.000,133.000,30.865,349.919,5.782,2023.250,64.000,9.438,84.000,7992
+parallel_inheritance_intermediate_003,full,intermediate,Scientific Computing,Write,,0,,0,,0,60,8,7,219.000,120.000,39.959,293.018,4.632,1357.364,10.000,10.502,37.000,4276
+speculative_generality_advanced_004,full,advanced,General Software,Measure,,5,broad_except;dead_code;duplicate_code;magic_number;perf_try_in_loop,5,broad_except;dead_code;duplicate_code;magic_number;perf_try_in_loop,4,65,4,12,445.000,133.000,30.865,349.919,5.782,2023.250,64.000,9.438,84.000,7992
 primitive_obsession_advanced_003,full,advanced,General Software,Implement,,3,inefficient_loop;long_parameter_list;magic_number,3,inefficient_loop;long_parameter_list;magic_number,0,21,0,12,232.000,89.000,33.469,571.603,4.370,2498.116,46.000,4.741,17.000,4068
-refused_bequest_basic_001,full,basic,E-commerce,Measure,,0,,0,,0,18,0,4,50.000,27.000,61.467,133.783,3.375,451.517,7.000,2.000,11.000,900
+refused_bequest_basic_001,full,basic,E-commerce,Measure,,0,,0,,0,18,10,4,50.000,27.000,61.467,133.783,3.375,451.517,7.000,2.000,11.000,900
 comments_smell_intermediate_001,full,intermediate,E-commerce,Measure,,2,long_method;magic_number,2,long_method;magic_number,2,1,0,31,156.000,52.000,50.999,849.252,11.194,9506.910,26.000,98.718,14.000,5947
 deep_nesting_intermediate_006,full,intermediate,Finance,Report,deep_nesting,2,broad_except;long_parameter_list,2,broad_except;long_parameter_list,0,2,0,14,84.000,24.000,68.828,271.852,2.000,543.704,22.000,8.333,7.000,1433
 feature_envy_advanced_003,full,advanced,General Software,Implement,,1,magic_number,1,magic_number,0,10,0,10,198.000,61.000,21.847,1624.548,5.391,8758.435,54.000,0.000,13.000,2894
@@ -372,7 +372,7 @@ primitive_obsession_intermediate_006,full,intermediate,Finance,List,,2,long_para
 global_state_advanced_005,full,advanced,E-commerce,Measure,,2,long_parameter_list;magic_number,3,dead_code;long_parameter_list;magic_number,12,30,0,2,417.000,89.000,30.131,2254.710,10.582,23858.931,66.000,10.072,40.000,7598
 lazy_class_advanced_005,full,advanced,E-commerce,Recommend,,2,long_parameter_list;magic_number,2,long_parameter_list;magic_number,1,9,0,10,82.000,44.000,40.343,234.425,5.923,1388.520,13.000,0.000,22.000,1220
 deep_nesting_advanced_003,full,advanced,General Software,Write,deep_nesting,3,deep_nesting;long_method;long_parameter_list,3,deep_nesting;long_method;long_parameter_list,0,8,0,9,130.000,8.000,48.287,584.782,3.962,2317.061,120.000,0.000,9.000,1641
-speculative_generality_basic_002,full,basic,Finance,Implement,,6,broad_except;dead_code;duplicate_code;inefficient_loop;magic_number;perf_try_in_loop,5,broad_except;dead_code;inefficient_loop;magic_number;perf_try_in_loop,2,47,2,5,305.000,109.000,32.816,662.280,4.701,3113.706,43.000,7.869,52.000,5533
+speculative_generality_basic_002,full,basic,Finance,Implement,,6,broad_except;dead_code;duplicate_code;inefficient_loop;magic_number;perf_try_in_loop,5,broad_except;dead_code;inefficient_loop;magic_number;perf_try_in_loop,2,47,5,5,305.000,109.000,32.816,662.280,4.701,3113.706,43.000,7.869,52.000,5533
 shotgun_surgery_advanced_003,full,advanced,Scientific Computing,Compare,,0,,0,,0,,,,,,,,,,,,,8192
 comments_smell_intermediate_002,full,intermediate,Finance,Report,,1,duplicate_code,1,duplicate_code,0,,,,,,,,,,,,,8192
 magic_numbers_advanced_003,full,advanced,General Software,Compare,magic_number,3,long_method;long_parameter_list;magic_number,3,long_method;long_parameter_list;magic_number,0,1,0,31,87.000,21.000,65.339,397.696,5.053,2009.414,24.000,10.345,8.000,1721
@@ -431,7 +431,7 @@ refused_bequest_advanced_001,full,advanced,Finance,List,,0,,0,,0,6,0,3,25.000,9.
 temporary_field_intermediate_002,full,intermediate,Healthcare,Compare,,0,,0,,0,8,0,5,91.000,19.000,42.557,255.263,5.143,1312.782,9.000,0.000,11.000,1374
 long_parameter_list_basic_006,full,basic,E-commerce,Implement,long_parameter_list,3,long_parameter_list;magic_number;perf_try_in_loop,3,long_parameter_list;magic_number;perf_try_in_loop,2,7,0,21,133.000,47.000,56.001,693.260,7.082,4909.647,45.000,6.767,23.000,2574
 middle_man_intermediate_001,full,intermediate,Finance,Design,,0,,0,,0,21,0,1,43.000,23.000,100.000,0.000,0.000,0.000,0.000,0.000,20.000,856
-speculative_generality_basic_001,full,basic,E-commerce,Compare,,1,magic_number,1,magic_number,0,30,0,7,201.000,57.000,39.138,446.778,5.930,2649.496,96.000,0.000,31.000,3247
+speculative_generality_basic_001,full,basic,E-commerce,Compare,,1,magic_number,1,magic_number,0,30,13,7,201.000,57.000,39.138,446.778,5.930,2649.496,96.000,0.000,31.000,3247
 switch_statements_advanced_002,full,advanced,Scientific Computing,Report,,3,long_method;long_parameter_list;magic_number,3,long_method;long_parameter_list;magic_number,0,1,0,28,171.000,51.000,43.923,844.685,6.274,5299.205,66.000,8.772,7.000,3797
 switch_statements_intermediate_005,full,intermediate,E-commerce,Design,,3,duplicate_code;long_method;magic_number,3,duplicate_code;long_method;magic_number,0,24,0,4,149.000,52.000,38.495,1680.564,8.047,13523.596,104.000,0.000,16.000,2098
 dead_code_advanced_004,full,advanced,General Software,Compare,dead_code,2,dead_code;magic_number,2,dead_code;magic_number,2,47,3,13,320.000,125.000,36.897,1410.942,12.150,17142.943,54.000,14.688,36.000,6324
@@ -440,7 +440,7 @@ speculative_generality_intermediate_002,full,intermediate,Healthcare,Design,,1,d
 global_state_basic_006,full,basic,E-commerce,Recommend,,1,duplicate_code,1,duplicate_code,5,15,0,14,174.000,46.000,38.301,262.396,5.121,1343.650,36.000,1.724,27.000,2268
 long_method_intermediate_007,full,intermediate,Scientific Computing,Implement,long_method,6,broad_except;dead_code;duplicate_code;long_parameter_list;magic_number;perf_try_in_loop,6,broad_except;dead_code;duplicate_code;long_parameter_list;magic_number;perf_try_in_loop,3,16,0,14,411.000,135.000,28.829,1213.464,5.372,6519.274,176.000,6.326,68.000,7085
 switch_statements_advanced_004,full,advanced,E-commerce,Analyze,,3,long_method;long_parameter_list;magic_number,3,long_method;long_parameter_list;magic_number,0,1,0,39,195.000,87.000,41.903,1359.215,6.808,9253.831,125.000,9.744,5.000,4678
-speculative_generality_basic_006,full,basic,E-commerce,Report,,2,dead_code;magic_number,2,dead_code;magic_number,0,28,0,7,146.000,55.000,44.325,418.138,4.807,2009.914,94.000,0.000,26.000,2564
+speculative_generality_basic_006,full,basic,E-commerce,Report,,2,dead_code;magic_number,2,dead_code;magic_number,0,28,12,7,146.000,55.000,44.325,418.138,4.807,2009.914,94.000,0.000,26.000,2564
 incomplete_library_class_intermediate_005,full,intermediate,General Software,Write,,1,duplicate_code,1,duplicate_code,0,,,,467.000,,,,,,,4.069,,8192
 parallel_inheritance_basic_004,full,basic,Scientific Computing,Implement,,2,inefficient_loop;magic_number,2,inefficient_loop;magic_number,1,19,3,4,152.000,51.000,52.200,72.000,2.000,144.000,4.000,5.921,22.000,2645
 alternative_classes_different_interfaces_intermediate_001,full,intermediate,Finance,Analyze,,1,duplicate_code,0,,0,6,0,10,74.000,41.000,40.031,350.501,2.158,756.343,18.000,0.000,10.000,1156
