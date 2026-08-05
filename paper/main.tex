@@ -194,6 +194,45 @@ use it, and report what using it correctly changes.
              writes predict the structural quality of what it writes?
 \end{description}
 
+\subsection{Scope}
+\label{sec:scope}
+
+Several boundaries are deliberate, and stating them here rather than in a closing
+caveat is the honest order: they shape what the results can mean.
+
+\emph{Structural quality, not quality in general.} The object of study is the
+static structure of a function --- its size, branching, duplication and
+signature. Runtime performance, memory behaviour, security and readability to a
+human reader are all legitimate senses of ``quality'' and none is measured here.
+Correctness is measured, but only as a control: it establishes that an injected
+defect did not change what the code computes, and it is not itself the property
+under study.
+
+\emph{Twelve defects, not Fowler's catalogue.} A defect is included only if a
+static analyser confirms it mechanically, so that every label in the benchmark is
+a measurement rather than a judgement. That criterion admits twelve and excludes
+smells that require design-level interpretation --- feature envy, inappropriate
+intimacy, speculative generality. Their absence is a limit on coverage, not a
+claim that they are unimportant; they are simply not the kind of thing this
+protocol can validate a measure against.
+
+\emph{One function at a time, in one language.} The unit of analysis is a single
+Python function. Smells that live in the relationships \emph{between} classes or
+modules are therefore out of reach by construction, and nothing here is claimed
+to transfer to languages with different structural conventions.
+
+\emph{Two open-weight models and one frontier model, not a survey.} The models
+were chosen to span a wide capability range cheaply, and the benchmark comparison
+of Section~\ref{sec:rq2} uses two of them. The claims are about what happens when
+models of different capability are compared under a fixed protocol, not about
+which model is best.
+
+\emph{Cost and latency are excluded.} Output tokens and generation time are
+recorded but not analysed as efficiency measures. Token count enters this paper
+only as a possible predictor of structural quality (RQ3), never as a cost figure;
+a study of generation cost would need controlled hardware and serving conditions
+this work does not have.
+
 % ---------------------------------------------------------------------
 \section{Background and related work}
 \label{sec:related}
@@ -819,7 +858,21 @@ backwards}.
 % ---------------------------------------------------------------------
 \section{RQ2: comparing models without measuring volume}
 \label{sec:rq2}
-% TO WRITE. Three models on 664 benchmark tasks. pass@1, defect rates, structure
+% TO WRITE. TWO models (Qwen, DeepSeek) on 664 benchmark tasks -- Claude was run
+% on the 476-prompt study only, so RQ2 is a two-model comparison and RQ3 is a
+% three-model one. Do not write "three models" here.
+% Settled numbers: pass@1 Qwen 57.4% (humaneval 66.5 / mbpp 54.4),
+%   DeepSeek 51.7% (humaneval 66.5 / mbpp 46.8), 2 timeouts.
+% Verbosity confound: files with >=1 defect, as-emitted vs definitions-only --
+%   DeepSeek 24.8% -> 12.2%, Qwen 9.8% -> 9.8% (Qwen volunteers nothing:
+%   mean extra statements 0.0 vs DeepSeek 1.0). So DeepSeek looks 2.5x smellier
+%   than Qwen as-emitted and 1.2x after correction.
+% NULL to report briefly: structure does not predict correctness. Qwen passing vs
+%   failing 8.1% vs 12.0% carry a defect (1.86 vs 2.06 per 100 SLOC); DeepSeek
+%   12.0% vs 12.2% (1.96 vs 1.89). Supports the introduction's claim that
+%   correctness and structural quality are different properties -- it is evidence
+%   for the framing, not a headline finding.
+% pass@1, defect rates, structure
 % against the canonical solutions, cost. Two findings to lead with:
 %   - generated code is simpler and far more heavily commented than the canonical
 %     solutions, on every complexity measure, for every model;
@@ -835,9 +888,26 @@ backwards}.
 \label{sec:rq3}
 % TO WRITE. 476 prompts written to induce a named defect, across three models.
 %   - induction rate: does a prompt engineered to provoke a defect provoke it?
-%     Measurable on the six defects shared between the two taxonomies.
+%     Measurable on the six defects shared between the two taxonomies (136 tasks).
 %   - does output length predict structural quality, controlling for the prompt's
 %     stated complexity?
+% Settled numbers (definitions-only scoring; stub rate is per FUNCTION, and say
+% so -- the per-generation figure is ~5 points higher and they get confused):
+%   baseline   induction / stub% / smells per 100 SLOC / mean SLOC / mean tokens
+%     Claude     67.6 / 5.0  / 1.02 / 175.0 / 3362
+%     Qwen       45.6 / 18.2 / 2.54 /  22.9 /  235
+%     DeepSeek   34.6 / 19.4 / 2.26 /  25.5 /  495
+%   long_method: Claude 11/40 = 27.5%; Qwen and DeepSeek 0/40 at every budget.
+%   Prompt-specification dose-response (minimal -> full -> emphatic):
+%     Qwen     stubs 18.2 -> 15.4 -> 13.6 ; induction 45.6 -> 41.9 -> 46.3 ;
+%              per-100-SLOC 2.54 -> 2.28 -> 2.27 (raw count 277 -> 290 -> 352)
+%     DeepSeek stubs 19.4 -> 18.6 -> 15.5 ; induction 34.6 -> 33.1 -> 41.2 ;
+%              per-100-SLOC 2.26 -> 2.30 -> 2.37
+%     The thesis: telling a model to write complete functions makes it write MORE
+%     defective lines and FEWER defects per line. Raw counts and normalised rates
+%     point in opposite directions, which is the RQ3 form of the size confound.
+%   Token-budget control (1k vs 4k): Qwen stubs 18.2 -> 15.4, DeepSeek 19.4 ->
+%     18.1, long_method 0/40 at both. The cap was not what suppressed long_method.
 % NOTE for the write-up: in the prompt set, expected token depth is a perfect
 % relabelling of complexity (basic/intermediate/advanced -> low/medium/high, 1:1).
 % It therefore cannot serve as an independent variable; measured output tokens can.
