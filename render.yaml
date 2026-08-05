@@ -20,6 +20,15 @@ services:
         value: "1"           # isolated container + timeout. Do not add secret env vars here.
       - key: DASH_NO_BROWSER # it's a server; don't try to open a browser
         value: "1"
+      - key: PYTHONSAFEPATH  # keep the working directory off sys.path -- see below
+        value: "1"
       - key: PYTHON_VERSION
         value: "3.11.9"
+    # PYTHONSAFEPATH is load-bearing here, not hygiene. nltk 3.10 added a guard that
+    # refuses to import a module resolved from the current working directory. Render
+    # puts the virtualenv *inside* the project directory, so `regex` -- which nltk
+    # needs -- looks like it comes from the working directory and is blocked; nltk
+    # arrives via rouge_score, which measures.py imports, so the app died at startup.
+    # This keeps the guard satisfied. The app adds its own import paths explicitly,
+    # so it does not rely on the implicit working-directory entry.
     # Render sets $PORT automatically; the app reads it.

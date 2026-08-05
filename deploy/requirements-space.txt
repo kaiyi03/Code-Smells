@@ -15,6 +15,12 @@ ruff==0.16.1
 cognitive_complexity==1.3.0
 sacrebleu==2.6.0
 rouge-score==0.1.2
+# nltk arrives through rouge-score and is pinned here because it is the dependency
+# that actually broke the deploy: 3.10 added a guard that blocks importing a module
+# resolved from the working directory, which is where Render puts the virtualenv.
+# PYTHONSAFEPATH=1 in render.yaml satisfies the guard; this pin means the version
+# cannot change again without us choosing it.
+nltk==3.10.1
 tree-sitter==0.26.0
 tree-sitter-python==0.25.0
 
