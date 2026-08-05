@@ -149,14 +149,26 @@ STRUCTURAL = [
 
 import re                                            # noqa: E402
 import sacrebleu                                     # noqa: E402
-from rouge_score import rouge_scorer                 # noqa: E402
+
+# rouge_score drags in nltk, whose import-time security guard has killed the
+# hosted dashboard when the interpreter's layout displeased it (site-packages
+# nested under the working directory). One similarity measure is not worth a
+# dead service: if the import fails for any reason, rouge_l degrades to None and
+# everything else runs. The offline harness environments import it fine, so the
+# panel results are unaffected there -- and the warning makes a silent loss loud.
+try:
+    from rouge_score import rouge_scorer             # noqa: E402
+    _rouge = rouge_scorer.RougeScorer(["rougeL"], use_stemmer=False)
+except Exception as _e:                              # noqa: BLE001
+    print(f"[warn] rouge_score unavailable ({_e.__class__.__name__}: {_e}) "
+          f"-- rouge_l will report None")
+    _rouge = None
 
 try:                                                 # codebleu pins an old tree-sitter; keep it
     from codebleu import calc_codebleu               # optional so a partial install still runs
 except Exception:                                    # the other similarity measures
     calc_codebleu = None
 
-_rouge = rouge_scorer.RougeScorer(["rougeL"], use_stemmer=False)
 _word = re.compile(r"\w+|\S")
 
 # METEOR was removed from the panel (it produced only blanks in practice, and its
@@ -176,6 +188,8 @@ def _chrf(code, ref):
     return sacrebleu.sentence_chrf(code, [ref]).score            # already 0..100
 
 def _rouge_l(code, ref):
+    if _rouge is None:
+        return None
     return _rouge.score(ref, code)["rougeL"].fmeasure * 100
 
 def _codebleu(code, ref):

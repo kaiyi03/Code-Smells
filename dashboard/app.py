@@ -63,6 +63,17 @@ def _safe_path():
 _bootstrap()
 _safe_path()
 
+# Run from the app's own directory, not the repository root. Hosts like Render
+# start the process at the project root with the virtualenv nested inside it, so
+# every installed package resolves from under the working directory -- and nltk's
+# import guard blocks that even under -P (its stated remedy; the Render logs show
+# the guard firing with safe_path set, so the flag alone is proven insufficient).
+# From dashboard/, site-packages is no longer beneath the working directory and
+# the condition the guard names cannot arise. Nothing here reads relative paths:
+# every file the app opens goes through HERE/ROOT absolute paths, and the
+# detectors work in absolute temp dirs.
+os.chdir(HERE)
+
 sys.path.insert(0, os.path.join(ROOT, "eval_tool"))
 sys.path.insert(0, os.path.join(ROOT, "smell_injection"))
 
