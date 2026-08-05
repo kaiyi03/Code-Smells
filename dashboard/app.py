@@ -451,7 +451,8 @@ PAGE = """<!doctype html><html lang="en"><head><meta charset="utf-8">
  </div>
  {% endif %}
 
- <footer>Part of the code-smell benchmarking project &mdash; University of Oxford, Machine Learning Research Group.</footer>
+ <footer>Part of the code-smell benchmarking project &mdash; University of Oxford, Machine
+ Learning Research Group.{{ build_stamp }}</footer>
 </div></body></html>"""
 
 
@@ -466,8 +467,15 @@ def index():
         res = evaluate(code, ref, tests, run_tests)
     elif request.method == "GET" and not code:      # first load: show a worked example
         code, ref, tests = EXAMPLE_CODE, EXAMPLE_REF, EXAMPLE_TESTS
+    # The build stamp answers "which commit is actually serving?" from outside.
+    # Render keeps the previous build live while a new one deploys, so a plain 200
+    # cannot distinguish old from new -- the SHA in the footer can. It also shows
+    # whether jscpd is present, i.e. whether this deploy covers 12 smells or 11.
+    sha = os.environ.get("RENDER_GIT_COMMIT", "")[:7]
+    stamp = f" Build {sha or 'local'} · {'12' if BI.JSCPD else '11'}/12 detectors."
     return render_template_string(PAGE, code=code, ref=ref, tests=tests,
-                                  run_tests=run_tests, res=res, exec_allowed=EXEC_ALLOWED)
+                                  run_tests=run_tests, res=res, exec_allowed=EXEC_ALLOWED,
+                                  build_stamp=stamp)
 
 
 if __name__ == "__main__":
