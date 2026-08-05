@@ -7,8 +7,14 @@
 # on our side and no way to reproduce it. These are the versions verified to install
 # and start the dashboard cleanly. Move them deliberately, rather than discovering a
 # change through a failed deploy.
+# Every pin here must exist for the PYTHON_VERSION set in render.yaml (3.11.9).
+# numpy is the cautionary case: it is not a direct dependency at all -- it arrives
+# through sacrebleu -- and pinning it to a version resolved on a newer Python made
+# the build unsatisfiable, because numpy 2.5 requires Python 3.12 or later. It is
+# now bounded rather than fixed, which constrains it without tying it to an
+# interpreter it cannot run on.
 flask==3.1.3
-numpy==2.5.1
+numpy<2.5
 radon==6.0.1
 pylint==4.0.6
 ruff==0.16.1
