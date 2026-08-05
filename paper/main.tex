@@ -69,13 +69,19 @@ substantial part of what looks like detection on real code is co-occurrence with
 size: metrics that provably cannot respond to a defect still separate defective
 from clean code, because defective functions are simply larger. We report a clean
 negative result for language-model perplexity, which does not distinguish
-structurally poor code from clean code on either source. Finally, applying the
-validated panel to the output of code-generating models, we show that scoring raw
-model output conflates verbosity with structural quality: of two models compared
-on the same benchmark, one appeared two and a half times more defective than the
+structurally poor code from clean code on either source.
+
+Applying the validated panel to the output of code-generating models shows that
+the same confound governs conclusions drawn about the models themselves. Scoring
+raw output conflates verbosity with structural quality: of two models compared on
+the same benchmark, one appeared two and a half times more defective than the
 other almost entirely because it volunteered test cases the prompt did not
-request. Any comparison of models that skips this correction ranks them partly by
-how much they write.
+request. The confound persists under deliberate elicitation: prompts written to
+induce a named defect succeed largely to the extent that the model writes a
+complete function at all, so a model that answers with a stub scores as resistant
+to a defect it was never given room to commit. At each level --- validating a
+measure, comparing two models, provoking a defect on purpose --- what looks like
+a structural result is substantially a result about how much code there is.
 \end{abstract}
 
 % ---------------------------------------------------------------------
@@ -98,12 +104,13 @@ generated code against a reference. Recent work does exactly this, computing the
 metrics over model output and drawing conclusions about how well models write. The
 step that is skipped is the one that licenses those conclusions. These metrics were
 designed to \emph{describe} human-written code in aggregate, not to \emph{detect}
-particular structural defects, and their sensitivity to any given defect is
-assumed rather than demonstrated: we found no work that validates any of these
-metrics against individual defects, on either synthetic or natural code
-(Section~\ref{sec:related}). A metric that moves when defective and clean code
-are compared has not thereby been shown to respond to the defect --- only to
-something that differs between the two groups.
+particular structural defects. Where their per-defect behaviour has been examined
+at all, it has been examined observationally --- metrics computed on code already
+labelled defective, and judged by whether they separate it from code that is not
+(Section~\ref{sec:related}). That design cannot distinguish the two available
+explanations of a separation. A metric that moves when defective and clean code
+are compared has been shown to respond to \emph{something} that differs between
+the groups, and the defect is only one candidate.
 
 The distinction cannot be settled by observation alone.
 Defective code found in the wild differs from clean code in many ways at once. It
@@ -131,10 +138,17 @@ present in code people actually wrote.
 The result is a three-way verdict for every measure and defect: the measure
 \emph{detects} the defect, it merely \emph{co-occurs} with it, or it is
 \emph{blind} to it. Most of what a purely observational study would report as
-detection falls into the middle category. We then apply the validated panel to the
-output of three code-generating models, which surfaces a measurement problem that
-only becomes visible with more than one model: apparent structural quality is
-partly a measure of how much a model volunteers beyond what was asked.
+detection falls into the middle category, and the thing it usually co-occurs with
+is size.
+
+That confound does not stay confined to the instrument. Applying the validated
+panel to the output of three code-generating models, we find it twice more. It
+appears as verbosity when models are compared to each other --- apparent
+structural quality is partly a measure of how much a model volunteers beyond what
+was asked --- and as incompleteness when models are prompted to produce a defect
+deliberately, since a model that answers with a stub has not written enough code
+to contain one. The paper's three questions are the same question at three
+levels.
 
 \subsection{Contributions}
 
@@ -150,10 +164,12 @@ partly a measure of how much a model volunteers beyond what was asked.
         measure covers all twelve defects, that every defect is covered by at
         least one, and that structural and reference-based measures are
         complementary rather than redundant.
-  \item \textbf{Two cautionary results.} Language-model perplexity does not
+  \item \textbf{Three cautionary results.} Language-model perplexity does not
         distinguish structurally poor code from clean code, so naturalness is not
-        a proxy for structural quality; and smell rates computed on raw model
-        output partly measure verbosity, which distorts multi-model comparison.
+        a proxy for structural quality; defect rates computed on raw model output
+        partly measure verbosity, which distorts multi-model comparison; and
+        measured resistance to a defect-inducing prompt is partly a measure of
+        whether the model wrote a complete function at all.
   \item \textbf{An applied evaluation} of three code models against the validated
         panel, and an open evaluation tool that applies the same panel to
         arbitrary Python code.
@@ -161,14 +177,21 @@ partly a measure of how much a model volunteers beyond what was asked.
 
 \subsection{Research questions}
 
+The three questions follow the two parts of the gap set out in
+Section~\ref{sec:gap}. The first validates the instrument; the second and third
+use it, and report what using it correctly changes.
+
 \begin{description}
-  \item[RQ1] Which measures are sensitive to which structural defects, and does
-             that sensitivity survive contact with real, human-written code?
-  \item[RQ2] What is the structural profile of LLM-generated code under the
-             validated panel, and does that profile hold across models?
-  \item[RQ3] Do prompts written to induce a structural defect actually induce it,
-             and does the number of tokens a model produces predict the structural
-             quality of what it produces?
+  \item[RQ1] \emph{The instrument.} Which measures respond to which structural
+             defects, and does an apparent response on real code survive an
+             intervention that changes only the defect?
+  \item[RQ2] \emph{Comparison.} What does the validated panel report on
+             model-generated code, and what has to be held constant for a
+             comparison between models to reflect structure rather than volume?
+  \item[RQ3] \emph{Elicitation.} When a defect does not appear in generated code,
+             is that because the model avoided it or because the code was never
+             substantial enough to contain one --- and does the amount a model
+             writes predict the structural quality of what it writes?
 \end{description}
 
 % ---------------------------------------------------------------------
@@ -179,9 +202,8 @@ Four bodies of work meet in this paper: the catalogue of structural defects and
 the tools that find them, the metrics used to describe code quality, the
 benchmarks used to evaluate generated code, and the small but growing literature
 on the structural quality of what language models write. Each is well developed
-on its own. The gap this paper addresses lies between the second and the fourth:
-the metrics are borrowed to answer questions about generated code without anyone
-first establishing which defects they are able to see.
+on its own. Section~\ref{sec:gap} states what falls between them once all four
+are on the table.
 
 \subsection{Code smells and their detection}
 
@@ -220,12 +242,22 @@ more than a flat one.
 The important observation for this paper is what these metrics were built
 \emph{for}. They were designed to describe codebases in aggregate --- to
 summarise a module, track a project over time, or flag files worth a human's
-attention. They were not designed to detect particular defects, and to our
-knowledge none has been validated as a per-defect detector. This is not a
-criticism of the metrics; it is a statement about the claims they support. That
-a function with a long parameter list scores worse on some index does not
-establish that the index responds to the parameter list rather than to whatever
-else distinguishes such functions.
+attention. They were not designed to detect particular defects.
+
+Later work has nonetheless pressed them into that role, most systematically as
+the feature sets of machine-learning smell classifiers, which are trained and
+evaluated per smell on labelled corpora.
+% TODO(cite): Fontana et al. EMSE 2016; Azeem et al. IST 2019 SLR; Di Nucci et
+% al. SANER 2018 replication. Verify authors/venues before citing.
+That work establishes something real, but not the thing this paper needs. It
+reports how well a feature set as a whole classifies, which does not isolate the
+contribution of any individual metric; and it is trained and tested on code that
+already carried the defect, which cannot separate a metric responding to the
+defect from a metric responding to whatever else distinguishes defective code.
+This is not a criticism of the metrics or of that literature; it is a statement
+about the claims either can support. That a function with a long parameter list
+scores worse on some index does not establish that the index responds to the
+parameter list rather than to whatever else distinguishes such functions.
 
 \subsection{Evaluating generated code}
 
@@ -235,17 +267,18 @@ unit tests, and a model is scored by the fraction of its solutions that pass:
 pass@1. The measure is objective, automatic, and hard to game, which explains its
 adoption; it is also silent about everything except whether the code works.
 
-Where correctness is not the question, the reference-based measures from machine
-translation are usually pressed into service. BLEU compares $n$-grams against a
-reference solution; CodeBLEU adds syntax-tree and data-flow matching to make the
-comparison code-aware \cite{codebleu2020}; embedding-based scores such as
-CodeBERTScore compare in a learned representation. All of them share a
-requirement that turns out to be decisive: a known-good version of the code to
-compare against. Benchmarks have one. Deployed code does not.
+Studies that need to score generated code without running it generally fall back
+on similarity measures borrowed from machine translation. BLEU compares
+$n$-grams against a reference solution; CodeBLEU adds syntax-tree and data-flow
+matching to make the comparison code-aware \cite{codebleu2020}; embedding-based
+scores such as CodeBERTScore compare in a learned representation. All of them
+share a requirement that turns out to be decisive: a known-good version of the
+code to compare against. Benchmarks have one. Deployed code does not.
 
 \subsection{The structural quality of model output}
 
-A recent strand asks directly whether models produce structurally poor code. The
+A recent and fast-growing line of work asks directly whether models produce
+structurally poor code. The
 closest work to ours measures a model's \emph{propensity} for particular smells
 using a probe over token probabilities, applied to code that already contains the
 smell. That design answers a question about the model's internal preferences. Its
@@ -254,7 +287,7 @@ the model writes freely is a separate, open question --- which is what our RQ2
 and RQ3 address, by measuring what appears in unconstrained generation rather
 than what a probe reports on pre-existing examples.
 
-Other work in this strand computes structural metrics over model output and
+Other work in the same area computes structural metrics over model output and
 reports the values. This is the practice that motivates the paper. Such a study
 is only as sound as the assumption that its metrics respond to the properties
 being discussed, and that assumption is not usually examined. Our contribution is
@@ -262,14 +295,44 @@ not a competing set of numbers but the missing prior step: establishing, for eac
 metric and each defect, whether the metric can see it at all.
 
 \subsection{The gap}
+\label{sec:gap}
 
 Summarising: the detector literature can label defects but says nothing about
 degree or about code shapes no rule anticipates; the metric literature offers
-continuous, general-purpose measures whose per-defect sensitivity is unestablished;
-the evaluation literature measures correctness thoroughly and structure casually.
-No existing work supplies what a study of structural quality needs first --- a
-validated account of which measures are sensitive to which defects, tested both
-where the defect is the only thing that varies and where the code is real.
+continuous, general-purpose measures whose per-defect sensitivity has been
+assessed only observationally; the evaluation literature measures correctness
+thoroughly and structure casually; and the generated-code literature borrows the
+metrics to make claims about how well models write.
+
+The gap has two parts, and they call for different work.
+
+The first is the missing validation. For each measure and each defect, does the
+measure respond to the defect itself? Observational evidence cannot settle this,
+because defective code differs from clean code in many ways at once and the most
+obvious of them is that there is more of it. Settling it requires an intervention
+that the observational literature does not perform --- changing only the defect
+and holding the code otherwise fixed --- paired with real code, so that the
+answer is not merely an artefact of how the intervention was carried out. This is
+RQ1, and it is the paper's primary contribution.
+
+The second part is the consequence. A conclusion is only as sound as the
+instrument that produced it, so if the instrument was never validated, the claims
+made with it inherit the uncertainty --- and correcting the instrument may change
+them. Whether it \emph{does} change them is an empirical question, and one worth
+answering, because a validation that left every downstream conclusion intact
+would be a technicality rather than a finding. It does not leave them intact.
+Applying the validated panel to model output, the confound that inflates apparent
+detection in RQ1 --- volume --- reappears twice. It reappears as verbosity when
+models are compared with one another, where it is large enough to reverse a
+ranking (RQ2); and as incompleteness when models are prompted to produce a defect
+on purpose, where a model that returns a stub is recorded as resisting a defect
+it had no opportunity to commit (RQ3).
+
+This is why one gap yields three questions rather than one. They are not three
+topics but one question asked at three levels of a single pipeline --- validating
+a measure, comparing two models, provoking a defect deliberately: \emph{how much
+of what we are calling structural quality is a measurement of how much code there
+is?}
 
 % ---------------------------------------------------------------------
 \section{The benchmark}
@@ -754,7 +817,8 @@ structural quality --- and where the two correlate at all, the correlation runs
 backwards}.
 
 % ---------------------------------------------------------------------
-\section{RQ2: the structural profile of generated code}
+\section{RQ2: comparing models without measuring volume}
+\label{sec:rq2}
 % TO WRITE. Three models on 664 benchmark tasks. pass@1, defect rates, structure
 % against the canonical solutions, cost. Two findings to lead with:
 %   - generated code is simpler and far more heavily commented than the canonical
@@ -767,7 +831,8 @@ backwards}.
 % raw output.
 
 % ---------------------------------------------------------------------
-\section{RQ3: prompt-induced defects and token usage}
+\section{RQ3: eliciting defects, and what elicitation measures}
+\label{sec:rq3}
 % TO WRITE. 476 prompts written to induce a named defect, across three models.
 %   - induction rate: does a prompt engineered to provoke a defect provoke it?
 %     Measurable on the six defects shared between the two taxonomies.
