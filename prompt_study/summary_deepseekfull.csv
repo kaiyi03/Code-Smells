@@ -333,13 +333,13 @@ refused_bequest_basic_003,full,basic,Healthcare,Design,,0,,0,,0,6,3,1,14.000,10.
 refused_bequest_basic_004,full,basic,Scientific Computing,Measure,,0,,0,,0,8,3,2,26.000,15.000,74.279,57.059,3.000,171.176,4.000,11.538,1.000,352
 refused_bequest_basic_005,full,basic,General Software,Recommend,,0,,0,,0,9,8,1,19.000,11.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,276
 refused_bequest_basic_006,full,basic,E-commerce,Report,,0,,0,,0,5,0,2,15.000,9.000,64.057,20.680,1.000,20.680,2.000,0.000,5.000,280
-refused_bequest_intermediate_001,full,intermediate,Finance,Design,,0,,0,,0,8,0,1,18.000,12.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,362
+refused_bequest_intermediate_001,full,intermediate,Finance,Design,,0,,0,,0,8,4,1,18.000,12.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,362
 refused_bequest_intermediate_002,full,intermediate,Healthcare,Design,,0,,0,,0,8,4,1,18.000,12.000,100.000,0.000,0.000,0.000,0.000,22.222,1.000,325
-refused_bequest_intermediate_003,full,intermediate,Scientific Computing,List,,0,,0,,0,8,4,1,18.000,12.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,324
+refused_bequest_intermediate_003,full,intermediate,Scientific Computing,List,,0,,0,,0,8,8,1,18.000,12.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,324
 refused_bequest_intermediate_004,full,intermediate,General Software,Compare,,0,,0,,0,8,4,4,24.000,12.000,100.000,0.000,0.000,0.000,0.000,4.167,4.000,463
 refused_bequest_intermediate_005,full,intermediate,E-commerce,Recommend,,1,duplicate_code,1,duplicate_code,0,10,9,1,22.000,14.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,287
 refused_bequest_advanced_001,full,advanced,Finance,List,,1,duplicate_code,1,duplicate_code,0,14,10,3,34.000,20.000,80.666,39.863,1.714,68.337,2.000,35.294,3.000,548
-refused_bequest_advanced_002,full,advanced,Healthcare,Evaluate,,0,,0,,0,5,0,1,11.000,7.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,285
+refused_bequest_advanced_002,full,advanced,Healthcare,Evaluate,,0,,0,,0,5,5,1,11.000,7.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,285
 refused_bequest_advanced_003,full,advanced,Scientific Computing,List,,1,long_parameter_list,2,duplicate_code;long_parameter_list,0,10,8,6,27.000,14.000,100.000,0.000,0.000,0.000,0.000,14.815,2.000,376
 refused_bequest_advanced_004,full,advanced,General Software,Compare,,0,,0,,0,6,5,1,13.000,8.000,100.000,0.000,0.000,0.000,0.000,38.462,2.000,328
 refused_bequest_advanced_005,full,advanced,E-commerce,Design,,0,,0,,0,6,5,1,13.000,8.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,288

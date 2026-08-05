@@ -31,13 +31,15 @@ RUNS = {
     "deepseek":     ("DeepSeek-Coder-1.3B", "minimal, 1k budget"),
     "deepseekfull": ("DeepSeek-Coder-1.3B", "implement fully, 1k budget"),
     "deepseek4k":   ("DeepSeek-Coder-1.3B", "implement fully, 4k budget"),
+    "qwenemph":     ("Qwen2.5-Coder-1.5B", "implement fully + no length limit"),
+    "deepseekemph": ("DeepSeek-Coder-1.3B", "implement fully + no length limit"),
     # Claude's cap is 8k rather than 4k for the same reason the 4k runs exist at
     # all: the cap must bind on nobody, and Claude writes past 4k where the open
     # models never reach it. 38 of its generations (8%) still hit even 8k.
     "claude":       ("Claude Sonnet 5", "implement fully, 8k budget"),
 }
-ORDER = ["qwen", "qwenfull", "qwen4k",
-         "deepseek", "deepseekfull", "deepseek4k", "claude"]
+ORDER = ["qwen", "qwenfull", "qwen4k", "qwenemph",
+         "deepseek", "deepseekfull", "deepseek4k", "deepseekemph", "claude"]
 
 # Runs excluded from the page, with the reason shown to the reader.
 EXCLUDE = {}

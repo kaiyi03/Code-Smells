@@ -185,12 +185,12 @@ switch_statements_advanced_005,,advanced,Finance,Report,,0,,0,,0,,,,84.000,,,,,,
 switch_statements_advanced_006,,advanced,Healthcare,Implement,,2,long_parameter_list;magic_number,2,long_parameter_list;magic_number,0,1,0,8,39.000,19.000,64.895,529.944,2.571,1362.714,18.000,15.385,0.000,521
 parallel_inheritance_basic_001,,basic,E-commerce,Recommend,,0,,0,,0,12,2,1,32.000,28.000,100.000,0.000,0.000,0.000,0.000,0.000,6.000,398
 parallel_inheritance_basic_002,,basic,Finance,Recommend,,0,,0,,0,7,1,1,21.000,21.000,100.000,0.000,0.000,0.000,3.000,0.000,1.000,354
-parallel_inheritance_basic_003,,basic,Healthcare,Write,,0,,0,,0,15,3,4,45.000,29.000,100.000,0.000,0.000,0.000,0.000,6.667,8.000,688
+parallel_inheritance_basic_003,,basic,Healthcare,Write,,0,,0,,0,15,4,4,45.000,29.000,100.000,0.000,0.000,0.000,0.000,6.667,8.000,688
 parallel_inheritance_basic_004,,basic,Scientific Computing,Implement,,0,,0,,5,6,0,1,22.000,15.000,100.000,0.000,0.000,0.000,1.000,4.545,8.000,361
 parallel_inheritance_basic_005,,basic,General Software,Analyze,,0,,0,,0,4,0,2,15.000,12.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,402
 parallel_inheritance_basic_006,,basic,E-commerce,List,,0,,0,,0,12,2,1,32.000,28.000,100.000,0.000,0.000,0.000,0.000,0.000,6.000,398
 parallel_inheritance_intermediate_001,,intermediate,Finance,Design,,0,,0,,0,16,3,1,36.000,24.000,100.000,0.000,0.000,0.000,0.000,0.000,3.000,519
-parallel_inheritance_intermediate_002,,intermediate,Healthcare,Write,,0,,0,,0,16,9,1,36.000,24.000,100.000,0.000,0.000,0.000,0.000,25.000,3.000,516
+parallel_inheritance_intermediate_002,,intermediate,Healthcare,Write,,0,,0,,0,16,12,1,36.000,24.000,100.000,0.000,0.000,0.000,0.000,25.000,3.000,516
 parallel_inheritance_intermediate_003,,intermediate,Scientific Computing,Write,,0,,0,,0,14,0,3,40.000,31.000,71.227,4.755,0.500,2.377,1.000,5.000,4.000,641
 parallel_inheritance_intermediate_004,,intermediate,General Software,Report,,1,duplicate_code,1,duplicate_code,0,16,3,4,47.000,24.000,100.000,0.000,0.000,0.000,0.000,0.000,14.000,528
 parallel_inheritance_intermediate_005,,intermediate,E-commerce,Analyze,,0,,1,duplicate_code,0,7,0,2,22.000,21.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,476
@@ -333,15 +333,15 @@ refused_bequest_basic_003,,basic,Healthcare,Design,,0,,0,,0,6,3,1,14.000,10.000,
 refused_bequest_basic_004,,basic,Scientific Computing,Measure,,0,,0,,0,9,3,3,26.000,15.000,75.378,38.039,2.000,76.078,2.000,11.538,5.000,341
 refused_bequest_basic_005,,basic,General Software,Recommend,,0,,0,,0,7,6,1,15.000,9.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,273
 refused_bequest_basic_006,,basic,E-commerce,Report,,0,,0,,0,5,0,2,15.000,9.000,64.057,20.680,1.000,20.680,2.000,0.000,5.000,223
-refused_bequest_intermediate_001,,intermediate,Finance,Design,,0,,0,,0,8,0,1,18.000,12.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,414
+refused_bequest_intermediate_001,,intermediate,Finance,Design,,0,,0,,0,8,4,1,18.000,12.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,414
 refused_bequest_intermediate_002,,intermediate,Healthcare,Design,,0,,0,,0,8,4,1,18.000,12.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,319
-refused_bequest_intermediate_003,,intermediate,Scientific Computing,List,,0,,0,,0,9,4,1,20.000,13.000,100.000,0.000,0.000,0.000,0.000,20.000,1.000,416
+refused_bequest_intermediate_003,,intermediate,Scientific Computing,List,,0,,0,,0,9,8,1,20.000,13.000,100.000,0.000,0.000,0.000,0.000,20.000,1.000,416
 refused_bequest_intermediate_004,,intermediate,General Software,Compare,,0,,0,,0,8,0,4,24.000,12.000,100.000,0.000,0.000,0.000,0.000,4.167,4.000,494
 refused_bequest_intermediate_005,,intermediate,E-commerce,Recommend,,1,duplicate_code,1,duplicate_code,0,10,8,1,22.000,14.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,291
 refused_bequest_advanced_001,,advanced,Finance,List,,1,duplicate_code,1,duplicate_code,0,14,10,3,34.000,20.000,80.666,39.863,1.714,68.337,2.000,35.294,3.000,612
-refused_bequest_advanced_002,,advanced,Healthcare,Evaluate,,0,,0,,0,10,0,1,22.000,14.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,300
+refused_bequest_advanced_002,,advanced,Healthcare,Evaluate,,0,,0,,0,10,5,1,22.000,14.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,300
 refused_bequest_advanced_003,,advanced,Scientific Computing,List,,1,long_parameter_list,1,long_parameter_list,0,5,4,6,18.000,8.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,269
-refused_bequest_advanced_004,,advanced,General Software,Compare,,0,,0,,0,6,0,1,13.000,8.000,100.000,0.000,0.000,0.000,0.000,38.462,3.000,403
+refused_bequest_advanced_004,,advanced,General Software,Compare,,0,,0,,0,6,5,1,13.000,8.000,100.000,0.000,0.000,0.000,0.000,38.462,3.000,403
 refused_bequest_advanced_005,,advanced,E-commerce,Design,,0,,0,,0,6,0,1,13.000,8.000,100.000,0.000,0.000,0.000,0.000,0.000,2.000,306
 comments_smell_basic_001,,basic,E-commerce,Evaluate,,0,,0,,0,1,0,4,7.000,2.000,89.737,15.510,1.000,15.510,2.000,71.429,0.000,241
 comments_smell_basic_002,,basic,Finance,Compare,,1,duplicate_code,1,duplicate_code,3,3,0,3,11.000,5.000,100.000,0.000,0.000,0.000,0.000,18.182,4.000,429
@@ -472,6 +472,6 @@ synthetic_god_class_basic_004,,basic,General Software,Analyze,,0,,0,,0,7,7,1,15.
 synthetic_god_class_basic_005,,basic,E-commerce,Measure,,0,,0,,0,7,4,4,24.000,9.000,100.000,0.000,0.000,0.000,0.000,33.333,6.000,603
 synthetic_god_class_basic_006,,basic,Finance,Analyze,,1,duplicate_code,0,,0,6,0,5,39.000,18.000,49.749,81.749,2.500,204.373,12.000,0.000,17.000,770
 synthetic_god_class_basic_007,,basic,Healthcare,List,,0,,0,,0,7,0,6,20.000,9.000,100.000,0.000,0.000,0.000,0.000,0.000,1.000,384
-synthetic_god_class_intermediate_001,,intermediate,Scientific Computing,Compare,,2,broad_except;dead_code,2,broad_except;dead_code,0,8,0,4,43.000,14.000,100.000,0.000,0.000,0.000,6.000,0.000,18.000,690
+synthetic_god_class_intermediate_001,,intermediate,Scientific Computing,Compare,,2,broad_except;dead_code,2,broad_except;dead_code,0,8,1,4,43.000,14.000,100.000,0.000,0.000,0.000,6.000,0.000,18.000,690
 synthetic_god_class_intermediate_002,,intermediate,General Software,Recommend,,0,,0,,0,17,7,9,43.000,19.000,100.000,0.000,0.000,0.000,0.000,16.279,1.000,585
 synthetic_god_class_intermediate_003,,intermediate,E-commerce,Design,,0,,0,,0,9,0,5,46.000,27.000,100.000,0.000,0.000,0.000,0.000,0.000,0.000,502
