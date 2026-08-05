@@ -68,13 +68,25 @@ def load(path):
 
 
 def _is_stub(fn):
-    """A function whose body is only `pass`, `...`, or a docstring."""
+    """A function that declares work without doing it.
+
+    Four forms, all of which produce a signature with no implementation behind it:
+    `pass`, `...`, a bare docstring, and `raise NotImplementedError`. The last was
+    missed by an earlier version of this check, which mattered most for the model
+    that used it most -- it is the polite way to stub, and a model that writes
+    tidy code reaches for it rather than a bare `pass`."""
     body = [n for n in fn.body
             if not (isinstance(n, ast.Expr)
                     and isinstance(getattr(n, "value", None), ast.Constant)
                     and isinstance(n.value.value, str))]              # drop the docstring
     if not body:
         return True
+    if len(body) == 1 and isinstance(body[0], ast.Raise) and body[0].exc is not None:
+        exc = body[0].exc
+        target = exc.func if isinstance(exc, ast.Call) else exc
+        name = getattr(target, "id", None) or getattr(target, "attr", None)
+        if name == "NotImplementedError":
+            return True
     return all(isinstance(n, ast.Pass)
                or (isinstance(n, ast.Expr)
                    and isinstance(getattr(n, "value", None), ast.Constant)

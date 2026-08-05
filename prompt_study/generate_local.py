@@ -40,6 +40,19 @@ SYSTEMS = {
              "Do not explain the code or add commentary outside the block. "
              "Implement every function fully -- do not leave `pass`, `...`, or "
              "placeholder bodies, and do not stub out work as a TODO."),
+    # A third, stronger condition. `full` asks for complete functions and barely
+    # moved the stub rate; this adds the two things it left implicit -- an explicit
+    # licence to write at length, and a stated preference for a long complete
+    # answer over a short sketch. It also names every stub form we detect, since
+    # the models substitute one for another when only `pass` is forbidden.
+    "emphatic": ("Return only the Python code, in a single ```python code block. "
+                 "Do not explain the code or add commentary outside the block. "
+                 "Write a complete, working implementation. Every function you "
+                 "define must have a real body that does the work: never `pass`, "
+                 "never `...`, never a docstring alone, never `raise "
+                 "NotImplementedError`, never a TODO. There is no length limit -- "
+                 "write as much code as the task genuinely needs, and always prefer "
+                 "a longer complete implementation over a shorter sketch."),
 }
 SYSTEM_MODE = os.environ.get("GEN_SYSTEM", "full")
 SYSTEM = SYSTEMS[SYSTEM_MODE]
