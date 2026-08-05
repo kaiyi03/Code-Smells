@@ -1,16 +1,28 @@
-# Slim dependencies for the hosted dashboard (Hugging Face Space / Render / etc.).
-# Deliberately excludes torch, transformers and datasets -- those are only for the
-# GPU generation phase and would make the image huge and slow to build.
-flask
-numpy
-radon
-pylint
-ruff
-cognitive_complexity
-zss
-sacrebleu
-rouge-score
-tree-sitter
-tree-sitter-python
-# codebleu is installed separately in the Dockerfile with --no-deps (it pins an old
-# tree-sitter that would otherwise downgrade the others / fail the build).
+# Dependencies for the hosted dashboard (Render / Hugging Face Space / any container).
+# Deliberately excludes torch, transformers and datasets -- those belong to the GPU
+# generation phase and would make the image enormous.
+#
+# VERSIONS ARE PINNED ON PURPOSE. Unpinned, every redeploy resolves to whatever was
+# released that day, so a build that worked last week can fail today with no change
+# on our side and no way to reproduce it. These are the versions verified to install
+# and start the dashboard cleanly. Move them deliberately, rather than discovering a
+# change through a failed deploy.
+flask==3.1.3
+numpy==2.5.1
+radon==6.0.1
+pylint==4.0.6
+ruff==0.16.1
+cognitive_complexity==1.3.0
+sacrebleu==2.6.0
+rouge-score==0.1.2
+tree-sitter==0.26.0
+tree-sitter-python==0.25.0
+
+# codebleu is installed separately with --no-deps (it pins an old tree-sitter that
+# would otherwise downgrade the two above). Its import is guarded in measures.py, so
+# the dashboard still runs without it.
+#
+# zss was removed: AST similarity now uses difflib over the node-type sequence, which
+# is far faster and needs no extra dependency.
+#
+# nltk and the WordNet corpus went with METEOR. Nothing in the panel needs them.

@@ -11,11 +11,13 @@ RUN pip install --no-cache-dir -r requirements-space.txt
 # others or fail the build (it works against the newer tree-sitter). Optional.
 RUN pip install --no-cache-dir --no-deps codebleu || true
 
-# WordNet for METEOR (optional; METEOR degrades to None without it, the app still runs).
-ENV NLTK_DATA=/usr/local/share/nltk_data
-RUN python -m nltk.downloader -d $NLTK_DATA wordnet omw-1.4 || true
-
-COPY . .
+# Only what the dashboard reads. The repository also carries the benchmark, the
+# generations and the rendered reports -- tens of megabytes the app never opens --
+# and copying all of it makes the image slow to build for no benefit.
+COPY dashboard/ dashboard/
+COPY eval_tool/ eval_tool/
+COPY smell_injection/*.py smell_injection/
+COPY smell_injection/realworld_clean.jsonl smell_injection/
 
 # Public-demo defaults: listen on all interfaces, HF's port, no code execution, no browser popup.
 ENV HOST=0.0.0.0 PORT=7860 ALLOW_EXEC=0 DASH_NO_BROWSER=1

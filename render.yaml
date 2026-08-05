@@ -6,12 +6,12 @@ services:
     name: code-smell-dashboard
     runtime: python
     plan: free
-    # Install the dashboard deps (not torch); codebleu --no-deps and the WordNet
-    # corpus are best-effort (the app degrades gracefully without them).
+    # Install the dashboard deps (not torch). codebleu goes in with --no-deps because
+    # it pins an old tree-sitter; its import is guarded, so a failure here is not fatal.
+    # The WordNet download was removed along with METEOR -- nothing needs it now.
     buildCommand: >-
       pip install -r deploy/requirements-space.txt &&
-      (pip install --no-deps codebleu || true) &&
-      (python -m nltk.downloader wordnet omw-1.4 || true)
+      (pip install --no-deps codebleu || true)
     startCommand: python dashboard/app.py
     envVars:
       - key: HOST            # bind all interfaces so Render can route to it
