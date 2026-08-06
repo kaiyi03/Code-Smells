@@ -175,79 +175,98 @@ def fig_scatter():
     measure respond to the defect at all", vertical position answers "do real
     defective and clean code differ on it". The verdict is the combination.
     """
-    fig, ax = plt.subplots(figsize=(6.8, 6.0))
-    lim = [-1.7, 5.5]
+    # One point per defect -- not one per defect-measure cell. An earlier version
+    # plotted all 120 cells, which buried the twelve conclusions in a cloud of
+    # mostly-blind combinations that Figure 1 already shows. Each defect is placed
+    # at its STRONGEST real-world structural measure, the same selection the main
+    # table uses, so this figure and that table cannot disagree.
+    pts = []
+    for s in SMELLS:
+        best, bd, ba = None, None, -1.0
+        for m in STRUCT:
+            v = real_d.get((s, m))
+            if v is not None and abs(v) > ba:
+                best, bd, ba = m, v, abs(v)
+        a = inj_d.get((s, best)) if best else None
+        if best is None or a is None:
+            continue
+        pts.append((s, best, a, bd))
+
+    fig, ax = plt.subplots(figsize=(7.0, 5.8))
+    xlim, ylim = [-0.75, 4.9], [-2.0, 6.0]
 
     # --- regions first, so points and labels sit on top -----------------------
-    ax.axvspan(-0.2, 0.2, ymin=(0.8 - lim[0]) / (lim[1] - lim[0]), color="#b8860b",
-               alpha=.12, zorder=0)                       # cannot respond, yet separates
-    ax.add_patch(plt.Rectangle((0.8, 0.8), lim[1] - 0.8, lim[1] - 0.8,
+    ax.axvspan(-0.2, 0.2, ymin=(0.8 - ylim[0]) / (ylim[1] - ylim[0]), color="#b8860b",
+               alpha=.13, zorder=0)                       # cannot respond, yet separates
+    ax.add_patch(plt.Rectangle((0.8, 0.8), xlim[1] - 0.8, ylim[1] - 0.8,
                                color="#1b6b41", alpha=.07, zorder=0))
-    ax.add_patch(plt.Rectangle((lim[0], lim[0]), 0.8 - lim[0], 0.8 - lim[0],
+    ax.add_patch(plt.Rectangle((xlim[0], ylim[0]), 0.8 - xlim[0], 0.8 - ylim[0],
                                color="#888", alpha=.07, zorder=0))
 
-    ax.plot(lim, lim, ls="--", lw=.9, color="#bbb", zorder=1)
+    ax.plot([-1, 6], [-1, 6], ls="--", lw=.9, color="#ccc", zorder=1)
     ax.axhline(0, lw=.7, color="#ddd", zorder=0)
     ax.axvline(0, lw=.7, color="#ddd", zorder=0)
     ax.axhline(0.8, lw=.7, ls=":", color="#aaa", zorder=0)
     ax.axvline(0.8, lw=.7, ls=":", color="#aaa", zorder=0)
 
-    # Each point is one defect-measure CELL, coloured by where it falls -- which is
-    # what the two axes measure. Colouring by the defect's overall verdict (fig 1's
-    # row colours) put green points inside the co-occurrence band, because a defect
-    # detected by one measure is invisible to most of the others.
-    def cell_kind(a, b):
-        if a >= 0.8 and b >= 0.8:
-            return "detects"
-        if abs(a) < 0.2 and b >= 0.8:
-            return "co-occurs"
-        return "no usable signal"
+    seen = set()
+    for s, m, a, b in pts:
+        v = TRUST[s]
+        ax.scatter(a, b, s=64, color=VC[v], zorder=4, edgecolors="white", linewidths=.8,
+                   label=v if v not in seen else None)
+        seen.add(v)
 
-    seen, band = set(), []
-    for s in SMELLS:
-        for m in STRUCT:
-            a, b = inj_d.get((s, m)), real_d.get((s, m))
-            if a is None or b is None:
-                continue
-            k = cell_kind(a, b)
-            ax.scatter(a, b, s=28, alpha=.8 if k != "no usable signal" else .45,
-                       color={"detects": "#1b6b41", "co-occurs": "#b8860b",
-                              "no usable signal": "#999"}[k], zorder=3,
-                       label=k if k not in seen else None, edgecolors="none")
-            seen.add(k)
-            if abs(a) < 0.2 and b > 1.0:                  # the co-occurrence corner
-                band.append((b, s, m, a))
-
-    # Label the clearest co-occurrence cases, spread so they do not collide.
-    band.sort(reverse=True)
-    for k, (b, s, m, a) in enumerate(band[:3]):
-        ax.annotate(f"{s.replace('_', ' ')} · {m.replace('_', ' ')}", (a, b),
-                    fontsize=6.6, color="#7a5c10", zorder=4,
-                    xytext=(46, 8 - 15 * k), textcoords="offset points",
-                    arrowprops=dict(arrowstyle="-", lw=.6, color="#c9ab6a",
-                                    shrinkA=0, shrinkB=2))
+    # Labels. Eight defects pile up against x=0 because their measure cannot respond
+    # at all, so those are written to the right of the axis at their own height,
+    # nudged apart only where two would overlap. Stacking them in a fixed column
+    # instead ran the last few off the bottom of the axes.
+    cluster = sorted([p for p in pts if p[2] < 0.35], key=lambda p: -p[3])
+    ys, MIN_GAP = [], 0.42
+    for _, _, _, b in cluster:
+        y = b if not ys else min(b, ys[-1] - MIN_GAP)
+        ys.append(y)
+    for (s, m, a, b), ly in zip(cluster, ys):
+        ax.annotate(f"{s.replace('_', ' ')}  ({m.replace('_', ' ')})",
+                    (a, b), xytext=(0.62, ly), textcoords="data",
+                    fontsize=7.0, color="#444", va="center", ha="left", zorder=5,
+                    arrowprops=dict(arrowstyle="-", lw=.55, color="#c4c4c4",
+                                    shrinkA=0, shrinkB=3))
+    for s, m, a, b in [p for p in pts if p[2] >= 0.35]:
+        if s == "duplicate_code":
+            # Clears both thresholds yet is classified blind: doubling a block doubles
+            # its length, so both numbers are the same size artefact. Said here because
+            # a red point inside the green region otherwise reads as an error. Placed to
+            # the right -- the space above it belongs to the x=0 cluster's labels.
+            ax.annotate("duplicate code  (sloc)\nboth numbers are the same size artefact",
+                        (a, b), xytext=(1.32, 2.32), textcoords="data", fontsize=7.0,
+                        color="#9b2c2c", ha="left", va="center", linespacing=1.35,
+                        zorder=5, arrowprops=dict(arrowstyle="-", lw=.55,
+                                                  color="#c9a0a0", shrinkA=0, shrinkB=4))
+        else:
+            ax.annotate(f"{s.replace('_', ' ')}\n({m.replace('_', ' ')})", (a, b),
+                        xytext=(0, 12), textcoords="offset points", fontsize=7.0,
+                        color="#444", ha="center", va="bottom", linespacing=1.3, zorder=5)
 
     # --- region labels, in corners the data leaves empty ----------------------
-    ax.annotate("CO-OCCURRENCE\nprovably cannot respond,\nyet real code separates",
-                (-0.25, 4.8), xytext=(-1.62, 5.35), fontsize=7.2, color="#7a5c10",
-                ha="left", va="top", linespacing=1.45, zorder=4,
-                arrowprops=dict(arrowstyle="->", lw=.7, color="#c9ab6a"))
-    ax.text(5.35, 0.95, "DETECTION\nresponds on both", fontsize=7.2, color="#14523a",
-            ha="right", va="bottom", linespacing=1.45, zorder=4)
-    ax.text(-1.62, -1.62, "NO USABLE SIGNAL\nneither source", fontsize=7.2, color="#777",
-            ha="left", va="bottom", linespacing=1.45, zorder=4)
-    ax.annotate("equal on both sources", (4.5, 4.5), fontsize=6.6, color="#aaa",
-                rotation=38, ha="center", va="bottom", zorder=2)
+    ax.text(-0.68, 5.85, "CO-OCCURRENCE\nthe measure provably cannot respond,\n"
+            "yet real defective code separates anyway", fontsize=7.2, color="#7a5c10",
+            ha="left", va="top", linespacing=1.45, zorder=6)
+    ax.text(4.8, 0.95, "DETECTION\nresponds on both sources", fontsize=7.2,
+            color="#14523a", ha="right", va="bottom", linespacing=1.45, zorder=6)
+    ax.text(-0.68, -1.92, "BLIND\nneither source", fontsize=7.2, color="#777",
+            ha="left", va="bottom", linespacing=1.45, zorder=6)
+    ax.annotate("equal on both sources", (4.05, 4.05), fontsize=6.6, color="#bbb",
+                rotation=33, ha="center", va="bottom", zorder=2)
 
-    ax.set_xlim(lim); ax.set_ylim(lim)
+    ax.set_xlim(xlim); ax.set_ylim(ylim)
     ax.set_xlabel("injected — does changing only the defect move the measure?")
     ax.set_ylabel("real — do defective and clean code differ on it?")
-    ax.set_title("Read this figure by region, not by distance from the diagonal", pad=8)
-    ax.legend(title="each point is one defect × measure", loc="lower right",
-              frameon=False, borderpad=0.2, labelspacing=0.3)
+    ax.set_title("One point per defect, at its strongest real-world measure", pad=8)
+    ax.legend(title="verdict", loc="lower right", frameon=False,
+              borderpad=0.2, labelspacing=0.3)
     fig.text(0.5, -0.015,
              "Detected defects sit ABOVE the diagonal, and that is expected: real defective "
-             "code differs from clean\ncode in more ways than the defect alone, so the real "
+             "code differs from clean code in\nmore ways than the defect alone, so the real "
              "value is inflated. The diagonal is a reference, not a target.",
              ha="center", va="top", fontsize=7.4, color="#555")
     save(fig, "fig2_injected_vs_real")
@@ -291,7 +310,7 @@ def fig_correlation():
             else:
                 groups["across\nfamilies"].append(c)
 
-    fig, ax = plt.subplots(figsize=(6.4, 4.6))
+    fig, ax = plt.subplots(figsize=(7.0, 4.9))
     colours = ["#0f6d6d", "#7a3d9e", "#b8860b"]
     rng = np.random.default_rng(0)                # jitter only; seeded so the figure is stable
     for i, (name, vals) in enumerate(groups.items()):
@@ -301,22 +320,35 @@ def fig_correlation():
         ax.scatter(x, vals, s=20, alpha=.5, color=colours[i], edgecolors="none", zorder=3)
         med = float(np.median(vals))
         ax.plot([i - .28, i + .28], [med, med], lw=2.4, color=colours[i], zorder=4)
-        ax.text(i, 1.12, f"median {med:+.2f}\n{len(vals)} pairs", ha="center", va="bottom",
-                fontsize=7.6, color=colours[i], linespacing=1.4)
+        ax.text(i, 1.34, f"median {med:+.2f}", ha="center", va="bottom",
+                fontsize=8.4, color=colours[i], fontweight="bold")
+        ax.text(i, 1.19, f"{len(vals)} pairs", ha="center", va="bottom",
+                fontsize=7.4, color=colours[i])
 
     ax.axhline(0, lw=.8, color="#bbb", zorder=0)
+    ax.axhline(1, lw=.7, ls=":", color="#ccc", zorder=0)
+    # The scale means nothing without saying what its ends are, so they are labelled
+    # on the axis rather than left to the caption.
+    ax.text(2.62, 1.0, "the two measures rank\nthe defects identically\n→ one is redundant",
+            fontsize=7, color="#555", va="center", ha="left", linespacing=1.4)
+    ax.text(2.62, 0.0, "the two carry\nunrelated information\n→ both are needed",
+            fontsize=7, color="#555", va="center", ha="left", linespacing=1.4)
+
     ax.set_xticks(range(len(groups)))
     ax.set_xticklabels(list(groups), linespacing=1.35)
-    ax.set_ylim(-1.05, 1.35)
+    ax.set_xlim(-0.5, 4.05)
+    ax.set_ylim(-1.05, 1.6)
     ax.set_yticks([-1, -.5, 0, .5, 1])
-    ax.set_ylabel("correlation of detection strength across the twelve defects")
+    ax.set_ylabel("agreement between two measures\n(correlation of their profiles)",
+                  linespacing=1.5)
     ax.set_title("The similarity family is internally redundant;\nthe structural family is not",
-                 fontsize=10, pad=10)
+                 fontsize=10, pad=26)
     fig.text(0.5, -0.02,
-             "Each point is one pair of measures. A pair that agreed perfectly would sit at "
-             "+1; a pair carrying\nunrelated information sits near 0. Bars are group medians. "
-             "Similarity measures nearly duplicate\neach other; structural measures do not, so "
-             "dropping one loses something no other covers.",
+             "Each measure has a PROFILE: its detection strength on each of the twelve defects, "
+             "so twelve numbers.\nCorrelating two profiles gives one point above. Nine structural "
+             "measures give 9x8/2 = 36 pairs, seven\nsimilarity measures 21, and the two families "
+             "crossed 9x7 = 63. Comment density is excluded: no injection\ntouches comments, so "
+             "its profile is flat and has no correlation to take.",
              ha="center", va="top", fontsize=7.4, color="#555")
     save(fig, "fig3_measure_correlation")
 
@@ -325,6 +357,15 @@ def fig_correlation():
 # Figure 4 -- no single measure covers everything
 # =====================================================================
 def fig_coverage():
+    """Best-case coverage per family. The bars are MAXIMA, deliberately.
+
+    The claim being tested is "no measure covers every defect". That is an
+    upper-bound claim, so the honest test is the best measure available in each
+    family: if the strongest structural measure cannot see a defect, no structural
+    measure can, and adding more of them will not help. A mean would answer a
+    different and less useful question -- how the typical measure does -- which
+    Figure 1 already shows cell by cell.
+    """
     best_s, best_m = [], []
     for s in SMELLS:
         vs = [inj_d.get((s, m)) for m in STRUCT if inj_d.get((s, m)) is not None]
@@ -333,19 +374,46 @@ def fig_coverage():
         best_m.append(max(vm) if vm else 0)
 
     y = np.arange(len(SMELLS))
-    fig, ax = plt.subplots(figsize=(7.2, 5.1))
-    ax.barh(y - .2, best_s, height=.38, color="#0f6d6d", label="best structural measure")
-    ax.barh(y + .2, best_m, height=.38, color="#7a3d9e", label="best similarity measure")
-    ax.axvline(0.8, ls="--", lw=.9, color="#666")
-    ax.text(0.86, -0.62, "large effect", fontsize=7, color="#666", va="center")
+    fig, ax = plt.subplots(figsize=(7.4, 5.4))
+    ax.barh(y - .2, best_s, height=.38, color="#0f6d6d",
+            label="best structural measure (reference-free)")
+    ax.barh(y + .2, best_m, height=.38, color="#7a3d9e",
+            label="best similarity measure (needs a clean reference)")
+
+    # The threshold is Cohen's convention for a large effect, not a value chosen
+    # here to make the point -- so it is named on the figure.
+    ax.axvline(0.8, ls="--", lw=1.0, color="#555", zorder=3)
+    ax.text(0.86, -0.72, "$d=0.8$: Cohen's conventional threshold for a large effect",
+            fontsize=7, color="#555", va="center")
+
+    # Mark the defects the structural family cannot reach even at its best. These
+    # are the rows that carry the argument, so they are called out rather than left
+    # for the reader to spot.
+    blind_rows = [i for i, v in enumerate(best_s) if v < 0.8]
+    for i in blind_rows:
+        # To the right of the threshold, not over the bar: on these rows the
+        # structural bar is short by definition, so the space past d=0.8 is clear.
+        ax.annotate("beyond every structural measure", (0.92, i - .2),
+                    fontsize=6.6, color="#9b2c2c", va="center", ha="left", zorder=4)
+
     ax.set_yticks(y)
     ax.set_yticklabels([s.replace("_", " ") for s in SMELLS])
     ax.invert_yaxis()
-    ax.set_xlabel("detection strength of the best measure in each family (injected)")
-    ax.set_title("Every defect is caught by something; nothing catches everything", pad=26)
+    ax.set_xlim(0, 5.4)
+    ax.set_xlabel("detection strength of the BEST measure in that family (injected)")
+    ax.set_title(f"Best case per family: every defect is reachable by something, but the\n"
+                 f"structural family alone leaves {len(blind_rows)} of {len(SMELLS)} "
+                 f"out of reach", fontsize=10, pad=30)
     # Above the axes, not inside them: at lower right the legend box sat on top of the
     # dead-code and mutable-default bars, which are exactly the rows the figure is about.
-    ax.legend(frameon=False, ncol=2, loc="lower left", bbox_to_anchor=(0, 1.005))
+    ax.legend(frameon=False, ncol=1, loc="lower left", bbox_to_anchor=(0, 1.005),
+              fontsize=7.8, labelspacing=0.25)
+    fig.text(0.5, -0.02,
+             "Bars are maxima, not averages: if the strongest measure in a family cannot see a "
+             "defect, no measure in\nthat family can. The similarity family reaches everything, "
+             "but only where a clean reference exists --\nwhich the benchmark has by construction "
+             "and deployed code never does.",
+             ha="center", va="top", fontsize=7.4, color="#555")
     save(fig, "fig4_family_coverage")
 
 

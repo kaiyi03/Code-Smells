@@ -34,6 +34,29 @@
 \renewcommand{\abstractnamefont}{\normalfont\bfseries}
 \renewcommand{\abstracttextfont}{\normalfont\small}
 
+% Float placement. LaTeX's defaults are tuned for one column and are far too
+% strict here: a full-width figure* can only land at the top of a page, and with
+% topfraction at 0.7 several were being deferred pages past the text that
+% discusses them (Figure 1 was surfacing on page 9). These loosen the page-budget
+% rules so a float can be placed where it is declared.
+\setcounter{topnumber}{3}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.92}
+\renewcommand{\bottomfraction}{0.6}
+\renewcommand{\textfraction}{0.06}
+\renewcommand{\floatpagefraction}{0.7}
+\setcounter{dbltopnumber}{3}
+\renewcommand{\dbltopfraction}{0.92}
+\renewcommand{\dblfloatpagefraction}{0.7}
+
+% Stock LaTeX cannot place a full-width figure* on the page that declares it --
+% double-column floats are always deferred to a later page, which is why Figure 1
+% was appearing well after the section that discusses it. dblfloatfix lifts that
+% restriction and allows bottom placement too. Load it last: it patches the output
+% routine and must see the final float parameters.
+\usepackage{dblfloatfix}
+
 \title{Which Measures Can See a Code Smell?\\
        \large A Validation Protocol for Assessing the Structural Quality
        of LLM-Generated Code}
@@ -79,17 +102,21 @@ from clean code, because defective functions are simply larger. We report a clea
 negative result for language-model perplexity, which does not distinguish
 structurally poor code from clean code on either source.
 
-Applying the validated panel to the output of code-generating models shows that
-the same confound governs conclusions drawn about the models themselves. Scoring
-raw output conflates verbosity with structural quality: of two models compared on
-the same benchmark, one appeared two and a half times more defective than the
-other almost entirely because it volunteered test cases the prompt did not
-request. The confound persists under deliberate elicitation: prompts written to
+Applying the validated panel to three code-generating models shows that the same
+confound governs conclusions drawn about the models themselves. Scoring raw
+output conflates verbosity with structural quality: one model appeared two and a
+half times more defective than another almost entirely because it volunteered
+test cases the prompt did not request, and the correction moves that model alone.
+The confound persists under deliberate elicitation, where prompts written to
 induce a named defect succeed largely to the extent that the model writes a
-complete function at all, so a model that answers with a stub scores as resistant
-to a defect it was never given room to commit. At each level --- validating a
-measure, comparing two models, provoking a defect on purpose --- what looks like
-a structural result is substantially a result about how much code there is.
+complete function at all --- so a model answering with a stub scores as resistant
+to a defect it was never given room to commit.
+
+Corrected for all of this, the models are hard to tell apart. Across a
+forty-one-point spread in pass@1, defect density per hundred lines varies by six
+hundredths. Being markedly better at writing code that works turns out not to
+mean writing code that is better built, which is a caution for anyone reading
+structural metrics as a measure of model quality.
   \end{onecolabstract}
   \vspace{1.4em}
 ]
@@ -163,26 +190,34 @@ levels.
 \subsection{Contributions}
 
 \begin{enumerate}
-  \item \textbf{A validation protocol} that separates detection from correlation by
-        pairing a controlled injection benchmark with real labelled code, and a
-        single statistic --- detection strength --- reported on both so the two are
-        directly comparable.
+  \item \textbf{A validation protocol} that separates detection from co-occurrence
+        by pairing a controlled intervention with real labelled code, reporting one
+        statistic on both so they can be read side by side. Because the defect is
+        manipulated rather than merely observed, the protocol also answers the
+        standing objection that size cannot be treated as a confounder in
+        observational metric validation \cite{evanco2003comments}.
   \item \textbf{A labelled benchmark} of 1{,}300 Python functions covering twelve
-        structural defects, every example confirmed by a static analyser and
-        verified by execution to preserve behaviour, released openly.
-  \item \textbf{A validated verdict for seventeen measures}, showing that no single
-        measure covers all twelve defects, that every defect is covered by at
-        least one, and that structural and reference-based measures are
-        complementary rather than redundant.
-  \item \textbf{Three cautionary results.} Language-model perplexity does not
-        distinguish structurally poor code from clean code, so naturalness is not
-        a proxy for structural quality; defect rates computed on raw model output
-        partly measure verbosity, which distorts multi-model comparison; and
-        measured resistance to a defect-inducing prompt is partly a measure of
-        whether the model wrote a complete function at all.
-  \item \textbf{An applied evaluation} of three code models against the validated
-        panel, and an open evaluation tool that applies the same panel to
-        arbitrary Python code.
+        structural defects: every example confirmed by a static analyser, and
+        verified by execution to preserve behaviour. Released openly.
+  \item \textbf{Per-defect verdicts for seventeen measures.} Of twelve defects,
+        three are genuinely detected, five are cases of co-occurrence, and four
+        are invisible to every measure tested. Eight of the twelve lie beyond the
+        reach of the best structural measure available. Within the panel, the
+        similarity measures turn out to be close to interchangeable while the
+        structural measures are not, so the case for a panel rests on the
+        structural family rather than on the two families balancing each other.
+  \item \textbf{Size identified as the same confound at three levels}: as
+        co-occurrence when a measure is validated, as verbosity when two models
+        are compared, and as incompleteness when a model is prompted for a defect
+        and writes too little code to contain one.
+  \item \textbf{Two negative results about tempting proxies.} Language-model
+        perplexity does not distinguish structurally poor code from clean code on
+        either source, so naturalness is not a proxy for structural quality. And
+        structural quality does not track model capability: across three models
+        spanning forty-one points of pass@1, defect density per hundred lines
+        varies by six hundredths.
+  \item \textbf{An open evaluation tool} that applies the validated panel, with its
+        verdicts attached, to arbitrary Python code.
 \end{enumerate}
 
 \subsection{Research questions}
@@ -195,9 +230,10 @@ use it, and report what using it correctly changes.
   \item[RQ1] \emph{The instrument.} Which measures respond to which structural
              defects, and does an apparent response on real code survive an
              intervention that changes only the defect?
-  \item[RQ2] \emph{Comparison.} What does the validated panel report on
-             model-generated code, and what has to be held constant for a
-             comparison between models to reflect structure rather than volume?
+  \item[RQ2] \emph{Comparison.} Does structural quality track model capability ---
+             is code from a model that writes more correct code also better built?
+             And what has to be held constant for a comparison between two models
+             to be about structure at all, rather than about volume?
   \item[RQ3] \emph{Elicitation.} When a defect does not appear in generated code,
              is that because the model avoided it or because the code was never
              substantial enough to contain one --- and does the amount a model
@@ -231,17 +267,9 @@ Python function. Smells that live in the relationships \emph{between} classes or
 modules are therefore out of reach by construction, and nothing here is claimed
 to transfer to languages with different structural conventions.
 
-\emph{Two open-weight models and one frontier model, not a survey.} The models
-were chosen to span a wide capability range cheaply, and the benchmark comparison
-of Section~\ref{sec:rq2} uses two of them. The claims are about what happens when
-models of different capability are compared under a fixed protocol, not about
-which model is best.
-
-\emph{Cost and latency are excluded.} Output tokens and generation time are
-recorded but not analysed as efficiency measures. Token count enters this paper
-only as a possible predictor of structural quality (RQ3), never as a cost figure;
-a study of generation cost would need controlled hardware and serving conditions
-this work does not have.
+\emph{Three models, chosen to span capability rather than to survey it.} The
+claims concern what happens when models of different capability are compared
+under a fixed protocol. They are not claims about which model is best.
 
 % ---------------------------------------------------------------------
 \section{Background and related work}
@@ -590,7 +618,7 @@ not an omission in the study, and it is why the results of
 Section~\ref{sec:rq1} report the two families separately rather than ranking them
 against each other.
 
-\begin{table*}[t]
+\begin{table*}[!tb]
 \centering
 \small
 \begin{tabular}{llll}
@@ -750,7 +778,7 @@ would be systematically rewarding the confound.
 \section{RQ1: which measures can see which defects}
 \label{sec:rq1}
 
-\begin{figure*}[t]
+\begin{figure*}[!tb]
   \centering
   \includegraphics[width=\textwidth]{figures/fig1_detection_heatmap.pdf}
   \caption{Detection strength of every reference-free measure on every defect,
@@ -763,7 +791,7 @@ would be systematically rewarding the confound.
   \label{fig:heatmap}
 \end{figure*}
 
-\begin{table*}[t]
+\begin{table*}[!tb]
   \centering
   \small
   \input{tables/detection}
@@ -786,13 +814,17 @@ they imply for how structural quality should be measured at all.
 \subsection{Four patterns, four worked examples}
 \label{sec:patterns}
 
-\begin{figure}[t]
+\begin{figure}[!tb]
   \centering
   \includegraphics[width=\linewidth]{figures/fig2_injected_vs_real.pdf}
-  \caption{Every defect--measure cell, injected against real. Points on the
-  dashed diagonal agree across sources. The shaded vertical band is the
-  co-occurrence region: the intervention shows the measure cannot respond to the
-  defect, yet real defective code separates from clean code on it.}
+  \caption{One point per defect, placed at the structural measure that separates
+  it most strongly on real code --- the same selection as
+  Table~\ref{tab:detection}, so the two cannot disagree. Horizontal position
+  answers whether the measure can respond to the defect at all; vertical position
+  answers whether real defective and clean code differ on it. The shaded band is
+  the co-occurrence region. Detected defects sit above the diagonal because real
+  defective code differs from clean code in more ways than the defect alone, so
+  the diagonal is a reference line rather than a target.}
   \label{fig:scatter}
 \end{figure}
 
@@ -843,17 +875,20 @@ as blind and leave it to the clone detector.
 \subsection{The two families fail on different defects}
 \label{sec:complementarity}
 
-\begin{figure}[t]
+\begin{figure}[!tb]
   \centering
   \includegraphics[width=\linewidth]{figures/fig4_family_coverage.pdf}
-  \caption{The best structural and best similarity measure per defect, on the
-  injected benchmark. The structural family is blind to the signature-level
-  defects at the bottom; the similarity family clears the large-effect line on
-  all twelve. No single measure covers everything.}
+  \caption{Best-case coverage per family on the injected benchmark. Bars are
+  \emph{maxima}, which is what the claim requires: if the strongest measure in a
+  family cannot see a defect, no measure in that family can, and adding more of
+  them will not help. Eight of the twelve defects lie beyond every structural
+  measure at Cohen's large-effect threshold. The similarity family reaches all
+  twelve, but only where a clean reference exists --- which the benchmark has by
+  construction and deployed code never does.}
   \label{fig:coverage}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[!tb]
   \centering
   \includegraphics[width=\linewidth]{figures/fig3_measure_correlation.pdf}
   \caption{Every pairwise correlation of detection-strength profiles across the
@@ -865,13 +900,19 @@ as blind and leave it to the clone detector.
   \label{fig:correlation}
 \end{figure}
 
+Figure~\ref{fig:coverage} states the structural family's limit as an upper bound.
+For each defect it plots the \emph{strongest} measure each family offers, which is
+the form the claim requires: if the best structural measure cannot see a defect,
+no structural measure can, and adding more of them will not help. On that reading
+the structural family reaches only four of the twelve defects at Cohen's
+large-effect threshold. Eight lie beyond every measure it contains.
+
 The reference-based family --- BLEU, chrF, ROUGE-L, CodeBLEU, AST similarity,
 CodeBERTScore, BERTScore --- sees the injected defects very differently: every
-one of its measures separates every one of the twelve defects by at least
-$d = 1.46$, with per-measure medians between $2.5$ and $4.7$. In particular it
-catches exactly the signature-level defects the structural family is blind to,
-because any edit, however structurally invisible, makes the code diverge from
-its reference.
+one of its measures separates every one of the twelve by at least $d = 1.46$,
+with per-measure medians between $2.5$ and $4.7$. It catches exactly the
+signature-level defects the structural family cannot reach, because any edit,
+however structurally invisible, makes the code diverge from its reference.
 
 Figure~\ref{fig:correlation} asks how much the measures agree with one another,
 and the answer is sharply different for the two families. The similarity measures
@@ -892,15 +933,17 @@ similarity measures require a known-good reference, which the injected
 benchmark has by construction and real code never does. Their validation is
 therefore injected-only, inheriting exactly the artefacts catalogued above.
 Together, Figures \ref{fig:coverage} and \ref{fig:correlation} give RQ1 its
-one-sentence answer: \emph{no single measure sees all twelve defects, every
-defect is seen by at least one, and the failures of the two families do not
-overlap} --- which is the empirical argument for evaluating structural quality
-with a panel rather than a composite score.
+answer. No single measure sees all twelve defects. The structural family, which
+is the only family available on deployed code, leaves eight of the twelve out of
+reach even at its best. The similarity family reaches all twelve but only where a
+clean reference exists. Structural quality therefore has to be evaluated with a
+panel rather than a composite score --- and on code in deployment, that panel is
+necessarily the weaker half of the one validated here.
 
 \subsection{Perplexity: naturalness is not structural quality}
 \label{sec:perplexity}
 
-\begin{figure}[t]
+\begin{figure}[!tb]
   \centering
   \includegraphics[width=\linewidth]{figures/fig9_perplexity.pdf}
   \caption{Perplexity under a code language model, on both sources. No defect
