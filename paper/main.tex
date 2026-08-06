@@ -5,11 +5,12 @@
 % Compile: pdflatex main -> bibtex main -> pdflatex main -> pdflatex main
 % (Overleaf does this automatically on Recompile.)
 % =====================================================================
-\documentclass[11pt,a4paper]{article}
+\documentclass[10pt,a4paper,twocolumn]{article}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[margin=1in]{geometry}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{balance}
 \usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{amsmath}
@@ -19,7 +20,7 @@
 \usepackage{url}
 
 \lstset{
-  basicstyle=\ttfamily\footnotesize,
+  basicstyle=\ttfamily\scriptsize,
   breaklines=true,
   frame=single,
   framerule=0.3pt,
@@ -27,6 +28,11 @@
   showstringspaces=false,
   language=Python,
 }
+
+% Two-column body, but the abstract reads better across the full page width.
+\usepackage{abstract}
+\renewcommand{\abstractnamefont}{\normalfont\bfseries}
+\renewcommand{\abstracttextfont}{\normalfont\small}
 
 \title{Which Measures Can See a Code Smell?\\
        \large A Validation Protocol for Assessing the Structural Quality
@@ -40,10 +46,12 @@
 \date{\today}
 
 \begin{document}
-\maketitle
 
-% ---------------------------------------------------------------------
-\begin{abstract}
+% The title block and abstract span both columns; the body is two-column from
+% Section 1 onward. Without this the abstract is squeezed into the left column.
+\twocolumn[
+  \maketitle
+  \begin{onecolabstract}
 Benchmarks for code-generating language models measure whether the generated code
 runs. They do not measure whether it is well built. Work that addresses the second
 question reaches for the structural metrics software engineering already has ---
@@ -82,7 +90,9 @@ complete function at all, so a model that answers with a stub scores as resistan
 to a defect it was never given room to commit. At each level --- validating a
 measure, comparing two models, provoking a defect on purpose --- what looks like
 a structural result is substantially a result about how much code there is.
-\end{abstract}
+  \end{onecolabstract}
+  \vspace{1.4em}
+]
 
 % ---------------------------------------------------------------------
 \section{Introduction}
@@ -283,20 +293,50 @@ The important observation for this paper is what these metrics were built
 summarise a module, track a project over time, or flag files worth a human's
 attention. They were not designed to detect particular defects.
 
-Later work has nonetheless pressed them into that role, most systematically as
-the feature sets of machine-learning smell classifiers, which are trained and
-evaluated per smell on labelled corpora.
-% TODO(cite): Fontana et al. EMSE 2016; Azeem et al. IST 2019 SLR; Di Nucci et
-% al. SANER 2018 replication. Verify authors/venues before citing.
-That work establishes something real, but not the thing this paper needs. It
-reports how well a feature set as a whole classifies, which does not isolate the
-contribution of any individual metric; and it is trained and tested on code that
-already carried the defect, which cannot separate a metric responding to the
-defect from a metric responding to whatever else distinguishes defective code.
-This is not a criticism of the metrics or of that literature; it is a statement
-about the claims either can support. That a function with a long parameter list
-scores worse on some index does not establish that the index responds to the
-parameter list rather than to whatever else distinguishes such functions.
+Later work has nonetheless pressed them into that role: as the thresholds of
+rule-based detectors \cite{moha2010decor}, and more systematically as the feature
+sets of machine-learning smell classifiers
+\cite{fontana2016comparing,azeem2019machine}. That work establishes something
+real, but not the thing this paper needs. It reports how well a feature set
+\emph{as a whole} classifies; the systematic review of the area analyses its
+independent variables in sets rather than singly \cite{azeem2019machine}, so the
+contribution of any individual metric is not isolated. Where per-metric effect
+sizes have been reported --- Di Nucci et al.\ give them for four smells
+\cite{dinucci2018detecting} --- they are computed on code that already carried the
+defect, and those authors' own conclusion is that the separation is so complete
+that it makes the classification task unrealistically easy. That is a diagnosis of
+the dataset, not a validation of the metrics.
+
+The limitation is the same in every case. Comparing defective code with clean code
+cannot separate a metric responding to the defect from a metric responding to
+whatever else distinguishes defective code. That a function with a long parameter
+list scores worse on some index does not establish that the index responds to the
+parameter list.
+
+\subsection{Size, the confound this paper keeps meeting}
+\label{sec:sizeconfound}
+
+That the ``whatever else'' is usually size is well established outside the smell
+literature. El Emam et al.\ showed that of twenty-four object-oriented metrics,
+only four remained associated with fault-proneness once class size was controlled
+for \cite{elemam2001confounding}; Gil and Lalouche later found a metric's validity
+to be largely predictable from its correlation with size alone
+\cite{gil2017correlation}. Cyclomatic complexity has been argued to be a proxy for
+lines of code since Shepperd's critique \cite{shepperd1988critique}, and measured
+as near-collinear with it \cite{jay2009cyclomatic}. Inside the smell literature,
+Sj\o{}berg et al.\ found that adjusting for file size removed the effect of all
+twelve smells they studied on maintenance effort \cite{sjoberg2013quantifying},
+and Palomba et al.\ report size dominating smell presence as a driver of
+maintainability \cite{palomba2018diffuseness}.
+
+These are observational results, and they attract an observational objection.
+Evanco argued that size cannot properly be called a confounder here, because a
+confounder must be causally prior, and the ability to measure size does not
+precede the ability to measure the other metrics \cite{evanco2003comments}. The
+objection has force against statistical control and none against an intervention.
+If the defect is manipulated while the code is otherwise held fixed, the causal
+ordering is established by construction rather than assumed --- which is the
+methodological reason the controlled arm of this benchmark exists.
 
 \subsection{Evaluating generated code}
 
@@ -317,61 +357,64 @@ code to compare against. Benchmarks have one. Deployed code does not.
 \subsection{The structural quality of model output}
 
 A recent and fast-growing line of work asks directly whether models produce
-structurally poor code. The
-closest work to ours measures a model's \emph{propensity} for particular smells
-using a probe over token probabilities, applied to code that already contains the
-smell. That design answers a question about the model's internal preferences. Its
-authors are explicit that whether such propensity predicts the quality of code
-the model writes freely is a separate, open question --- which is what our RQ2
-and RQ3 address, by measuring what appears in unconstrained generation rather
-than what a probe reports on pre-existing examples.
+structurally poor code. Siddiq et al.\ traced smells from training corpora into
+generated output \cite{siddiq2022empirical}; Nguyen and Nadi scored Copilot
+suggestions on cyclomatic and cognitive complexity and concluded from those two
+numbers that the suggestions are understandable \cite{nguyen2022empirical}. The
+pattern is to compute established metrics on model output and report the values.
+That is the practice this paper is about: such a study is only as sound as the
+assumption that its metrics respond to the properties being discussed.
 
-Other work in the same area computes structural metrics over model output and
-reports the values. This is the practice that motivates the paper. Such a study
-is only as sound as the assumption that its metrics respond to the properties
-being discussed, and that assumption is not usually examined. Our contribution is
-not a competing set of numbers but the missing prior step: establishing, for each
-metric and each defect, whether the metric can see it at all.
+The closest work to ours measures a model's \emph{propensity} for particular
+smells using a probe over token probabilities, applied to code that already
+contains the smell \cite{velasco2024propense}, and in its later form embeds that
+probe in a causal model that adjusts for code length and token count among other
+confounders \cite{velasco2026causal}. That design answers a question about a
+model's internal preferences, on pre-existing code. Ours answers a different one:
+what appears in code the model writes freely, measured with instruments whose
+per-defect sensitivity has itself been established.
+
+Two recent studies show the field is aware of volume without having settled it.
+Sabra et al.\ report defects per thousand lines across five models and name
+verbosity explicitly as a model trait \cite{sabra2025assessing}. Zhu et al.\ find
+a correlation of $0.94$ between code volume and architectural smells, calling
+volume a near-perfect predictor of decay --- and then compare models using raw
+smell counts \cite{zhu2026aigenerated}. Normalising by size is therefore known
+and unevenly applied. Section~\ref{sec:rq2} shows that normalisation is not
+always the right correction either: where a model volunteers material the prompt
+did not request, the question is whether that material should be in the
+denominator or out of the comparison altogether.
 
 \subsection{The gap}
 \label{sec:gap}
 
-Summarising: the detector literature can label defects but says nothing about
-degree or about code shapes no rule anticipates; the metric literature offers
-continuous, general-purpose measures whose per-defect sensitivity has been
-assessed only observationally; the evaluation literature measures correctness
-thoroughly and structure casually; and the generated-code literature borrows the
-metrics to make claims about how well models write.
+Each of those four areas is well developed. The gap lies between them, and it has
+two parts.
 
-The gap has two parts, and they call for different work.
+\textbf{The instrument was never validated.} The metric literature supplies the
+measures. The generated-code literature applies them. Nothing in between
+establishes what the measures can see.
 
-The first is the missing validation. For each measure and each defect, does the
-measure respond to the defect itself? Observational evidence cannot settle this,
-because defective code differs from clean code in many ways at once and the most
-obvious of them is that there is more of it. Settling it requires an intervention
-that the observational literature does not perform --- changing only the defect
-and holding the code otherwise fixed --- paired with real code, so that the
-answer is not merely an artefact of how the intervention was carried out. This is
-RQ1, and it is the paper's primary contribution.
+Per-defect behaviour has been examined, but only one way: compare defective code
+with clean code, and ask whether the measure separates them. That comparison
+cannot settle the question. Defective code differs from clean code in many ways,
+and the most obvious is that there is more of it. A measure that separates the
+groups might be responding to the defect. It might be responding to size.
+Observational data cannot tell the two apart.
 
-The second part is the consequence. A conclusion is only as sound as the
-instrument that produced it, so if the instrument was never validated, the claims
-made with it inherit the uncertainty --- and correcting the instrument may change
-them. Whether it \emph{does} change them is an empirical question, and one worth
-answering, because a validation that left every downstream conclusion intact
-would be a technicality rather than a finding. It does not leave them intact.
-Applying the validated panel to model output, the confound that inflates apparent
-detection in RQ1 --- volume --- reappears twice. It reappears as verbosity when
-models are compared with one another, where it is large enough to reverse a
-ranking (RQ2); and as incompleteness when models are prompted to produce a defect
-on purpose, where a model that returns a stub is recorded as resisting a defect
-it had no opportunity to commit (RQ3).
+An intervention can. Change the defect, hold the code otherwise fixed, and see
+whether the measure moves. That is RQ1.
 
-This is why one gap yields three questions rather than one. They are not three
-topics but one question asked at three levels of a single pipeline --- validating
-a measure, comparing two models, provoking a defect deliberately: \emph{how much
-of what we are calling structural quality is a measurement of how much code there
-is?}
+\textbf{The claims built on it inherit the doubt.} If nobody checked the
+instrument, nobody checked the conclusions drawn with it either. Correcting the
+instrument might change them --- and it does. Applying the validated panel to
+model output, the same confound appears twice more: as verbosity when two models
+are compared (RQ2), and as incompleteness when a model is asked for a defect and
+writes too little code to contain one (RQ3).
+
+So one gap yields three questions. They are one question at three levels:
+\emph{how much of what we call structural quality is really a measurement of how
+much code there is?}
 
 % ---------------------------------------------------------------------
 \section{The benchmark}
@@ -428,7 +471,7 @@ acquires one named defect and nothing else. Listing~\ref{lst:inject} shows a
 representative pair: an MBPP solution before and after \texttt{broad\_except}
 injection.
 
-\begin{lstlisting}[caption={A clean function and its injected twin. The
+\begin{lstlisting}[float=*,caption={A clean function and its injected twin. The
 computation is unchanged; the transformation wraps it so that every exception is
 silently swallowed and \texttt{None} returned in its place.},
 label={lst:inject}]
@@ -442,6 +485,20 @@ def fifth_Power_Sum(n):          def fifth_Power_Sum(n):
                                      except Exception:
                                          return None
 \end{lstlisting}
+
+Injection is not new, but its purpose here is. Existing smell datasets are mined
+from repositories and hand-labelled --- Landfill \cite{palomba2015landfill} and
+MLCQ \cite{madeyski2020mlcq} are representative --- and exist to train or evaluate
+\emph{detectors}. Where smells have been introduced deliberately, it has generally
+been to balance a training set for a classifier, as in Liu et al.'s use of an
+unnecessary Move Method to synthesise feature envy \cite{liu2018deep}. Closest to
+our construction is SmellBench \cite{lin2026smellbench}, concurrent with this
+work, which injects one smell into clean Python and verifies behaviour by running
+the affected tests; it evaluates refactoring agents, injects with a language
+model rather than deterministically, and does not confirm with a static analyser
+that the intended smell actually landed. We are not aware of a benchmark built to
+measure what a \emph{metric} responds to, which is what the two-stage
+verification below is for.
 
 \subsection{Two-stage verification}
 \label{sec:verification}
@@ -533,7 +590,7 @@ not an omission in the study, and it is why the results of
 Section~\ref{sec:rq1} report the two families separately rather than ranking them
 against each other.
 
-\begin{table}[t]
+\begin{table*}[t]
 \centering
 \small
 \begin{tabular}{llll}
@@ -556,7 +613,7 @@ determines which measures can be validated on real code at all. Measures marked
 \emph{context} have no inherent good direction and are interpreted against a
 baseline.}
 \label{tab:panel}
-\end{table}
+\end{table*}
 
 \subsection{Notes on individual measures}
 
@@ -693,7 +750,7 @@ would be systematically rewarding the confound.
 \section{RQ1: which measures can see which defects}
 \label{sec:rq1}
 
-\begin{figure}[t]
+\begin{figure*}[t]
   \centering
   \includegraphics[width=\textwidth]{figures/fig1_detection_heatmap.pdf}
   \caption{Detection strength of every reference-free measure on every defect,
@@ -704,9 +761,9 @@ would be systematically rewarding the confound.
   \emph{differences} between the two panels, catalogued in
   Section~\ref{sec:patterns}.}
   \label{fig:heatmap}
-\end{figure}
+\end{figure*}
 
-\begin{table}[t]
+\begin{table*}[t]
   \centering
   \small
   \input{tables/detection}
@@ -716,7 +773,7 @@ would be systematically rewarding the confound.
   columns compare $n$ defective examples (92--950 per defect) against a shared
   baseline of 1{,}000 clean functions from the same corpus.}
   \label{tab:detection}
-\end{table}
+\end{table*}
 
 Figure~\ref{fig:heatmap} shows the full grid --- every reference-free measure
 against every defect, on both sources --- and Table~\ref{tab:detection} distils
@@ -731,7 +788,7 @@ they imply for how structural quality should be measured at all.
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.74\textwidth]{figures/fig2_injected_vs_real.pdf}
+  \includegraphics[width=\linewidth]{figures/fig2_injected_vs_real.pdf}
   \caption{Every defect--measure cell, injected against real. Points on the
   dashed diagonal agree across sources. The shaded vertical band is the
   co-occurrence region: the intervention shows the measure cannot respond to the
@@ -788,7 +845,7 @@ as blind and leave it to the clone detector.
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.85\textwidth]{figures/fig4_family_coverage.pdf}
+  \includegraphics[width=\linewidth]{figures/fig4_family_coverage.pdf}
   \caption{The best structural and best similarity measure per defect, on the
   injected benchmark. The structural family is blind to the signature-level
   defects at the bottom; the similarity family clears the large-effect line on
@@ -798,11 +855,13 @@ as blind and leave it to the clone detector.
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.8\textwidth]{figures/fig3_measure_correlation.pdf}
-  \caption{Correlation of detection-strength profiles across the twelve defects.
-  The two diagonal blocks (structural, teal; similarity, purple) are internally
-  correlated and mutually near-independent: the families measure different
-  things, which is the empirical case for a panel over any single score.}
+  \includegraphics[width=\linewidth]{figures/fig3_measure_correlation.pdf}
+  \caption{Every pairwise correlation of detection-strength profiles across the
+  twelve defects, grouped by whether the pair belongs to the same family. Each
+  point is one pair of measures; bars are group medians. Similarity measures are
+  nearly interchangeable, structural measures are not --- so the case for a panel
+  rests on the structural family carrying genuinely independent information, not
+  on the two families being internally coherent.}
   \label{fig:correlation}
 \end{figure}
 
@@ -812,10 +871,21 @@ one of its measures separates every one of the twelve defects by at least
 $d = 1.46$, with per-measure medians between $2.5$ and $4.7$. In particular it
 catches exactly the signature-level defects the structural family is blind to,
 because any edit, however structurally invisible, makes the code diverge from
-its reference. The complementarity is visible as block structure in
-Figure~\ref{fig:correlation}: measures agree strongly within a family and weakly
-across families, so the two families are not redundant readings of one
-underlying quantity.
+its reference.
+
+Figure~\ref{fig:correlation} asks how much the measures agree with one another,
+and the answer is sharply different for the two families. The similarity measures
+are close to interchangeable: the median correlation between a pair of them is
+$+0.85$, so most of what any one reports, the others report too. The structural
+measures are not: their median pairwise correlation is $+0.04$. Knowing what one
+structural measure says about a defect tells you almost nothing about what
+another will say. Across the two families the median is $+0.28$.
+
+We expected a symmetric result --- two coherent families, each internally
+agreeing --- and did not get one. The reading that survives is more useful than
+the one we expected: the panel could lose most of its similarity measures at
+little cost, and cannot lose a structural measure without losing something no
+other measure in the panel covers.
 
 This coverage comes with a boundary that must be stated rather than footnoted:
 similarity measures require a known-good reference, which the injected
@@ -832,7 +902,7 @@ with a panel rather than a composite score.
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.78\textwidth]{figures/fig9_perplexity.pdf}
+  \includegraphics[width=\linewidth]{figures/fig9_perplexity.pdf}
   \caption{Perplexity under a code language model, on both sources. No defect
   clears even the small-effect band in the defective direction, and most values
   are negative: defective code is slightly \emph{more} predictable than clean
@@ -858,22 +928,30 @@ backwards}.
 % ---------------------------------------------------------------------
 \section{RQ2: comparing models without measuring volume}
 \label{sec:rq2}
-% TO WRITE. TWO models (Qwen, DeepSeek) on 664 benchmark tasks -- Claude was run
-% on the 476-prompt study only, so RQ2 is a two-model comparison and RQ3 is a
-% three-model one. Do not write "three models" here.
-% Settled numbers: pass@1 Qwen 57.4% (humaneval 66.5 / mbpp 54.4),
-%   DeepSeek 51.7% (humaneval 66.5 / mbpp 46.8), 2 timeouts.
-% Verbosity confound: files with >=1 defect, as-emitted vs definitions-only --
-%   DeepSeek 24.8% -> 12.2%, Qwen 9.8% -> 9.8% (Qwen volunteers nothing:
-%   mean extra statements 0.0 vs DeepSeek 1.0). So DeepSeek looks 2.5x smellier
-%   than Qwen as-emitted and 1.2x after correction.
-% NULL to report briefly: structure does not predict correctness. Qwen passing vs
-%   failing 8.1% vs 12.0% carry a defect (1.86 vs 2.06 per 100 SLOC); DeepSeek
-%   12.0% vs 12.2% (1.96 vs 1.89). Supports the introduction's claim that
-%   correctness and structural quality are different properties -- it is evidence
-%   for the framing, not a headline finding.
-% pass@1, defect rates, structure
-% against the canonical solutions, cost. Two findings to lead with:
+% TO WRITE. THREE models on the 664 benchmark tasks -- Claude Sonnet 5 was added
+% on 2026-08-06 (batch API, thinking disabled, 4096-token cap, 0/664 truncated,
+% $0.49). RQ2 and RQ3 are now both three-model comparisons.
+%
+% LEAD WITH THIS -- it only became visible once a frontier model joined:
+%   pass@1        DeepSeek 51.7% | Qwen 57.4% | Claude 92.6%   (41-point spread)
+%   defects/100 SLOC  1.93 | 1.96 | 1.90                       (0.06 spread)
+%   Claude by source: humaneval 98.8%, mbpp 90.6%.
+%   Capability and structural quality are close to orthogonal here. A model can be
+%   far better at writing code that works without being any better at writing code
+%   that is well structured. This is fig 10, and it is the strongest RQ2 result.
+%
+% Verbosity confound (fig 6), now sharper with three models: files with >=1 defect,
+%   as-emitted -> definitions-only.  DeepSeek 24.8% -> 12.2%; Qwen 9.8% -> 9.8%;
+%   Claude 10.4% -> 10.4%. Mean extra statements: DeepSeek 1.03, Qwen 0.01,
+%   Claude 0.01. So the correction is not a universal deflator -- it moves exactly
+%   the one model that volunteers material, and leaves the other two untouched.
+%   Scored raw, DeepSeek looks 2.5x smellier than Qwen; corrected, 1.2x.
+% Structure vs canonical (fig 5): generated code is simpler than the reference on
+%   every complexity measure, for all three models. Capability does not change this.
+% Correctness x structure: Qwen pass 8.1% / fail 12.0%; DeepSeek 12.0% / 12.2%;
+%   Claude 9.6% / 20.4% (but only 49 failures, so wide). Weak and inconsistent --
+%   report as evidence for the introduction's claim that correctness and structural
+%   quality are different properties, not as a finding in its own right.
 %   - generated code is simpler and far more heavily commented than the canonical
 %     solutions, on every complexity measure, for every model;
 %   - only four or five of the twelve defects appear at all, because single short
@@ -941,6 +1019,7 @@ evaluation tool, which applies the same panel to arbitrary Python code, is at
 \url{https://code-smell-dashboard.onrender.com}.
 
 % ---------------------------------------------------------------------
+\balance
 \bibliographystyle{plain}
 \bibliography{references}
 

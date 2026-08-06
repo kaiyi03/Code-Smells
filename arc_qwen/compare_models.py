@@ -27,6 +27,7 @@ OUT_HTML = os.path.join(HERE, "model_comparison.html")
 LABELS = {
     "": "Qwen2.5-Coder-1.5B",
     "deepseek": "DeepSeek-Coder-1.3B",
+    "claude": "Claude Sonnet 5",
 }
 
 # Display order. Intersected with the CSV header, so a measure that wasn't

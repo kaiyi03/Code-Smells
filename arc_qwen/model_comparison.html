@@ -26,7 +26,7 @@
 </style></head>
 <body><div class="wrap">
 <h1>Model comparison</h1>
-<p class="sub">The same evaluation applied to 2 models. Both were run through
+<p class="sub">The same evaluation applied to 3 models. Both were run through
 one generation script (same prompts, greedy decoding, same batch size) and scored with
 one measure panel, so every difference below is the model rather than the setup.
 HumanEval and MBPP are reported separately wherever the two behave differently;
@@ -37,6 +37,11 @@ similarity is never pooled across them.</p>
 <div><div class="v">9.8%</div><div class="k">smell rate</div></div>
 <div><div class="v">75</div><div class="k">tokens / solution</div></div>
 </div></div>
+<div class="tile"><div class="m">Claude Sonnet 5</div><div class="row">
+<div><div class="v">92.6%</div><div class="k">pass@1</div></div>
+<div><div class="v">10.4%</div><div class="k">smell rate</div></div>
+<div><div class="v">112</div><div class="k">tokens / solution</div></div>
+</div></div>
 <div class="tile"><div class="m">DeepSeek-Coder-1.3B</div><div class="row">
 <div><div class="v">51.7%</div><div class="k">pass@1</div></div>
 <div><div class="v">24.8%</div><div class="k">smell rate</div></div>
@@ -45,68 +50,71 @@ similarity is never pooled across them.</p>
 </div>
 <h2>Does the finding hold for both models?</h2>
 <p class="note">Each row is a claim the Qwen-only results supported. The values are computed from the summaries, and the verdict just compares them &mdash; so this table cannot drift from the data behind it.</p>
-<div class="scrollx"><table><tr><th>claim</th><th>Qwen2.5-Coder-1.5B</th><th>DeepSeek-Coder-1.3B</th></tr><th>holds?</th>
-<tr><td>The most common smell in the generated code</td><td>magic_number</td><td>magic_number</td><td class="yes">both</td></tr>
-<tr><td>Distinct smells appearing at all (of 12)</td><td>4</td><td>5</td><td class="yes">both</td></tr>
-<tr><td>Smell rate survives rescoring the definitions alone (keeps &ge;&nbsp;75%)</td><td>9.8% &rarr; 9.8%</td><td>24.8% &rarr; 12.2%</td><td class="no">differs</td></tr>
-<tr><td>HumanEval code is smellier than MBPP code</td><td>22.0% vs 5.8%</td><td>27.4% vs 24.0%</td><td class="yes">both</td></tr>
-<tr><td>Generated code is more heavily commented than the canonical solution</td><td>9.6 vs 0.1</td><td>6.3 vs 0.1</td><td class="yes">both</td></tr>
-<tr><td>Generated code is less perplexing than the canonical solution</td><td>3.80 vs 4.14</td><td>3.40 vs 4.14</td><td class="yes">both</td></tr>
+<div class="scrollx"><table><tr><th>claim</th><th>Qwen2.5-Coder-1.5B</th><th>Claude Sonnet 5</th><th>DeepSeek-Coder-1.3B</th></tr><th>holds?</th>
+<tr><td>The most common smell in the generated code</td><td>magic_number</td><td>magic_number</td><td>magic_number</td><td class="yes">both</td></tr>
+<tr><td>Distinct smells appearing at all (of 12)</td><td>4</td><td>6</td><td>5</td><td class="no">differs</td></tr>
+<tr><td>Smell rate survives rescoring the definitions alone (keeps &ge;&nbsp;75%)</td><td>9.8% &rarr; 9.8%</td><td>10.4% &rarr; 10.4%</td><td>24.8% &rarr; 12.2%</td><td class="no">differs</td></tr>
+<tr><td>HumanEval code is smellier than MBPP code</td><td>22.0% vs 5.8%</td><td>22.0% vs 6.6%</td><td>27.4% vs 24.0%</td><td class="yes">both</td></tr>
+<tr><td>Generated code is more heavily commented than the canonical solution</td><td>9.6 vs 0.1</td><td>0.1 vs 0.1</td><td>6.3 vs 0.1</td><td class="yes">both</td></tr>
+<tr><td>Generated code is less perplexing than the canonical solution</td><td>3.80 vs 4.14</td><td>&mdash;</td><td>3.40 vs 4.14</td><td style="color:#aaa">not measured</td></tr>
 </table></div>
 <h2>Correctness, smell rate and cost</h2>
-<div class="scrollx"><table><tr><th></th><th>Qwen2.5-Coder-1.5B</th><th>DeepSeek-Coder-1.3B</th></tr>
-<tr><td><b>pass@1</b> &mdash; overall</td><td>57.4%</td><td>51.7%</td></tr>
-<tr><td style="padding-left:22px">humaneval</td><td>66.5%</td><td>66.5%</td></tr>
-<tr><td style="padding-left:22px">mbpp</td><td>54.4%</td><td>46.8%</td></tr>
-<tr><td><b>smell rate (as emitted)</b> &mdash; overall</td><td>9.8%</td><td>24.8%</td></tr>
-<tr><td style="padding-left:22px">humaneval</td><td>22.0%</td><td>27.4%</td></tr>
-<tr><td style="padding-left:22px">mbpp</td><td>5.8%</td><td>24.0%</td></tr>
-<tr><td><b>smell rate (definitions only)</b> &mdash; overall</td><td>9.8%</td><td>12.2%</td></tr>
-<tr><td style="padding-left:22px">humaneval</td><td>22.0%</td><td>26.2%</td></tr>
-<tr><td style="padding-left:22px">mbpp</td><td>5.8%</td><td>7.6%</td></tr>
-<tr><td><b>adds statements outside the definitions</b> &mdash; overall</td><td>0.6%</td><td>34.3%</td></tr>
-<tr><td style="padding-left:22px">humaneval</td><td>0.6%</td><td>58.5%</td></tr>
-<tr><td style="padding-left:22px">mbpp</td><td>0.6%</td><td>26.4%</td></tr>
-<tr><td><b>output tokens / solution</b> &mdash; overall</td><td>75</td><td>189</td></tr>
-<tr><td style="padding-left:22px">humaneval</td><td>135</td><td>155</td></tr>
-<tr><td style="padding-left:22px">mbpp</td><td>55</td><td>200</td></tr>
+<div class="scrollx"><table><tr><th></th><th>Qwen2.5-Coder-1.5B</th><th>Claude Sonnet 5</th><th>DeepSeek-Coder-1.3B</th></tr>
+<tr><td><b>pass@1</b> &mdash; overall</td><td>57.4%</td><td>92.6%</td><td>51.7%</td></tr>
+<tr><td style="padding-left:22px">humaneval</td><td>66.5%</td><td>98.8%</td><td>66.5%</td></tr>
+<tr><td style="padding-left:22px">mbpp</td><td>54.4%</td><td>90.6%</td><td>46.8%</td></tr>
+<tr><td><b>smell rate (as emitted)</b> &mdash; overall</td><td>9.8%</td><td>10.4%</td><td>24.8%</td></tr>
+<tr><td style="padding-left:22px">humaneval</td><td>22.0%</td><td>22.0%</td><td>27.4%</td></tr>
+<tr><td style="padding-left:22px">mbpp</td><td>5.8%</td><td>6.6%</td><td>24.0%</td></tr>
+<tr><td><b>smell rate (definitions only)</b> &mdash; overall</td><td>9.8%</td><td>10.4%</td><td>12.2%</td></tr>
+<tr><td style="padding-left:22px">humaneval</td><td>22.0%</td><td>22.0%</td><td>26.2%</td></tr>
+<tr><td style="padding-left:22px">mbpp</td><td>5.8%</td><td>6.6%</td><td>7.6%</td></tr>
+<tr><td><b>adds statements outside the definitions</b> &mdash; overall</td><td>0.6%</td><td>0.3%</td><td>34.3%</td></tr>
+<tr><td style="padding-left:22px">humaneval</td><td>0.6%</td><td>0.6%</td><td>58.5%</td></tr>
+<tr><td style="padding-left:22px">mbpp</td><td>0.6%</td><td>0.2%</td><td>26.4%</td></tr>
+<tr><td><b>output tokens / solution</b> &mdash; overall</td><td>75</td><td>112</td><td>189</td></tr>
+<tr><td style="padding-left:22px">humaneval</td><td>135</td><td>216</td><td>155</td></tr>
+<tr><td style="padding-left:22px">mbpp</td><td>55</td><td>78</td><td>200</td></tr>
 </table></div>
 <h2>Which smells actually appear</h2>
-<p class="note">Counts of generations flagged, out of 664 / 664. Blank means the smell never appeared &mdash; on single short functions most of the twelve cannot physically occur.</p>
-<div class="scrollx"><table><tr><th>smell</th><th>Qwen2.5-Coder-1.5B<br><span style="font-weight:400;color:#888">as emitted / definitions</span></th><th>DeepSeek-Coder-1.3B<br><span style="font-weight:400;color:#888">as emitted / definitions</span></th></tr>
-<tr><td>dead_code</td><td>11 <span style='color:#888'>/ 11</span></td><td>13 <span style='color:#888'>/ 13</span></td></tr>
-<tr><td>deep_nesting</td><td>&mdash; <span style='color:#888'>/ 0</span></td><td>1 <span style='color:#888'>/ 1</span></td></tr>
-<tr><td>inefficient_loop</td><td>7 <span style='color:#888'>/ 7</span></td><td>6 <span style='color:#888'>/ 6</span></td></tr>
-<tr><td>long_parameter_list</td><td>1 <span style='color:#888'>/ 1</span></td><td>1 <span style='color:#888'>/ 1</span></td></tr>
-<tr><td>magic_number</td><td>50 <span style='color:#888'>/ 50</span></td><td>149 <span style='color:#888'>/ 64</span></td></tr>
+<p class="note">Counts of generations flagged, out of 664 / 664 / 664. Blank means the smell never appeared &mdash; on single short functions most of the twelve cannot physically occur.</p>
+<div class="scrollx"><table><tr><th>smell</th><th>Qwen2.5-Coder-1.5B<br><span style="font-weight:400;color:#888">as emitted / definitions</span></th><th>Claude Sonnet 5<br><span style="font-weight:400;color:#888">as emitted / definitions</span></th><th>DeepSeek-Coder-1.3B<br><span style="font-weight:400;color:#888">as emitted / definitions</span></th></tr>
+<tr><td>dead_code</td><td>11 <span style='color:#888'>/ 11</span></td><td>10 <span style='color:#888'>/ 10</span></td><td>13 <span style='color:#888'>/ 13</span></td></tr>
+<tr><td>deep_nesting</td><td>&mdash; <span style='color:#888'>/ 0</span></td><td>&mdash; <span style='color:#888'>/ 0</span></td><td>1 <span style='color:#888'>/ 1</span></td></tr>
+<tr><td>inefficient_loop</td><td>7 <span style='color:#888'>/ 7</span></td><td>2 <span style='color:#888'>/ 2</span></td><td>6 <span style='color:#888'>/ 6</span></td></tr>
+<tr><td>long_parameter_list</td><td>1 <span style='color:#888'>/ 1</span></td><td>1 <span style='color:#888'>/ 1</span></td><td>1 <span style='color:#888'>/ 1</span></td></tr>
+<tr><td>magic_number</td><td>50 <span style='color:#888'>/ 50</span></td><td>58 <span style='color:#888'>/ 58</span></td><td>149 <span style='color:#888'>/ 64</span></td></tr>
+<tr><td>mutable_default</td><td>&mdash; <span style='color:#888'>/ 0</span></td><td>1 <span style='color:#888'>/ 1</span></td><td>&mdash; <span style='color:#888'>/ 0</span></td></tr>
+<tr><td>perf_try_in_loop</td><td>&mdash; <span style='color:#888'>/ 0</span></td><td>1 <span style='color:#888'>/ 1</span></td><td>&mdash; <span style='color:#888'>/ 0</span></td></tr>
 </table></div>
 <h2>Similarity to the canonical solution</h2>
 <p class="note">0&ndash;100, higher = closer to the reference. HumanEval is scored on the function body only (the model echoes the given signature and docstring, which would otherwise inflate every score).</p>
-<div class="scrollx"><table><tr><th>measure</th><th>Qwen2.5-Coder-1.5B<br><span style='font-weight:400;color:#888'>humaneval</span></th><th>DeepSeek-Coder-1.3B<br><span style='font-weight:400;color:#888'>humaneval</span></th><th>Qwen2.5-Coder-1.5B<br><span style='font-weight:400;color:#888'>mbpp</span></th><th>DeepSeek-Coder-1.3B<br><span style='font-weight:400;color:#888'>mbpp</span></th></tr>
-<tr><td>bleu</td><td>31.6</td><td>32.4</td><td>25.1</td><td>21.5</td></tr>
-<tr><td>chrf</td><td>46.5</td><td>46.7</td><td>42.3</td><td>40.8</td></tr>
-<tr><td>rouge_l</td><td>50.1</td><td>49.9</td><td>44.5</td><td>40.9</td></tr>
-<tr><td>codebleu</td><td>34.5</td><td>35.0</td><td>22.9</td><td>23.1</td></tr>
-<tr><td>ast_similarity</td><td>63.7</td><td>63.5</td><td>61.2</td><td>55.4</td></tr>
-<tr><td>codebert_score</td><td>85.8</td><td>85.8</td><td>82.4</td><td>81.3</td></tr>
-<tr><td>bertscore</td><td>91.1</td><td>91.2</td><td>90.0</td><td>89.3</td></tr>
+<div class="scrollx"><table><tr><th>measure</th><th>Qwen2.5-Coder-1.5B<br><span style='font-weight:400;color:#888'>humaneval</span></th><th>Claude Sonnet 5<br><span style='font-weight:400;color:#888'>humaneval</span></th><th>DeepSeek-Coder-1.3B<br><span style='font-weight:400;color:#888'>humaneval</span></th><th>Qwen2.5-Coder-1.5B<br><span style='font-weight:400;color:#888'>mbpp</span></th><th>Claude Sonnet 5<br><span style='font-weight:400;color:#888'>mbpp</span></th><th>DeepSeek-Coder-1.3B<br><span style='font-weight:400;color:#888'>mbpp</span></th></tr>
+<tr><td>bleu</td><td>31.6</td><td>41.3</td><td>32.4</td><td>25.1</td><td>37.7</td><td>21.5</td></tr>
+<tr><td>chrf</td><td>46.5</td><td>53.8</td><td>46.7</td><td>42.3</td><td>52.2</td><td>40.8</td></tr>
+<tr><td>rouge_l</td><td>50.1</td><td>58.2</td><td>49.9</td><td>44.5</td><td>57.4</td><td>40.9</td></tr>
+<tr><td>codebleu</td><td>34.5</td><td>42.6</td><td>35.0</td><td>22.9</td><td>29.7</td><td>23.1</td></tr>
+<tr><td>ast_similarity</td><td>63.7</td><td>72.8</td><td>63.5</td><td>61.2</td><td>68.4</td><td>55.4</td></tr>
+<tr><td>codebert_score</td><td>85.8</td><td>&mdash;</td><td>85.8</td><td>82.4</td><td>&mdash;</td><td>81.3</td></tr>
+<tr><td>bertscore</td><td>91.1</td><td>&mdash;</td><td>91.2</td><td>90.0</td><td>&mdash;</td><td>89.3</td></tr>
 </table></div>
 <h2>Structure of the generated code</h2>
 <p class="note">Mean over all generations, with the canonical solutions as the shared reference point (identical tasks, so the canonical column is the same for both models). Reference-free, so these pool across HumanEval and MBPP. &uarr; = higher is worse, except maintainability and comment density.</p>
-<div class="scrollx"><table><tr><th>measure</th><th>Qwen2.5-Coder-1.5B</th><th>DeepSeek-Coder-1.3B</th><th>canonical</th></tr>
-<tr><td>sloc <span style='color:#aaa'>&uarr;</span></td><td>5.32</td><td>6.63</td><td class="canon">6.94</td></tr>
-<tr><td>cyclomatic <span style='color:#aaa'>&uarr;</span></td><td>2.66</td><td>2.82</td><td class="canon">3.17</td></tr>
-<tr><td>cognitive <span style='color:#aaa'>&uarr;</span></td><td>2.01</td><td>2.41</td><td class="canon">2.86</td></tr>
-<tr><td>maintainability <span style='color:#aaa'>&darr;</span></td><td>85.52</td><td>82.41</td><td class="canon">79.00</td></tr>
-<tr><td>halstead_volume <span style='color:#aaa'>&uarr;</span></td><td>34.81</td><td>47.44</td><td class="canon">45.19</td></tr>
-<tr><td>halstead_difficulty <span style='color:#aaa'>&uarr;</span></td><td>1.54</td><td>1.59</td><td class="canon">1.81</td></tr>
-<tr><td>halstead_effort <span style='color:#aaa'>&uarr;</span></td><td>125.38</td><td>153.10</td><td class="canon">173.76</td></tr>
-<tr><td>comment_density <span style='color:#aaa'>&darr;</span></td><td>9.60</td><td>6.33</td><td class="canon">0.11</td></tr>
-<tr><td>api_calls <span style='color:#aaa'>&uarr;</span></td><td>1.69</td><td>2.19</td><td class="canon">1.72</td></tr>
-<tr><td>perplexity <span style='color:#aaa'>&uarr;</span></td><td>3.80</td><td>3.40</td><td class="canon">4.14</td></tr>
+<div class="scrollx"><table><tr><th>measure</th><th>Qwen2.5-Coder-1.5B</th><th>Claude Sonnet 5</th><th>DeepSeek-Coder-1.3B</th><th>canonical</th></tr>
+<tr><td>sloc <span style='color:#aaa'>&uarr;</span></td><td>5.32</td><td>5.78</td><td>6.63</td><td class="canon">6.94</td></tr>
+<tr><td>cyclomatic <span style='color:#aaa'>&uarr;</span></td><td>2.66</td><td>2.86</td><td>2.82</td><td class="canon">3.17</td></tr>
+<tr><td>cognitive <span style='color:#aaa'>&uarr;</span></td><td>2.01</td><td>2.26</td><td>2.41</td><td class="canon">2.86</td></tr>
+<tr><td>maintainability <span style='color:#aaa'>&darr;</span></td><td>85.52</td><td>81.23</td><td>82.41</td><td class="canon">79.00</td></tr>
+<tr><td>halstead_volume <span style='color:#aaa'>&uarr;</span></td><td>34.81</td><td>37.63</td><td>47.44</td><td class="canon">45.19</td></tr>
+<tr><td>halstead_difficulty <span style='color:#aaa'>&uarr;</span></td><td>1.54</td><td>1.65</td><td>1.59</td><td class="canon">1.81</td></tr>
+<tr><td>halstead_effort <span style='color:#aaa'>&uarr;</span></td><td>125.38</td><td>152.97</td><td>153.10</td><td class="canon">173.76</td></tr>
+<tr><td>comment_density <span style='color:#aaa'>&darr;</span></td><td>9.60</td><td>0.13</td><td>6.33</td><td class="canon">0.11</td></tr>
+<tr><td>api_calls <span style='color:#aaa'>&uarr;</span></td><td>1.69</td><td>1.70</td><td>2.19</td><td class="canon">1.72</td></tr>
+<tr><td>perplexity <span style='color:#aaa'>&uarr;</span></td><td>3.80</td><td>&mdash;</td><td>3.40</td><td class="canon">4.14</td></tr>
 </table></div>
 <h2>Detail</h2><div class="links">
 <a href="evaluation_report.html">Qwen2.5-Coder-1.5B &mdash; full report &rarr;</a>
+<a href="evaluation_report_claude.html">Claude Sonnet 5 &mdash; full report &rarr;</a>
 <a href="evaluation_report_deepseek.html">DeepSeek-Coder-1.3B &mdash; full report &rarr;</a>
 </div>
 </div></body></html>

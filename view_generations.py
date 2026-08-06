@@ -23,6 +23,7 @@ OUT = os.path.join(HERE, "generations.html")
 SOURCES = [
     ("arc_qwen/generations.jsonl",                 "benchmark", "Qwen2.5-Coder-1.5B",  "qwen"),
     ("arc_qwen/generations_deepseek.jsonl",        "benchmark", "DeepSeek-Coder-1.3B", "deepseek"),
+    ("arc_qwen/generations_claude.jsonl",          "benchmark", "Claude Sonnet 5",     "claude"),
     ("prompt_study/generations_qwen4k.jsonl",      "prompts",   "Qwen2.5-Coder-1.5B",  "qwen"),
     ("prompt_study/generations_deepseek4k.jsonl",  "prompts",   "DeepSeek-Coder-1.3B", "deepseek"),
     ("prompt_study/generations_claude.jsonl",      "prompts",   "Claude Sonnet 5",     "claude"),

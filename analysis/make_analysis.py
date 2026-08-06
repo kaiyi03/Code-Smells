@@ -161,44 +161,94 @@ def fig_heatmap():
 # Figure 2 -- the disagreement that matters
 # =====================================================================
 def fig_scatter():
-    fig, ax = plt.subplots(figsize=(6.8, 5.8))
+    """Injected against real, read by REGION rather than by distance from the diagonal.
+
+    An earlier version drew the diagonal and said points on it agree. That was
+    misleading: almost nothing sits on it, and the genuinely-detected defects sit
+    well above it. That is not a failure of those measures -- it is the paper's own
+    argument showing up in the geometry. Real defective code differs from clean code
+    in more ways than the defect (above all in size), so the real value is inflated
+    relative to the controlled one. The diagonal is therefore a reference line, not
+    an expectation, and the figure now says so.
+
+    What the axes mean is what matters: horizontal position answers "can this
+    measure respond to the defect at all", vertical position answers "do real
+    defective and clean code differ on it". The verdict is the combination.
+    """
+    fig, ax = plt.subplots(figsize=(6.8, 6.0))
+    lim = [-1.7, 5.5]
+
+    # --- regions first, so points and labels sit on top -----------------------
+    ax.axvspan(-0.2, 0.2, ymin=(0.8 - lim[0]) / (lim[1] - lim[0]), color="#b8860b",
+               alpha=.12, zorder=0)                       # cannot respond, yet separates
+    ax.add_patch(plt.Rectangle((0.8, 0.8), lim[1] - 0.8, lim[1] - 0.8,
+                               color="#1b6b41", alpha=.07, zorder=0))
+    ax.add_patch(plt.Rectangle((lim[0], lim[0]), 0.8 - lim[0], 0.8 - lim[0],
+                               color="#888", alpha=.07, zorder=0))
+
+    ax.plot(lim, lim, ls="--", lw=.9, color="#bbb", zorder=1)
+    ax.axhline(0, lw=.7, color="#ddd", zorder=0)
+    ax.axvline(0, lw=.7, color="#ddd", zorder=0)
+    ax.axhline(0.8, lw=.7, ls=":", color="#aaa", zorder=0)
+    ax.axvline(0.8, lw=.7, ls=":", color="#aaa", zorder=0)
+
+    # Each point is one defect-measure CELL, coloured by where it falls -- which is
+    # what the two axes measure. Colouring by the defect's overall verdict (fig 1's
+    # row colours) put green points inside the co-occurrence band, because a defect
+    # detected by one measure is invisible to most of the others.
+    def cell_kind(a, b):
+        if a >= 0.8 and b >= 0.8:
+            return "detects"
+        if abs(a) < 0.2 and b >= 0.8:
+            return "co-occurs"
+        return "no usable signal"
+
     seen, band = set(), []
     for s in SMELLS:
         for m in STRUCT:
             a, b = inj_d.get((s, m)), real_d.get((s, m))
             if a is None or b is None:
                 continue
-            v = TRUST[s]
-            ax.scatter(a, b, s=26, alpha=.75, color=VC[v],
-                       label=v if v not in seen else None, edgecolors="none")
-            seen.add(v)
+            k = cell_kind(a, b)
+            ax.scatter(a, b, s=28, alpha=.8 if k != "no usable signal" else .45,
+                       color={"detects": "#1b6b41", "co-occurs": "#b8860b",
+                              "no usable signal": "#999"}[k], zorder=3,
+                       label=k if k not in seen else None, edgecolors="none")
+            seen.add(k)
             if abs(a) < 0.2 and b > 1.0:                  # the co-occurrence corner
                 band.append((b, s, m, a))
 
-    # Label only the clearest cases, spread vertically so they do not collide.
+    # Label the clearest co-occurrence cases, spread so they do not collide.
     band.sort(reverse=True)
-    for k, (b, s, m, a) in enumerate(band[:4]):
-        ax.annotate(f"{s.replace('_', ' ')} · {m}", (a, b), fontsize=6.6, color="#7a1f1f",
-                    xytext=(34, -6 - 13 * k), textcoords="offset points",
-                    arrowprops=dict(arrowstyle="-", lw=.6, color="#b98a8a",
+    for k, (b, s, m, a) in enumerate(band[:3]):
+        ax.annotate(f"{s.replace('_', ' ')} · {m.replace('_', ' ')}", (a, b),
+                    fontsize=6.6, color="#7a5c10", zorder=4,
+                    xytext=(46, 8 - 15 * k), textcoords="offset points",
+                    arrowprops=dict(arrowstyle="-", lw=.6, color="#c9ab6a",
                                     shrinkA=0, shrinkB=2))
 
-    lim = [-1.7, 5.5]
-    ax.plot(lim, lim, ls="--", lw=.9, color="#999", zorder=0)
-    ax.axhline(0, lw=.7, color="#ccc", zorder=0)
-    ax.axvline(0, lw=.7, color="#ccc", zorder=0)
-    ax.axvspan(-0.2, 0.2, color="#9b2c2c", alpha=.07, zorder=0)
+    # --- region labels, in corners the data leaves empty ----------------------
+    ax.annotate("CO-OCCURRENCE\nprovably cannot respond,\nyet real code separates",
+                (-0.25, 4.8), xytext=(-1.62, 5.35), fontsize=7.2, color="#7a5c10",
+                ha="left", va="top", linespacing=1.45, zorder=4,
+                arrowprops=dict(arrowstyle="->", lw=.7, color="#c9ab6a"))
+    ax.text(5.35, 0.95, "DETECTION\nresponds on both", fontsize=7.2, color="#14523a",
+            ha="right", va="bottom", linespacing=1.45, zorder=4)
+    ax.text(-1.62, -1.62, "NO USABLE SIGNAL\nneither source", fontsize=7.2, color="#777",
+            ha="left", va="bottom", linespacing=1.45, zorder=4)
+    ax.annotate("equal on both sources", (4.5, 4.5), fontsize=6.6, color="#aaa",
+                rotation=38, ha="center", va="bottom", zorder=2)
+
     ax.set_xlim(lim); ax.set_ylim(lim)
     ax.set_xlabel("injected — does changing only the defect move the measure?")
     ax.set_ylabel("real — do defective and clean code differ on it?")
-    ax.set_title("Detection versus co-occurrence", pad=8)
-    ax.legend(title="verdict", loc="upper left", frameon=False)
-    # The explanation sits below the axes rather than inside them: in the data area
-    # it landed on top of the very points it describes.
+    ax.set_title("Read this figure by region, not by distance from the diagonal", pad=8)
+    ax.legend(title="each point is one defect × measure", loc="lower right",
+              frameon=False, borderpad=0.2, labelspacing=0.3)
     fig.text(0.5, -0.015,
-             "Shaded band: changing only the defect moves the measure not at all, yet real "
-             "defective and clean code\nseparate on it — so the separation is something else, "
-             "mostly size. Points on the dashed line agree.",
+             "Detected defects sit ABOVE the diagonal, and that is expected: real defective "
+             "code differs from clean\ncode in more ways than the defect alone, so the real "
+             "value is inflated. The diagonal is a reference, not a target.",
              ha="center", va="top", fontsize=7.4, color="#555")
     save(fig, "fig2_injected_vs_real")
 
@@ -207,32 +257,67 @@ def fig_scatter():
 # Figure 3 -- which measures are redundant
 # =====================================================================
 def fig_correlation():
-    ms = STRUCT + SIM
-    mat = np.full((len(ms), len(ms)), np.nan)
-    vecs = {m: np.array([inj_d.get((s, m), np.nan) for s in SMELLS], dtype=float) for m in ms}
-    for i, a in enumerate(ms):
-        for j, b in enumerate(ms):
-            x, y = vecs[a], vecs[b]
-            ok = ~(np.isnan(x) | np.isnan(y))
-            if ok.sum() > 2 and np.std(x[ok]) > 0 and np.std(y[ok]) > 0:
-                mat[i, j] = np.corrcoef(x[ok], y[ok])[0, 1]
+    """How much measures agree, grouped by whether they belong to the same family.
 
-    fig, ax = plt.subplots(figsize=(7.6, 6.6))
-    im = ax.imshow(mat, cmap="RdBu_r", vmin=-1, vmax=1)
-    ax.set_xticks(range(len(ms)))
-    ax.set_xticklabels([m.replace("_", " ") for m in ms], rotation=45, ha="right")
-    ax.set_yticks(range(len(ms)))
-    ax.set_yticklabels([m.replace("_", " ") for m in ms])
-    for t in ax.get_xticklabels():
-        t.set_color("#0f6d6d" if t.get_text().replace(" ", "_") in STRUCT else "#7a3d9e")
-    for t in ax.get_yticklabels():
-        t.set_color("#0f6d6d" if t.get_text().replace(" ", "_") in STRUCT else "#7a3d9e")
-    ax.axhline(len(STRUCT) - .5, color="#333", lw=1.1)
-    ax.axvline(len(STRUCT) - .5, color="#333", lw=1.1)
-    fig.colorbar(im, ax=ax, fraction=0.04, pad=0.02).set_label(
-        "correlation of detection strength across the twelve defects")
-    ax.set_title("Measures that agree are redundant; the block structure is the\n"
-                 "empirical case for keeping both families", fontsize=10, pad=10)
+    This replaced a full correlation matrix. The matrix carried one fact -- two
+    internally-agreeing blocks, near-independent of each other -- and made the
+    reader decode a grid with identical labels on both axes to recover it. Every
+    pairwise correlation is still computed here; they are just plotted as three
+    distributions, which is the comparison the fact is actually about.
+
+    Showing every pair rather than three means also keeps the spread visible: if
+    the families overlapped, that would show up here and does not.
+    """
+    ms = STRUCT + SIM
+    vecs = {m: np.array([inj_d.get((s, m), np.nan) for s in SMELLS], dtype=float) for m in ms}
+
+    def corr(a, b):
+        x, y = vecs[a], vecs[b]
+        ok = ~(np.isnan(x) | np.isnan(y))
+        if ok.sum() > 2 and np.std(x[ok]) > 0 and np.std(y[ok]) > 0:
+            return float(np.corrcoef(x[ok], y[ok])[0, 1])
+        return None
+
+    groups = {"within\nstructural": [], "within\nsimilarity": [], "across\nfamilies": []}
+    for i, a in enumerate(ms):
+        for b in ms[i + 1:]:
+            c = corr(a, b)
+            if c is None:
+                continue
+            if a in STRUCT and b in STRUCT:
+                groups["within\nstructural"].append(c)
+            elif a in SIM and b in SIM:
+                groups["within\nsimilarity"].append(c)
+            else:
+                groups["across\nfamilies"].append(c)
+
+    fig, ax = plt.subplots(figsize=(6.4, 4.6))
+    colours = ["#0f6d6d", "#7a3d9e", "#b8860b"]
+    rng = np.random.default_rng(0)                # jitter only; seeded so the figure is stable
+    for i, (name, vals) in enumerate(groups.items()):
+        if not vals:
+            continue
+        x = i + (rng.random(len(vals)) - .5) * .34
+        ax.scatter(x, vals, s=20, alpha=.5, color=colours[i], edgecolors="none", zorder=3)
+        med = float(np.median(vals))
+        ax.plot([i - .28, i + .28], [med, med], lw=2.4, color=colours[i], zorder=4)
+        ax.text(i, 1.12, f"median {med:+.2f}\n{len(vals)} pairs", ha="center", va="bottom",
+                fontsize=7.6, color=colours[i], linespacing=1.4)
+
+    ax.axhline(0, lw=.8, color="#bbb", zorder=0)
+    ax.set_xticks(range(len(groups)))
+    ax.set_xticklabels(list(groups), linespacing=1.35)
+    ax.set_ylim(-1.05, 1.35)
+    ax.set_yticks([-1, -.5, 0, .5, 1])
+    ax.set_ylabel("correlation of detection strength across the twelve defects")
+    ax.set_title("The similarity family is internally redundant;\nthe structural family is not",
+                 fontsize=10, pad=10)
+    fig.text(0.5, -0.02,
+             "Each point is one pair of measures. A pair that agreed perfectly would sit at "
+             "+1; a pair carrying\nunrelated information sits near 0. Bars are group medians. "
+             "Similarity measures nearly duplicate\neach other; structural measures do not, so "
+             "dropping one loses something no other covers.",
+             ha="center", va="top", fontsize=7.4, color="#555")
     save(fig, "fig3_measure_correlation")
 
 
@@ -248,53 +333,72 @@ def fig_coverage():
         best_m.append(max(vm) if vm else 0)
 
     y = np.arange(len(SMELLS))
-    fig, ax = plt.subplots(figsize=(7.2, 4.8))
+    fig, ax = plt.subplots(figsize=(7.2, 5.1))
     ax.barh(y - .2, best_s, height=.38, color="#0f6d6d", label="best structural measure")
     ax.barh(y + .2, best_m, height=.38, color="#7a3d9e", label="best similarity measure")
     ax.axvline(0.8, ls="--", lw=.9, color="#666")
-    ax.text(0.86, len(SMELLS) - .6, "large effect", fontsize=7, color="#666")
+    ax.text(0.86, -0.62, "large effect", fontsize=7, color="#666", va="center")
     ax.set_yticks(y)
     ax.set_yticklabels([s.replace("_", " ") for s in SMELLS])
     ax.invert_yaxis()
     ax.set_xlabel("detection strength of the best measure in each family (injected)")
-    ax.set_title("Every defect is caught by something; nothing catches everything", pad=8)
-    ax.legend(frameon=False, loc="lower right")
+    ax.set_title("Every defect is caught by something; nothing catches everything", pad=26)
+    # Above the axes, not inside them: at lower right the legend box sat on top of the
+    # dead-code and mutable-default bars, which are exactly the rows the figure is about.
+    ax.legend(frameon=False, ncol=2, loc="lower left", bbox_to_anchor=(0, 1.005))
     save(fig, "fig4_family_coverage")
 
 
 # =====================================================================
 # Figure 5 -- what the models actually produce (RQ2)
 # =====================================================================
-def fig_models():
-    runs = [("evaluation_summary.csv", "Qwen2.5-Coder"),
-            ("evaluation_summary_deepseek.csv", "DeepSeek-Coder")]
-    keys = ["sloc", "cyclomatic", "cognitive", "maintainability", "comment_density"]
-    data, canon = {}, {}
-    for fn, label in runs:
+# The three models scored on the 664 benchmark tasks. Ordered by capability so the
+# figures read left to right from weakest to strongest.
+BENCH_RUNS = [("evaluation_summary_deepseek.csv", "DeepSeek-Coder"),
+              ("evaluation_summary.csv", "Qwen2.5-Coder"),
+              ("evaluation_summary_claude.csv", "Claude Sonnet 5")]
+BENCH_COLOURS = ["#7a3d9e", "#0f6d6d", "#b8860b"]
+
+
+def _bench():
+    """Load whichever benchmark evaluations exist, in BENCH_RUNS order."""
+    out = {}
+    for fn, label in BENCH_RUNS:
         p = os.path.join(ROOT, "arc_qwen", fn)
-        if not os.path.exists(p):
-            continue
-        rows = read(p)
-        data[label] = [np.nanmean([num(r[k]) if num(r[k]) is not None else np.nan
-                                   for r in rows]) for k in keys]
-        canon = [np.nanmean([num(r.get(f"canon_{k}")) if num(r.get(f"canon_{k}")) is not None
-                             else np.nan for r in rows]) for k in keys]
-    if not data:
+        if os.path.exists(p):
+            out[label] = read(p)
+    return out
+
+
+def fig_models():
+    keys = ["sloc", "cyclomatic", "cognitive", "maintainability", "comment_density"]
+    runs = _bench()
+    if not runs:
         print("  [skip] fig5 -- no evaluation summaries")
         return
+    data, canon = {}, None
+    for label, rows in runs.items():
+        data[label] = [np.nanmean([num(r[k]) if num(r[k]) is not None else np.nan
+                                   for r in rows]) for k in keys]
+        if canon is None:                    # identical across runs -- same 664 tasks
+            canon = [np.nanmean([num(r.get(f"canon_{k}"))
+                                 if num(r.get(f"canon_{k}")) is not None else np.nan
+                                 for r in rows]) for k in keys]
 
     x = np.arange(len(keys))
-    w = 0.26
+    series = list(data.items()) + [("canonical solution", canon)]
+    w = 0.8 / len(series)
     fig, ax = plt.subplots(figsize=(7.4, 4.2))
-    for i, (label, vals) in enumerate(data.items()):
-        ax.bar(x + (i - 1) * w, vals, w, label=label)
-    ax.bar(x + w, canon, w, label="canonical solution", color="#555")
+    for i, (label, vals) in enumerate(series):
+        colour = BENCH_COLOURS[i] if i < len(data) else "#555"
+        ax.bar(x + (i - (len(series) - 1) / 2) * w, vals, w, label=label, color=colour)
     ax.set_xticks(x)
     ax.set_xticklabels([k.replace("_", " ") for k in keys])
     ax.set_ylabel("mean over 664 generated solutions")
     ax.set_title("Generated code is simpler than the reference on every complexity\n"
-                 "measure, and far more heavily commented", fontsize=10, pad=8)
-    ax.legend(frameon=False)
+                 "measure, and that holds for every model regardless of capability",
+                 fontsize=10, pad=8)
+    ax.legend(frameon=False, ncol=2, fontsize=7.6)
     save(fig, "fig5_model_structure")
 
 
@@ -302,36 +406,84 @@ def fig_models():
 # Figure 6 -- the verbosity confound
 # =====================================================================
 def fig_verbosity():
-    runs = [("evaluation_summary.csv", "Qwen2.5-Coder"),
-            ("evaluation_summary_deepseek.csv", "DeepSeek-Coder")]
+    runs = _bench()
+    if not runs:
+        print("  [skip] fig6 -- no evaluation summaries")
+        return
     labels, emitted, defs = [], [], []
-    for fn, label in runs:
-        p = os.path.join(ROOT, "arc_qwen", fn)
-        if not os.path.exists(p):
-            continue
-        rows = read(p)
+    for label, rows in runs.items():
         n = len(rows)
         labels.append(label)
         emitted.append(100 * sum(1 for r in rows if int(r["n_smells"] or 0) > 0) / n)
         defs.append(100 * sum(1 for r in rows if int(r.get("n_smells_defs") or 0) > 0) / n)
-    if not labels:
-        print("  [skip] fig6 -- no evaluation summaries")
-        return
 
     x = np.arange(len(labels))
-    fig, ax = plt.subplots(figsize=(5.6, 4.0))
+    fig, ax = plt.subplots(figsize=(6.4, 4.2))
     ax.bar(x - .18, emitted, .34, label="as emitted", color="#b8860b")
     ax.bar(x + .18, defs, .34, label="definitions only", color="#0f6d6d")
     for i, (a, b) in enumerate(zip(emitted, defs)):
         ax.annotate(f"{a:.1f}%", (i - .18, a), ha="center", va="bottom", fontsize=7.5)
         ax.annotate(f"{b:.1f}%", (i + .18, b), ha="center", va="bottom", fontsize=7.5)
-    ax.set_xticks(x); ax.set_xticklabels(labels)
+        if a - b > 2:                        # mark only the model the correction moves
+            ax.annotate("", xy=(i + .18, b + .4), xytext=(i - .18, a + .4),
+                        arrowprops=dict(arrowstyle="->", lw=1.1, color="#9b2c2c",
+                                        connectionstyle="arc3,rad=-.35"))
+            ax.text(i, a + 2.4, "the gap is\nvolunteered test code", ha="center",
+                    fontsize=7, color="#9b2c2c", linespacing=1.35)
+    ax.set_xticks(x); ax.set_xticklabels(labels, fontsize=8)
+    ax.set_ylim(0, max(emitted) * 1.32)
     ax.set_ylabel("share of generations carrying a defect")
-    ax.set_title("Scoring raw output partly measures verbosity:\n"
-                 "one model's rate halves once its own test cases are excluded",
+    ax.set_title("Scoring raw output partly measures verbosity: of three models,\n"
+                 "only the one that volunteers extra code moves when it is excluded",
                  fontsize=9.5, pad=8)
-    ax.legend(frameon=False)
+    ax.legend(frameon=False, loc="upper right")
     save(fig, "fig6_verbosity_confound")
+
+
+# =====================================================================
+# Figure 10 -- capability varies, structural density does not
+# =====================================================================
+def fig_capability_vs_structure():
+    """The finding that only appears once a frontier model joins the comparison.
+
+    Correctness spans forty points across these three models. Defect density per
+    hundred lines spans six hundredths. Whatever the panel is measuring, it is not
+    tracking the thing the benchmarks rank models by -- which is the point: a model
+    can be far better at producing working code without being any better at
+    producing well-structured code.
+    """
+    runs = _bench()
+    if not runs:
+        print("  [skip] fig10 -- no evaluation summaries")
+        return
+    labels, p1, dens = [], [], []
+    for label, rows in runs.items():
+        labels.append(label)
+        p1.append(100 * sum(1 for r in rows if r["result"] == "pass") / len(rows))
+        tot = sum(num(r["n_smells_defs"]) or 0 for r in rows)
+        sl = sum(num(r["sloc"]) or 0 for r in rows)
+        dens.append(100 * tot / sl if sl else 0)
+
+    fig, axes = plt.subplots(1, 2, figsize=(8.2, 3.9))
+    for ax, vals, ttl, ylab, hi in [
+            (axes[0], p1, "Correctness varies enormously", "pass@1 (%)", True),
+            (axes[1], dens, "Structural defect density does not",
+             "defects per 100 SLOC", False)]:
+        ax.bar(range(len(labels)), vals, color=BENCH_COLOURS[:len(labels)], width=.62)
+        ax.set_xticks(range(len(labels)))
+        ax.set_xticklabels(labels, rotation=18, ha="right", fontsize=7.6)
+        ax.set_title(ttl, fontsize=9.8)
+        ax.set_ylabel(ylab)
+        for i, v in enumerate(vals):
+            ax.annotate(f"{v:.1f}%" if hi else f"{v:.2f}", (i, v), ha="center",
+                        va="bottom", fontsize=8)
+        # Same-shaped axes would hide the point; each is scaled to its own range,
+        # and the spread is stated in the title so the scaling cannot mislead.
+        ax.set_ylim(0, max(vals) * 1.28)
+    fig.suptitle("A model can be far better at writing code that works without being\n"
+                 "any better at writing code that is well structured",
+                 y=1.06, fontsize=10.5)
+    save(fig, "fig10_capability_vs_structure")
 
 
 # =====================================================================
@@ -571,6 +723,7 @@ if __name__ == "__main__":
     fig_task_set()
     fig_induction()
     fig_perplexity()
+    fig_capability_vs_structure()
     print("\nTables:")
     table_detection()
     table_correctness()

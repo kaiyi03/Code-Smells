@@ -21,9 +21,12 @@ import os
 import re
 import time
 
-import torch
 from datasets import load_dataset
-from transformers import AutoModelForCausalLM, AutoTokenizer
+
+# torch and transformers are imported inside main(): they are only needed to run a
+# model, and importing them at module level would make this file unimportable off
+# a GPU node. generate_claude_bench.py imports load_tasks() from here so that the
+# API model gets byte-identical prompts -- that only works if the import is cheap.
 
 MODEL = os.environ.get("GEN_MODEL", "Qwen/Qwen2.5-Coder-1.5B-Instruct")
 MAX_NEW = 512
@@ -68,6 +71,9 @@ def extract_code(text):
 
 
 def main():
+    import torch
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+
     ap = argparse.ArgumentParser()
     ap.add_argument("--limit", type=int, default=None, help="tasks per source (test runs)")
     ap.add_argument("--out", default=os.path.expanduser("~/generations.jsonl"))

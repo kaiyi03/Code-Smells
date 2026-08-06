@@ -95,3 +95,217 @@
 %   - The CodeSmellData 1.0 / 2.0 corpus and PySmell
 %   - SonarSource cognitive complexity
 %   - A maintainability-index reference (Oman & Hagemeister)
+
+% =====================================================================
+% Size as a confounder in software-metric validation
+% =====================================================================
+@article{elemam2001confounding,
+  author  = {El Emam, Khaled and Benlarbi, Sa{\"\i}da and Goel, Nishith and Rai, Shesh N.},
+  title   = {The Confounding Effect of Class Size on the Validity of Object-Oriented Metrics},
+  journal = {IEEE Transactions on Software Engineering},
+  volume  = {27}, number = {7}, pages = {630--650}, year = {2001},
+  doi     = {10.1109/32.935855},
+}
+
+@article{evanco2003comments,
+  author  = {Evanco, William M.},
+  title   = {Comments on ``The Confounding Effect of Class Size on the Validity of
+             Object-Oriented Metrics''},
+  journal = {IEEE Transactions on Software Engineering},
+  volume  = {29}, number = {7}, pages = {670--672}, year = {2003},
+  doi     = {10.1109/TSE.2003.1214331},
+}
+
+@article{gil2017correlation,
+  author  = {Gil, Joseph Yossi and Lalouche, Gal},
+  title   = {On the correlation between size and metric validity},
+  journal = {Empirical Software Engineering},
+  volume  = {22}, number = {5}, pages = {2585--2611}, year = {2017},
+  doi     = {10.1007/s10664-017-9513-5},
+}
+
+@article{sjoberg2013quantifying,
+  author  = {Sj{\o}berg, Dag I. K. and Yamashita, Aiko and Anda, Bente C. D. and
+             Mockus, Audris and Dyb{\aa}, Tore},
+  title   = {Quantifying the Effect of Code Smells on Maintenance Effort},
+  journal = {IEEE Transactions on Software Engineering},
+  volume  = {39}, number = {8}, pages = {1144--1156}, year = {2013},
+  doi     = {10.1109/TSE.2012.89},
+}
+
+@article{shepperd1988critique,
+  author  = {Shepperd, Martin},
+  title   = {A critique of cyclomatic complexity as a software metric},
+  journal = {Software Engineering Journal},
+  volume  = {3}, number = {2}, pages = {30--36}, year = {1988},
+  doi     = {10.1049/sej.1988.0003},
+}
+
+@article{jay2009cyclomatic,
+  author  = {Jay, Graylin and Hale, Joanne E. and Smith, Randy K. and Hale, David P.
+             and Kraft, Nicholas A. and Ward, Charles},
+  title   = {Cyclomatic Complexity and Lines of Code: Empirical Evidence of a Stable
+             Linear Relationship},
+  journal = {Journal of Software Engineering and Applications},
+  volume  = {2}, number = {3}, pages = {137--143}, year = {2009},
+  doi     = {10.4236/jsea.2009.23020},
+}
+
+@article{palomba2018diffuseness,
+  author  = {Palomba, Fabio and Bavota, Gabriele and Di Penta, Massimiliano and
+             Fasano, Fausto and Oliveto, Rocco and De Lucia, Andrea},
+  title   = {On the diffuseness and the impact on maintainability of code smells:
+             a large scale empirical investigation},
+  journal = {Empirical Software Engineering},
+  volume  = {23}, number = {3}, pages = {1188--1221}, year = {2018},
+  doi     = {10.1007/s10664-017-9535-z},
+}
+
+% =====================================================================
+% Metrics as features for per-smell classification
+% =====================================================================
+@article{fontana2016comparing,
+  author  = {Arcelli Fontana, Francesca and M{\"a}ntyl{\"a}, Mika V. and
+             Zanoni, Marco and Marino, Alessandro},
+  title   = {Comparing and experimenting machine learning techniques for code smell
+             detection},
+  journal = {Empirical Software Engineering},
+  volume  = {21}, number = {3}, pages = {1143--1191}, year = {2016},
+  doi     = {10.1007/s10664-015-9378-4},
+}
+
+@inproceedings{dinucci2018detecting,
+  author    = {Di Nucci, Dario and Palomba, Fabio and Tamburri, Damian A. and
+               Serebrenik, Alexander and De Lucia, Andrea},
+  title     = {Detecting code smells using machine learning techniques:
+               Are we there yet?},
+  booktitle = {IEEE 25th International Conference on Software Analysis, Evolution and
+               Reengineering (SANER)},
+  pages     = {612--621}, year = {2018},
+  doi       = {10.1109/SANER.2018.8330266},
+}
+
+@article{azeem2019machine,
+  author  = {Azeem, Muhammad Ilyas and Palomba, Fabio and Shi, Lin and Wang, Qing},
+  title   = {Machine learning techniques for code smell detection: A systematic
+             literature review and meta-analysis},
+  journal = {Information and Software Technology},
+  volume  = {108}, pages = {115--138}, year = {2019},
+  doi     = {10.1016/j.infsof.2018.12.009},
+}
+
+@article{moha2010decor,
+  author  = {Moha, Naouel and Gu{\'e}h{\'e}neuc, Yann-Ga{\"e}l and Duchien, Laurence
+             and Le Meur, Anne-Fran{\c{c}}oise},
+  title   = {{DECOR}: A Method for the Specification and Detection of Code and Design
+             Smells},
+  journal = {IEEE Transactions on Software Engineering},
+  volume  = {36}, number = {1}, pages = {20--36}, year = {2010},
+  doi     = {10.1109/TSE.2009.50},
+}
+
+% =====================================================================
+% Smell datasets: mined and hand-labelled, not synthesised
+% =====================================================================
+@inproceedings{palomba2015landfill,
+  author    = {Palomba, Fabio and Di Nucci, Dario and Tufano, Michele and
+               Bavota, Gabriele and Oliveto, Rocco and Poshyvanyk, Denys and
+               De Lucia, Andrea},
+  title     = {Landfill: An Open Dataset of Code Smells with Public Evaluation},
+  booktitle = {IEEE/ACM 12th Working Conference on Mining Software Repositories (MSR)},
+  pages     = {482--485}, year = {2015},
+  doi       = {10.1109/MSR.2015.69},
+}
+
+@inproceedings{madeyski2020mlcq,
+  author    = {Madeyski, Lech and Lewowski, Tomasz},
+  title     = {{MLCQ}: Industry-Relevant Code Smell Data Set},
+  booktitle = {Evaluation and Assessment in Software Engineering (EASE)},
+  pages     = {342--347}, year = {2020},
+  doi       = {10.1145/3383219.3383264},
+}
+
+@inproceedings{liu2018deep,
+  author    = {Liu, Hui and Xu, Zhifeng and Zou, Yanzhen},
+  title     = {Deep learning based feature envy detection},
+  booktitle = {33rd ACM/IEEE International Conference on Automated Software
+               Engineering (ASE)},
+  pages     = {385--396}, year = {2018},
+  doi       = {10.1145/3238147.3238166},
+}
+
+@misc{lin2026smellbench,
+  author        = {Lin, Fake and Hu, Binbin and Zhu, Xi and Zhao, Ziwei and Zheng, Zhi
+                   and Liu, Ziqi and Zhang, Zhiqiang and Zhou, Jun and Xu, Tong},
+  title         = {{SmellBench}: Towards Fine-Grained Evaluation of Code Agents on
+                   Refactoring Tasks},
+  year          = {2026},
+  eprint        = {2606.05574},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.SE},
+}
+
+% =====================================================================
+% Structural quality of model-generated code
+% =====================================================================
+@inproceedings{siddiq2022empirical,
+  author    = {Siddiq, Mohammed Latif and Majumder, Shafayat H. and Mim, Maisha R.
+               and Jajodia, Sourov and Santos, Joanna C. S.},
+  title     = {An Empirical Study of Code Smells in Transformer-based Code Generation
+               Techniques},
+  booktitle = {IEEE 22nd International Working Conference on Source Code Analysis and
+               Manipulation (SCAM)},
+  pages     = {71--82}, year = {2022},
+  doi       = {10.1109/SCAM55253.2022.00014},
+}
+
+@inproceedings{nguyen2022empirical,
+  author    = {Nguyen, Nhan and Nadi, Sarah},
+  title     = {An Empirical Evaluation of {GitHub} {Copilot} Code Suggestions},
+  booktitle = {IEEE/ACM 19th International Conference on Mining Software Repositories
+               (MSR)},
+  pages     = {1--5}, year = {2022},
+  doi       = {10.1145/3524842.3528470},
+}
+
+@misc{velasco2024propense,
+  author        = {Velasco, Alejandro and Rodriguez-Cardenas, Daniel and
+                   Alif, Luftar Rahman and Palacio, David N. and Poshyvanyk, Denys},
+  title         = {How Propense Are Large Language Models at Producing Code Smells?
+                   A Benchmarking Study},
+  year          = {2024},
+  eprint        = {2412.18989},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.SE},
+}
+
+@misc{velasco2026causal,
+  author        = {Velasco, Alejandro and Rodriguez-Cardenas, Daniel and Khati, Dipin
+                   and Palacio, David N. and Alif, Luftar Rahman and Poshyvanyk, Denys},
+  title         = {A Causal Perspective on Measuring, Explaining and Mitigating Smells
+                   in {LLM}-Generated Code},
+  year          = {2026},
+  eprint        = {2511.15817},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.SE},
+}
+
+@misc{sabra2025assessing,
+  author        = {Sabra, Abbas and Schmitt, Olivier and Tyler, Joseph},
+  title         = {Assessing the Quality and Security of {AI}-Generated Code:
+                   A Quantitative Analysis},
+  year          = {2025},
+  eprint        = {2508.14727},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.SE},
+}
+
+@misc{zhu2026aigenerated,
+  author        = {Zhu, Yue Cai and Tsantalis, Nikolaos and Rigby, Peter C.},
+  title         = {{AI}-Generated Smells: An Analysis of Code and Architecture in
+                   {LLM}- and Agent-Driven Development},
+  year          = {2026},
+  eprint        = {2605.02741},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.SE},
+}
