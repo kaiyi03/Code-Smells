@@ -187,38 +187,9 @@ deliberately, since a model that answers with a stub has not written enough code
 to contain one. The paper's three questions are the same question at three
 levels.
 
-\subsection{Contributions}
-
-\begin{enumerate}
-  \item \textbf{A validation protocol} that separates detection from co-occurrence
-        by pairing a controlled intervention with real labelled code, reporting one
-        statistic on both so they can be read side by side. Because the defect is
-        manipulated rather than merely observed, the protocol also answers the
-        standing objection that size cannot be treated as a confounder in
-        observational metric validation \cite{evanco2003comments}.
-  \item \textbf{A labelled benchmark} of 1{,}300 Python functions covering twelve
-        structural defects: every example confirmed by a static analyser, and
-        verified by execution to preserve behaviour. Released openly.
-  \item \textbf{Per-defect verdicts for seventeen measures.} Of twelve defects,
-        three are genuinely detected, five are cases of co-occurrence, and four
-        are invisible to every measure tested. Eight of the twelve lie beyond the
-        reach of the best structural measure available. Within the panel, the
-        similarity measures turn out to be close to interchangeable while the
-        structural measures are not, so the case for a panel rests on the
-        structural family rather than on the two families balancing each other.
-  \item \textbf{Size identified as the same confound at three levels}: as
-        co-occurrence when a measure is validated, as verbosity when two models
-        are compared, and as incompleteness when a model is prompted for a defect
-        and writes too little code to contain one.
-  \item \textbf{Two negative results about tempting proxies.} Language-model
-        perplexity does not distinguish structurally poor code from clean code on
-        either source, so naturalness is not a proxy for structural quality. And
-        structural quality does not track model capability: across three models
-        spanning forty-one points of pass@1, defect density per hundred lines
-        varies by six hundredths.
-  \item \textbf{An open evaluation tool} that applies the validated panel, with its
-        verdicts attached, to arbitrary Python code.
-\end{enumerate}
+Alongside the results, the work produces three artefacts, all released openly: the
+labelled benchmark, the validated panel with its per-defect verdicts attached, and
+an evaluation tool that applies that panel to arbitrary Python code.
 
 \subsection{Research questions}
 
@@ -341,30 +312,16 @@ whatever else distinguishes defective code. That a function with a long paramete
 list scores worse on some index does not establish that the index responds to the
 parameter list.
 
-\subsection{Size, the confound this paper keeps meeting}
-\label{sec:sizeconfound}
-
-That the ``whatever else'' is usually size is well established outside the smell
-literature. El Emam et al.\ showed that of twenty-four object-oriented metrics,
-only four remained associated with fault-proneness once class size was controlled
-for \cite{elemam2001confounding}; Gil and Lalouche later found a metric's validity
-to be largely predictable from its correlation with size alone
-\cite{gil2017correlation}. Cyclomatic complexity has been argued to be a proxy for
-lines of code since Shepperd's critique \cite{shepperd1988critique}, and measured
-as near-collinear with it \cite{jay2009cyclomatic}. Inside the smell literature,
-Sj\o{}berg et al.\ found that adjusting for file size removed the effect of all
-twelve smells they studied on maintenance effort \cite{sjoberg2013quantifying},
-and Palomba et al.\ report size dominating smell presence as a driver of
-maintainability \cite{palomba2018diffuseness}.
-
-These are observational results, and they attract an observational objection.
-Evanco argued that size cannot properly be called a confounder here, because a
-confounder must be causally prior, and the ability to measure size does not
-precede the ability to measure the other metrics \cite{evanco2003comments}. The
-objection has force against statistical control and none against an intervention.
-If the defect is manipulated while the code is otherwise held fixed, the causal
-ordering is established by construction rather than assumed --- which is the
-methodological reason the controlled arm of this benchmark exists.
+The ``whatever else'' is often size, and that much is already established.
+Controlling for class size removes most of the association between
+object-oriented metrics and fault-proneness \cite{elemam2001confounding}, and a
+metric's apparent validity is largely predictable from its correlation with size
+alone \cite{gil2017correlation}. Within the smell literature, adjusting for file
+size removed the effect of all twelve smells Sj\o{}berg et al.\ studied on
+maintenance effort \cite{sjoberg2013quantifying}. Cyclomatic complexity in
+particular has long been argued to be a proxy for lines of code
+\cite{shepperd1988critique,jay2009cyclomatic}. Section~\ref{sec:rq1} finds the
+same mechanism operating per defect.
 
 \subsection{Evaluating generated code}
 
@@ -814,20 +771,6 @@ they imply for how structural quality should be measured at all.
 \subsection{Four patterns, four worked examples}
 \label{sec:patterns}
 
-\begin{figure}[!tb]
-  \centering
-  \includegraphics[width=\linewidth]{figures/fig2_injected_vs_real.pdf}
-  \caption{One point per defect, placed at the structural measure that separates
-  it most strongly on real code --- the same selection as
-  Table~\ref{tab:detection}, so the two cannot disagree. Horizontal position
-  answers whether the measure can respond to the defect at all; vertical position
-  answers whether real defective and clean code differ on it. The shaded band is
-  the co-occurrence region. Detected defects sit above the diagonal because real
-  defective code differs from clean code in more ways than the defect alone, so
-  the diagonal is a reference line rather than a target.}
-  \label{fig:scatter}
-\end{figure}
-
 \paragraph{Genuine detection: both sources agree.}
 Deep nesting moves cyclomatic complexity at $d = 3.85$ $[3.39, 4.32]$ when
 injected and $5.0$ (capped) on real code; a complex conditional moves Halstead
@@ -846,8 +789,9 @@ functions that contain this defect are simply \emph{bigger}. The separation is
 real; it is a size effect wearing the defect's label. The same pattern, weaker,
 holds for \texttt{broad\_except} ($0.10 \to 1.19$) and \texttt{magic\_number}
 ($0.54 \to 1.43$). A study without the controlled arm would report all three as
-detection --- this pattern is the paper's central caution, and it is the shaded
-band in Figure~\ref{fig:scatter}.
+detection. This pattern is the paper's central caution, and in
+Figure~\ref{fig:heatmap} it is the set of cells that are pale on the left and hot
+on the right.
 
 \paragraph{Injection artefacts: the controlled arm can also overstate.}
 The disagreement runs the other way too, and it calibrates how far synthetic
@@ -888,18 +832,6 @@ as blind and leave it to the clone detector.
   \label{fig:coverage}
 \end{figure}
 
-\begin{figure}[!tb]
-  \centering
-  \includegraphics[width=\linewidth]{figures/fig3_measure_correlation.pdf}
-  \caption{Every pairwise correlation of detection-strength profiles across the
-  twelve defects, grouped by whether the pair belongs to the same family. Each
-  point is one pair of measures; bars are group medians. Similarity measures are
-  nearly interchangeable, structural measures are not --- so the case for a panel
-  rests on the structural family carrying genuinely independent information, not
-  on the two families being internally coherent.}
-  \label{fig:correlation}
-\end{figure}
-
 Figure~\ref{fig:coverage} states the structural family's limit as an upper bound.
 For each defect it plots the \emph{strongest} measure each family offers, which is
 the form the claim requires: if the best structural measure cannot see a defect,
@@ -914,25 +846,20 @@ with per-measure medians between $2.5$ and $4.7$. It catches exactly the
 signature-level defects the structural family cannot reach, because any edit,
 however structurally invisible, makes the code diverge from its reference.
 
-Figure~\ref{fig:correlation} asks how much the measures agree with one another,
-and the answer is sharply different for the two families. The similarity measures
-are close to interchangeable: the median correlation between a pair of them is
-$+0.85$, so most of what any one reports, the others report too. The structural
-measures are not: their median pairwise correlation is $+0.04$. Knowing what one
-structural measure says about a defect tells you almost nothing about what
-another will say. Across the two families the median is $+0.28$.
-
-We expected a symmetric result --- two coherent families, each internally
-agreeing --- and did not get one. The reading that survives is more useful than
-the one we expected: the panel could lose most of its similarity measures at
-little cost, and cannot lose a structural measure without losing something no
-other measure in the panel covers.
+The two families also differ in how much they duplicate each other internally.
+Correlating each measure's profile of detection strengths across the twelve
+defects, the median correlation between two similarity measures is $+0.85$: most
+of what any one reports, the others report too. Between two structural measures it
+is $+0.04$, so knowing what one says about a defect tells you almost nothing about
+what another will say. The panel could therefore lose most of its similarity
+measures at little cost, and cannot lose a structural measure without losing
+something no other measure covers.
 
 This coverage comes with a boundary that must be stated rather than footnoted:
 similarity measures require a known-good reference, which the injected
 benchmark has by construction and real code never does. Their validation is
 therefore injected-only, inheriting exactly the artefacts catalogued above.
-Together, Figures \ref{fig:coverage} and \ref{fig:correlation} give RQ1 its
+This gives RQ1 its
 answer. No single measure sees all twelve defects. The structural family, which
 is the only family available on deployed code, leaves eight of the twelve out of
 reach even at its best. The similarity family reaches all twelve but only where a

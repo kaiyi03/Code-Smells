@@ -50,59 +50,39 @@ to read it. Everything here is generated from the result files by
      measures with far more than they can actually do. Defect names are coloured by the
      verdict they end up with.</p></div>
 <p class='dl'>Vector version for the paper: <a href='figures/fig1_detection_heatmap.pdf'>fig1_detection_heatmap.pdf</a></p>
-<h2><span class='n'>Figure 2</span><br>Detection versus co-occurrence</h2>
-<p>The same numbers as one scatter: controlled effect on the horizontal axis,
-     observational effect on the vertical. Each point is one measure applied to one
-     defect.</p>
-<figure><img src="figures/fig2_injected_vs_real.png" alt="Detection versus co-occurrence"></figure>
-<div class='read'><span class='t'>How to read it</span><p>Points on the dashed line agree between the two designs. The shaded vertical band
-     is the finding: measures whose controlled effect is indistinguishable from zero, yet
-     which separate real defective code from real clean code by one to two and a half
-     standard deviations. Rewriting a comprehension as a loop provably adds no branches,
-     so cyclomatic complexity <i>cannot</i> be responding to that defect — but on real
-     code it separates at 1.37. Without the controlled arm you would call that
-     detection.</p></div>
-<p class='dl'>Vector version for the paper: <a href='figures/fig2_injected_vs_real.pdf'>fig2_injected_vs_real.pdf</a></p>
-<h2><span class='n'>Figure 3</span><br>Which measures are redundant</h2>
-<p>How similarly each pair of measures behaves across the twelve defects. Structural
-     measures are labelled in teal, similarity measures in purple.</p>
-<figure><img src="figures/fig3_measure_correlation.png" alt="Which measures are redundant"></figure>
-<div class='read'><span class='t'>How to read it</span><p>The block structure is the argument for a panel. Measures inside a family
-     correlate strongly — several Halstead measures are near-duplicates of each other —
-     while the two families are largely uncorrelated, meaning they see different things.
-     A single composite quality score would throw that away.</p></div>
-<p class='dl'>Vector version for the paper: <a href='figures/fig3_measure_correlation.pdf'>fig3_measure_correlation.pdf</a></p>
-<h2><span class='n'>Figure 4</span><br>No single measure catches everything</h2>
-<p>For each defect, the strongest measure available in each family, on the controlled
-     data.</p>
+<h2><span class='n'>Figure 2</span><br>No single measure catches everything</h2>
+<p>For each defect, the <b>strongest</b> measure available in each family, on the
+     controlled data. The bars are maxima on purpose: if the best measure in a family
+     cannot see a defect, no measure in that family can.</p>
 <figure><img src="figures/fig4_family_coverage.png" alt="No single measure catches everything"></figure>
-<div class='read'><span class='t'>How to read it</span><p>Every defect clears a usable threshold on at least one measure, and no measure
-     clears it everywhere. The two families are complementary rather than competing:
-     structural measures catch the bulky, branchy defects; the signature-level ones —
-     a mutable default, too many parameters — are invisible to them and caught by the
-     similarity family instead.</p></div>
+<div class='read'><span class='t'>How to read it</span><p>Eight of the twelve defects are beyond every structural measure at the
+     conventional large-effect threshold. That matters because the structural family is
+     the only one available on deployed code — the similarity family reaches all twelve,
+     but only where a known-good reference exists to compare against, which a benchmark
+     has by construction and real code never does.</p></div>
 <p class='dl'>Vector version for the paper: <a href='figures/fig4_family_coverage.pdf'>fig4_family_coverage.pdf</a></p>
-<h2><span class='n'>Figure 5</span><br>What the models actually write</h2>
+<h2><span class='n'>Figure 3</span><br>What the models actually write</h2>
 <p>Structural measures averaged over 664 generated solutions, next to the canonical
      solutions for the same tasks.</p>
 <figure><img src="figures/fig5_model_structure.png" alt="What the models actually write"></figure>
 <div class='read'><span class='t'>How to read it</span><p>Generated code is <i>simpler</i> than the reference on every complexity measure
-     and far more heavily commented. This holds for both models, so it is not a quirk of
-     one. It is also the opposite of what a reader might assume — the worry that models
-     produce sprawling over-complicated code is not what the measurements show on tasks
-     of this size.</p></div>
+     and more heavily commented. This holds for all three models, including the frontier
+     one, so it is not a quirk of small models. It is also the opposite of what a reader
+     might assume — the worry that models produce sprawling over-complicated code is not
+     what the measurements show on tasks of this size.</p></div>
 <p class='dl'>Vector version for the paper: <a href='figures/fig5_model_structure.pdf'>fig5_model_structure.pdf</a></p>
-<h2><span class='n'>Figure 6</span><br>Scoring raw output measures verbosity</h2>
+<h2><span class='n'>Figure 4</span><br>Scoring raw output measures verbosity</h2>
 <p>Defect rate per model, computed two ways: over everything the model emitted, and
      over just the function definitions.</p>
 <figure><img src="figures/fig6_verbosity_confound.png" alt="Scoring raw output measures verbosity"></figure>
-<div class='read'><span class='t'>How to read it</span><p>One model appears two and a half times more defective than the other until its own
+<div class='read'><span class='t'>How to read it</span><p>DeepSeek appears two and a half times more defective than the others until its own
      appended test cases are excluded, at which point the gap nearly closes. The literals
      inside <code>assert f(10) == 40</code> are counted as magic numbers by any detector.
-     Any multi-model comparison that scores raw output is partly ranking models by how
-     chatty they are — which is a measurement artefact, not a quality difference.</p></div>
+     With three models the shape of the artefact is clearer: the correction moves DeepSeek
+     alone and leaves Qwen and Claude exactly where they were, so this is a property of
+     one model's output habits rather than a deflator that applies to everyone.</p></div>
 <p class='dl'>Vector version for the paper: <a href='figures/fig6_verbosity_confound.pdf'>fig6_verbosity_confound.pdf</a></p>
-<h2><span class='n'>Figure 7</span><br>The task set was the binding constraint</h2>
+<h2><span class='n'>Figure 5</span><br>The task set was the binding constraint</h2>
 <p>Defect rate and number of distinct defects observed, on the short-function
      benchmark against the smell-inducing prompt set.</p>
 <figure><img src="figures/fig7_task_set.png" alt="The task set was the binding constraint"></figure>
@@ -111,7 +91,7 @@ to read it. Everything here is generated from the result files by
      for the other defects, the rate roughly quadruples and twice as many defects show up.
      The earlier result was a property of the benchmark, not of the models.</p></div>
 <p class='dl'>Vector version for the paper: <a href='figures/fig7_task_set.pdf'>fig7_task_set.pdf</a></p>
-<h2><span class='n'>Figure 8</span><br>Prompts steer some defects and not others</h2>
+<h2><span class='n'>Figure 6</span><br>Prompts steer some defects and not others</h2>
 <p>For prompts written to provoke a specific defect, how often that defect actually
      appeared.</p>
 <figure><img src="figures/fig8_induction_rate.png" alt="Prompts steer some defects and not others"></figure>
@@ -121,6 +101,30 @@ to read it. Everything here is generated from the result files by
      wording is a strong lever for some structural properties and no lever at all for
      others.</p></div>
 <p class='dl'>Vector version for the paper: <a href='figures/fig8_induction_rate.pdf'>fig8_induction_rate.pdf</a></p>
+<h2><span class='n'>Figure 7</span><br>Naturalness is not structural quality</h2>
+<p>Perplexity under a code language model, on both sources, for all twelve defects.
+     The hypothesis being tested is that structurally poor code is unusual code, and so
+     should surprise a model trained on a large corpus.</p>
+<figure><img src="figures/fig9_perplexity.png" alt="Naturalness is not structural quality"></figure>
+<div class='read'><span class='t'>How to read it</span><p>It does not. No defect clears even the small-effect band in the defective
+     direction, and most values point the wrong way — defective code is slightly
+     <i>more</i> predictable than clean code. The mechanism is mundane: the largest
+     negative values belong to long methods and duplicated code, whose padding and
+     repetition are the easiest text there is to predict. Fluency-based scores are
+     routinely proposed as quality proxies; this is a clean negative result for that
+     idea.</p></div>
+<p class='dl'>Vector version for the paper: <a href='figures/fig9_perplexity.pdf'>fig9_perplexity.pdf</a></p>
+<h2><span class='n'>Figure 8</span><br>Capability and structure are close to unrelated</h2>
+<p>pass@1 next to defect density per hundred lines, for the three models on the same
+     664 tasks.</p>
+<figure><img src="figures/fig10_capability_vs_structure.png" alt="Capability and structure are close to unrelated"></figure>
+<div class='read'><span class='t'>How to read it</span><p>Correctness spans forty-one points: DeepSeek 51.7%, Qwen 57.4%, Claude 92.6%.
+     Defect density spans six hundredths: 1.93, 1.96, 1.90. A model can be far better at
+     writing code that works without being any better at writing code that is well
+     structured. This only became visible once a frontier model joined the comparison,
+     and it is the strongest reason not to read structural metrics as a measure of model
+     quality.</p></div>
+<p class='dl'>Vector version for the paper: <a href='figures/fig10_capability_vs_structure.pdf'>fig10_capability_vs_structure.pdf</a></p>
 <h2><span class='n'>Table</span><br>Strongest measure per defect, with intervals</h2>
 <p>The 95% intervals are what make the verdict a claim rather than an impression. For the co-occurrence defects the controlled interval <b>contains zero</b> while the observational interval <b>excludes</b> it — the measure demonstrably cannot see the defect, yet separates the groups.</p>
 <div class='scroll'><table><thead><tr><th>defect</th><th>strongest measure</th><th>injected</th><th>95% CI</th><th>real</th><th>95% CI</th><th>verdict</th></tr></thead><tbody>

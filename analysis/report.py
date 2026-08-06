@@ -28,52 +28,34 @@ FIGURES = [
      measures with far more than they can actually do. Defect names are coloured by the
      verdict they end up with."""),
 
-    ("fig2_injected_vs_real", "Detection versus co-occurrence",
-     """The same numbers as one scatter: controlled effect on the horizontal axis,
-     observational effect on the vertical. Each point is one measure applied to one
-     defect.""",
-     """Points on the dashed line agree between the two designs. The shaded vertical band
-     is the finding: measures whose controlled effect is indistinguishable from zero, yet
-     which separate real defective code from real clean code by one to two and a half
-     standard deviations. Rewriting a comprehension as a loop provably adds no branches,
-     so cyclomatic complexity <i>cannot</i> be responding to that defect — but on real
-     code it separates at 1.37. Without the controlled arm you would call that
-     detection."""),
-
-    ("fig3_measure_correlation", "Which measures are redundant",
-     """How similarly each pair of measures behaves across the twelve defects. Structural
-     measures are labelled in teal, similarity measures in purple.""",
-     """The block structure is the argument for a panel. Measures inside a family
-     correlate strongly — several Halstead measures are near-duplicates of each other —
-     while the two families are largely uncorrelated, meaning they see different things.
-     A single composite quality score would throw that away."""),
-
     ("fig4_family_coverage", "No single measure catches everything",
-     """For each defect, the strongest measure available in each family, on the controlled
-     data.""",
-     """Every defect clears a usable threshold on at least one measure, and no measure
-     clears it everywhere. The two families are complementary rather than competing:
-     structural measures catch the bulky, branchy defects; the signature-level ones —
-     a mutable default, too many parameters — are invisible to them and caught by the
-     similarity family instead."""),
+     """For each defect, the <b>strongest</b> measure available in each family, on the
+     controlled data. The bars are maxima on purpose: if the best measure in a family
+     cannot see a defect, no measure in that family can.""",
+     """Eight of the twelve defects are beyond every structural measure at the
+     conventional large-effect threshold. That matters because the structural family is
+     the only one available on deployed code — the similarity family reaches all twelve,
+     but only where a known-good reference exists to compare against, which a benchmark
+     has by construction and real code never does."""),
 
     ("fig5_model_structure", "What the models actually write",
      """Structural measures averaged over 664 generated solutions, next to the canonical
      solutions for the same tasks.""",
      """Generated code is <i>simpler</i> than the reference on every complexity measure
-     and far more heavily commented. This holds for both models, so it is not a quirk of
-     one. It is also the opposite of what a reader might assume — the worry that models
-     produce sprawling over-complicated code is not what the measurements show on tasks
-     of this size."""),
+     and more heavily commented. This holds for all three models, including the frontier
+     one, so it is not a quirk of small models. It is also the opposite of what a reader
+     might assume — the worry that models produce sprawling over-complicated code is not
+     what the measurements show on tasks of this size."""),
 
     ("fig6_verbosity_confound", "Scoring raw output measures verbosity",
      """Defect rate per model, computed two ways: over everything the model emitted, and
      over just the function definitions.""",
-     """One model appears two and a half times more defective than the other until its own
+     """DeepSeek appears two and a half times more defective than the others until its own
      appended test cases are excluded, at which point the gap nearly closes. The literals
      inside <code>assert f(10) == 40</code> are counted as magic numbers by any detector.
-     Any multi-model comparison that scores raw output is partly ranking models by how
-     chatty they are — which is a measurement artefact, not a quality difference."""),
+     With three models the shape of the artefact is clearer: the correction moves DeepSeek
+     alone and leaves Qwen and Claude exactly where they were, so this is a property of
+     one model's output habits rather than a deflator that applies to everyone."""),
 
     ("fig7_task_set", "The task set was the binding constraint",
      """Defect rate and number of distinct defects observed, on the short-function
@@ -91,6 +73,28 @@ FIGURES = [
      decomposition into five or six small functions instead — never a long method. Prompt
      wording is a strong lever for some structural properties and no lever at all for
      others."""),
+
+    ("fig9_perplexity", "Naturalness is not structural quality",
+     """Perplexity under a code language model, on both sources, for all twelve defects.
+     The hypothesis being tested is that structurally poor code is unusual code, and so
+     should surprise a model trained on a large corpus.""",
+     """It does not. No defect clears even the small-effect band in the defective
+     direction, and most values point the wrong way — defective code is slightly
+     <i>more</i> predictable than clean code. The mechanism is mundane: the largest
+     negative values belong to long methods and duplicated code, whose padding and
+     repetition are the easiest text there is to predict. Fluency-based scores are
+     routinely proposed as quality proxies; this is a clean negative result for that
+     idea."""),
+
+    ("fig10_capability_vs_structure", "Capability and structure are close to unrelated",
+     """pass@1 next to defect density per hundred lines, for the three models on the same
+     664 tasks.""",
+     """Correctness spans forty-one points: DeepSeek 51.7%, Qwen 57.4%, Claude 92.6%.
+     Defect density spans six hundredths: 1.93, 1.96, 1.90. A model can be far better at
+     writing code that works without being any better at writing code that is well
+     structured. This only became visible once a frontier model joined the comparison,
+     and it is the strongest reason not to read structural metrics as a measure of model
+     quality."""),
 ]
 
 CSS = """
