@@ -193,9 +193,8 @@ an evaluation tool that applies that panel to arbitrary Python code.
 
 \subsection{Research questions}
 
-The three questions follow the two parts of the gap set out in
-Section~\ref{sec:gap}. The first validates the instrument; the second and third
-use it, and report what using it correctly changes.
+The first question validates the instrument; the second and third use it, and
+report what using it correctly changes.
 
 \begin{description}
   \item[RQ1] \emph{The instrument.} Which measures respond to which structural
@@ -341,14 +340,16 @@ code to compare against. Benchmarks have one. Deployed code does not.
 
 \subsection{The structural quality of model output}
 
-A recent and fast-growing line of work asks directly whether models produce
-structurally poor code. Siddiq et al.\ traced smells from training corpora into
-generated output \cite{siddiq2022empirical}; Nguyen and Nadi scored Copilot
-suggestions on cyclomatic and cognitive complexity and concluded from those two
-numbers that the suggestions are understandable \cite{nguyen2022empirical}. The
-pattern is to compute established metrics on model output and report the values.
-That is the practice this paper is about: such a study is only as sound as the
-assumption that its metrics respond to the properties being discussed.
+A recent and fast-growing line of work asks whether models produce structurally
+poor code, and finds that they do: Siddiq et al.\ show smells present in the
+training corpora reappearing in generated output \cite{siddiq2022empirical}. What
+that work does not do is check its instruments. Nguyen and Nadi, for instance,
+score Copilot's suggestions on cyclomatic and cognitive complexity and conclude
+from those two numbers that the suggestions are understandable
+\cite{nguyen2022empirical} --- an inference that holds only if those measures
+track understandability for code of this kind, which has not been established.
+Computing established metrics on model output and reporting the values is the
+common pattern, and it is the practice this paper is about.
 
 The closest work to ours measures a model's \emph{propensity} for particular
 smells using a probe over token probabilities, applied to code that already
@@ -361,45 +362,28 @@ per-defect sensitivity has itself been established.
 
 Two recent studies show the field is aware of volume without having settled it.
 Sabra et al.\ report defects per thousand lines across five models and name
-verbosity explicitly as a model trait \cite{sabra2025assessing}. Zhu et al.\ find
-a correlation of $0.94$ between code volume and architectural smells, calling
-volume a near-perfect predictor of decay --- and then compare models using raw
-smell counts \cite{zhu2026aigenerated}. Normalising by size is therefore known
-and unevenly applied. Section~\ref{sec:rq2} shows that normalisation is not
-always the right correction either: where a model volunteers material the prompt
-did not request, the question is whether that material should be in the
-denominator or out of the comparison altogether.
+verbosity explicitly as a model trait \cite{sabra2025assessing}. Zhu et al.\
+measure a near-perfect rank correlation between total lines of code and
+architectural smells ($\rho = 0.94$), which they name a Volume--Quality Inverse
+Law --- while the tables comparing their models report smell counts unnormalised
+\cite{zhu2026aigenerated}. Normalising by size is therefore known, and applied
+unevenly even by work that has identified the problem. Section~\ref{sec:rq2}
+shows that normalisation is not always the right correction either: where a model
+volunteers material the prompt did not request, the question is whether that
+material belongs in the denominator or out of the comparison altogether.
 
 \subsection{The gap}
 \label{sec:gap}
 
-Each of those four areas is well developed. The gap lies between them, and it has
-two parts.
-
-\textbf{The instrument was never validated.} The metric literature supplies the
-measures. The generated-code literature applies them. Nothing in between
-establishes what the measures can see.
-
-Per-defect behaviour has been examined, but only one way: compare defective code
-with clean code, and ask whether the measure separates them. That comparison
-cannot settle the question. Defective code differs from clean code in many ways,
-and the most obvious is that there is more of it. A measure that separates the
-groups might be responding to the defect. It might be responding to size.
-Observational data cannot tell the two apart.
-
-An intervention can. Change the defect, hold the code otherwise fixed, and see
-whether the measure moves. That is RQ1.
-
-\textbf{The claims built on it inherit the doubt.} If nobody checked the
-instrument, nobody checked the conclusions drawn with it either. Correcting the
-instrument might change them --- and it does. Applying the validated panel to
-model output, the same confound appears twice more: as verbosity when two models
-are compared (RQ2), and as incompleteness when a model is asked for a defect and
-writes too little code to contain one (RQ3).
-
-So one gap yields three questions. They are one question at three levels:
-\emph{how much of what we call structural quality is really a measurement of how
-much code there is?}
+Each of those four areas is well developed, and the gap lies between them. The
+metric literature supplies the measures; the generated-code literature applies
+them; nothing in between establishes what the measures can see. Where per-defect
+behaviour has been examined, it has been examined one way --- compare defective
+code with clean code, and ask whether the measure separates them --- and that
+comparison cannot distinguish a measure responding to the defect from a measure
+responding to size. Only an intervention can. This paper supplies one, and then
+asks what changes when claims about generated code are re-derived from an
+instrument that has been checked.
 
 % ---------------------------------------------------------------------
 \section{The benchmark}
@@ -443,7 +427,8 @@ apply. A benchmark built only from short competition-style tasks would silently
 under-represent exactly the defects that most concern practitioners. This same
 constraint reappears in Section~\ref{sec:rq2} as a limit on what free generation
 over short tasks can reveal, and motivates the prompt study of
-Section~\ref{sec:rq3}.
+Section~\ref{sec:rq3}, which draws its tasks from a published set of prompts
+written to induce named defects \cite{codesmell2026}.
 
 In total the dataset holds 1{,}300 rows: 100 examples of each of the twelve
 defects, each paired with the clean function it was made from, plus 100 clean
