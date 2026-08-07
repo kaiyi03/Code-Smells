@@ -62,8 +62,28 @@ plt.rcParams.update({
 
 
 def save(fig, name):
-    fig.savefig(os.path.join(FIG, f"{name}.pdf"))
+    """Write the PNG with its title and the PDF without.
+
+    The two outputs are read in different places. On the HTML page each figure
+    stands alone and needs to say what it is. In the paper the caption directly
+    below says the same thing, and a title above the axes repeating it just
+    duplicates a sentence the reader has already been given -- so the PDF drops
+    the axes title and the suptitle and lets the caption carry it.
+    """
     fig.savefig(os.path.join(FIG, f"{name}.png"), dpi=150)
+
+    titles = [(ax, ax.get_title()) for ax in fig.axes if ax.get_title()]
+    sup = fig._suptitle.get_text() if fig._suptitle else None
+    for ax, _ in titles:
+        ax.set_title("")
+    if sup:
+        fig.suptitle("")
+    fig.savefig(os.path.join(FIG, f"{name}.pdf"))
+
+    for ax, t in titles:                      # restore, in case a caller reuses it
+        ax.set_title(t)
+    if sup:
+        fig.suptitle(sup)
     plt.close(fig)
     print(f"  figures/{name}.pdf + .png")
 
@@ -216,12 +236,8 @@ def fig_coverage():
     # dead-code and mutable-default bars, which are exactly the rows the figure is about.
     ax.legend(frameon=False, ncol=1, loc="lower left", bbox_to_anchor=(0, 1.005),
               fontsize=7.8, labelspacing=0.25)
-    fig.text(0.5, -0.02,
-             "Bars are maxima, not averages: if the strongest measure in a family cannot see a "
-             "defect, no measure in\nthat family can. The similarity family reaches everything, "
-             "but only where a clean reference exists --\nwhich the benchmark has by construction "
-             "and deployed code never does.",
-             ha="center", va="top", fontsize=7.4, color="#555")
+    # No explanatory text baked into the image: that belongs in the LaTeX caption,
+    # where it sets in the document's own type rather than as pixels below the axes.
     save(fig, "fig4_family_coverage")
 
 
@@ -463,7 +479,9 @@ def fig_perplexity():
     ax.axvspan(-0.2, 0.2, color="#888", alpha=.12, zorder=0)
     ax.axvline(0, lw=.8, color="#999", zorder=0)
     ax.axvline(0.8, ls="--", lw=.9, color="#1b6b41", zorder=0)
-    ax.text(0.82, -0.45, "large effect — where the working\nstructural measures sit",
+    # Kept short and inside the axis range: with the title stripped for the PDF the
+    # bounding box tightens, and a longer string ran off the right edge.
+    ax.text(0.85, -0.45, "large effect\nthreshold",
             fontsize=6.8, color="#1b6b41", va="top")
     for yy, a, b in zip(y, inj, rl):
         if a is not None and b is not None:

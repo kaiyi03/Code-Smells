@@ -92,7 +92,7 @@ execution to preserve behaviour, and pair it with 4{,}600 real defective functio
 drawn from human-written repositories against a shared clean baseline. Measuring
 each metric on both sources answers two different questions --- whether changing
 only the defect moves the metric, and whether defective and clean code differ on it
-in the wild --- and detection requires yes to both.
+in code people actually wrote --- and detection requires yes to both.
 
 Applying the protocol to seventeen measures, we find that no single measure detects
 all twelve defects while every defect is detected by at least one, which is the
@@ -152,7 +152,8 @@ are compared has been shown to respond to \emph{something} that differs between
 the groups, and the defect is only one candidate.
 
 The distinction cannot be settled by observation alone.
-Defective code found in the wild differs from clean code in many ways at once. It
+Defective code found in real repositories differs from clean code in many ways at
+once. It
 is written by different people, in different projects, for different purposes --- and,
 most importantly, it is bigger. Every structural metric responds to size. So a
 metric can separate the two groups convincingly while being formally incapable of
@@ -276,8 +277,15 @@ comprehension was expanded --- so what changed is known independently of any
 tool. The detector's job is to confirm that the edit produced the intended shape,
 not to decide what the shape is. On the real half no such independent access
 exists: the label is the only thing standing between a function and the claim
-that it is defective. The operational reading below therefore carries the full
-weight on real code and much less of it on injected code.
+that it is defective.
+
+The detector's role on the injected half is not nothing, though, and it is worth
+being precise about what it is. A pair enters the benchmark only if the tool
+fires on the transformed function, so the detector decides \emph{membership}: an
+edit that produced the intended shape but that the tool failed to recognise is
+dropped. The benchmark is therefore restricted to instances of our
+transformations that the detectors can see. What the detector does not do on that
+half is define the defect, because the transformation already did.
 
 We use these tools as exactly that --- an \emph{operational definition}, not
 ground truth. The distinction matters for what follows in two ways. It licenses
@@ -357,16 +365,13 @@ A recent and fast-growing line of work asks whether models produce structurally
 poor code, and finds that they do: Siddiq et al.\ show smells present in the
 training corpora reappearing in generated output \cite{siddiq2022empirical}. What
 that work does not do is check its instruments. Nguyen and Nadi, for instance,
-compute cyclomatic and cognitive complexity over Copilot's suggestions, find both
-low, and read that as evidence the suggestions would be easy to follow
-\cite{nguyen2022empirical}. Signalling reading effort is what those measures were
-built to do, so the reading is reasonable on its face. The gap is narrower than
-that: a low score rules out only the structural problems the measure can
-\emph{see}, and Section~\ref{sec:rq1} finds these two see very little.
-Cyclomatic complexity responds to three of our twelve defects and cognitive
-complexity to one. Code can score low on both and still be full of the other
-nine. Computing established metrics on model output and reporting the values is
-the common pattern, and it is the practice this paper is about.
+compute cyclomatic and cognitive complexity over Copilot's suggestions and read
+the low values they find as evidence that the suggestions would be easy to
+follow \cite{nguyen2022empirical}. Computing established metrics on model output
+and reporting the values is the common pattern, and it is the practice this
+paper is about. Such a study is sound exactly to the extent that its measures
+respond to the properties being discussed, and that is the question
+Section~\ref{sec:rq1} takes up.
 
 The closest work to ours measures a model's \emph{propensity} for particular
 smells using a probe over token probabilities, applied to code that already
@@ -701,7 +706,7 @@ The unpaired form of Equation~\ref{eq:d} divides instead by the spread of the
 code itself, so a one-line edit is negligible next to the natural variation in
 function length --- under it, the same dead-code cell falls from $5.0$ to
 $0.21$, which is the truthful answer. Two further properties make it the right
-choice. First, real code has no twins: a defective function found in the wild has
+choice. First, real code has no twins: a defective function found in a repository has
 no clean counterpart, so the real-world layer can only ever be analysed unpaired.
 Second, the injected and real columns can only be set beside each other if they
 are the same quantity, and comparing them is the whole point of the protocol. A
@@ -721,7 +726,7 @@ three verdicts.
   \item[Co-occurs.] The real groups separate, but the intervention shows the
         measure barely moves when only the defect changes. The separation is
         real and \emph{is not the defect} --- it is something that travels with
-        the defect in the wild, usually size. This verdict is only reachable
+        the defect in real code, usually size. This verdict is only reachable
         because the controlled arm exists: an observational study cannot
         distinguish it from detection, and this is the single most common
         confusion the protocol is designed to catch.
@@ -788,7 +793,7 @@ difficulty at $1.50$ $[1.18, 1.81]$ injected and $3.77$ $[3.56, 3.98]$ real.
 For these defects the causal and observational answers coincide, and the
 measures can be used as detectors with a clear conscience.
 
-\paragraph{Co-occurrence: the intervention says no, the wild says yes.}
+\paragraph{Co-occurrence: the intervention says no, real code says yes.}
 Rewriting a list comprehension as an explicit loop adds no branch, so cyclomatic
 complexity provably cannot respond to it --- and the injected value is exactly
 $0.00$ $[-0.28, 0.28]$. Yet on real code the same measure separates
@@ -796,35 +801,45 @@ inefficient-loop functions from clean ones at $1.37$ $[1.23, 1.51]$. The
 resolution is in the group medians: real functions containing inefficient loops
 have a median of six branch points against the clean baseline's two, because
 functions that contain this defect are simply \emph{bigger}. The separation is
-real; it is a size effect wearing the defect's label. The same pattern, weaker,
-holds for \texttt{broad\_except} ($0.10 \to 1.19$) and \texttt{magic\_number}
-($0.54 \to 1.43$). A study without the controlled arm would report all three as
-detection. This pattern is the paper's central caution, and in
-Figure~\ref{fig:heatmap} it is the set of cells that are pale on the left and hot
-on the right.
+real, and it is a size difference carrying the defect's label. The same pattern
+holds more weakly for \texttt{broad\_except}, which scores $0.10$ injected and
+$1.19$ on real code, and \texttt{magic\_number}, at $0.54$ and $1.43$. A study
+without the controlled arm would report all three as detection. This pattern is
+the paper's central caution, and in Figure~\ref{fig:heatmap} it is the set of
+cells that are pale on the left and hot on the right.
 
-\paragraph{Injection artefacts: the controlled arm can also overstate.}
-The disagreement runs the other way too, and it calibrates how far synthetic
-benchmarks can be trusted. Injected long methods score $5.0$ on lines of code
---- the injector pads every function by a large, uniform amount --- but real
-long methods score $1.92$: still large, but noisier, because real long functions
-vary enormously in length. Conversely the same injector \emph{understates}
-Halstead difficulty ($0.54$ injected against $3.51$ $[3.34, 3.68]$ real):
-padding a function with straight-line statements makes it long without making it
-hard, whereas real long methods are long \emph{and} branchy \emph{and} dense.
-Injection gets the direction right and the magnitude wrong, in both directions
---- which is precisely why it cannot be the only validation source.
+\paragraph{Injection artefacts: the controlled arm gets magnitudes wrong.}
+The disagreement runs the other way too, and it calibrates how far a synthetic
+benchmark can be trusted. Sometimes injection overstates. Injected long methods
+score $5.0$ on lines of code, because the injector pads every function by a
+large and uniform amount, while real long methods score $1.92$ --- still large,
+but noisier, since real long functions vary enormously in length. Sometimes it
+understates. The same injector puts Halstead difficulty at $0.54$ against $3.51$
+$[3.34, 3.68]$ on real code, because padding a function with straight-line
+statements makes it long without making it hard, whereas real long methods are
+long \emph{and} branchy \emph{and} dense. So injection is reliable about
+\emph{whether} a measure responds and unreliable about \emph{how much} --- and
+the error can fall on either side, which is why the size of an injected effect
+cannot be read as an estimate of the real one.
 
 \paragraph{Blind: nothing to see.}
 For \texttt{long\_parameter\_list}, \texttt{mutable\_default} and
 \texttt{dead\_code}, no structural measure shows a usable response on either
 source --- the strongest real association for dead code is $0.31$ on a profiling
-measure, and the injected values sit at zero. These are signature-level defects:
-they change one token or one line, leave bulk and branching untouched, and are
-simply outside what aggregate structure can express. \texttt{duplicate\_code} is
-nominally visible ($1.06 \to 1.55$ on lines of code) but both numbers are the
-same size artefact --- doubling a block doubles its length --- so we classify it
-as blind and leave it to the clone detector.
+measure, and the injected values sit at zero. What these three have in common is
+that the defect lives in a single line or in the parameter list: an extra
+parameter, a mutable default value, one unused import. The function's bulk and
+branching are untouched, so a measure that summarises bulk and branching has
+nothing to register.
+
+\texttt{duplicate\_code} looks different at first --- it scores $1.06$ injected
+and $1.55$ on real code against lines of code, which clears the threshold on
+both. But the measure doing the work is lines of code, and duplicating a block
+makes a function longer. Counting lines cannot distinguish a function that
+repeats itself from a function that is simply long for some other reason, so
+what moves here is length rather than duplication. We classify it blind and
+leave it to the clone detector, which compares blocks against each other and can
+tell the difference.
 
 \subsection{The two families fail on different defects}
 \label{sec:complementarity}
@@ -833,12 +848,12 @@ as blind and leave it to the clone detector.
   \centering
   \includegraphics[width=\linewidth]{figures/fig4_family_coverage.pdf}
   \caption{Best-case coverage per family on the injected benchmark. Bars are
-  \emph{maxima}, which is what the claim requires: if the strongest measure in a
-  family cannot see a defect, no measure in that family can, and adding more of
-  them will not help. Eight of the twelve defects lie beyond every structural
-  measure at Cohen's large-effect threshold. The similarity family reaches all
-  twelve, but only where a clean reference exists --- which the benchmark has by
-  construction and deployed code never does.}
+  \emph{maxima}, not averages, which is what the claim requires: if the strongest
+  measure in a family cannot see a defect, no measure in that family can, and
+  adding more of them will not help. Eight of the twelve defects lie beyond every
+  structural measure at Cohen's large-effect threshold. The similarity family
+  reaches all twelve, but only where a clean reference exists --- which the
+  benchmark has by construction and deployed code never does.}
   \label{fig:coverage}
 \end{figure}
 
@@ -853,7 +868,7 @@ The reference-based family --- BLEU, chrF, ROUGE-L, CodeBLEU, AST similarity,
 CodeBERTScore, BERTScore --- sees the injected defects very differently: every
 one of its measures separates every one of the twelve by at least $d = 1.46$,
 with per-measure medians between $2.5$ and $4.7$. It catches exactly the
-signature-level defects the structural family cannot reach, because any edit,
+single-line and signature defects the structural family cannot reach, because any edit,
 however structurally invisible, makes the code diverge from its reference.
 
 The two families also differ in how much they duplicate each other internally.
@@ -880,30 +895,39 @@ necessarily the weaker half of the one validated here.
 \subsection{Perplexity: naturalness is not structural quality}
 \label{sec:perplexity}
 
+A reasonable hypothesis is that defective code is unusual code, and a language
+model trained on a large code corpus should therefore find it more surprising.
+Perplexity under such a model is the one reference-free measure in the panel
+that could, in principle, see \emph{every} defect. It sees none of them.
+
 \begin{figure}[!tb]
   \centering
   \includegraphics[width=\linewidth]{figures/fig9_perplexity.pdf}
   \caption{Perplexity under a code language model, on both sources. No defect
-  clears even the small-effect band in the defective direction, and most values
-  are negative: defective code is slightly \emph{more} predictable than clean
-  code, because padding and duplication are the most predictable text there is.}
+  clears even the small-effect band in the direction the hypothesis predicts, and
+  most values fall below zero --- meaning the model found the defective code
+  \emph{less} surprising than the clean code, not more.}
   \label{fig:perplexity}
 \end{figure}
 
-A reasonable hypothesis is that defective code is unusual code, and a language
-model trained on a large code corpus should therefore find it more surprising.
-Perplexity under such a model is the one reference-free measure in the panel
-that could, in principle, see \emph{every} defect. It sees none of them
-(Figure~\ref{fig:perplexity}). Across all twelve defects its detection strength
-never exceeds $0.46$ in the defective direction on either source; the means are
-$-0.23$ injected and $-0.39$ real --- pointing the wrong way. The inversion has
-a mundane mechanism: the largest negative values belong to long methods
-($-1.24$) and duplicated code ($-1.03$), whose padding and repetition are
-precisely the easiest text to predict. The conclusion is a clean negative
-result with practical force, since fluency-based scores are routinely proposed
-as quality proxies: \emph{naturalness, as a language model measures it, is not
-structural quality --- and where the two correlate at all, the correlation runs
-backwards}.
+Across all twelve defects its detection strength never exceeds $0.46$ in the
+defective direction on either source, and the means are $-0.23$ injected and
+$-0.39$ real (Figure~\ref{fig:perplexity}). The sign is the substance here.
+Positive detection strength means the defective group scored worse, so a negative
+value means perplexity went the other way: the model found defective code
+\emph{easier} to predict than clean code. That is not a weak result in the
+expected direction. It is a result in the opposite direction to the hypothesis.
+
+The mechanism is mundane. The largest negative values belong to long methods
+($-1.24$) and duplicated code ($-1.03$), and padding and repetition are the most
+predictable text there is --- a model that has just read a block is very good at
+predicting the same block again. Making code worse, in these two ways, makes it
+more ordinary.
+
+The conclusion is a clean negative result with practical force, since
+fluency-based scores are regularly proposed as quality proxies: \emph{naturalness,
+as a language model measures it, is not structural quality --- and where the two
+relate at all, the relation runs backwards}.
 
 % ---------------------------------------------------------------------
 \section{RQ2: comparing models without measuring volume}
