@@ -82,12 +82,6 @@
   publisher = {Lawrence Erlbaum Associates}
 }
 
-% TO ADD as the related-work section is written:
-%   - Velasco et al., CodeSmellEval (logit-probe propensity on already-smelly code)
-%   - The CodeSmellData 1.0 / 2.0 corpus and PySmell
-%   - SonarSource cognitive complexity
-%   - A maintainability-index reference (Oman & Hagemeister)
-
 % =====================================================================
 % Size as a confounder in software-metric validation
 % =====================================================================
@@ -180,32 +174,6 @@
 % =====================================================================
 % Smell datasets: mined and hand-labelled, not synthesised
 % =====================================================================
-@inproceedings{palomba2015landfill,
-  author    = {Palomba, Fabio and Di Nucci, Dario and Tufano, Michele and
-               Bavota, Gabriele and Oliveto, Rocco and Poshyvanyk, Denys and
-               De Lucia, Andrea},
-  title     = {Landfill: An Open Dataset of Code Smells with Public Evaluation},
-  booktitle = {IEEE/ACM 12th Working Conference on Mining Software Repositories (MSR)},
-  pages     = {482--485}, year = {2015},
-  doi       = {10.1109/MSR.2015.69},
-}
-
-@inproceedings{madeyski2020mlcq,
-  author    = {Madeyski, Lech and Lewowski, Tomasz},
-  title     = {{MLCQ}: Industry-Relevant Code Smell Data Set},
-  booktitle = {Evaluation and Assessment in Software Engineering (EASE)},
-  pages     = {342--347}, year = {2020},
-  doi       = {10.1145/3383219.3383264},
-}
-
-@inproceedings{liu2018deep,
-  author    = {Liu, Hui and Xu, Zhifeng and Zou, Yanzhen},
-  title     = {Deep learning based feature envy detection},
-  booktitle = {33rd ACM/IEEE International Conference on Automated Software
-               Engineering (ASE)},
-  pages     = {385--396}, year = {2018},
-  doi       = {10.1145/3238147.3238166},
-}
 
 @misc{lin2026smellbench,
   author        = {Lin, Fake and Hu, Binbin and Zhu, Xi and Zhao, Ziwei and Zheng, Zhi
@@ -281,4 +249,24 @@
   eprint        = {2605.02741},
   archivePrefix = {arXiv},
   primaryClass  = {cs.SE},
+}
+
+% =====================================================================
+% The corpora the real-code layer is built from
+% =====================================================================
+@inproceedings{chen2016detecting,
+  author    = {Chen, Zhifei and Chen, Lin and Ma, Wanwangying and Xu, Baowen},
+  title     = {Detecting Code Smells in {Python} Programs},
+  booktitle = {International Conference on Software Analysis, Testing and Evolution
+               (SATE)},
+  year      = {2016},
+  note      = {Dataset: \url{https://github.com/chenzhifei731/Pysmell}},
+}
+
+@misc{codesmelldata,
+  title        = {{CodeSmellData}: a corpus of {Python} methods mined from
+                  {GitHub} with per-smell labels},
+  key          = {CodeSmellData},
+  year         = {2024},
+  howpublished = {\url{https://github.com/WM-SEMERU/CodeSmellExt}},
 }

@@ -21,6 +21,7 @@
 
 \lstset{
   basicstyle=\ttfamily\scriptsize,
+  captionpos=b,          % below the listing, matching the tables and figures
   breaklines=true,
   frame=single,
   framerule=0.3pt,
@@ -87,7 +88,7 @@ can see what it is being used to detect.
 This paper supplies the missing step. We build a benchmark of 1{,}300 Python
 functions in which twelve structural defects are introduced one at a time into
 otherwise unchanged code, each confirmed by a static analyser and each verified by
-execution to preserve behaviour, and pair it with 4{,}300 real defective functions
+execution to preserve behaviour, and pair it with 4{,}600 real defective functions
 drawn from human-written repositories against a shared clean baseline. Measuring
 each metric on both sources answers two different questions --- whether changing
 only the defect moves the metric, and whether defective and clean code differ on it
@@ -165,7 +166,7 @@ We therefore validate on two sources at once. A controlled benchmark supplies th
 intervention: 1{,}300 Python functions in which each of twelve structural defects is
 introduced individually into otherwise unchanged code, with the defect confirmed by
 a static analyser and behaviour preservation confirmed by executing the function's
-own tests. A real-world layer supplies external validity: roughly 4{,}300 defective
+own tests. A real-world layer supplies external validity: 4{,}599 defective
 functions drawn from human-written repositories, compared against a common baseline
 of 1{,}000 clean functions mined from the same population. A measure is credited with
 detecting a defect only when it responds on both --- when the controlled experiment
@@ -344,12 +345,13 @@ A recent and fast-growing line of work asks whether models produce structurally
 poor code, and finds that they do: Siddiq et al.\ show smells present in the
 training corpora reappearing in generated output \cite{siddiq2022empirical}. What
 that work does not do is check its instruments. Nguyen and Nadi, for instance,
-score Copilot's suggestions on cyclomatic and cognitive complexity and conclude
-from those two numbers that the suggestions are understandable
-\cite{nguyen2022empirical} --- an inference that holds only if those measures
-track understandability for code of this kind, which has not been established.
-Computing established metrics on model output and reporting the values is the
-common pattern, and it is the practice this paper is about.
+compute cyclomatic and cognitive complexity over Copilot's suggestions, find both
+low, and read that as evidence the suggestions would be easy for a developer to
+follow \cite{nguyen2022empirical}. The reading is only as good as the assumption
+underneath it --- that on code of this kind, a low complexity score means low
+reading effort --- and that assumption is not tested. Computing established
+metrics on model output and reporting the values is the common pattern, and it is
+the practice this paper is about.
 
 The closest work to ours measures a model's \emph{propensity} for particular
 smells using a probe over token probabilities, applied to code that already
@@ -362,10 +364,10 @@ per-defect sensitivity has itself been established.
 
 Two recent studies show the field is aware of volume without having settled it.
 Sabra et al.\ report defects per thousand lines across five models and name
-verbosity explicitly as a model trait \cite{sabra2025assessing}. Zhu et al.\
-measure a near-perfect rank correlation between total lines of code and
-architectural smells ($\rho = 0.94$), which they name a Volume--Quality Inverse
-Law --- while the tables comparing their models report smell counts unnormalised
+verbosity explicitly as a model trait \cite{sabra2025assessing}. Zhu et al.\ find
+total lines of code to be a near-perfect predictor of architectural smells, a
+relationship they name a Volume--Quality Inverse Law --- and then compare their
+models on smell counts that are not adjusted for size at all
 \cite{zhu2026aigenerated}. Normalising by size is therefore known, and applied
 unevenly even by work that has identified the problem. Section~\ref{sec:rq2}
 shows that normalisation is not always the right correction either: where a model
@@ -376,9 +378,9 @@ material belongs in the denominator or out of the comparison altogether.
 \label{sec:gap}
 
 Each of those four areas is well developed, and the gap lies between them. The
-metric literature supplies the measures; the generated-code literature applies
-them; nothing in between establishes what the measures can see. Where per-defect
-behaviour has been examined, it has been examined one way --- compare defective
+metric literature supplies the measures and the generated-code literature applies
+them, but what the measures can actually see has been established only in part.
+Where per-defect behaviour has been examined, it has been examined one way --- compare defective
 code with clean code, and ask whether the measure separates them --- and that
 comparison cannot distinguish a measure responding to the defect from a measure
 responding to size. Only an intervention can. This paper supplies one, and then
@@ -456,19 +458,15 @@ def fifth_Power_Sum(n):          def fifth_Power_Sum(n):
                                          return None
 \end{lstlisting}
 
-Injection is not new, but its purpose here is. Existing smell datasets are mined
-from repositories and hand-labelled --- Landfill \cite{palomba2015landfill} and
-MLCQ \cite{madeyski2020mlcq} are representative --- and exist to train or evaluate
-\emph{detectors}. Where smells have been introduced deliberately, it has generally
-been to balance a training set for a classifier, as in Liu et al.'s use of an
-unnecessary Move Method to synthesise feature envy \cite{liu2018deep}. Closest to
-our construction is SmellBench \cite{lin2026smellbench}, concurrent with this
-work, which injects one smell into clean Python and verifies behaviour by running
-the affected tests; it evaluates refactoring agents, injects with a language
-model rather than deterministically, and does not confirm with a static analyser
-that the intended smell actually landed. We are not aware of a benchmark built to
-measure what a \emph{metric} responds to, which is what the two-stage
-verification below is for.
+Injecting smells is not itself new; what is new here is what the injection is
+for. Existing smell datasets are mined from repositories and hand-labelled, and
+they exist to train or evaluate \emph{detectors}. The closest construction to ours
+is SmellBench \cite{lin2026smellbench}, which appeared while this work was under
+way and also introduces one smell into clean Python and confirms behaviour by
+running the affected tests. It does so to evaluate refactoring agents rather than
+measures; it injects using a language model rather than a deterministic edit; and
+it does not check with a static analyser that the intended smell actually landed.
+That last difference is what the verification below exists to close.
 
 \subsection{Two-stage verification}
 \label{sec:verification}
@@ -488,14 +486,8 @@ behaviour on 100\% of tested pairs. Two are verified on fewer examples
 (\texttt{inefficient\_loop} on 40, \texttt{inefficient\_copy} on 31) simply
 because fewer eligible source functions ship with tests.
 
-The second stage is not redundant, and one incident shows why better than an
-argument. The \texttt{inefficient\_copy} injector originally rewrote
-\texttt{d.copy()} as a list-append loop. On a dictionary that raises
-\texttt{AttributeError}. The detector was satisfied --- the shape was exactly
-right --- and only execution revealed that the ``equivalent'' code did not run.
-The injector now rewrites only provably-list sources. A detector confirms that
-code \emph{looks} like the target pattern; only running it confirms that it still
-\emph{means} what it did.
+A detector confirms that code \emph{looks} like the target pattern; only running
+it confirms that it still \emph{means} what it did.
 
 \subsection{The real-code layer}
 \label{sec:realworld}
@@ -504,18 +496,30 @@ Injected code has an obvious weakness: a measure might respond to the injector's
 habits rather than to the defect. Testing that requires defective code that
 humans wrote, which is the second half of the benchmark.
 
-The defective side reuses published corpora of labelled smelly methods. These
-turned out to have a property that shaped the design: they are
-\emph{entirely positive}. Every labelled row is defective; there is no clean
-class. A detection statistic needs both, so the clean baseline had to be
-constructed --- 1{,}000 methods mined from the 253{,}762 unlabelled methods of the
-same corpus, retained only if none of the twelve detectors fires on them. Drawing
-the baseline from the same population matters: a clean set from elsewhere would
-differ from the defective set in project, domain and era as well as in defects.
+The defective side comes from two published corpora of real Python methods:
+CodeSmellData \cite{codesmelldata}, mined from GitHub and labelled per smell, and
+the expert-annotated PySmell dataset \cite{chen2016detecting}. Between them they
+label seven of our twelve defects. Two things had to be added before they could
+support a detection statistic.
 
-Defects absent from the older Pylint-era corpora were mined from the same
-unlabelled pool with our own detectors. The result covers all twelve defects
-against one shared baseline, with per-defect sample sizes from 92
+\textbf{A clean class.} Every labelled row in these corpora is defective. They
+were built to study smells, not to contrast them with anything, so there is no
+negative class at all --- and detection strength is a comparison between two
+groups, so one had to be built. CodeSmellData also ships the raw corpus it was
+labelled from: 253{,}762 mined methods with no labels, from the same repositories.
+The baseline is 1{,}000 methods drawn from that pool and kept only if none of the
+twelve detectors fires on them. Taking it from the same population is what makes
+the comparison fair --- a clean set from elsewhere would differ from the defective
+set in project, domain and era as well as in defects.
+
+\textbf{The five missing defects.} The published labels predate the tools we use.
+They cover Pylint's smells, and nothing for the three Ruff performance defects,
+duplicated code, or magic numbers. Those five were mined from the same unlabelled
+pool with our own detectors, which is the same operational definition used
+everywhere else in this paper.
+
+The result covers all twelve defects against one shared baseline: 4{,}599
+defective functions in total, with per-defect counts from 92
 (\texttt{inefficient\_copy}, genuinely rare) to 950
 (\texttt{long\_parameter\_list}).
 
