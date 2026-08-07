@@ -3,17 +3,17 @@
 \toprule
 Defect & Strongest measure & Injected & Real & Verdict \\
 \midrule
-\texttt{deep\_nesting} & cyclomatic & 3.85 & 5.00 & detects \\
-\texttt{complex\_conditional} & halstead difficulty & 1.50 & 3.77 \tiny[3.56, 3.98] & detects \\
-\texttt{long\_method} & halstead difficulty & 0.54 & 3.51 \tiny[3.34, 3.68] & detects \\
-\texttt{inefficient\_copy} & cognitive & 0.18 & 2.58 \tiny[2.34, 2.82] & co-occurs \\
-\texttt{duplicate\_code} & sloc & 1.06 & 1.55 \tiny[1.38, 1.72] & blind \\
-\texttt{magic\_number} & maintainability & 0.54 & 1.43 \tiny[1.28, 1.58] & co-occurs \\
-\texttt{inefficient\_loop} & cyclomatic & 0.00 & 1.37 \tiny[1.23, 1.51] & co-occurs \\
-\texttt{perf\_try\_in\_loop} & api calls & -0.00 & -1.29 \tiny[-1.43, -1.16] & co-occurs \\
-\texttt{broad\_except} & maintainability & 0.10 & 1.19 \tiny[1.09, 1.29] & co-occurs \\
-\texttt{long\_parameter\_list} & halstead difficulty & 0.00 & 0.86 \tiny[0.77, 0.95] & blind \\
-\texttt{mutable\_default} & comment density & -0.00 & -0.99 \tiny[-1.10, -0.87] & blind \\
-\texttt{dead\_code} & api calls & -0.00 & 0.31 \tiny[0.19, 0.43] & blind \\
+\texttt{deep\_nesting} & cyclomatic & \begin{tabular}[t]{@{}r@{}}3.85\\\tiny[3.39, 4.32]\end{tabular} & 5.00 & detects \\
+\texttt{complex\_conditional} & halstead difficulty & \begin{tabular}[t]{@{}r@{}}1.50\\\tiny[1.18, 1.81]\end{tabular} & \begin{tabular}[t]{@{}r@{}}3.77\\\tiny[3.56, 3.98]\end{tabular} & detects \\
+\texttt{long\_method} & halstead difficulty & \begin{tabular}[t]{@{}r@{}}0.54\\\tiny[0.26, 0.83]\end{tabular} & \begin{tabular}[t]{@{}r@{}}3.51\\\tiny[3.34, 3.68]\end{tabular} & detects \\
+\texttt{inefficient\_copy} & cognitive & \begin{tabular}[t]{@{}r@{}}0.18\\\tiny[-0.10, 0.46]\end{tabular} & \begin{tabular}[t]{@{}r@{}}2.58\\\tiny[2.34, 2.82]\end{tabular} & co-occurs \\
+\texttt{duplicate\_code} & sloc & \begin{tabular}[t]{@{}r@{}}1.06\\\tiny[0.77, 1.36]\end{tabular} & \begin{tabular}[t]{@{}r@{}}1.55\\\tiny[1.38, 1.72]\end{tabular} & blind \\
+\texttt{magic\_number} & maintainability & \begin{tabular}[t]{@{}r@{}}0.54\\\tiny[0.25, 0.82]\end{tabular} & \begin{tabular}[t]{@{}r@{}}1.43\\\tiny[1.28, 1.58]\end{tabular} & co-occurs \\
+\texttt{inefficient\_loop} & cyclomatic & \begin{tabular}[t]{@{}r@{}}0.00\\\tiny[-0.28, 0.28]\end{tabular} & \begin{tabular}[t]{@{}r@{}}1.37\\\tiny[1.23, 1.51]\end{tabular} & co-occurs \\
+\texttt{perf\_try\_in\_loop} & api calls & \begin{tabular}[t]{@{}r@{}}-0.00\\\tiny[-0.28, 0.28]\end{tabular} & \begin{tabular}[t]{@{}r@{}}-1.29\\\tiny[-1.43, -1.16]\end{tabular} & co-occurs \\
+\texttt{broad\_except} & maintainability & \begin{tabular}[t]{@{}r@{}}0.10\\\tiny[-0.18, 0.38]\end{tabular} & \begin{tabular}[t]{@{}r@{}}1.19\\\tiny[1.09, 1.29]\end{tabular} & co-occurs \\
+\texttt{long\_parameter\_list} & halstead difficulty & \begin{tabular}[t]{@{}r@{}}0.00\\\tiny[-0.28, 0.28]\end{tabular} & \begin{tabular}[t]{@{}r@{}}0.86\\\tiny[0.77, 0.95]\end{tabular} & blind \\
+\texttt{mutable\_default} & comment density & \begin{tabular}[t]{@{}r@{}}-0.00\\\tiny[-0.28, 0.28]\end{tabular} & \begin{tabular}[t]{@{}r@{}}-0.99\\\tiny[-1.10, -0.87]\end{tabular} & blind \\
+\texttt{dead\_code} & api calls & \begin{tabular}[t]{@{}r@{}}-0.00\\\tiny[-0.28, 0.28]\end{tabular} & \begin{tabular}[t]{@{}r@{}}0.31\\\tiny[0.19, 0.43]\end{tabular} & blind \\
 \bottomrule
 \end{tabular}

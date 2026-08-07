@@ -143,8 +143,9 @@ metrics over model output and drawing conclusions about how well models write. T
 step that is skipped is the one that licenses those conclusions. These metrics were
 designed to \emph{describe} human-written code in aggregate, not to \emph{detect}
 particular structural defects. Where their per-defect behaviour has been examined
-at all, it has been examined observationally --- metrics computed on code already
-labelled defective, and judged by whether they separate it from code that is not
+at all, it has been examined by \emph{looking} rather than by \emph{intervening}:
+metrics are computed on code that already carries the defect, and judged by
+whether they separate it from code that does not
 (Section~\ref{sec:related}). That design cannot distinguish the two available
 explanations of a separation. A metric that moves when defective and clean code
 are compared has been shown to respond to \emph{something} that differs between
@@ -267,6 +268,17 @@ function exceeding a statement threshold, Ruff reports a loop that a
 comprehension would replace, jscpd reports a block appearing twice. Each such
 rule is a concrete, checkable stand-in for an informal idea.
 
+The two halves of this benchmark depend on that definition very differently, and
+the asymmetry is worth stating early. On the injected half the ground truth is
+\emph{constructive}: the defect is there because a known transformation put it
+there --- the body was wrapped in a \texttt{try}, the function was padded, the
+comprehension was expanded --- so what changed is known independently of any
+tool. The detector's job is to confirm that the edit produced the intended shape,
+not to decide what the shape is. On the real half no such independent access
+exists: the label is the only thing standing between a function and the claim
+that it is defective. The operational reading below therefore carries the full
+weight on real code and much less of it on injected code.
+
 We use these tools as exactly that --- an \emph{operational definition}, not
 ground truth. The distinction matters for what follows in two ways. It licenses
 using detectors to label data at scale, since a label means only ``this tool's
@@ -346,12 +358,15 @@ poor code, and finds that they do: Siddiq et al.\ show smells present in the
 training corpora reappearing in generated output \cite{siddiq2022empirical}. What
 that work does not do is check its instruments. Nguyen and Nadi, for instance,
 compute cyclomatic and cognitive complexity over Copilot's suggestions, find both
-low, and read that as evidence the suggestions would be easy for a developer to
-follow \cite{nguyen2022empirical}. The reading is only as good as the assumption
-underneath it --- that on code of this kind, a low complexity score means low
-reading effort --- and that assumption is not tested. Computing established
-metrics on model output and reporting the values is the common pattern, and it is
-the practice this paper is about.
+low, and read that as evidence the suggestions would be easy to follow
+\cite{nguyen2022empirical}. Signalling reading effort is what those measures were
+built to do, so the reading is reasonable on its face. The gap is narrower than
+that: a low score rules out only the structural problems the measure can
+\emph{see}, and Section~\ref{sec:rq1} finds these two see very little.
+Cyclomatic complexity responds to three of our twelve defects and cognitive
+complexity to one. Code can score low on both and still be full of the other
+nine. Computing established metrics on model output and reporting the values is
+the common pattern, and it is the practice this paper is about.
 
 The closest work to ours measures a model's \emph{propensity} for particular
 smells using a probe over token probabilities, applied to code that already
@@ -460,13 +475,14 @@ def fifth_Power_Sum(n):          def fifth_Power_Sum(n):
 
 Injecting smells is not itself new; what is new here is what the injection is
 for. Existing smell datasets are mined from repositories and hand-labelled, and
-they exist to train or evaluate \emph{detectors}. The closest construction to ours
-is SmellBench \cite{lin2026smellbench}, which appeared while this work was under
-way and also introduces one smell into clean Python and confirms behaviour by
-running the affected tests. It does so to evaluate refactoring agents rather than
-measures; it injects using a language model rather than a deterministic edit; and
-it does not check with a static analyser that the intended smell actually landed.
-That last difference is what the verification below exists to close.
+they exist to train or evaluate \emph{detectors}. The closest construction to
+ours is the refactoring-agent benchmark of Lin et al.\ \cite{lin2026smellbench},
+which also introduces one smell into clean Python and confirms behaviour by
+running the affected tests. Three things differ. It evaluates agents rather than
+measures. It injects by asking a code agent to edit the function, where we apply
+a fixed transformation, so we know what changed because we changed it. And it
+treats the tests passing as sufficient, with no static analyser asked whether the
+intended smell is actually present --- which is the check the next section adds.
 
 \subsection{Two-stage verification}
 \label{sec:verification}
@@ -523,12 +539,42 @@ defective functions in total, with per-defect counts from 92
 (\texttt{inefficient\_copy}, genuinely rare) to 950
 (\texttt{long\_parameter\_list}).
 
+\begin{table*}[!tb]
+\centering
+\small
+\begin{tabular}{llcl}
+\toprule
+Family & Measures & Reference & Worse means \\
+\midrule
+Structural (9) & sloc, cyclomatic, cognitive & not needed & higher \\
+           & halstead volume / difficulty / effort & & higher \\
+           & maintainability index & & lower \\
+           & comment density, API calls & & context \\
+Similarity (7) & BLEU, chrF, ROUGE-L, CodeBLEU & required & lower \\
+           & AST similarity, CodeBERTScore, BERTScore & & lower \\
+Fluency (1) & perplexity & not needed & context \\
+\midrule
+\multicolumn{4}{l}{\emph{Recorded, but not under test}} \\
+Control    & pass/fail by execution & tests required & --- \\
+\bottomrule
+\end{tabular}
+\caption{The measure panel: seventeen measures in three families. The
+\emph{Reference} column is the decisive one, since it determines which measures
+can be validated on real code at all. Measures marked \emph{context} have no
+inherent good direction and are interpreted against a baseline. Correctness sits
+below the rule because it is not being evaluated as a quality measure; it
+establishes that an injected defect left behaviour unchanged.}
+\label{tab:panel}
+\end{table*}
+
 % ---------------------------------------------------------------------
 \section{The measure panel}
 \label{sec:panel}
 
-The panel is the set of measures under test. It contains seventeen measures in
-five families, listed in Table~\ref{tab:panel}. Two decisions about its
+The panel is the set of measures under test: seventeen measures in three
+families, listed in Table~\ref{tab:panel}. Correctness is recorded alongside them
+but is not one of them --- it is a control, used to confirm that an injected
+defect did not change what the code computes. Two decisions about the panel's
 composition do more work than the list itself.
 
 \subsection{What the panel excludes, and why}
@@ -564,34 +610,9 @@ not an omission in the study, and it is why the results of
 Section~\ref{sec:rq1} report the two families separately rather than ranking them
 against each other.
 
-\begin{table*}[!tb]
-\centering
-\small
-\begin{tabular}{llll}
-\toprule
-Family & Measures & Reference & Worse means \\
-\midrule
-Structural & sloc, cyclomatic, cognitive, & not needed & higher \\
-           & halstead volume / difficulty / effort & & higher \\
-           & maintainability index & & lower \\
-Profiling  & comment density, API calls & not needed & context \\
-Similarity & BLEU, chrF, ROUGE-L, CodeBLEU, & required & lower \\
-           & AST similarity, CodeBERTScore, BERTScore & & lower \\
-Model-based & perplexity & not needed & context \\
-Correctness & pass/fail by execution & tests required & fail \\
-Cost       & output tokens, generation time & not needed & context \\
-\bottomrule
-\end{tabular}
-\caption{The measure panel. The \emph{Reference} column is the decisive one: it
-determines which measures can be validated on real code at all. Measures marked
-\emph{context} have no inherent good direction and are interpreted against a
-baseline.}
-\label{tab:panel}
-\end{table*}
-
 \subsection{Notes on individual measures}
 
-Most of the panel is standard. Four choices warrant a note.
+Most of the panel is standard. Three choices warrant a note.
 
 \emph{Cognitive complexity} is included alongside cyclomatic complexity because
 the two disagree in a way that matters here: cyclomatic counts branches equally
@@ -600,20 +621,13 @@ nesting depth, the difference is the whole question.
 
 \emph{AST similarity} compares the pre-order sequence of syntax-tree node types,
 discarding identifiers and literals. It therefore measures structural
-resemblance specifically, where BLEU measures textual resemblance. An earlier
-implementation used a full tree-edit distance; it was quadratic in tree size and
-took minutes on the larger examples, and was replaced by a sequence comparison
-that produces near-identical values in about a second.
+resemblance specifically, where BLEU measures textual resemblance.
 
 \emph{Perplexity} is included to test a hypothesis rather than because it is an
 established quality measure: if structurally poor code is unusual code, a
 language model should find it more surprising. Section~\ref{sec:rq1} reports that
 it does not.
 
-\emph{METEOR} was dropped. It requires a WordNet corpus that could not be loaded
-in the cluster environment where the model-based measures run, and its
-information is largely covered by the other six similarity measures. Rather than
-report a column of blanks, we removed it.
 
 % ---------------------------------------------------------------------
 \section{Validation protocol}
@@ -642,16 +656,20 @@ is expressed as a standardised mean difference,
 which we call \emph{detection strength}: how far apart the defective and clean
 groups sit, in units of the code's natural variation \cite{cohen1988statistical}.
 Signs are oriented so that positive always means the defective group scored
-worse, regardless of the measure's native direction, and values are capped at
-$\pm 5$ --- beyond that point the groups barely overlap and the exact figure
-carries no additional information.
+worse, regardless of the measure's native direction. A \emph{negative} value
+therefore means the measure moved the wrong way: defective code scored
+\emph{better} on it than clean code. That is not a small positive result but a
+contradiction of what the measure is supposed to indicate, and
+Section~\ref{sec:perplexity} reports a measure for which most values are
+negative. Values are capped at $\pm 5$ --- beyond that point the groups barely
+overlap and the exact figure carries no additional information.
 
-As a reading aid we use the conventional bands: below $0.2$ negligible, $0.2$ to
-$0.5$ small, $0.5$ to $0.8$ medium, above $0.8$ large. These are conventions,
-not laws, but they give the tables a consistent vocabulary: a measure with
-$d = 1.4$ separates the groups dependably in aggregate; a measure with $d = 0.2$
-has technically nonzero signal that no practitioner could act on for a single
-file.
+As a reading aid we use Cohen's conventional bands for a standardised mean
+difference \cite{cohen1988statistical}: below $0.2$ negligible, $0.2$ to $0.5$
+small, $0.5$ to $0.8$ medium, above $0.8$ large. These are conventions, not laws,
+but they give the tables a consistent vocabulary: a measure with $d = 1.4$
+separates the groups dependably in aggregate; a measure with $d = 0.2$ has
+technically nonzero signal that no practitioner could act on for a single file.
 
 Each estimate is reported with a 95\% confidence interval computed from the
 large-sample variance of a standardised difference between independent groups.
@@ -683,14 +701,12 @@ The unpaired form of Equation~\ref{eq:d} divides instead by the spread of the
 code itself, so a one-line edit is negligible next to the natural variation in
 function length --- under it, the same dead-code cell falls from $5.0$ to
 $0.21$, which is the truthful answer. Two further properties make it the right
-choice. First, real code has no twins: a defective function found in the wild
-has no clean counterpart, so the real-world layer can only ever be analysed
-unpaired. Second, using the same estimand on both sources is what makes the two
-columns of every table in this paper directly comparable --- the comparison
-\emph{between} injected and real results is the protocol's entire point.
-The price is that pairing information is discarded on the injected side, where
-it would have added power; with a hundred pairs per defect, power is not the
-binding constraint, and comparability is worth more.
+choice. First, real code has no twins: a defective function found in the wild has
+no clean counterpart, so the real-world layer can only ever be analysed unpaired.
+Second, the injected and real columns can only be set beside each other if they
+are the same quantity, and comparing them is the whole point of the protocol. A
+paired statistic on one side and an unpaired statistic on the other would put two
+different numbers under one heading.
 
 \subsection{From two numbers to a verdict}
 \label{sec:verdicts}
@@ -713,12 +729,15 @@ three verdicts.
         to the measure, and detecting it is a job for a rule-based detector.
 \end{description}
 
-The asymmetry deserves emphasis. A near-zero injected value next to a large real
-value is not a null result; it is a positive identification of a confound. When
-a measure that provably cannot respond to a defect still separates real
-defective code from clean code, the study has measured what the separation
-actually is --- and anything downstream that used that measure as a detector
-would be systematically rewarding the confound.
+The middle verdict deserves emphasis, because it is easy to read as a failure and
+it is not one. A near-zero injected value next to a large real value tells you
+something definite: the measure cannot be responding to the defect, so whatever
+it is responding to is something else that defective code happens to have --- in
+almost every case here, extra size. The pairing identifies the cause of a
+separation that an observational study would simply have credited to the defect.
+The practical consequence is that a tool built on such a measure would flag
+functions for being large while reporting that it had found the defect, and would
+keep doing so on code where the defect was absent.
 
 % ---------------------------------------------------------------------
 \section{RQ1: which measures can see which defects}
@@ -729,11 +748,13 @@ would be systematically rewarding the confound.
   \includegraphics[width=\textwidth]{figures/fig1_detection_heatmap.pdf}
   \caption{Detection strength of every reference-free measure on every defect,
   on the controlled injected pairs (left) and on real labelled code against the
-  shared clean baseline (right). Green is strong separation in the defective
-  direction; values are capped at $5$. Row labels are coloured by the final
-  verdict of Section~\ref{sec:verdicts}. The information is in the
-  \emph{differences} between the two panels, catalogued in
-  Section~\ref{sec:patterns}.}
+  shared clean baseline (right). Cells are coloured by the value itself: red is a
+  large positive detection strength, meaning the defective group scored much
+  worse, and green is zero or negative, meaning the measure did not separate the
+  groups or separated them the wrong way. Values are capped at $\pm 5$. Row
+  labels are coloured by the final verdict of Section~\ref{sec:verdicts}, not by
+  the scale. The information is in the \emph{differences} between the two panels,
+  catalogued in Section~\ref{sec:patterns}.}
   \label{fig:heatmap}
 \end{figure*}
 
