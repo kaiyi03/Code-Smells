@@ -277,20 +277,29 @@ def fig_models():
                                  if num(r.get(f"canon_{k}")) is not None else np.nan
                                  for r in rows]) for k in keys]
 
-    x = np.arange(len(keys))
+    # One panel per measure, each on its own scale. Plotted on shared axes the
+    # maintainability index (~80) flattened every other measure to a stub, so the
+    # figure showed only that one number. Small multiples cost a shared y-axis and
+    # buy the ability to see all five.
     series = list(data.items()) + [("canonical solution", canon)]
-    w = 0.8 / len(series)
-    fig, ax = plt.subplots(figsize=(7.4, 4.2))
-    for i, (label, vals) in enumerate(series):
-        colour = BENCH_COLOURS[i] if i < len(data) else "#555"
-        ax.bar(x + (i - (len(series) - 1) / 2) * w, vals, w, label=label, color=colour)
-    ax.set_xticks(x)
-    ax.set_xticklabels([k.replace("_", " ") for k in keys])
-    ax.set_ylabel("mean over 664 generated solutions")
-    ax.set_title("Generated code is simpler than the reference on every complexity\n"
-                 "measure, and that holds for every model regardless of capability",
-                 fontsize=10, pad=8)
-    ax.legend(frameon=False, ncol=2, fontsize=7.6)
+    colours = BENCH_COLOURS[:len(data)] + ["#555"]
+    fig, axes = plt.subplots(1, len(keys), figsize=(11.0, 3.1))
+    for ax, k, idx in zip(axes, keys, range(len(keys))):
+        vals = [s[1][idx] for s in series]
+        ax.bar(range(len(series)), vals, color=colours, width=.68)
+        ax.set_title(k.replace("_", " "), fontsize=9, pad=6)
+        ax.set_xticks([])
+        ax.set_ylim(0, max(vals) * 1.28)
+        for i, v in enumerate(vals):
+            ax.annotate(f"{v:.2f}", (i, v), ha="center", va="bottom", fontsize=7)
+        ax.tick_params(axis="y", labelsize=7)
+    axes[0].set_ylabel("mean over 664 solutions", fontsize=8)
+    handles = [plt.Rectangle((0, 0), 1, 1, color=c) for c in colours]
+    fig.legend(handles, [s[0] for s in series], frameon=False, ncol=len(series),
+               loc="lower center", bbox_to_anchor=(0.5, -0.10), fontsize=8.5)
+    fig.suptitle("Every model writes simpler code than the reference on every complexity "
+                 "measure — but their commenting habits could hardly differ more",
+                 y=1.04, fontsize=10.5)
     save(fig, "fig5_model_structure")
 
 
