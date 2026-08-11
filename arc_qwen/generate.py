@@ -30,13 +30,51 @@ from datasets import load_dataset
 
 MODEL = os.environ.get("GEN_MODEL", "Qwen/Qwen2.5-Coder-1.5B-Instruct")
 MAX_NEW = 512
+
+# Verbosity conditions for the token experiment (Section 8), kept character-for-
+# character identical to the ones in generate_claude_bench.py -- a difference in
+# wording between models would confound the model with the instruction. Empty
+# string means no system prompt, which is what the Section 7 runs used.
+SYSTEMS = {
+    "": "",
+    "terse":   "Write the shortest solution that works. No docstring, no comments, "
+               "no input validation.",
+    "neutral": "Write a solution to the task.",
+    "verbose": "Write a complete and defensive solution: validate the inputs, handle "
+               "edge cases explicitly, and document the function with a docstring and "
+               "comments.",
+}
+SYSTEM_MODE = os.environ.get("GEN_SYSTEM", "")
 # Keep this the same for every model: it sets how much work shares a forward pass,
 # so the tokens/second figure is only comparable across models at a fixed batch.
 BATCH = int(os.environ.get("GEN_BATCH", "8"))
 
 
-def load_tasks(limit=None):
-    """Return the benchmark tasks as {task_id, source, instruction, canonical}."""
+# The token experiment (RQ3) varies how much the model is asked to write while
+# holding the task fixed. The directive is APPENDED to the same instruction every
+# model already receives, and "neutral" appends nothing -- so the neutral condition
+# is byte-identical to the plain benchmark run and does not need generating twice.
+#
+# Neither directive names a measure we score. "Shortest" and "explain it" are
+# instructions about the answer, not about lines of code or comment density. The
+# exception is unavoidable: asking for a docstring does raise comment density
+# directly, so that measure is manipulated under `verbose` and cannot be read as
+# an outcome there. Length, defect count and correctness can.
+STYLES = {
+    "neutral": "",
+    "terse": "\n\nKeep the solution as short as you can while still being correct.",
+    "verbose": ("\n\nWrite the solution out fully and explain it: give the function a "
+                "docstring, comment any step that is not obvious, check the inputs, "
+                "and handle edge cases explicitly."),
+}
+
+
+def load_tasks(limit=None, style="neutral"):
+    """Return the benchmark tasks as {task_id, source, instruction, canonical}.
+
+    `style` selects a verbosity directive from STYLES, appended to the instruction.
+    """
+    suffix = STYLES[style]
     tasks = []
     for ex in load_dataset("openai/openai_humaneval", split="test"):
         tasks.append({
@@ -95,8 +133,11 @@ def main():
     with open(args.out, "w", encoding="utf-8") as fout:    # write incrementally
         for i in range(0, len(tasks), BATCH):
             batch = tasks[i:i + BATCH]
-            prompts = [tok.apply_chat_template([{"role": "user", "content": t["instruction"]}],
-                                               tokenize=False, add_generation_prompt=True)
+            sysmsg = SYSTEMS[SYSTEM_MODE]
+            prompts = [tok.apply_chat_template(
+                           ([{"role": "system", "content": sysmsg}] if sysmsg else [])
+                           + [{"role": "user", "content": t["instruction"]}],
+                           tokenize=False, add_generation_prompt=True)
                        for t in batch]
             enc = tok(prompts, return_tensors="pt", padding=True).to("cuda")
             n_in = enc["input_ids"].shape[1]
@@ -112,6 +153,7 @@ def main():
                 n_tokens += n_out
                 fout.write(json.dumps({
                     "task_id": t["task_id"], "source": t["source"], "model": MODEL,
+                    "system_mode": SYSTEM_MODE,
                     "batch_index": i // BATCH, "batch_size": BATCH,
                     "generated_code": extract_code(g),
                     "raw_output": g,
