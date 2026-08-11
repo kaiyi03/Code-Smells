@@ -947,17 +947,19 @@ Section~\ref{sec:rq3} exists.
 
 \subsection{Correctness varies enormously}
 
-The three models are not close on the benchmarks' own terms.
-Table~\ref{tab:bench} gives pass@1. Claude solves 92.6\% of the tasks, the two
-open models a little over half. On HumanEval alone Claude is at 98.8\%, which
-means the benchmark has almost no headroom left to measure it with.
+The three models are far apart on the benchmarks' own terms.
+Table~\ref{tab:bench} gives pass@1 --- the share of tasks whose generated solution
+passes its unit tests --- overall and for each of the two task sources. Claude
+solves 92.6\% of the 664 tasks; the two open models solve a little over half.
 
-\begin{table}[!tb]
+\begin{table}[!b]
   \centering
   \small
   \begin{tabular}{lrrr}
   \toprule
-  Model & pass@1 & HumanEval & MBPP \\
+  & \multicolumn{3}{c}{pass@1} \\
+  \cmidrule(l){2-4}
+  Model & all 664 & HumanEval & MBPP \\
   \midrule
   DeepSeek-Coder-1.3B & 51.7\% & 66.5\% & 46.8\% \\
   Qwen2.5-Coder-1.5B  & 57.4\% & 66.5\% & 54.4\% \\
@@ -965,15 +967,31 @@ means the benchmark has almost no headroom left to measure it with.
   \bottomrule
   \end{tabular}
   \caption{Correctness on the 664 benchmark tasks, single greedy generation per
-  task. The spread between the weakest and strongest model is forty-one points.}
+  task. All three columns are pass@1; the last two split the same 664 tasks by
+  source (164 HumanEval, 500 MBPP).}
   \label{tab:bench}
 \end{table}
 
-That spread is the useful part. It gives the structural comparison something to
-be measured against: if structural quality tracked capability, forty-one points
-of correctness should show up somewhere in the panel.
+
+The size of that difference is what makes the rest of the section worth reading.
+Claude gets 41 more tasks right out of every 100 than DeepSeek does. If
+structural quality were something a more capable model also does better --- if
+writing correct code and writing well-built code were close to the same skill ---
+then a difference that large ought to leave a mark somewhere in the panel.
+Section~\ref{sec:capability} checks whether it does.
 
 \subsection{What the panel reports}
+
+
+Figure~\ref{fig:models} puts each model's output beside the benchmark's own
+reference solutions. The first result is uniform: generated code is
+\emph{simpler} than the code it is being compared against, on every complexity
+measure and for every model. Mean length runs from 5.3 to 6.6 lines against the
+reference's 6.9; cyclomatic complexity from 2.65 to 2.86 against 3.17; cognitive
+complexity from 2.00 to 2.41 against 2.86. The common worry that models produce
+sprawling, over-complicated code is not what the measurements show on tasks of
+this size. They produce something tighter than a human wrote for the same
+problem.
 
 \begin{figure*}[!tb]
   \centering
@@ -988,16 +1006,6 @@ of correctness should show up somewhere in the panel.
   \label{fig:models}
 \end{figure*}
 
-Figure~\ref{fig:models} puts each model's output beside the benchmark's own
-reference solutions. The first result is uniform: generated code is
-\emph{simpler} than the code it is being compared against, on every complexity
-measure and for every model. Mean length runs from 5.3 to 6.6 lines against the
-reference's 6.9; cyclomatic complexity from 2.65 to 2.86 against 3.17; cognitive
-complexity from 2.00 to 2.41 against 2.86. The common worry that models produce
-sprawling, over-complicated code is not what the measurements show on tasks of
-this size. They produce something tighter than a human wrote for the same
-problem.
-
 Commenting is the exception, and it separates the models rather than separating
 them from the reference. Qwen writes 9.6 comment lines per hundred source lines
 and DeepSeek 6.3, against the reference solutions' 0.11. Claude writes 0.13 ---
@@ -1008,7 +1016,19 @@ to return only code. Two of them explained themselves anyway.
 \subsection{Scoring raw output measures verbosity}
 \label{sec:verbosity}
 
-\begin{figure}[!tb]
+
+Score every line each model returned, and DeepSeek carries a defect in 24.8\% of
+its solutions against Qwen's 9.8\% --- two and a half times the rate, on
+identical tasks. Taken at face value, that says DeepSeek writes worse code.
+
+It does not. Asked for a function, DeepSeek frequently supplies the function and
+then demonstrates it: a few assertions, a worked example, a print statement. Qwen
+and Claude return the function and stop. The mean number of statements sitting
+outside any function definition is 1.03 for DeepSeek against 0.01 for each of the
+other two. The difference in the defect rate is a difference in how much of that
+extra material there was to score.
+
+\begin{figure}[!b]
   \centering
   \includegraphics[width=\linewidth]{figures/fig6_verbosity_confound.pdf}
   \caption{Share of generations carrying at least one defect, scored over
@@ -1017,16 +1037,6 @@ to return only code. Two of them explained themselves anyway.
   of them wrote anything outside the function it was asked for.}
   \label{fig:verbosity}
 \end{figure}
-
-Scored as emitted, DeepSeek carries a defect in 24.8\% of its solutions against
-Qwen's 9.8\% --- two and a half times the rate, on identical tasks. Read
-straight, that is a claim about DeepSeek's code.
-
-It is mostly a claim about DeepSeek's \emph{answers}. Asked for a function, it
-frequently supplies the function and then demonstrates it: a few assertions, a
-worked example, a print statement. Qwen and Claude return the function and stop.
-The mean count of statements outside any function definition is 1.03 for
-DeepSeek against 0.01 for each of the other two.
 
 Those extra statements are where the defects are. Scoring only the function
 definitions --- discarding everything the prompt did not ask for --- DeepSeek
@@ -1041,18 +1051,36 @@ literals, and a magic-number rule fires on it exactly as it would inside a
 function body. Nothing is wrong with the detector. The material was simply never
 part of the answer.
 
-Two things follow. First, a defect rate computed over raw model output is partly
-a measure of how much the model volunteers, and comparing two models on it ranks
-them partly by that. Second --- and this is why the correction is not the same as
-normalising by size --- dividing by lines of code would leave the demonstration
-code in the denominator, diluting the rate rather than removing the material that
-should not have been scored. The two corrections answer different questions, and
-here the question is which code the model was actually asked to write.
+Two things follow. First, a defect rate computed over everything a model returns
+is partly a measure of how much it volunteers, so comparing two models on it
+ranks them partly by that.
+
+Second, the obvious alternative fix does not work here. A natural response to
+``one model wrote more'' is to divide by size and report defects per hundred
+lines. That would not solve this problem, because the demonstration code would
+still be counted --- its defects in the numerator, its lines in the denominator.
+The rate would come down, but only because the function was credited with lines
+it did not contain. What is needed here is not a smaller number but a smaller
+\emph{corpus}: score the function the prompt asked for, and leave out everything
+the model added around it.
 
 \subsection{Capability does not buy structural quality}
 \label{sec:capability}
 
-\begin{figure}[!tb]
+
+With the scoring corrected, the models can be compared on structure. Counting
+defects per hundred source lines of the functions they were asked to write, they
+score 1.93 (DeepSeek), 1.96 (Qwen) and 1.90 (Claude).
+
+Those three numbers are, for practical purposes, the same number. The gap between
+the highest and lowest is 0.06 defects per hundred lines: on a six-line function,
+about one defect in every three hundred such functions. Set that beside the
+correctness column, where the same three models are separated by 41 points.
+Figure~\ref{fig:capability} puts the two side by side --- a very large difference
+in one panel, and effectively none in the other, across the same models on the
+same tasks.
+
+\begin{figure}[!b]
   \centering
   \includegraphics[width=\linewidth]{figures/fig10_capability_vs_structure.pdf}
   \caption{pass@1 beside defect density per hundred lines, for the same three
@@ -1060,15 +1088,6 @@ here the question is which code the model was actually asked to write.
   contrast between a forty-one-point spread and a six-hundredths one.}
   \label{fig:capability}
 \end{figure}
-
-With the scoring corrected, the models can be compared. On defects per hundred
-source lines they score 1.93 (DeepSeek), 1.96 (Qwen) and 1.90 (Claude).
-
-Set that beside the correctness column. Claude solves forty-one points more of
-the benchmark than DeepSeek and writes code with, as far as this panel can tell,
-the same density of structural defects --- a difference of six hundredths, far
-smaller than the spread within any one model's own output
-(Figure~\ref{fig:capability}).
 
 This is the section's main result, and it only became visible once a frontier
 model joined the comparison. Two similar small models scoring similarly says
@@ -1094,15 +1113,6 @@ worth building on.
 \subsection{The task set, not the models, is the binding constraint}
 \label{sec:taskset}
 
-\begin{figure}[!tb]
-  \centering
-  \includegraphics[width=\linewidth]{figures/fig7_task_set.pdf}
-  \caption{Defect rate and the number of distinct defects observed, on the
-  short-function benchmark against the smell-inducing prompts of
-  Section~\ref{sec:rq3}. The benchmark's ceiling is a property of its tasks: most
-  of the twelve defects cannot occur in a five-line function.}
-  \label{fig:taskset}
-\end{figure}
 
 One number in this section needs a caveat before it is quoted. Only a handful of
 the twelve defects appear in the benchmark output at all: four for Qwen, five for
@@ -1113,8 +1123,20 @@ The obvious reading --- that models rarely produce the other defects --- is not
 available, because most of those defects \emph{cannot occur} in the code these
 tasks call for. The mean generated solution is under six lines. A function that
 short cannot be a long method, cannot nest four levels deep, and has no room for
-a duplicated block. The benchmark is not measuring how often models write such
-code. It is measuring how often they write it when the task makes it impossible.
+a duplicated block.
+
+\begin{figure}[!b]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig7_task_set.pdf}
+  \caption{What changes when the tasks change. The red bar is this section's
+  benchmark --- MBPP and HumanEval, one short function per task. The green bars
+  are the same three models on the prompt set of Section~\ref{sec:rq3}, whose
+  tasks are long enough for the other defects to occur. Left: the share of
+  generations carrying at least one defect. Right: how many of the twelve
+  distinct defects were seen at all. The benchmark's low numbers are a property
+  of its tasks rather than of the models.}
+  \label{fig:taskset}
+\end{figure}
 
 Figure~\ref{fig:taskset} shows what changes when the tasks change. Given work
 with room for the other defects, the share of generations carrying at least one

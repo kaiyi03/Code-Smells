@@ -1,0 +1,4 @@
+model,condition,n,mean_output_tokens,mean_sloc,defects_total,defects_per_100_sloc,pct_with_defect,mean_comment_density,pass_at_1
+claude,terse,664,63.5,4.20,55,1.972,8.13,0.038,89.76
+claude,neutral,664,117.0,5.89,71,1.816,10.24,0.152,93.07
+claude,verbose,664,742.1,19.50,139,1.074,20.33,39.486,91.11

@@ -72,18 +72,22 @@ def save(fig, name):
     """
     fig.savefig(os.path.join(FIG, f"{name}.png"), dpi=150)
 
-    titles = [(ax, ax.get_title()) for ax in fig.axes if ax.get_title()]
+    # Strip the SUPTITLE for the PDF, and an axes title only when the figure has a
+    # single axes -- there it is the figure's title and the caption repeats it. In a
+    # multi-panel figure the axes titles are the panel labels, and removing them
+    # leaves the reader with five unlabelled bar charts.
     sup = fig._suptitle.get_text() if fig._suptitle else None
-    for ax, _ in titles:
-        ax.set_title("")
     if sup:
         fig.suptitle("")
+    solo = fig.axes[0].get_title() if len(fig.axes) == 1 else None
+    if solo:
+        fig.axes[0].set_title("")
     fig.savefig(os.path.join(FIG, f"{name}.pdf"))
 
-    for ax, t in titles:                      # restore, in case a caller reuses it
-        ax.set_title(t)
-    if sup:
+    if sup:                                   # restore, in case a caller reuses it
         fig.suptitle(sup)
+    if solo:
+        fig.axes[0].set_title(solo)
     plt.close(fig)
     print(f"  figures/{name}.pdf + .png")
 
@@ -430,7 +434,9 @@ def fig_task_set():
     rates = ([rate(short)] if short else []) + [rate(v) for v in runs.values()]
     dis = ([distinct(short)] if short else []) + [distinct(v) for v in runs.values()]
 
-    fig, axes = plt.subplots(1, 2, figsize=(10.2, 4.2))
+    fig, axes = plt.subplots(1, 2, figsize=(10.2, 4.4))
+    # Two colours, two kinds of task -- the whole comparison. Previously the red bar
+    # was distinguished by colour alone with nothing saying what it meant.
     cols = ["#9b2c2c"] + ["#0f6d6d"] * (len(names) - 1) if short else ["#0f6d6d"] * len(names)
     for ax, vals, ttl, ylab in [
             (axes[0], rates, "Share of generations carrying a defect", "%"),
@@ -440,10 +446,18 @@ def fig_task_set():
         ax.set_xticklabels(names, rotation=20, ha="right", fontsize=7.5)
         ax.set_title(ttl, fontsize=10)
         ax.set_ylabel(ylab)
+        ax.set_ylim(0, max(vals) * 1.18)
         for i, v in enumerate(vals):
             ax.annotate(f"{v:.0f}" + ("%" if ylab == "%" else ""), (i, v),
                         ha="center", va="bottom", fontsize=7.5)
-    fig.suptitle("The task set was the binding constraint, not the models", y=1.02, fontsize=11)
+    handles = [plt.Rectangle((0, 0), 1, 1, color="#9b2c2c"),
+               plt.Rectangle((0, 0), 1, 1, color="#0f6d6d")]
+    fig.legend(handles,
+               ["short benchmark tasks (MBPP + HumanEval)",
+                "tasks with room for the other defects"],
+               frameon=False, ncol=2, loc="lower center", bbox_to_anchor=(0.5, -0.13),
+               fontsize=8.5)
+    fig.suptitle("The task set was the binding constraint, not the models", y=1.0, fontsize=11)
     save(fig, "fig7_task_set")
 
 
