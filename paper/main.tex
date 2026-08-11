@@ -57,6 +57,11 @@
 % restriction and allows bottom placement too. Load it last: it patches the output
 % routine and must see the final float parameters.
 \usepackage{dblfloatfix}
+% Provides [H]: place exactly here, no floating. Used only where a float must
+% follow the text that introduces it and LaTeX's own placement cannot be coaxed
+% into it -- at the top of a column it precedes the heading, at the bottom it
+% falls past the next subsection.
+\usepackage{float}
 
 % Do not stretch vertical space to make every column reach the bottom. With a
 % float anchored at the foot of a column LaTeX was padding the gaps between that
@@ -1205,18 +1210,31 @@ compare instruction strengths at a fixed budget, and budgets of 1{,}024 against
 else, over function definitions only, so the verbosity correction of
 Section~\ref{sec:verbosity} is already applied.
 
-One limitation belongs here rather than in Section~\ref{sec:threats}, because it
-bears directly on the numbers below. Claude reached its 8{,}192-token cap on 38 of
-its 476 generations, or 8\%. Its mean output length is therefore slightly
-understated, and a handful of its solutions stop mid-function. The open models
-reached their cap on nine and seven generations respectively, which is negligible;
-for Claude it is not, and where a Claude figure could be affected by it we say so.
+The token budget needed one correction, and it is worth recording because of what
+it changed. Claude first ran with an 8{,}192-token cap, which truncated 38 of its
+476 generations. That is a budget binding on one arm of a comparison and not the
+others --- the objection this paper makes elsewhere --- so those 38 prompts were
+re-run at 16{,}384 tokens and merged with the generations that had finished on
+their own, which a larger cap would not have altered. Nothing is truncated now,
+at either the open models' 4{,}096 or Claude's 16{,}384.
+
+The correction moved what one would expect it to move and nothing else. Claude's
+mean solution length rose from 175 to 194 lines, its induction rate from 63.2\% to
+65.8\%, and the two defects it gained were a long method and an unused import ---
+precisely the kinds that a generation cut off mid-function cannot exhibit. Its
+defect density was unmoved, at 1.02 per hundred lines before and 1.03 after.
 
 \subsection{Some defects can be prompted, others cannot}
 
-% Top placement, not bottom: at the foot of the column this landed after 8.3 had
-% already started, separating it from the subsection that discusses it.
-\begin{table}[!t]
+Table~\ref{tab:induction} gives, for each defect, how often the prompt that asked
+for it got it, and Figure~\ref{fig:induction} plots the same data as rates. The
+spread is the finding, and it runs in two directions.
+
+% [H], not [!t] or [!b]: this table is short and belongs immediately after the
+% sentence that introduces it. Floated to the top of the column it preceded the
+% heading of the subsection discussing it; floated to the bottom it fell past the
+% start of the next one.
+\begin{table}[H]
   \centering
   \small
   \begin{tabular}{lrrr}
@@ -1227,10 +1245,10 @@ for Claude it is not, and where a Claude figure could be affected by it we say s
   \texttt{duplicate\_code}       &  5/20 &  3/20 & 19/20 \\
   \texttt{magic\_number}         &  3/18 & 10/18 & 13/18 \\
   \texttt{deep\_nesting}         &  3/18 &  6/18 &  9/18 \\
-  \texttt{dead\_code}            &  3/16 &  5/16 &  4/16 \\
-  \texttt{long\_method}          &  0/40 &  0/40 & 11/40 \\
+  \texttt{dead\_code}            &  3/16 &  5/16 &  6/16 \\
+  \texttt{long\_method}          &  0/40 &  0/40 & 13/40 \\
   \midrule
-  Overall                        & 32.9\% & 40.8\% & 63.2\% \\
+  Overall                        & 32.9\% & 40.8\% & 65.8\% \\
   \bottomrule
   \end{tabular}
   \caption{Induction: how often a prompt written to provoke a defect produced
@@ -1239,26 +1257,23 @@ for Claude it is not, and where a Claude figure could be affected by it we say s
   \label{tab:induction}
 \end{table}
 
-Table~\ref{tab:induction} gives, for each defect, how often the prompt that asked
-for it got it, and Figure~\ref{fig:induction} plots the same data as rates. The
-spread is the finding, and it runs in two directions.
 
 Across defects, some are easy to provoke and some are impossible. Asking for a
 function with many parameters produces one almost every time --- 36, 38 and 40 out
-of 40. Asking for dead code almost never works: no model exceeds five out of
-sixteen, because an unused import is the kind of thing a model tidies away
+of 40. Asking for dead code almost never works: no model manages more than six
+out of sixteen, because an unused import is the kind of thing a model tidies away
 without being asked. Prompt wording is a strong lever on some structural
 properties and no lever at all on others, and which is which is not obvious in
 advance.
 
 Across models, the ordering is consistent: Claude induces most, then Qwen, then
-DeepSeek, at 63.2\%, 40.8\% and 32.9\% overall. This is the row that looks like a
+DeepSeek, at 65.8\%, 40.8\% and 32.9\% overall. This is the row that looks like a
 model-quality result and is not one. Producing a requested defect is compliance,
 not merit; a model that scored 100\% here would simply be one that does what it
 is told. The next subsection is about what the ordering actually tracks.
 
 \texttt{long\_method} is the sharpest case. Both open models produce a long method
-on zero of forty attempts, and Claude on eleven. Section~\ref{sec:budget} shows
+on zero of forty attempts, and Claude on thirteen. Section~\ref{sec:budget} shows
 this is not the token budget.
 
 \subsection{What resistance actually measures}
@@ -1288,7 +1303,7 @@ scored the same way: the model may have written a clean function, or it may not
 have written a function.
 
 Mean solution length makes the same point in another unit: 30.3 lines for
-DeepSeek, 27.3 for Qwen and 175.0 for Claude. Claude is not six times more
+DeepSeek, 27.3 for Qwen and 194.3 for Claude. Claude is not six times more
 willing to write bad code than Qwen. It is six times more likely to write the
 code at all.
 
@@ -1439,7 +1454,7 @@ they land, the result above is a single-model finding.
 There is a specific reason not to assume it generalises. Comparing each model
 between the short benchmark tasks of Section~\ref{sec:rq2} and the longer prompt
 tasks of this section, length rises for all three, but the defect rate per hundred
-lines moves in opposite directions: Claude falls from 1.90 to 1.02, while Qwen
+lines moves in opposite directions: Claude falls from 1.90 to 1.03, while Qwen
 rises from 1.96 to 2.26 and DeepSeek from 1.93 to 2.11. Writing more dilutes
 Claude's defect rate and concentrates theirs. Whether that reflects the models or
 the difference between the two task sets cannot be separated here, since both

@@ -71,9 +71,9 @@ the half we have grounds to trust here.</p></div>
 <h2>Does the task set surface the defects?</h2>
 <div class="tiles">
 <div class="tile"><div class="v">11 / 12</div><div class="k">distinct defects</div><div class="k dim">vs 5 on short tasks</div></div>
-<div class="tile"><div class="v">73.9%</div><div class="k">smell rate</div><div class="k dim">vs 12.2% on short tasks</div></div>
-<div class="tile"><div class="v">180.7</div><div class="k">mean lines</div><div class="k dim">vs 6.6 on short tasks</div></div>
-<div class="tile"><div class="v">51.6</div><div class="k">mean branching</div><div class="k dim">vs 2.8 on short tasks</div></div>
+<div class="tile"><div class="v">77.3%</div><div class="k">smell rate</div><div class="k dim">vs 12.2% on short tasks</div></div>
+<div class="tile"><div class="v">194.3</div><div class="k">mean lines</div><div class="k dim">vs 6.6 on short tasks</div></div>
+<div class="tile"><div class="v">60.5</div><div class="k">mean branching</div><div class="k dim">vs 2.8 on short tasks</div></div>
 </div>
 <p class="note">Yes. The generated code is roughly four times longer and
 four times branchier than on the short-function benchmark, and twice as many of the twelve
@@ -87,7 +87,7 @@ defects appear. The task set was the binding constraint, not the models.</p>
 <tr><td>DeepSeek-Coder-1.3B</td><td class='dim'>implement fully, 1k budget</td><td>48.1%</td><td>11 of 12</td><td>26.6</td><td>11.6</td><td>515</td></tr>
 <tr><td>DeepSeek-Coder-1.3B</td><td class='dim'>implement fully, 4k budget</td><td>48.7%</td><td>11 of 12</td><td>30.4</td><td>12.2</td><td>589</td></tr>
 <tr><td>DeepSeek-Coder-1.3B</td><td class='dim'>implement fully + no length limit</td><td>49.6%</td><td>10 of 12</td><td>27.9</td><td>11.5</td><td>585</td></tr>
-<tr><td>Claude Sonnet 5</td><td class='dim'>implement fully, 8k budget</td><td>73.9%</td><td>10 of 12</td><td>180.7</td><td>51.6</td><td>3,362</td></tr>
+<tr><td>Claude Sonnet 5</td><td class='dim'>implement fully, 8k budget</td><td>77.3%</td><td>10 of 12</td><td>194.3</td><td>60.5</td><td>3,487</td></tr>
 </tbody></table></div>
 <p class="note"><strong>Smell rate</strong> is the share of generations
 carrying at least one of the twelve defects, counted on the definitions only &mdash; any
@@ -107,7 +107,7 @@ structural number on this page is therefore reported next to how complete the co
 <tr><td>DeepSeek-Coder-1.3B</td><td class='dim'>implement fully, 1k budget</td><td class='warn'>18.6%</td><td>14 of 455</td><td>455 of 476</td></tr>
 <tr><td>DeepSeek-Coder-1.3B</td><td class='dim'>implement fully, 4k budget</td><td class='warn'>18.1%</td><td>14 of 463</td><td>463 of 476</td></tr>
 <tr><td>DeepSeek-Coder-1.3B</td><td class='dim'>implement fully + no length limit</td><td class='warn'>15.5%</td><td>10 of 467</td><td>467 of 476</td></tr>
-<tr><td>Claude Sonnet 5</td><td class='dim'>implement fully, 8k budget</td><td class='good'>5.0%</td><td>1 of 437</td><td>437 of 476</td></tr>
+<tr><td>Claude Sonnet 5</td><td class='dim'>implement fully, 8k budget</td><td class='good'>5.0%</td><td>1 of 475</td><td>475 of 476</td></tr>
 </tbody></table></div>
 <p class="note">A <strong>stub</strong> is a function whose body is only
 <code>pass</code>, <code>...</code>, or a docstring. The two instructions differ in one
@@ -124,12 +124,12 @@ twelve a static analyser can confirm. Six overlap, so induction is measurable on
 this page &mdash; the detectors fire on whatever they find, regardless of what the prompt
 was aiming at.</p>
 <div class="scroll"><table><thead><tr><th>targeted defect</th><th>prompts</th><th>Qwen2.5<br><span class='dim' style='font-weight:400'>minimal, 1k budget</span></th><th>Qwen2.5<br><span class='dim' style='font-weight:400'>implement fully, 1k budget</span></th><th>Qwen2.5<br><span class='dim' style='font-weight:400'>implement fully, 4k budget</span></th><th>Qwen2.5<br><span class='dim' style='font-weight:400'>implement fully + no length limit</span></th><th>DeepSeek<br><span class='dim' style='font-weight:400'>minimal, 1k budget</span></th><th>DeepSeek<br><span class='dim' style='font-weight:400'>implement fully, 1k budget</span></th><th>DeepSeek<br><span class='dim' style='font-weight:400'>implement fully, 4k budget</span></th><th>DeepSeek<br><span class='dim' style='font-weight:400'>implement fully + no length limit</span></th><th>Claude Sonnet 5<br><span class='dim' style='font-weight:400'>implement fully, 8k budget</span></th></tr></thead><tbody>
-<tr><td><code>long_method</code></td><td class='dim'>40</td><td class='bad'>0%</td><td class='bad'>0%</td><td class='bad'>0%</td><td class='bad'>0%</td><td class='bad'>0%</td><td class='bad'>0%</td><td class='bad'>0%</td><td class='bad'>0%</td><td class='warn'>28%</td></tr>
+<tr><td><code>long_method</code></td><td class='dim'>40</td><td class='bad'>0%</td><td class='bad'>0%</td><td class='bad'>0%</td><td class='bad'>0%</td><td class='bad'>0%</td><td class='bad'>0%</td><td class='bad'>0%</td><td class='bad'>0%</td><td class='warn'>32%</td></tr>
 <tr><td><code>long_parameter_list</code></td><td class='dim'>40</td><td class='good'>100%</td><td class='good'>95%</td><td class='good'>95%</td><td class='good'>100%</td><td class='good'>90%</td><td class='good'>85%</td><td class='good'>90%</td><td class='good'>100%</td><td class='good'>100%</td></tr>
 <tr><td><code>duplicate_code</code></td><td class='dim'>20</td><td class='warn'>30%</td><td class='bad'>15%</td><td class='bad'>15%</td><td class='warn'>35%</td><td class='bad'>15%</td><td class='warn'>25%</td><td class='warn'>25%</td><td class='warn'>40%</td><td class='good'>95%</td></tr>
 <tr><td><code>magic_number</code></td><td class='dim'>18</td><td class='warn'>50%</td><td class='warn'>56%</td><td class='warn'>56%</td><td class='warn'>56%</td><td class='bad'>17%</td><td class='bad'>17%</td><td class='bad'>17%</td><td class='warn'>39%</td><td class='good'>72%</td></tr>
 <tr><td><code>deep_nesting</code></td><td class='dim'>18</td><td class='warn'>39%</td><td class='warn'>33%</td><td class='warn'>33%</td><td class='warn'>33%</td><td class='warn'>28%</td><td class='bad'>17%</td><td class='bad'>17%</td><td class='bad'>6%</td><td class='warn'>50%</td></tr>
-<tr><td><code>dead_code</code></td><td class='dim'>16</td><td class='warn'>50%</td><td class='warn'>31%</td><td class='warn'>31%</td><td class='warn'>31%</td><td class='bad'>19%</td><td class='bad'>19%</td><td class='bad'>19%</td><td class='warn'>25%</td><td class='warn'>25%</td></tr>
+<tr><td><code>dead_code</code></td><td class='dim'>16</td><td class='warn'>50%</td><td class='warn'>31%</td><td class='warn'>31%</td><td class='warn'>31%</td><td class='bad'>19%</td><td class='bad'>19%</td><td class='bad'>19%</td><td class='warn'>25%</td><td class='warn'>38%</td></tr>
 </tbody></table></div>
 <p class="note">Read down a column: a prompt can reliably provoke some
 defects and reliably fail to provoke others. That spread is the finding &mdash; prompt
@@ -139,18 +139,18 @@ wording steers structural quality for some defects and not at all for others.</p
 A blank means the defect never appeared. Compare against the short-function benchmark,
 where only magic numbers, dead code, and occasional loop inefficiencies ever showed up.</p>
 <div class="scroll"><table><thead><tr><th>defect</th><th>Qwen2.5<br><span class='dim' style='font-weight:400'>minimal, 1k budget</span></th><th>Qwen2.5<br><span class='dim' style='font-weight:400'>implement fully, 1k budget</span></th><th>Qwen2.5<br><span class='dim' style='font-weight:400'>implement fully, 4k budget</span></th><th>Qwen2.5<br><span class='dim' style='font-weight:400'>implement fully + no length limit</span></th><th>DeepSeek<br><span class='dim' style='font-weight:400'>minimal, 1k budget</span></th><th>DeepSeek<br><span class='dim' style='font-weight:400'>implement fully, 1k budget</span></th><th>DeepSeek<br><span class='dim' style='font-weight:400'>implement fully, 4k budget</span></th><th>DeepSeek<br><span class='dim' style='font-weight:400'>implement fully + no length limit</span></th><th>Claude Sonnet 5<br><span class='dim' style='font-weight:400'>implement fully, 8k budget</span></th></tr></thead><tbody>
-<tr><td><code>long_method</code></td><td>3</td><td>3</td><td>3</td><td>4</td><td>&mdash;</td><td>1</td><td>4</td><td>&mdash;</td><td>79</td></tr>
+<tr><td><code>long_method</code></td><td>3</td><td>3</td><td>3</td><td>4</td><td>&mdash;</td><td>1</td><td>4</td><td>&mdash;</td><td>84</td></tr>
 <tr><td><code>deep_nesting</code></td><td>10</td><td>8</td><td>8</td><td>8</td><td>6</td><td>4</td><td>4</td><td>3</td><td>12</td></tr>
 <tr><td><code>complex_conditional</code></td><td>1</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>2</td><td>4</td><td>4</td><td>11</td><td>1</td></tr>
-<tr><td><code>long_parameter_list</code></td><td>72</td><td>70</td><td>70</td><td>81</td><td>87</td><td>81</td><td>87</td><td>95</td><td>167</td></tr>
+<tr><td><code>long_parameter_list</code></td><td>72</td><td>70</td><td>70</td><td>81</td><td>87</td><td>81</td><td>87</td><td>95</td><td>185</td></tr>
 <tr><td><code>mutable_default</code></td><td>&mdash;</td><td>2</td><td>2</td><td>1</td><td>1</td><td>&mdash;</td><td>&mdash;</td><td>1</td><td>&mdash;</td></tr>
-<tr><td><code>broad_except</code></td><td>5</td><td>5</td><td>5</td><td>11</td><td>9</td><td>4</td><td>4</td><td>8</td><td>71</td></tr>
-<tr><td><code>dead_code</code></td><td>66</td><td>73</td><td>74</td><td>98</td><td>61</td><td>70</td><td>72</td><td>68</td><td>116</td></tr>
-<tr><td><code>magic_number</code></td><td>97</td><td>106</td><td>106</td><td>112</td><td>70</td><td>77</td><td>81</td><td>85</td><td>232</td></tr>
-<tr><td><code>inefficient_loop</code></td><td>1</td><td>1</td><td>1</td><td>6</td><td>4</td><td>4</td><td>4</td><td>3</td><td>34</td></tr>
+<tr><td><code>broad_except</code></td><td>5</td><td>5</td><td>5</td><td>11</td><td>9</td><td>4</td><td>4</td><td>8</td><td>81</td></tr>
+<tr><td><code>dead_code</code></td><td>66</td><td>73</td><td>74</td><td>98</td><td>61</td><td>70</td><td>72</td><td>68</td><td>138</td></tr>
+<tr><td><code>magic_number</code></td><td>97</td><td>106</td><td>106</td><td>112</td><td>70</td><td>77</td><td>81</td><td>85</td><td>267</td></tr>
+<tr><td><code>inefficient_loop</code></td><td>1</td><td>1</td><td>1</td><td>6</td><td>4</td><td>4</td><td>4</td><td>3</td><td>39</td></tr>
 <tr><td><code>inefficient_copy</code></td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>1</td><td>1</td><td>&mdash;</td><td>&mdash;</td></tr>
-<tr><td><code>perf_try_in_loop</code></td><td>1</td><td>&mdash;</td><td>&mdash;</td><td>2</td><td>2</td><td>1</td><td>1</td><td>2</td><td>35</td></tr>
-<tr><td><code>duplicate_code</code></td><td>21</td><td>22</td><td>24</td><td>29</td><td>32</td><td>41</td><td>42</td><td>37</td><td>106</td></tr>
+<tr><td><code>perf_try_in_loop</code></td><td>1</td><td>&mdash;</td><td>&mdash;</td><td>2</td><td>2</td><td>1</td><td>1</td><td>2</td><td>45</td></tr>
+<tr><td><code>duplicate_code</code></td><td>21</td><td>22</td><td>24</td><td>29</td><td>32</td><td>41</td><td>42</td><td>37</td><td>105</td></tr>
 </tbody></table></div>
 <h2>Does structure track the prompt's stated difficulty?</h2>
 <p>Every prompt is labelled basic, intermediate or advanced by its authors.
@@ -207,8 +207,8 @@ rise &mdash; which is a check on the dataset as much as on the models.</p>
 <h3>Claude Sonnet 5 <span class='dim' style='font-weight:400'>&mdash; implement fully, 8k budget</span></h3>
 <div class="scroll"><table><thead><tr><th>stated level</th><th>prompts</th><th>mean lines</th><th>mean branching</th><th>cognitive</th><th>output tokens</th><th>smell rate</th></tr></thead><tbody>
 <tr><td>basic</td><td class='dim'>173</td><td>113.4</td><td>35.0</td><td>25.6</td><td>1,956</td><td>66.5%</td></tr>
-<tr><td>intermediate</td><td class='dim'>157</td><td>193.4</td><td>59.4</td><td>43.0</td><td>3,604</td><td>77.7%</td></tr>
-<tr><td>advanced</td><td class='dim'>146</td><td>251.7</td><td>66.1</td><td>45.3</td><td>4,768</td><td>78.8%</td></tr>
+<tr><td>intermediate</td><td class='dim'>157</td><td>205.9</td><td>65.6</td><td>45.9</td><td>3,699</td><td>79.6%</td></tr>
+<tr><td>advanced</td><td class='dim'>146</td><td>277.7</td><td>85.2</td><td>57.3</td><td>5,073</td><td>87.7%</td></tr>
 </tbody></table></div>
 <p class="note">It does, consistently, in every run. Note that the dataset's
 separate <code>expected_token_depth</code> field is a one-to-one relabelling of this
