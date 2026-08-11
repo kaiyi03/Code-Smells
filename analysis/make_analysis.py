@@ -466,8 +466,14 @@ def fig_induction():
     if not runs:
         print("  [skip] fig8 -- no prompt-study summaries")
         return
-    targets = ["long_parameter_list", "magic_number", "dead_code",
-               "deep_nesting", "duplicate_code", "long_method"]
+    # Same order and same colours as every other model comparison in the paper --
+    # this figure was using matplotlib defaults, so the reader had to relearn which
+    # colour meant which model, and in a different model order from the table.
+    order = ["DeepSeek-Coder", "Qwen2.5-Coder", "Claude Sonnet 5"]
+    runs = {k: runs[k] for k in order if k in runs}
+    # Ordered most- to least-inducible, matching the table's row order.
+    targets = ["long_parameter_list", "duplicate_code", "magic_number",
+               "deep_nesting", "dead_code", "long_method"]
     fig, ax = plt.subplots(figsize=(7.8, 4.4))
     w = 0.8 / len(runs)
     for i, (label, rows) in enumerate(runs.items()):
@@ -476,10 +482,14 @@ def fig_induction():
             tgt = [r for r in rows if s in (r["intended"] or "").split(";")]
             hit = sum(1 for r in tgt if s in (r["smells_defs"] or "").split(";"))
             vals.append(100 * hit / len(tgt) if tgt else 0)
-        ax.bar(np.arange(len(targets)) + (i - (len(runs) - 1) / 2) * w, vals, w, label=label)
+        x = np.arange(len(targets)) + (i - (len(runs) - 1) / 2) * w
+        ax.bar(x, vals, w, label=label, color=BENCH_COLOURS[i])
+        for xi, v in zip(x, vals):
+            ax.annotate(f"{v:.0f}", (xi, v), ha="center", va="bottom", fontsize=6.4)
     ax.set_xticks(range(len(targets)))
     ax.set_xticklabels([s.replace("_", " ") for s in targets], rotation=18, ha="right")
-    ax.set_ylabel("share of targeted prompts where the defect appeared")
+    ax.set_ylim(0, 108)
+    ax.set_ylabel("share of targeted prompts where the defect appeared (%)")
     ax.set_title("A prompt can reliably provoke some defects and never provoke others",
                  pad=8, fontsize=10)
     ax.legend(frameon=False, fontsize=7.5)

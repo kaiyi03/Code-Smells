@@ -58,6 +58,12 @@
 % routine and must see the final float parameters.
 \usepackage{dblfloatfix}
 
+% Do not stretch vertical space to make every column reach the bottom. With a
+% float anchored at the foot of a column LaTeX was padding the gaps between that
+% column's paragraphs to fill the height, so those sections were set looser than
+% the rest of the paper. Better a slightly short column than inconsistent leading.
+\raggedbottom
+
 \title{Which Measures Can See a Code Smell?\\
        \large A Validation Protocol for Assessing the Structural Quality
        of LLM-Generated Code}
@@ -966,9 +972,11 @@ solves 92.6\% of the 664 tasks; the two open models solve a little over half.
   Claude Sonnet 5     & 92.6\% & 98.8\% & 90.6\% \\
   \bottomrule
   \end{tabular}
-  \caption{Correctness on the 664 benchmark tasks, single greedy generation per
-  task. All three columns are pass@1; the last two split the same 664 tasks by
-  source (164 HumanEval, 500 MBPP).}
+  \caption{Correctness on the 664 benchmark tasks. All three columns are pass@1;
+  the last two split the same 664 tasks by source (164 HumanEval, 500 MBPP). Each
+  model answers each task once, taking the most probable token at every step
+  rather than sampling, so the output is deterministic and no averaging over
+  samples is involved.}
   \label{tab:bench}
 \end{table}
 
@@ -1034,7 +1042,11 @@ extra material there was to score.
   \caption{Share of generations carrying at least one defect, scored over
   everything the model emitted and over the function definitions alone. The
   correction moves one model and leaves the other two untouched, because only one
-  of them wrote anything outside the function it was asked for.}
+  of them wrote anything outside the function it was asked for. The unit here is
+  the share of files rather than the per-line rate used in
+  Figure~\ref{fig:capability}: this figure is about which \emph{code} should be
+  scored, and dividing by lines would keep the very material at issue in the
+  denominator.}
   \label{fig:verbosity}
 \end{figure}
 
@@ -1113,7 +1125,6 @@ worth building on.
 \subsection{The task set, not the models, is the binding constraint}
 \label{sec:taskset}
 
-
 One number in this section needs a caveat before it is quoted. Only a handful of
 the twelve defects appear in the benchmark output at all: four for Qwen, five for
 DeepSeek, six for Claude, and seven across all three. Almost all of the observed
@@ -1151,34 +1162,253 @@ produce a long method, it has to be given something long to write.
 % ---------------------------------------------------------------------
 \section{RQ3: eliciting defects, and what elicitation measures}
 \label{sec:rq3}
-% TO WRITE. 476 prompts written to induce a named defect, across three models.
-%   - induction rate: does a prompt engineered to provoke a defect provoke it?
-%     Measurable on the six defects shared between the two taxonomies (136 tasks).
-%   - does output length predict structural quality, controlling for the prompt's
-%     stated complexity?
-% Settled numbers (definitions-only scoring; stub rate is per FUNCTION, and say
-% so -- the per-generation figure is ~5 points higher and they get confused):
-%   baseline   induction / stub% / smells per 100 SLOC / mean SLOC / mean tokens
-%     Claude     67.6 / 5.0  / 1.02 / 175.0 / 3362
-%     Qwen       45.6 / 18.2 / 2.54 /  22.9 /  235
-%     DeepSeek   34.6 / 19.4 / 2.26 /  25.5 /  495
-%   long_method: Claude 11/40 = 27.5%; Qwen and DeepSeek 0/40 at every budget.
-%   Prompt-specification dose-response (minimal -> full -> emphatic):
-%     Qwen     stubs 18.2 -> 15.4 -> 13.6 ; induction 45.6 -> 41.9 -> 46.3 ;
-%              per-100-SLOC 2.54 -> 2.28 -> 2.27 (raw count 277 -> 290 -> 352)
-%     DeepSeek stubs 19.4 -> 18.6 -> 15.5 ; induction 34.6 -> 33.1 -> 41.2 ;
-%              per-100-SLOC 2.26 -> 2.30 -> 2.37
-%     The thesis: telling a model to write complete functions makes it write MORE
-%     defective lines and FEWER defects per line. Raw counts and normalised rates
-%     point in opposite directions, which is the RQ3 form of the size confound.
-%   Token-budget control (1k vs 4k): Qwen stubs 18.2 -> 15.4, DeepSeek 19.4 ->
-%     18.1, long_method 0/40 at both. The cap was not what suppressed long_method.
-% NOTE for the write-up: in the prompt set, expected token depth is a perfect
-% relabelling of complexity (basic/intermediate/advanced -> low/medium/high, 1:1).
-% It therefore cannot serve as an independent variable; measured output tokens can.
+
+Section~\ref{sec:taskset} ended on a ceiling: most of the twelve defects cannot
+occur in a five-line function, so the benchmark could not say whether models
+avoid them. This section removes the ceiling by asking the models for code that
+has room for the defects, and finds that the ceiling is replaced by a subtler
+one. Whether a defect shows up depends less on whether the model was willing to
+write it than on whether the model wrote a whole function at all.
+
+The section then turns to the second half of RQ3: whether the amount a model
+writes predicts the structural quality of what it writes.
+
+\subsection{The prompt set and how it was run}
+\label{sec:promptset}
+
+The tasks come from a published set of 476 prompts, each written to induce a
+named structural defect \cite{codesmell2026}. A prompt gives a task, a difficulty
+label (basic, intermediate or advanced) and an application domain, of which there
+are five, and is phrased so that a natural solution would carry the defect --- for
+instance by asking for a function that takes a long list of independent
+configuration values.
+
+Six of the defects the set targets coincide with the twelve of
+Section~\ref{sec:benchmark}, over 152 of the prompts. Those are the prompts on
+which induction can be measured, because only there does a detector exist that
+can say whether the requested defect arrived. The remaining 324 prompts target
+design-level smells outside our taxonomy, for the reason given in
+Section~\ref{sec:scope}: no rule confirms them mechanically. Their generations are
+still scored for structure, and contribute to everything in this section except
+the induction rate.
+
+Each model answers every prompt once, under a single instruction to implement
+every function fully rather than leaving placeholders. The open models were given
+a 4{,}096-token budget and Claude 8{,}192. Output is scored by the same panel used
+everywhere else, over function definitions only, so the verbosity correction of
+Section~\ref{sec:verbosity} is already applied.
+
+One limitation belongs here rather than in Section~\ref{sec:threats}, because it
+bears directly on the numbers below. Claude reached its 8{,}192-token cap on 38 of
+its 476 generations, or 8\%. Its mean output length is therefore slightly
+understated, and a handful of its solutions stop mid-function. The open models
+reached their cap on nine and seven generations respectively, which is negligible;
+for Claude it is not, and where a Claude figure could be affected by it we say so.
+
+\subsection{Some defects can be prompted, others cannot}
+
+\begin{table}[!b]
+  \centering
+  \small
+  \begin{tabular}{lrrr}
+  \toprule
+  Requested defect & \mbox{DeepSeek} & Qwen & Claude \\
+  \midrule
+  \texttt{long\_parameter\_list} & 36/40 & 38/40 & 40/40 \\
+  \texttt{duplicate\_code}       &  5/20 &  3/20 & 19/20 \\
+  \texttt{magic\_number}         &  3/18 & 10/18 & 13/18 \\
+  \texttt{deep\_nesting}         &  3/18 &  6/18 &  9/18 \\
+  \texttt{dead\_code}            &  3/16 &  5/16 &  4/16 \\
+  \texttt{long\_method}          &  0/40 &  0/40 & 11/40 \\
+  \midrule
+  Overall                        & 32.9\% & 40.8\% & 63.2\% \\
+  \bottomrule
+  \end{tabular}
+  \caption{Induction: how often a prompt written to provoke a defect produced
+  one, over the 152 prompts whose target is among our twelve. Rows are ordered by
+  how reliably the defect can be induced.}
+  \label{tab:induction}
+\end{table}
+
+Table~\ref{tab:induction} gives, for each defect, how often the prompt that asked
+for it got it. The spread is the finding, and it runs in two directions.
+
+Across defects, some are easy to provoke and some are impossible. Asking for a
+function with many parameters produces one almost every time --- 36, 38 and 40 out
+of 40. Asking for dead code almost never works: no model exceeds five out of
+sixteen, because an unused import is the kind of thing a model tidies away
+without being asked. Prompt wording is a strong lever on some structural
+properties and no lever at all on others, and which is which is not obvious in
+advance.
+
+Across models, the ordering is consistent: Claude induces most, then Qwen, then
+DeepSeek, at 63.2\%, 40.8\% and 32.9\% overall. This is the row that looks like a
+model-quality result and is not one. Producing a requested defect is compliance,
+not merit; a model that scored 100\% here would simply be one that does what it
+is told. The next subsection is about what the ordering actually tracks.
+
+\texttt{long\_method} is the sharpest case. Both open models produce a long method
+on zero of forty attempts, and Claude on eleven. Section~\ref{sec:budget} shows
+this is not the token budget.
+
+\subsection{What resistance actually measures}
+\label{sec:stubs}
+
+\begin{figure}[!b]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig8_induction_rate.pdf}
+  \caption{Induction rate per defect and per model, the same data as
+  Table~\ref{tab:induction} read as percentages. Defects are ordered from most to
+  least inducible. The two zero bars at the right are the open models on
+  \texttt{long\_method}: forty attempts each, no successes.}
+  \label{fig:induction}
+\end{figure}
+
+Set the induction ordering beside how often each model left a function
+unimplemented. Counting stubs --- bodies that are \texttt{pass}, an ellipsis, a
+bare docstring, or a \texttt{raise NotImplementedError} --- DeepSeek stubs 18.1\%
+of the functions it writes, Qwen 15.4\%, and Claude 5.0\%. That is the induction
+ordering exactly, inverted.
+
+The connection is mechanical rather than mysterious. A function whose body is
+\texttt{pass} cannot be a long method, cannot nest deeply, and cannot contain a
+duplicated block. It has no structure to be defective. So when a model is asked
+for a defect and does not produce one, two quite different things are being
+scored the same way: the model may have written a clean function, or it may not
+have written a function.
+
+Mean solution length makes the same point in another unit: 30.3 lines for
+DeepSeek, 27.3 for Qwen and 175.0 for Claude. Claude is not six times more
+willing to write bad code than Qwen. It is six times more likely to write the
+code at all.
+
+This is the RQ1 confound in a third costume. There it was size inflating a
+measure's apparent sensitivity; in Section~\ref{sec:verbosity} it was volunteered
+material inflating a defect rate; here it is incompleteness deflating an
+induction rate. In each case a quantity that looks like a property of the code is
+substantially a property of how much code there is.
+
+\subsection{Firmer instructions reduce stubbing, but do not remove it}
+\label{sec:firmness}
+
+If stubbing is a response to the instruction rather than a fixed habit, asking
+more insistently should reduce it. Three instruction strengths were run on the
+open models: a minimal instruction that only requests code, a \emph{full} one
+that asks for every function to be implemented with no placeholders, and an
+\emph{emphatic} one that says so at greater length and repeats the prohibition.
+
+Comparing at a fixed token budget, so that firmness is the only thing varying,
+Qwen's per-function stub rate falls from 18.2\% under the minimal instruction to
+15.4\% under the full one at a 1{,}024-token budget, and from 15.4\% to 13.6\%
+between the full and emphatic instructions at 4{,}096 tokens. DeepSeek moves the
+same way, from 19.4\% to 18.6\% and then to 15.5\%.
+
+Two things follow. The effect is real and monotonic: instruction firmness is a
+lever on completeness. And it is far from sufficient --- the most emphatic
+phrasing we could write still leaves one function in seven unimplemented. Stubbing
+is partly a prompting artefact and partly a property of these models.
+
+\subsection{The budget was not what suppressed long methods}
+\label{sec:budget}
+
+The obvious explanation for zero long methods from the open models is that they
+ran out of tokens. It is worth ruling out explicitly, because it would make the
+result an artefact of our setup rather than a fact about the models.
+
+Running both open models at 1{,}024 and at 4{,}096 tokens, the same prompts produce
+the same answer: zero long methods out of forty at either budget. Their output
+length distributions barely move --- DeepSeek's mean goes from 495 tokens to 589,
+against a cap four times larger --- and fewer than 2\% of generations reach the cap
+in any run. The models are not being cut off. They decompose. Asked for a
+function that does seven things, they return five or six small functions that
+between them do seven things, which is a reasonable piece of engineering and the
+opposite of what was requested.
+
+\subsection{Does writing more cost structural quality?}
+\label{sec:tokens}
+
+\begin{table}[!b]
+  \centering
+  \small
+  \begin{tabular}{lrrrr}
+  \toprule
+  & terse & neutral & verbose \\
+  \midrule
+  Output tokens per task   &  63 & 117 & 742 \\
+  Mean length (SLOC)       & 4.2 & 5.9 & 19.5 \\
+  \midrule
+  Defects found, counted   &  55 &  71 & 139 \\
+  Defects per 100 SLOC     & 1.97 & 1.82 & 1.07 \\
+  \midrule
+  pass@1                   & 89.8\% & 93.1\% & 91.1\% \\
+  \bottomrule
+  \end{tabular}
+  \caption{The token experiment on Claude: the same 664 benchmark tasks under
+  three instructions that vary only how much code is asked for. Counted raw,
+  defects rise with verbosity; counted per line, they fall.}
+  \label{tab:tokens}
+\end{table}
+
+The second half of RQ3 asks whether the amount a model writes predicts the
+structural quality of what it writes. The prompt set cannot answer it, because
+its tasks have no tests and correctness cannot be observed. The benchmark tasks
+of Section~\ref{sec:rq2} can.
+
+Three instructions were run over those 664 tasks, varying one thing: how much
+code is requested. A \emph{terse} instruction asks for the shortest solution that
+works, with no docstring, comments or input validation; a \emph{neutral} one asks
+only for a solution; a \emph{verbose} one asks for a complete and defensive
+solution with validation, explicit edge-case handling and documentation. None
+mentions structure or quality, since an instruction to write clean code would
+confound the amount written with a request for quality, and the amount written is
+the variable of interest.
+
+The instruction is a strong lever. Claude's mean output runs 63, 117 and 742
+tokens across the three conditions, and mean solution length 4.2, 5.9 and 19.5
+lines. No generation reached the token cap in any condition.
+
+Table~\ref{tab:tokens} gives the result, and the two defect rows are the point.
+Counted as defects found, verbosity makes things worse: 55, then 71, then 139, a
+factor of two and a half. Counted per hundred source lines, verbosity makes
+things better: 1.97, then 1.82, then 1.07, a fall of almost half. Both are correct
+arithmetic on the same 664 files. They disagree because the denominator grew
+faster than the numerator.
+
+Neither number is the true one, and the choice between them is not statistical
+but a question about what is being asked. A reviewer asking how many problems are
+in this file wants the count. A reviewer asking whether this code is well built
+per unit of code wants the rate. A paper reporting only one of them can support
+either conclusion about verbosity while showing real data, which is the failure
+mode this paper has now met at three levels.
+
+\subsection{Verbosity does not buy or cost correctness}
+
+The correctness row settles the question Section~\ref{sec:promptset} could not
+reach. Across the three conditions Claude scores 89.8\%, 93.1\% and 91.1\%, with
+95\% intervals of $[87.5, 92.1]$, $[91.1, 95.0]$ and $[88.9, 93.3]$. All three
+overlap, and the ordering is not monotonic --- the middle condition scores
+highest.
+
+Asking for four and a half times as much code, with input validation and explicit
+edge-case handling, neither improved nor damaged the share of solutions that
+pass their tests. The extra code is not doing the work its instruction implies,
+and it is not getting in the way either. For a practitioner choosing how to
+prompt, the structural consequence depends entirely on which of the two defect
+measures they read, and the correctness consequence is nil.
+
+\subsection{What is not yet covered}
+
+The token experiment currently reports one model. The same three conditions have
+been submitted for the two open models and are queued on a shared cluster; until
+they land, the result above is a single-model finding, and whether the raw and
+per-line divergence holds for models with different verbosity habits is open.
+Section~\ref{sec:capability} gives one reason to expect it does --- the divergence
+follows from the arithmetic of a growing denominator rather than from anything
+specific to Claude --- but that is an argument, not a measurement.
 
 % ---------------------------------------------------------------------
 \section{Threats to validity}
+\label{sec:threats}
 % TO WRITE.
 % Construct: detectors are the operational definition of a defect, not ground
 %   truth; the panel excludes them to avoid circularity, but the labels remain
