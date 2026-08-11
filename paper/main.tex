@@ -1185,17 +1185,24 @@ configuration values.
 
 Six of the defects the set targets coincide with the twelve of
 Section~\ref{sec:benchmark}, over 152 of the prompts. Those are the prompts on
-which induction can be measured, because only there does a detector exist that
-can say whether the requested defect arrived. The remaining 324 prompts target
+which \emph{induction} can be measured --- by which we mean simply this: a prompt
+was written to make a particular defect appear, and induction is the share of such
+prompts where the detector then found that defect in the generated code. It can
+only be measured on those 152, because only there does a rule exist that can say
+whether the requested defect arrived. The remaining 324 prompts target
 design-level smells outside our taxonomy, for the reason given in
 Section~\ref{sec:scope}: no rule confirms them mechanically. Their generations are
 still scored for structure, and contribute to everything in this section except
 the induction rate.
 
-Each model answers every prompt once, under a single instruction to implement
-every function fully rather than leaving placeholders. The open models were given
-a 4{,}096-token budget and Claude 8{,}192. Output is scored by the same panel used
-everywhere else, over function definitions only, so the verbosity correction of
+Each model answers every prompt once. The results below come from a run in which
+every model was told to implement each function fully rather than leave
+placeholders, with a 4{,}096-token budget for the open models and 8{,}192 for
+Claude, whose solutions are far longer. Two further sets of runs vary one factor
+each and are used as controls: Sections~\ref{sec:firmness} and \ref{sec:budget}
+compare instruction strengths at a fixed budget, and budgets of 1{,}024 against
+4{,}096 at a fixed instruction. Output is scored by the same panel used everywhere
+else, over function definitions only, so the verbosity correction of
 Section~\ref{sec:verbosity} is already applied.
 
 One limitation belongs here rather than in Section~\ref{sec:threats}, because it
@@ -1207,7 +1214,9 @@ for Claude it is not, and where a Claude figure could be affected by it we say s
 
 \subsection{Some defects can be prompted, others cannot}
 
-\begin{table}[!b]
+% Top placement, not bottom: at the foot of the column this landed after 8.3 had
+% already started, separating it from the subsection that discusses it.
+\begin{table}[!t]
   \centering
   \small
   \begin{tabular}{lrrr}
@@ -1231,7 +1240,8 @@ for Claude it is not, and where a Claude figure could be affected by it we say s
 \end{table}
 
 Table~\ref{tab:induction} gives, for each defect, how often the prompt that asked
-for it got it. The spread is the finding, and it runs in two directions.
+for it got it, and Figure~\ref{fig:induction} plots the same data as rates. The
+spread is the finding, and it runs in two directions.
 
 Across defects, some are easy to provoke and some are impossible. Asking for a
 function with many parameters produces one almost every time --- 36, 38 and 40 out
@@ -1297,11 +1307,12 @@ open models: a minimal instruction that only requests code, a \emph{full} one
 that asks for every function to be implemented with no placeholders, and an
 \emph{emphatic} one that says so at greater length and repeats the prohibition.
 
-Comparing at a fixed token budget, so that firmness is the only thing varying,
-Qwen's per-function stub rate falls from 18.2\% under the minimal instruction to
-15.4\% under the full one at a 1{,}024-token budget, and from 15.4\% to 13.6\%
-between the full and emphatic instructions at 4{,}096 tokens. DeepSeek moves the
-same way, from 19.4\% to 18.6\% and then to 15.5\%.
+Each comparison below holds the token budget fixed, so that instruction strength
+is the only thing varying. At a 1{,}024-token budget, moving from the minimal to
+the full instruction takes Qwen's per-function stub rate from 18.2\% to 15.4\%
+and DeepSeek's from 19.4\% to 18.6\%. At 4{,}096 tokens, moving from the full to
+the emphatic instruction takes Qwen from 15.4\% to 13.6\% and DeepSeek from
+18.1\% to 15.5\%.
 
 Two things follow. The effect is real and monotonic: instruction firmness is a
 lever on completeness. And it is far from sufficient --- the most emphatic
@@ -1355,13 +1366,23 @@ its tasks have no tests and correctness cannot be observed. The benchmark tasks
 of Section~\ref{sec:rq2} can.
 
 Three instructions were run over those 664 tasks, varying one thing: how much
-code is requested. A \emph{terse} instruction asks for the shortest solution that
-works, with no docstring, comments or input validation; a \emph{neutral} one asks
-only for a solution; a \emph{verbose} one asks for a complete and defensive
-solution with validation, explicit edge-case handling and documentation. None
-mentions structure or quality, since an instruction to write clean code would
-confound the amount written with a request for quality, and the amount written is
-the variable of interest.
+code is requested.
+
+\begin{description}
+  \item[Terse] ``Write the shortest solution that works. No docstring, no
+        comments, no input validation.''
+  \item[Neutral] ``Write a solution to the task.'' --- the same request with
+        nothing said about length or documentation either way.
+  \item[Verbose] ``Write a complete and defensive solution: validate the inputs,
+        handle edge cases explicitly, and document the function with a docstring
+        and comments.''
+\end{description}
+
+None of the three mentions structure or quality. An instruction to write clean
+code would confound the amount written with an explicit request for quality, and
+the amount written is the variable of interest. All three are given as system
+prompts, including the neutral one, so that the comparison is not between having
+an instruction and having none.
 
 The instruction is a strong lever. Claude's mean output runs 63, 117 and 742
 tokens across the three conditions, and mean solution length 4.2, 5.9 and 19.5
@@ -1375,11 +1396,19 @@ arithmetic on the same 664 files. They disagree because the denominator grew
 faster than the numerator.
 
 Neither number is the true one, and the choice between them is not statistical
-but a question about what is being asked. A reviewer asking how many problems are
-in this file wants the count. A reviewer asking whether this code is well built
-per unit of code wants the rate. A paper reporting only one of them can support
-either conclusion about verbosity while showing real data, which is the failure
-mode this paper has now met at three levels.
+but a question about what is being asked. Someone asking how many problems they
+will have to fix in this file wants the count, and the count went up. Someone
+asking whether the code is well built for its length wants the rate, and the rate
+went down.
+
+The risk is that a study reports whichever of the two suits its argument. Both
+are honest arithmetic on real data, so neither can be caught by checking the
+numbers --- only by noticing that the other one was not shown. That is the same
+problem this paper has now run into three times: in
+Section~\ref{sec:rq1} a measure appeared to detect a defect when it was
+responding to size, in Section~\ref{sec:verbosity} a model appeared more defective
+when it had simply written more, and here a single set of files can be described
+as improving or worsening depending on which denominator is chosen.
 
 \subsection{Verbosity does not buy or cost correctness}
 
@@ -1390,21 +1419,32 @@ overlap, and the ordering is not monotonic --- the middle condition scores
 highest.
 
 Asking for four and a half times as much code, with input validation and explicit
-edge-case handling, neither improved nor damaged the share of solutions that
-pass their tests. The extra code is not doing the work its instruction implies,
-and it is not getting in the way either. For a practitioner choosing how to
-prompt, the structural consequence depends entirely on which of the two defect
-measures they read, and the correctness consequence is nil.
+edge-case handling, neither improved nor damaged the share of solutions that pass
+their tests. The extra code is not doing the work its instruction implies, and it
+is not getting in the way either.
+
+For someone deciding how to prompt, that is a useful pair of findings. Asking for
+more will not make the code more likely to work, so there is no correctness
+argument for doing it. And it has no single effect on structural quality either:
+it produces more defects in total and fewer per line, so what the change looks
+like depends on which of those two questions is being asked, not on whether the
+code got better.
 
 \subsection{What is not yet covered}
 
 The token experiment currently reports one model. The same three conditions have
 been submitted for the two open models and are queued on a shared cluster; until
-they land, the result above is a single-model finding, and whether the raw and
-per-line divergence holds for models with different verbosity habits is open.
-Section~\ref{sec:capability} gives one reason to expect it does --- the divergence
-follows from the arithmetic of a growing denominator rather than from anything
-specific to Claude --- but that is an argument, not a measurement.
+they land, the result above is a single-model finding.
+
+There is a specific reason not to assume it generalises. Comparing each model
+between the short benchmark tasks of Section~\ref{sec:rq2} and the longer prompt
+tasks of this section, length rises for all three, but the defect rate per hundred
+lines moves in opposite directions: Claude falls from 1.90 to 1.02, while Qwen
+rises from 1.96 to 2.26 and DeepSeek from 1.93 to 2.11. Writing more dilutes
+Claude's defect rate and concentrates theirs. Whether that reflects the models or
+the difference between the two task sets cannot be separated here, since both
+changed at once --- which is exactly what the queued runs will resolve, by varying
+length alone on fixed tasks.
 
 % ---------------------------------------------------------------------
 \section{Threats to validity}
