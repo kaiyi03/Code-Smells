@@ -29,7 +29,12 @@ from datasets import load_dataset
 # API model gets byte-identical prompts -- that only works if the import is cheap.
 
 MODEL = os.environ.get("GEN_MODEL", "Qwen/Qwen2.5-Coder-1.5B-Instruct")
-MAX_NEW = 512
+# 512 is enough for the Section 7 benchmark runs, where it binds on under 1% of
+# tasks. It is NOT enough for the verbose arm of the token experiment: at 512 the
+# instruction to write more runs into the ceiling, truncating the very condition
+# whose length is being measured, so that arm needs a larger budget. Configurable
+# for that reason.
+MAX_NEW = int(os.environ.get("GEN_MAX_NEW", "512"))
 
 # Verbosity conditions for the token experiment (Section 8), kept character-for-
 # character identical to the ones in generate_claude_bench.py -- a difference in

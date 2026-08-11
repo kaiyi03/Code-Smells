@@ -26,6 +26,9 @@ export HF_HOME=/data/engs-applied-machine-learning/some5943/hf
 REPO=${REPO:-~/Code-Smells}
 export GEN_MODEL=${GEN_MODEL:-Qwen/Qwen2.5-Coder-1.5B-Instruct}
 export GEN_BATCH=${GEN_BATCH:-8}
+# Token budget. Raise it for the verbose arm of the token experiment, where 512
+# truncates the condition being measured.
+export GEN_MAX_NEW=${GEN_MAX_NEW:-512}
 # Verbosity condition for the token experiment: terse | neutral | verbose.
 # Empty (the default) means no system prompt, which is what the Section 7 runs
 # used -- so leaving it unset reproduces those exactly.
@@ -35,7 +38,7 @@ export GEN_SYSTEM=${GEN_SYSTEM:-}
 export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 
 echo "node: $(hostname)"
-echo "model: $GEN_MODEL  (batch $GEN_BATCH, system '${GEN_SYSTEM:-none}')"
+echo "model: $GEN_MODEL  (batch $GEN_BATCH, max_new $GEN_MAX_NEW, system '${GEN_SYSTEM:-none}')"
 nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
 cd "$REPO/arc_qwen"
 python generate.py "$@"
