@@ -1521,11 +1521,28 @@ this paper's conclusions rest most heavily on the real half --- the co-occurrenc
 verdicts of Section~\ref{sec:rq1} --- they rest most heavily on the detectors
 being right about which functions are defective.
 
-A second construct point concerns detection strength itself. It is a statement
-about two \emph{groups}, not about a file. A measure scoring $d = 1.4$ separates
-defective from clean code dependably in aggregate and may still be wrong about any
-particular function. Nothing here licenses using these measures as per-file
-detectors, which is the use they are most often put to.
+A second construct point concerns detection strength itself, and it limits what
+any of these results can be used for. Detection strength describes two
+\emph{populations}: how far apart defective and clean code sit on average. It does
+not describe a file. A measure scoring $d = 1.4$ --- comfortably ``large'' by the
+conventional bands --- gets the comparison right about 84\% of the time when a
+defective and a clean function are drawn at random, which is to say it is wrong
+about one pair in six. At $d = 0.8$, the threshold for a large effect, it is wrong
+about three times in ten.
+
+So a measure can earn a strong verdict in this paper and still be a poor guide to
+whether the function in front of you has the defect. Nothing here licenses using
+these measures as per-file detectors, which is the use they are most often put to.
+The claim being validated is that a measure responds to a defect, not that it can
+identify one.
+
+A third point concerns the verdicts themselves. \emph{Detects}, \emph{co-occurs}
+and \emph{blind} are assigned by reading the two columns together, not by applying
+a numeric cutoff. Where the two sources agree strongly or disagree starkly the
+reading is not in doubt, and most cells are of that kind; but no threshold
+separates a weak detection from a strong co-occurrence, and a reader who set one
+explicitly might classify a cell or two differently. The underlying numbers and
+intervals are reported in full so that such a reader can.
 
 \subsection{Internal validity: does the intervention isolate the defect?}
 
@@ -1540,25 +1557,34 @@ The results survive that objection, and it is worth showing why rather than
 asserting it. Comparing each verdict's measure against what raw lines of code did
 on the same injection: for deep nesting, cyclomatic complexity moves $3.85$ while
 length moves $1.28$, so it responds to the nesting over and above the growth; for
-a complex conditional, Halstead difficulty beats length by $1.07$. More
-importantly, every co-occurrence and blind verdict rests on a measure that barely
-moves at all --- and a measure that does not move cannot have been moved by size.
-Two defects, \texttt{long\_parameter\_list} and \texttt{mutable\_default}, change
-the function's length not at all, which makes their verdicts immune to the
-objection by construction.
+a complex conditional, Halstead difficulty beats length by $1.07$.
+
+The co-occurrence and blind verdicts are safer still, and for a simple reason.
+Those verdicts rest on measures that stayed flat when the defect was injected ---
+values at or near zero. The function grew and the measure did not follow. Growth
+therefore cannot be what drives those measures, so the objection has nothing to
+work on: it explains movement, and there was none to explain. Two defects,
+\texttt{long\_parameter\_list} and \texttt{mutable\_default}, change the
+function's length not at all, which puts their verdicts beyond the objection by
+construction.
 
 One verdict is weaker than the others on this test. \texttt{long\_method} is
 credited to Halstead difficulty at $0.54$ injected, while length on the same
 injection moves $5.00$. The controlled arm is dominated there by the fact that the
 function got much bigger, and the verdict is carried mostly by the real-world
-column. We report it as detection because both sources clear the threshold, but it
-is the least secure of the three.
+column, where the same measure reaches $3.51$. We report it as detection because
+both sources show a clear response, but of the three detections it is the one
+whose controlled evidence is weakest, and a reader applying a strict rule to the
+injected column alone would not grant it.
 
 A further internal threat runs the other way: an injector is a program, and it
 introduces each defect the same way every time. A measure might respond to that
 regularity rather than to the defect. This is precisely why no verdict rests on
-the injected arm alone, and why Section~\ref{sec:patterns} reports the cases where
-injection and real code disagree in magnitude rather than smoothing them over.
+the injected arm alone. It is also why Section~\ref{sec:patterns} sets the two
+sources' magnitudes side by side where they disagree, rather than averaging them
+into one number or reporting only the source that flatters the method --- the
+disagreements are evidence about how far a synthetic benchmark can be trusted,
+and are more useful visible than tidied away.
 
 \subsection{External validity: what these results cover}
 
@@ -1575,19 +1601,23 @@ benchmark's tasks are short, which Section~\ref{sec:taskset} shows was the bindi
 constraint on how many defects could appear at all; the prompt study widens the
 tasks but replaces real requirements with synthetic ones written to provoke.
 
-The real-code layer inherits the sampling of the corpora it draws on. Those
-corpora were mined from GitHub by their authors, and this paper does not control
-what went into them. The clean baseline is drawn from the same repositories,
-which makes the comparison internally fair without making either side
-representative of Python at large.
+The real-code layer is only as representative as the corpora behind it, and we
+did not choose their contents. Their authors decided which repositories to mine
+and which methods to keep, so whatever selection they applied applies to this
+paper too, unexamined. What can be said is narrower: the clean baseline is drawn
+from the same repositories as the defective side, so the two groups are alike in
+provenance even if neither is a fair sample of Python at large.
 
 \subsection{Conclusion validity: how firm are the numbers?}
 
-Every model is run once per task, taking the most probable token at each step. No
-sampling variance is estimated, so where two models differ by a little, this paper
-cannot say whether a second run would reproduce it. The differences it rests
-conclusions on are large --- 41 points of pass@1, a defect rate halving --- but the
-small ones should not be read as rankings.
+Every model is run once per task, taking the most probable token at each step.
+That makes the runs exactly reproducible --- a second run returns the same code ---
+but it also means each model is represented by a single output per task: the one
+it considers most likely. Deployed models are usually run with sampling, where the
+output varies from call to call and some of those variants would be structurally
+different. Nothing here describes that spread. Where this paper says a model
+writes code of a certain kind, it means the code the model writes when it is not
+allowed to vary.
 
 Detection strength is reported with confidence intervals throughout, and the
 $\pm 5$ cap is reported without one because it is a bound rather than an
