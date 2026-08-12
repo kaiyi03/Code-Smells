@@ -1470,23 +1470,32 @@ wrote and left how often it worked exactly where it was.
 
 Qwen breaks the pattern, and in the direction opposite to the one usually feared.
 Its terse condition scores 38.9\% $[35.2, 42.6]$ against 57.2\% $[53.5, 61.0]$
-under the neutral instruction --- a drop of 18.3 points, with non-overlapping
-intervals and $z = 6.8$. Told to write the shortest solution that works, Qwen
-writes solutions that do not. Its mean output under that instruction is 35 tokens
-and 2.5 lines, and at that length a good many of these tasks simply cannot be
-solved.
+under the neutral instruction: a drop of 18.3 points, far larger than the width of
+either interval and not attributable to sampling error. Told to write the shortest
+solution that works, Qwen writes solutions that do not. Its mean output under that
+instruction is 35 tokens and 2.5 lines, and at that length a good many of these
+tasks simply cannot be solved.
 
 So brevity has a floor, and the weakest model in the comparison sits closest to
 it. The instruction that costs nothing when given to Claude removes almost a fifth
 of Qwen's correct answers.
 
-Taken together the three results give a practitioner a clear rule and a caution.
-Asking for more code will not make it more likely to work: no model improved, and
-the two that could afford the extra tokens were unchanged. Asking for
-substantially less can make it much less likely to work, and how much depends on
-how capable the model is. And the structural consequence of either choice cannot
-be stated without saying which denominator is meant, because for at least one
-model the two available answers point in opposite directions.
+Taken together the three results give a practitioner a rule, a caution, and a
+recommendation.
+
+The rule is that asking for more code will not make it more likely to work. No
+model improved, and the two that could afford the extra tokens were unchanged.
+The caution is that asking for substantially less can make it much less likely to
+work, and the weaker the model the steeper the cost --- Qwen lost almost a fifth
+of its correct answers, Claude lost nothing.
+
+The recommendation concerns which defect measure to read, and this paper's answer
+is: the count, unless there is a reason to want the rate. A reviewer's workload is
+the number of problems, not their density, and the count rose for every model
+under every instruction. The per-line rate is the right measure when comparing
+bodies of code of different sizes --- which is what Section~\ref{sec:capability}
+needed it for --- but as a description of what a verbosity setting did to a fixed
+set of tasks, it answers a question that was not asked.
 
 \subsection{What this does not cover}
 
@@ -1522,19 +1531,22 @@ verdicts of Section~\ref{sec:rq1} --- they rest most heavily on the detectors
 being right about which functions are defective.
 
 A second construct point concerns detection strength itself, and it limits what
-any of these results can be used for. Detection strength describes two
-\emph{populations}: how far apart defective and clean code sit on average. It does
-not describe a file. A measure scoring $d = 1.4$ --- comfortably ``large'' by the
-conventional bands --- gets the comparison right about 84\% of the time when a
-defective and a clean function are drawn at random, which is to say it is wrong
-about one pair in six. At $d = 0.8$, the threshold for a large effect, it is wrong
+any of these results can be used for. Detection strength compares two
+\emph{groups} of functions: it says how far apart defective and clean code sit on
+average. It says nothing about any single function.
+
+The gap between those two things is wider than the effect sizes suggest. Take a
+measure scoring $d = 1.4$, comfortably ``large'' by the conventional bands. Draw
+one defective function and one clean function at random and ask which scores
+worse: that measure gets it right about 84\% of the time, and wrong about one
+pair in six. At $d = 0.8$, the threshold for a large effect at all, it is wrong
 about three times in ten.
 
-So a measure can earn a strong verdict in this paper and still be a poor guide to
-whether the function in front of you has the defect. Nothing here licenses using
-these measures as per-file detectors, which is the use they are most often put to.
-The claim being validated is that a measure responds to a defect, not that it can
-identify one.
+So a measure can earn a strong verdict in this paper and still be an unreliable
+guide to the function in front of you. What is validated here is that a measure
+\emph{responds} to a defect across a population, not that it can \emph{identify}
+one in a given piece of code --- and identifying one is what these metrics are
+usually reached for.
 
 A third point concerns the verdicts themselves. \emph{Detects}, \emph{co-occurs}
 and \emph{blind} are assigned by reading the two columns together, not by applying
@@ -1572,10 +1584,11 @@ One verdict is weaker than the others on this test. \texttt{long\_method} is
 credited to Halstead difficulty at $0.54$ injected, while length on the same
 injection moves $5.00$. The controlled arm is dominated there by the fact that the
 function got much bigger, and the verdict is carried mostly by the real-world
-column, where the same measure reaches $3.51$. We report it as detection because
-both sources show a clear response, but of the three detections it is the one
-whose controlled evidence is weakest, and a reader applying a strict rule to the
-injected column alone would not grant it.
+column, where the same measure reaches $3.51$. Both sources do show a response, so
+the verdict stands, but its two halves are not equally strong: on real code the
+evidence is emphatic and on the controlled data it is weak. Of the three
+detections this is the one to treat with most caution, and a reader who wanted the
+injected value alone to establish detection would not accept it.
 
 A further internal threat runs the other way: an injector is a program, and it
 introduces each defect the same way every time. A measure might respond to that
@@ -1619,25 +1632,98 @@ different. Nothing here describes that spread. Where this paper says a model
 writes code of a certain kind, it means the code the model writes when it is not
 allowed to vary.
 
-Detection strength is reported with confidence intervals throughout, and the
-$\pm 5$ cap is reported without one because it is a bound rather than an
-estimate. No correction is made for multiple comparisons across the 204
-defect--measure cells of the full grid. The verdicts do not turn on individual
-cells clearing a significance threshold, so a correction would change little, but
-a reader treating any single cell as a discovery should discount accordingly.
+Detection strength is reported with a confidence interval throughout, and the
+$\pm 5$ cap is reported without one because it is a bound rather than an estimate.
 
-Two specific figures are thinner than the rest. The correctness--structure check
-of Section~\ref{sec:capability} rests on 49 failing Claude solutions, so its
-widest gap is also its least certain. And the token experiment of
-Section~\ref{sec:tokens} varies instruction wording, not length directly: the
-three conditions differ in several ways at once, and only their effect on length
-is measured. A cleaner design would fix the wording and vary a length target.
+The full grid holds 204 defect--measure cells. When that many numbers are
+computed, a few will look striking by chance alone, and a study that went hunting
+through them for the largest would be reporting partly on luck. This paper does
+not adjust for that, and does not need to: the verdicts rest on whole rows read
+across two sources, not on any single cell being large. But the protection is in
+how the numbers are read, not in the numbers themselves, so a reader who picks one
+cell out of the grid and treats it as a result should discount it accordingly.
+
+Two results rest on less evidence than the others. The comparison of defect rates
+between passing and failing solutions in Section~\ref{sec:capability} has only 49
+failing Claude solutions to work with, so its largest gap is also its least
+certain --- that is the one number in this paper that a modest change in the data
+could move. And the token experiment varies instruction \emph{wording}: the three
+conditions differ in what they ask for --- documentation, validation, edge-case
+handling --- and length is the aggregate consequence, not the thing set. A design
+that held the wording fixed and varied an explicit length target would separate
+those, and would also avoid the awkwardness that the same instruction moves the
+three models by factors of twelve, seven and one and a half. That experiment is
+worth running and we have not run it; the results here should be read as being
+about how models respond to \emph{being asked} for more code, which is what a
+practitioner actually does, rather than about length as such.
 
 % ---------------------------------------------------------------------
 \section{Conclusion}
-% TO WRITE. The one-sentence version: before asking what a metric says about
-% LLM-generated code, establish what the metric can see -- and for most metrics
-% and most defects, the answer is less than it appears.
+\label{sec:conclusion}
+
+Structural metrics are borrowed constantly to say things about generated code.
+This paper asked the prior question --- which defects can those metrics actually
+see --- and answered it by changing one defect at a time in code that was
+otherwise held fixed, then checking the answer against code people wrote
+themselves.
+
+For the twelve defects and seventeen measures tested, the metrics see less than
+their use implies. Three defects are genuinely detected. Five produce a clear
+separation on real code that the controlled experiment shows the measure cannot be
+responding to: those functions are simply bigger, and the measure is reading their
+size. Four are invisible to everything in the panel. Counting only what a
+reference-free measure can reach --- the only kind available on code that has no
+clean twin, which is to say all deployed code --- eight of the twelve defects lie
+beyond the best measure we have.
+
+The single most useful consequence is negative. An observational study cannot tell
+detection from co-occurrence, because both look identical in the data: two groups,
+separated. Only an intervention distinguishes them. Where this paper's verdicts
+differ from what a purely observational reading would have given, the difference
+is not a refinement but a reversal --- a measure credited with finding a defect
+turns out to be measuring how much code there is.
+
+That confound did not stay in the instrument. Applying the validated panel to
+three models found it twice more. One model appeared two and a half times more
+defective than another until the demonstration code it volunteered was excluded
+from scoring. Prompts written to provoke a defect appeared to meet resistance from
+the weaker models, when what they had actually met was an unimplemented function:
+a body of \texttt{pass} has no structure to be defective. And asking a model for
+more code raises its defect count while lowering its defect rate, so that a single
+set of files supports two opposite descriptions depending on the denominator
+chosen. In each case a quantity that reads as a property of the code is
+substantially a property of how much code there is.
+
+Two results are worth separating from the methodological ones because they bear on
+how models are judged. Structural quality did not track capability: across three
+models spanning forty-one points of pass@1, defect density per hundred lines
+varied by six hundredths. Being much better at writing code that works did not
+mean writing code that was better built. And language-model perplexity, the most
+natural candidate for a measure that could see every defect at once, saw none of
+them --- and pointed the wrong way, because padding and duplication are the most
+predictable text there is.
+
+None of this says the metrics are worthless. It says they are instruments with
+known blind spots, and that the blind spots were not known before. A practitioner
+who wants to know whether a function has a long parameter list should ask a
+detector, not an index. A study reporting complexity over model output should say
+which defects that complexity has been shown to respond to. And anyone comparing
+two models on a defect rate should first establish that they are scoring the same
+kind of code.
+
+What follows from here divides into two. The narrow work is to close the gaps this
+paper leaves: a design that fixes prompt wording and varies an explicit length
+target, sampled rather than single-shot generation so the spread of a model's
+output can be measured, and languages beyond Python. The broader question is
+whether the twelve-defect frame is the right one at all. Everything here concerns
+what a static analyser can confirm inside a single function, which excludes the
+design-level smells practitioners most often name as the reason a codebase is hard
+to work in. Those defects have no mechanical oracle, and finding one --- or
+establishing that human judgement is the only oracle available --- is the harder
+and more valuable problem. This paper's contribution to it is a method: if a
+measure is going to be trusted to see a defect, the way to find out is to change
+the defect and watch.
+
 
 % ---------------------------------------------------------------------
 \section*{Data and code availability}
