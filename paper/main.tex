@@ -1212,11 +1212,10 @@ Section~\ref{sec:verbosity} is already applied.
 
 The token budget needed one correction, and it is worth recording because of what
 it changed. Claude first ran with an 8{,}192-token cap, which truncated 38 of its
-476 generations. That is a budget binding on one arm of a comparison and not the
-others --- the objection this paper makes elsewhere --- so those 38 prompts were
-re-run at 16{,}384 tokens and merged with the generations that had finished on
-their own, which a larger cap would not have altered. Nothing is truncated now,
-at either the open models' 4{,}096 or Claude's 16{,}384.
+476 generations. Those 38 prompts were re-run at 16{,}384 tokens and merged with
+the generations that had finished on their own, which a larger cap would not have
+altered. Nothing is truncated now, at either the open models' 4{,}096 or Claude's
+16{,}384.
 
 The correction moved what one would expect it to move and nothing else. Claude's
 mean solution length rose from 175 to 194 lines, its induction rate from 63.2\% to
@@ -1353,27 +1352,6 @@ opposite of what was requested.
 \subsection{Does writing more cost structural quality?}
 \label{sec:tokens}
 
-\begin{table}[!b]
-  \centering
-  \small
-  \begin{tabular}{lrrrr}
-  \toprule
-  & terse & neutral & verbose \\
-  \midrule
-  Output tokens per task   &  63 & 117 & 742 \\
-  Mean length (SLOC)       & 4.2 & 5.9 & 19.5 \\
-  \midrule
-  Defects found, counted   &  55 &  71 & 139 \\
-  Defects per 100 SLOC     & 1.97 & 1.82 & 1.07 \\
-  \midrule
-  pass@1                   & 89.8\% & 93.1\% & 91.1\% \\
-  \bottomrule
-  \end{tabular}
-  \caption{The token experiment on Claude: the same 664 benchmark tasks under
-  three instructions that vary only how much code is asked for. Counted raw,
-  defects rise with verbosity; counted per line, they fall.}
-  \label{tab:tokens}
-\end{table}
 
 The second half of RQ3 asks whether the amount a model writes predicts the
 structural quality of what it writes. The prompt set cannot answer it, because
@@ -1409,6 +1387,28 @@ factor of two and a half. Counted per hundred source lines, verbosity makes
 things better: 1.97, then 1.82, then 1.07, a fall of almost half. Both are correct
 arithmetic on the same 664 files. They disagree because the denominator grew
 faster than the numerator.
+
+\begin{table}[H]
+  \centering
+  \small
+  \begin{tabular}{lrrrr}
+  \toprule
+  & terse & neutral & verbose \\
+  \midrule
+  Output tokens per task   &  63 & 117 & 742 \\
+  Mean length (SLOC)       & 4.2 & 5.9 & 19.5 \\
+  \midrule
+  Defects found, counted   &  55 &  71 & 139 \\
+  Defects per 100 SLOC     & 1.97 & 1.82 & 1.07 \\
+  \midrule
+  pass@1                   & 89.8\% & 93.1\% & 91.1\% \\
+  \bottomrule
+  \end{tabular}
+  \caption{The token experiment on Claude: the same 664 benchmark tasks under
+  three instructions that vary only how much code is asked for. Counted raw,
+  defects rise with verbosity; counted per line, they fall.}
+  \label{tab:tokens}
+\end{table}
 
 Neither number is the true one, and the choice between them is not statistical
 but a question about what is being asked. Someone asking how many problems they
@@ -1464,18 +1464,105 @@ length alone on fixed tasks.
 % ---------------------------------------------------------------------
 \section{Threats to validity}
 \label{sec:threats}
-% TO WRITE.
-% Construct: detectors are the operational definition of a defect, not ground
-%   truth; the panel excludes them to avoid circularity, but the labels remain
-%   tool-derived.
-% Internal: injection may not reproduce how defects arise naturally -- which is
-%   precisely why the real-code layer exists; residual size confounding is
-%   reported rather than corrected, and marked as co-occurrence.
-% External: Python only; small instruct-tuned models plus one frontier model;
-%   the similarity family is validated on injected data alone, because real code
-%   has no clean reference.
-% Conclusion: single greedy generation per task, so no sampling variance is
-%   estimated.
+
+\subsection{Construct validity: what the labels mean}
+
+Every defect label in this paper is a static analyser's rule firing. That is a
+deliberate choice, argued in Section~\ref{sec:related}, and it has a cost: where a
+tool's rule and the informal idea it stands for come apart, this paper follows the
+rule. A function Pylint calls too long is long by Pylint's threshold, not by any
+independent standard, and a reader who disagrees with that threshold will disagree
+with the label.
+
+The cost falls unevenly across the two halves of the benchmark, and the asymmetry
+is worth restating. On the injected half the defect is present because a known
+transformation put it there, so the label is a check on our own edit rather than
+the source of the ground truth. On the real half the label is all there is. Where
+this paper's conclusions rest most heavily on the real half --- the co-occurrence
+verdicts of Section~\ref{sec:rq1} --- they rest most heavily on the detectors
+being right about which functions are defective.
+
+A second construct point concerns detection strength itself. It is a statement
+about two \emph{groups}, not about a file. A measure scoring $d = 1.4$ separates
+defective from clean code dependably in aggregate and may still be wrong about any
+particular function. Nothing here licenses using these measures as per-file
+detectors, which is the use they are most often put to.
+
+\subsection{Internal validity: does the intervention isolate the defect?}
+
+The injected benchmark's claim is that only the defect changed. That is exactly
+true of the edit and not quite true of its consequences, because for some defects
+the edit necessarily changes length. Injecting a long method lengthens the
+function eightfold by construction; duplicating a block doubles it; deep nesting
+adds six lines. If a measure moved only because the function grew, the controlled
+arm would be reproducing the very confound it exists to detect.
+
+The results survive that objection, and it is worth showing why rather than
+asserting it. Comparing each verdict's measure against what raw lines of code did
+on the same injection: for deep nesting, cyclomatic complexity moves $3.85$ while
+length moves $1.28$, so it responds to the nesting over and above the growth; for
+a complex conditional, Halstead difficulty beats length by $1.07$. More
+importantly, every co-occurrence and blind verdict rests on a measure that barely
+moves at all --- and a measure that does not move cannot have been moved by size.
+Two defects, \texttt{long\_parameter\_list} and \texttt{mutable\_default}, change
+the function's length not at all, which makes their verdicts immune to the
+objection by construction.
+
+One verdict is weaker than the others on this test. \texttt{long\_method} is
+credited to Halstead difficulty at $0.54$ injected, while length on the same
+injection moves $5.00$. The controlled arm is dominated there by the fact that the
+function got much bigger, and the verdict is carried mostly by the real-world
+column. We report it as detection because both sources clear the threshold, but it
+is the least secure of the three.
+
+A further internal threat runs the other way: an injector is a program, and it
+introduces each defect the same way every time. A measure might respond to that
+regularity rather than to the defect. This is precisely why no verdict rests on
+the injected arm alone, and why Section~\ref{sec:patterns} reports the cases where
+injection and real code disagree in magnitude rather than smoothing them over.
+
+\subsection{External validity: what these results cover}
+
+The boundaries stated in Section~\ref{sec:scope} are all limits on
+generalisation. Python only; one function at a time, so smells that live between
+classes are out of reach; twelve defects that a tool can confirm, not Fowler's
+catalogue. Three models, chosen to span capability rather than to survey it.
+
+Two further limits belong here. The similarity family is validated on injected
+data alone, because real defective code has no clean twin to compare against ---
+so the strongest coverage results in Section~\ref{sec:complementarity} carry the
+weakest external evidence, and they apply only where a reference exists. And the
+benchmark's tasks are short, which Section~\ref{sec:taskset} shows was the binding
+constraint on how many defects could appear at all; the prompt study widens the
+tasks but replaces real requirements with synthetic ones written to provoke.
+
+The real-code layer inherits the sampling of the corpora it draws on. Those
+corpora were mined from GitHub by their authors, and this paper does not control
+what went into them. The clean baseline is drawn from the same repositories,
+which makes the comparison internally fair without making either side
+representative of Python at large.
+
+\subsection{Conclusion validity: how firm are the numbers?}
+
+Every model is run once per task, taking the most probable token at each step. No
+sampling variance is estimated, so where two models differ by a little, this paper
+cannot say whether a second run would reproduce it. The differences it rests
+conclusions on are large --- 41 points of pass@1, a defect rate halving --- but the
+small ones should not be read as rankings.
+
+Detection strength is reported with confidence intervals throughout, and the
+$\pm 5$ cap is reported without one because it is a bound rather than an
+estimate. No correction is made for multiple comparisons across the 204
+defect--measure cells of the full grid. The verdicts do not turn on individual
+cells clearing a significance threshold, so a correction would change little, but
+a reader treating any single cell as a discovery should discount accordingly.
+
+Two specific figures are thinner than the rest. The correctness--structure check
+of Section~\ref{sec:capability} rests on 49 failing Claude solutions, so its
+widest gap is also its least certain. And the token experiment of
+Section~\ref{sec:tokens} varies instruction wording, not length directly: the
+three conditions differ in several ways at once, and only their effect on length
+is measured. A cleaner design would fix the wording and vary a length target.
 
 % ---------------------------------------------------------------------
 \section{Conclusion}
