@@ -12,6 +12,7 @@
 \usepackage[margin=0.75in]{geometry}
 \usepackage{balance}
 \usepackage{booktabs}
+\usepackage{multirow}
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{listings}
@@ -1377,89 +1378,127 @@ the amount written is the variable of interest. All three are given as system
 prompts, including the neutral one, so that the comparison is not between having
 an instruction and having none.
 
-The instruction is a strong lever. Claude's mean output runs 63, 117 and 742
-tokens across the three conditions, and mean solution length 4.2, 5.9 and 19.5
-lines. No generation reached the token cap in any condition.
+The instruction is a lever, but not an equally strong one on every model. Mean
+output per task runs 63, 117 and 742 tokens for Claude across the three
+conditions --- a factor of twelve --- and 35, 69 and 242 for Qwen. DeepSeek barely
+responds at all, moving only from 209 to 305, a factor of one and a half. Told to
+write a complete and defensive solution, two models comply and one largely does
+not. Nothing reached the token cap in any of the nine runs.
 
-Table~\ref{tab:tokens} gives the result, and the two defect rows are the point.
-Counted as defects found, verbosity makes things worse: 55, then 71, then 139, a
-factor of two and a half. Counted per hundred source lines, verbosity makes
-things better: 1.97, then 1.82, then 1.07, a fall of almost half. Both are correct
-arithmetic on the same 664 files. They disagree because the denominator grew
-faster than the numerator.
+Table~\ref{tab:tokens} gives the result, and it separates into three findings that
+do not travel together.
+
+\textbf{Raw defect counts rise for every model.} Claude goes from 55 to 139,
+Qwen from 30 to 106, DeepSeek from 85 to 111. Ask for more code and you get more
+defective code, without exception. That much is unsurprising: there is more code
+for a detector to find something in.
+
+\textbf{The per-line rate falls for one model only.} Claude's defects per hundred
+source lines drop from 1.97 to 1.07, a fall of 46\%. Qwen's and DeepSeek's do not
+move at all --- 1.83 to 1.84 and 2.09 to 2.10, changes of under one per cent.
+Claude's extra lines are disproportionately clean ones; the open models' extra
+lines carry defects at the same rate as the lines they already had.
+
+This is the finding the single-model version of this experiment would have got
+wrong. Read from Claude alone, writing more looks like it dilutes structural
+problems. Read across three models, dilution is something one model does and the
+other two do not, and the natural reading is that Claude has the capability to
+spend extra lines on documentation and validation that are themselves clean, while
+the open models simply produce more of the same.
+
+\textbf{The two counts can still disagree, and where they do, neither is wrong.}
+For Claude the same 664 files support ``two and a half times more defective'' and
+``46\% less defective'' depending only on the denominator. Someone asking how many
+problems they will have to fix wants the count. Someone asking whether the code is
+well built for its length wants the rate. The risk is that a study reports
+whichever suits its argument: both are honest arithmetic on real data, so neither
+can be caught by checking the numbers --- only by noticing that the other was not
+shown. That is the same problem this paper has now met three times. In
+Section~\ref{sec:rq1} a measure appeared to detect a defect when it was responding
+to size; in Section~\ref{sec:verbosity} a model appeared more defective when it
+had simply written more; here a single set of files can be described as improving
+or worsening depending on the denominator chosen.
 
 \begin{table}[H]
   \centering
   \small
-  \begin{tabular}{lrrrr}
+  \setlength{\tabcolsep}{4pt}
+  \begin{tabular}{llrrr}
   \toprule
-  & terse & neutral & verbose \\
+  Model & & terse & neutral & verbose \\
   \midrule
-  Output tokens per task   &  63 & 117 & 742 \\
-  Mean length (SLOC)       & 4.2 & 5.9 & 19.5 \\
+  \multirow{5}{*}{DeepSeek}
+    & tokens per task  &  209 &  234 &  305 \\
+    & mean SLOC        &  6.1 &  6.3 &  8.0 \\
+    & defects, counted &   85 &   85 &  111 \\
+    & per 100 SLOC     & 2.09 & 2.03 & 2.10 \\
+    & pass@1           & 52.7\% & 52.4\% & 50.6\% \\
   \midrule
-  Defects found, counted   &  55 &  71 & 139 \\
-  Defects per 100 SLOC     & 1.97 & 1.82 & 1.07 \\
+  \multirow{5}{*}{Qwen}
+    & tokens per task  &   35 &   69 &  242 \\
+    & mean SLOC        &  2.5 &  5.0 &  8.7 \\
+    & defects, counted &   30 &   66 &  106 \\
+    & per 100 SLOC     & 1.83 & 1.98 & 1.84 \\
+    & pass@1           & \textbf{38.9\%} & 57.2\% & 56.0\% \\
   \midrule
-  pass@1                   & 89.8\% & 93.1\% & 91.1\% \\
+  \multirow{5}{*}{Claude}
+    & tokens per task  &   63 &  117 &  742 \\
+    & mean SLOC        &  4.2 &  5.9 & 19.5 \\
+    & defects, counted &   55 &   71 &  139 \\
+    & per 100 SLOC     & 1.97 & 1.82 & \textbf{1.07} \\
+    & pass@1           & 89.8\% & 93.1\% & 91.1\% \\
   \bottomrule
   \end{tabular}
-  \caption{The token experiment on Claude: the same 664 benchmark tasks under
-  three instructions that vary only how much code is asked for. Counted raw,
-  defects rise with verbosity; counted per line, they fall.}
+  \caption{The token experiment: the same 664 benchmark tasks under three
+  instructions varying only how much code is asked for. Every model writes more
+  and finds more defects; only Claude's per-line rate falls. Qwen's terse
+  condition is the one place correctness moves, and it moves down 18 points.}
   \label{tab:tokens}
 \end{table}
 
-Neither number is the true one, and the choice between them is not statistical
-but a question about what is being asked. Someone asking how many problems they
-will have to fix in this file wants the count, and the count went up. Someone
-asking whether the code is well built for its length wants the rate, and the rate
-went down.
+\subsection{Verbosity and correctness: no effect, with one sharp exception}
 
-The risk is that a study reports whichever of the two suits its argument. Both
-are honest arithmetic on real data, so neither can be caught by checking the
-numbers --- only by noticing that the other one was not shown. That is the same
-problem this paper has now run into three times: in
-Section~\ref{sec:rq1} a measure appeared to detect a defect when it was
-responding to size, in Section~\ref{sec:verbosity} a model appeared more defective
-when it had simply written more, and here a single set of files can be described
-as improving or worsening depending on which denominator is chosen.
+The correctness column answers the question Section~\ref{sec:promptset} could not
+reach, and the answer is not uniform.
 
-\subsection{Verbosity does not buy or cost correctness}
+For Claude and DeepSeek there is nothing to report, which is itself worth
+reporting. Claude scores 89.8\%, 93.1\% and 91.1\% across the three conditions and
+DeepSeek 52.7\%, 52.4\% and 50.6\%; every interval overlaps its neighbours and
+neither ordering is monotonic. Asking Claude for four and a half times as much
+code, with input validation and explicit edge-case handling, changed how much it
+wrote and left how often it worked exactly where it was.
 
-The correctness row settles the question Section~\ref{sec:promptset} could not
-reach. Across the three conditions Claude scores 89.8\%, 93.1\% and 91.1\%, with
-95\% intervals of $[87.5, 92.1]$, $[91.1, 95.0]$ and $[88.9, 93.3]$. All three
-overlap, and the ordering is not monotonic --- the middle condition scores
-highest.
+Qwen breaks the pattern, and in the direction opposite to the one usually feared.
+Its terse condition scores 38.9\% $[35.2, 42.6]$ against 57.2\% $[53.5, 61.0]$
+under the neutral instruction --- a drop of 18.3 points, with non-overlapping
+intervals and $z = 6.8$. Told to write the shortest solution that works, Qwen
+writes solutions that do not. Its mean output under that instruction is 35 tokens
+and 2.5 lines, and at that length a good many of these tasks simply cannot be
+solved.
 
-Asking for four and a half times as much code, with input validation and explicit
-edge-case handling, neither improved nor damaged the share of solutions that pass
-their tests. The extra code is not doing the work its instruction implies, and it
-is not getting in the way either.
+So brevity has a floor, and the weakest model in the comparison sits closest to
+it. The instruction that costs nothing when given to Claude removes almost a fifth
+of Qwen's correct answers.
 
-For someone deciding how to prompt, that is a useful pair of findings. Asking for
-more will not make the code more likely to work, so there is no correctness
-argument for doing it. And it has no single effect on structural quality either:
-it produces more defects in total and fewer per line, so what the change looks
-like depends on which of those two questions is being asked, not on whether the
-code got better.
+Taken together the three results give a practitioner a clear rule and a caution.
+Asking for more code will not make it more likely to work: no model improved, and
+the two that could afford the extra tokens were unchanged. Asking for
+substantially less can make it much less likely to work, and how much depends on
+how capable the model is. And the structural consequence of either choice cannot
+be stated without saying which denominator is meant, because for at least one
+model the two available answers point in opposite directions.
 
-\subsection{What is not yet covered}
+\subsection{What this does not cover}
 
-The token experiment currently reports one model. The same three conditions have
-been submitted for the two open models and are queued on a shared cluster; until
-they land, the result above is a single-model finding.
+The token experiment varies instruction wording, not length directly. The three
+conditions differ in several respects at once --- documentation, input validation,
+edge-case handling --- and only their aggregate effect on length is measured. A
+design that fixed the wording and varied an explicit length target would separate
+those, and would also avoid the difficulty that the same instruction moves the
+three models by factors of twelve, seven and one and a half. As it stands the
+models are not receiving equally strong treatments, which is a limit on how far
+the cross-model comparison can be pushed.
 
-There is a specific reason not to assume it generalises. Comparing each model
-between the short benchmark tasks of Section~\ref{sec:rq2} and the longer prompt
-tasks of this section, length rises for all three, but the defect rate per hundred
-lines moves in opposite directions: Claude falls from 1.90 to 1.03, while Qwen
-rises from 1.96 to 2.26 and DeepSeek from 1.93 to 2.11. Writing more dilutes
-Claude's defect rate and concentrates theirs. Whether that reflects the models or
-the difference between the two task sets cannot be separated here, since both
-changed at once --- which is exactly what the queued runs will resolve, by varying
-length alone on fixed tasks.
 
 % ---------------------------------------------------------------------
 \section{Threats to validity}

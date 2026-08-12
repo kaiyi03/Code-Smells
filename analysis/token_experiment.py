@@ -153,8 +153,8 @@ def main():
         ax.tick_params(labelsize=8)
         ax.set_ylim(bottom=0)
     axes[0].legend(frameon=False, fontsize=8)
-    fig.suptitle("Asking for more code: the same output, counted two ways, "
-                 "points in opposite directions", y=1.06, fontsize=11)
+    fig.suptitle("Asking for more code: all three write more and all three gain defects, "
+                 "but only one dilutes its rate", y=1.06, fontsize=11)
     fig.tight_layout()
     for ext in ("pdf", "png"):
         fig.savefig(os.path.join(FIG, f"fig11_token_experiment.{ext}"),
