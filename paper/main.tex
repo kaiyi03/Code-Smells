@@ -70,9 +70,9 @@
 % the rest of the paper. Better a slightly short column than inconsistent leading.
 \raggedbottom
 
-\title{Which Measures Can See a Code Smell?\\
-       \large A Validation Protocol for Assessing the Structural Quality
-       of LLM-Generated Code}
+\title{Detection or Co-occurrence?\\
+       \large A Controlled Validation of Structural Measures
+       for LLM-Generated Code}
 
 \author{Kai Yi Ng\\
         Machine Learning Research Group\\
@@ -951,7 +951,10 @@ relate at all, the relation runs backwards}.
 The validated panel can now be turned on generated code. Three models solve the
 same 664 benchmark tasks --- DeepSeek-Coder-1.3B, Qwen2.5-Coder-1.5B and Claude
 Sonnet 5 --- from byte-identical prompts, so anything that differs between them
-is a property of the models rather than of how they were asked.
+is a property of the models rather than of how they were asked. One thing beyond
+the prompt does differ: the two open models are decoded greedily and Claude is
+sampled, because its API does not expose a temperature setting.
+Section~\ref{sec:conclusionvalidity} sets out what that does and does not affect.
 
 This section reports what the panel says, and then two things that have to be
 controlled before what it says can be believed. One is a measurement problem in
@@ -981,9 +984,11 @@ solves 92.6\% of the 664 tasks; the two open models solve a little over half.
   \end{tabular}
   \caption{Correctness on the 664 benchmark tasks. All three columns are pass@1;
   the last two split the same 664 tasks by source (164 HumanEval, 500 MBPP). Each
-  model answers each task once, taking the most probable token at every step
-  rather than sampling, so the output is deterministic and no averaging over
-  samples is involved.}
+  model answers each task once. The two open models decode greedily, emitting the
+  most probable token at every step, so their answers are reproducible; Claude is
+  served through an API that does not accept a decoding temperature for this
+  model, so its answers are sampled. Section~\ref{sec:conclusionvalidity}
+  discusses what that asymmetry does and does not affect.}
   \label{tab:bench}
 \end{table}
 
@@ -1623,15 +1628,35 @@ from the same repositories as the defective side, so the two groups are alike in
 provenance even if neither is a fair sample of Python at large.
 
 \subsection{Conclusion validity: how firm are the numbers?}
+\label{sec:conclusionvalidity}
 
-Every model is run once per task, taking the most probable token at each step.
-That makes the runs exactly reproducible --- a second run returns the same code ---
-but it also means each model is represented by a single output per task: the one
-it considers most likely. Deployed models are usually run with sampling, where the
-output varies from call to call and some of those variants would be structurally
-different. Nothing here describes that spread. Where this paper says a model
-writes code of a certain kind, it means the code the model writes when it is not
-allowed to vary.
+Every model answers each task once, but not in the same way, and the difference is
+worth stating plainly because Section~\ref{sec:rq2} compares the three directly.
+The two open models decode greedily: at each step they emit the token they rate
+most likely, so their runs are exactly reproducible and each model is represented
+by the single output it considers best. Claude is served through an API that does
+not accept a decoding temperature for this model, so its answers are sampled ---
+four identical calls issued while checking this returned two distinct programs.
+Its results are one draw per task rather than the most likely one, and running the
+benchmark again would not return the same code.
+
+The two sides therefore estimate slightly different quantities. For the open
+models the numbers describe what the model considers most likely; for Claude they
+describe what it actually returns when called, averaged over 664 draws. Both are
+legitimate, and neither is the other. The averaging is what keeps the comparison
+usable: any single Claude answer is one sample and could have come out otherwise,
+but the figures in Section~\ref{sec:rq2} are all means over the full task set,
+where that per-task noise largely cancels.
+
+What this design cannot recover is how large the remaining spread is --- how far
+Claude's defect density would move if the whole benchmark were regenerated. Until
+that is measured, the six-hundredths gap in Section~\ref{sec:capability} is best
+read as three estimates that came out close together rather than three estimates
+known to coincide. The direction that would undermine the argument is the one
+that is least likely: greedy decoding is not usually beaten by a single sample on
+pass@1 \cite{humaneval2021}, so if anything Claude's correctness is understated
+here relative to the open models, which widens the capability gap the section is
+built on rather than narrowing it.
 
 Detection strength is reported with a confidence interval throughout, and the
 $\pm 5$ cap is reported without one because it is a bound rather than an estimate.
@@ -1712,8 +1737,10 @@ is being scored on both sides.
 Three gaps in this work are worth closing directly. The token experiment varies
 how much code is \emph{asked for} rather than how much is written, so a design
 that fixes the wording and sets an explicit length target would separate the two.
-Every model here is run once per task, so nothing is known about how much a
-model's structural output varies between attempts. And everything is Python.
+Every model here answers each task once, so for the model that is sampled rather
+than decoded greedily, nothing is known about how much its structural output
+varies between attempts --- a repeat run of the whole benchmark would put an error
+bar on the one comparison that currently has none. And everything is Python.
 
 The larger question is whether twelve tool-confirmable defects are the right frame
 at all. They were chosen because a rule can confirm them, which is what makes a
