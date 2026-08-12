@@ -386,7 +386,7 @@ The closest work to ours measures a model's \emph{propensity} for particular
 smells using a probe over token probabilities, applied to code that already
 contains the smell \cite{velasco2024propense}, and in its later form embeds that
 probe in a causal model that adjusts for code length and token count among other
-confounders \cite{velasco2026causal}. That design answers a question about a
+confounders \cite{velasco2025causal}. That design answers a question about a
 model's internal preferences, on pre-existing code. Ours answers a different one:
 what appears in code the model writes freely, measured with instruments whose
 per-defect sensitivity has itself been established.
@@ -526,9 +526,12 @@ Injected code has an obvious weakness: a measure might respond to the injector's
 habits rather than to the defect. Testing that requires defective code that
 humans wrote, which is the second half of the benchmark.
 
-The defective side comes from two published corpora of real Python methods:
-CodeSmellData \cite{codesmelldata}, mined from GitHub and labelled per smell, and
-the expert-annotated PySmell dataset \cite{chen2016detecting}. Between them they
+The defective side comes from two published corpora of real Python methods.
+The first is CodeSmellData, a set of GitHub methods labelled per smell, released
+with the propensity work discussed in Section~\ref{sec:related}
+\cite{velasco2024propense,velasco2025causal} --- so the corpus this paper validates
+measures on is the same one the closest related work is built from. The second is
+PySmell, whose labels were assigned by hand \cite{chen2016detecting}. Between them they
 label seven of our twelve defects. Two things had to be added before they could
 support a detection statistic.
 
@@ -1715,11 +1718,13 @@ model's structural output varies between attempts. And everything is Python.
 The larger question is whether twelve tool-confirmable defects are the right frame
 at all. They were chosen because a rule can confirm them, which is what makes a
 benchmark possible --- but the defects practitioners most often blame for
-unmaintainable code are design-level ones that no rule confirms. Those have no
-mechanical oracle. Finding one, or establishing that human judgement is the only
-oracle available, is the harder and more valuable problem. What this paper offers
-towards it is a method: if a measure is going to be trusted to see a defect, the
-way to find out is to change the defect and watch.
+unmaintainable code are design-level ones, and no rule confirms those. Until
+something can decide reliably whether such a defect is present, there is nothing
+to validate a measure against, and the approach taken here cannot be applied to
+them. Building that something, or showing that only a human reader can do the job,
+is the harder and more valuable problem. What this paper offers towards it is a
+method: if a measure is going to be trusted to see a defect, the way to find out
+is to change the defect and watch.
 
 
 
