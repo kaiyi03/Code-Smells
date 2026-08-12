@@ -92,44 +92,35 @@ Benchmarks for code-generating language models measure whether the generated cod
 runs. They do not measure whether it is well built. Work that addresses the second
 question reaches for the structural metrics software engineering already has ---
 cyclomatic complexity, the maintainability index, Halstead measures, similarity
-scores --- and reports their values on model output. Those metrics were designed
-to describe human-written code, and their sensitivity to any particular structural
-defect has not been established. Reporting a metric is not the same as showing it
-can see what it is being used to detect.
+scores --- and reports their values on model output. Where the per-defect
+behaviour of those metrics has been examined, it has been examined by observing
+code that already carried the defect. That design cannot separate a metric
+responding to the defect from a metric responding to what the defect travels with.
 
-This paper supplies the missing step. We build a benchmark of 1{,}300 Python
+We separate them with an intervention. We build a benchmark of 1{,}300 Python
 functions in which twelve structural defects are introduced one at a time into
 otherwise unchanged code, each confirmed by a static analyser and each verified by
-execution to preserve behaviour, and pair it with 4{,}600 real defective functions
-drawn from human-written repositories against a shared clean baseline. Measuring
-each metric on both sources answers two different questions --- whether changing
-only the defect moves the metric, and whether defective and clean code differ on it
-in code people actually wrote --- and detection requires yes to both.
+execution to preserve behaviour, and pair it with 4{,}599 defective functions from
+human-written repositories scored against a shared clean baseline. A measure is
+credited with detecting a defect only when it responds on both.
 
-Applying the protocol to seventeen measures, we find that no single measure detects
-all twelve defects while every defect is detected by at least one, which is the
-empirical case for a panel rather than a composite quality score. We find that a
-substantial part of what looks like detection on real code is co-occurrence with
-size: metrics that provably cannot respond to a defect still separate defective
-from clean code, because defective functions are simply larger. We report a clean
-negative result for language-model perplexity, which does not distinguish
-structurally poor code from clean code on either source.
+Across seventeen measures, three of the twelve defects are genuinely detected,
+five produce a separation on real code that the intervention shows the measure
+cannot be responding to, and four are invisible to everything tested. Eight of the
+twelve lie beyond the reach of the best reference-free measure available --- and
+reference-free measures are the only kind that can be used on code with no known-good
+version to compare against, which is to say all deployed code. Language-model
+perplexity detects nothing and points the wrong way, because padding and
+duplication are the most predictable text there is.
 
-Applying the validated panel to three code-generating models shows that the same
-confound governs conclusions drawn about the models themselves. Scoring raw
-output conflates verbosity with structural quality: one model appeared two and a
-half times more defective than another almost entirely because it volunteered
-test cases the prompt did not request, and the correction moves that model alone.
-The confound persists under deliberate elicitation, where prompts written to
-induce a named defect succeed largely to the extent that the model writes a
-complete function at all --- so a model answering with a stub scores as resistant
-to a defect it was never given room to commit.
-
-Corrected for all of this, the models are hard to tell apart. Across a
-forty-one-point spread in pass@1, defect density per hundred lines varies by six
-hundredths. Being markedly better at writing code that works turns out not to
-mean writing code that is better built, which is a caution for anyone reading
-structural metrics as a measure of model quality.
+Applying the validated panel to three models finds the same confound twice more.
+One model appeared two and a half times more defective than another until the
+demonstration code it volunteered was excluded from scoring. Prompts written to
+provoke a defect appear to meet resistance from weaker models, when what they meet
+is an unimplemented function. And structural quality does not track capability:
+across three models spanning forty-one points of pass@1, defect density per
+hundred lines varies by six hundredths. Being much better at writing code that
+works does not mean writing code that is better built.
   \end{onecolabstract}
   \vspace{1.4em}
 ]
@@ -167,9 +158,10 @@ The distinction cannot be settled by observation alone.
 Defective code found in real repositories differs from clean code in many ways at
 once. It
 is written by different people, in different projects, for different purposes --- and,
-most importantly, it is bigger. Every structural metric responds to size. So a
-metric can separate the two groups convincingly while being formally incapable of
-responding to the defect that defines them. Distinguishing the two requires an
+most importantly, it is bigger. Almost every structural metric responds to size,
+either by counting something that grows with the code or by aggregating over it.
+So a metric can separate the two groups convincingly while being formally
+incapable of responding to the defect that defines them. Distinguishing the two requires an
 intervention: change only the defect, hold everything else fixed, and see whether
 the metric moves. Conversely, an intervention alone is not enough either. Code with
 a defect introduced deliberately is not code that acquired one naturally, and a
@@ -201,6 +193,11 @@ was asked --- and as incompleteness when models are prompted to produce a defect
 deliberately, since a model that answers with a stub has not written enough code
 to contain one. The paper's three questions are the same question at three
 levels.
+
+Once those corrections are made, the models are harder to separate than their
+benchmark scores suggest. Across three models spanning forty-one points of pass@1,
+structural defect density varies by six hundredths of a defect per hundred lines.
+Whatever capability buys, on this evidence it does not buy better-built code.
 
 Alongside the results, the work produces three artefacts, all released openly: the
 labelled benchmark, the validated panel with its per-defect verdicts attached, and
@@ -686,7 +683,8 @@ difference \cite{cohen1988statistical}: below $0.2$ negligible, $0.2$ to $0.5$
 small, $0.5$ to $0.8$ medium, above $0.8$ large. These are conventions, not laws,
 but they give the tables a consistent vocabulary: a measure with $d = 1.4$
 separates the groups dependably in aggregate; a measure with $d = 0.2$ has
-technically nonzero signal that no practitioner could act on for a single file.
+technically nonzero signal that no practitioner could act on for a single
+function.
 
 Each estimate is reported with a 95\% confidence interval computed from the
 large-sample variance of a standardised difference between independent groups.
@@ -1049,7 +1047,7 @@ extra material there was to score.
   everything the model emitted and over the function definitions alone. The
   correction moves one model and leaves the other two untouched, because only one
   of them wrote anything outside the function it was asked for. The unit here is
-  the share of files rather than the per-line rate used in
+  the share of generations rather than the per-line rate used in
   Figure~\ref{fig:capability}: this figure is about which \emph{code} should be
   scored, and dividing by lines would keep the very material at issue in the
   denominator.}
@@ -1407,7 +1405,7 @@ spend extra lines on documentation and validation that are themselves clean, whi
 the open models simply produce more of the same.
 
 \textbf{The two counts can still disagree, and where they do, neither is wrong.}
-For Claude the same 664 files support ``two and a half times more defective'' and
+For Claude the same 664 solutions support ``two and a half times more defective'' and
 ``46\% less defective'' depending only on the denominator. Someone asking how many
 problems they will have to fix wants the count. Someone asking whether the code is
 well built for its length wants the rate. The risk is that a study reports
@@ -1416,7 +1414,7 @@ can be caught by checking the numbers --- only by noticing that the other was no
 shown. That is the same problem this paper has now met three times. In
 Section~\ref{sec:rq1} a measure appeared to detect a defect when it was responding
 to size; in Section~\ref{sec:verbosity} a model appeared more defective when it
-had simply written more; here a single set of files can be described as improving
+had simply written more; here one set of solutions can be described as improving
 or worsening depending on the denominator chosen.
 
 \begin{table}[H]
@@ -1658,71 +1656,71 @@ about how models respond to \emph{being asked} for more code, which is what a
 practitioner actually does, rather than about length as such.
 
 % ---------------------------------------------------------------------
-\section{Conclusion}
+\section{Conclusion and future work}
 \label{sec:conclusion}
 
-Structural metrics are borrowed constantly to say things about generated code.
-This paper asked the prior question --- which defects can those metrics actually
-see --- and answered it by changing one defect at a time in code that was
-otherwise held fixed, then checking the answer against code people wrote
+Structural metrics are used constantly to say things about generated code. This
+paper asked the question that comes first --- which defects can those metrics
+actually see --- and answered it by changing one defect at a time in code that was
+otherwise left alone, then checking the answer against code people wrote
 themselves.
 
 For the twelve defects and seventeen measures tested, the metrics see less than
-their use implies. Three defects are genuinely detected. Five produce a clear
-separation on real code that the controlled experiment shows the measure cannot be
-responding to: those functions are simply bigger, and the measure is reading their
-size. Four are invisible to everything in the panel. Counting only what a
-reference-free measure can reach --- the only kind available on code that has no
-clean twin, which is to say all deployed code --- eight of the twelve defects lie
-beyond the best measure we have.
+their use implies. Three defects are genuinely detected. Five separate clearly on
+real code, but the controlled experiment shows the measure cannot be responding to
+the defect: those functions are simply bigger, and the measure is reading their
+size. Four are invisible to everything in the panel. Counting only the measures
+that work without a known-good version of the code to compare against --- the only
+kind available for code already written --- eight of the twelve defects lie beyond
+the best measure we have.
 
-The single most useful consequence is negative. An observational study cannot tell
-detection from co-occurrence, because both look identical in the data: two groups,
-separated. Only an intervention distinguishes them. Where this paper's verdicts
-differ from what a purely observational reading would have given, the difference
-is not a refinement but a reversal --- a measure credited with finding a defect
-turns out to be measuring how much code there is.
+The most useful consequence is a negative one. Looking at defective and clean code
+cannot tell detection apart from co-occurrence, because both look the same: two
+groups, separated. Only changing the defect distinguishes them. Where our verdicts
+differ from what looking alone would have given, the difference is not a small
+correction but a reversal: a measure credited with finding a defect turns out to
+be measuring how much code there is.
 
-That confound did not stay in the instrument. Applying the validated panel to
-three models found it twice more. One model appeared two and a half times more
-defective than another until the demonstration code it volunteered was excluded
-from scoring. Prompts written to provoke a defect appeared to meet resistance from
-the weaker models, when what they had actually met was an unimplemented function:
-a body of \texttt{pass} has no structure to be defective. And asking a model for
-more code raises its defect count while lowering its defect rate, so that a single
-set of files supports two opposite descriptions depending on the denominator
-chosen. In each case a quantity that reads as a property of the code is
-substantially a property of how much code there is.
+That confound did not stay inside the instrument. Applying the validated panel to
+three models found it twice more. One model looked two and a half times more
+defective than another until the demonstration code it volunteered was left out of
+the scoring. Prompts written to provoke a defect looked as though the weaker
+models were resisting them, when what they had actually run into was an
+unimplemented function: a body of \texttt{pass} has no structure to be defective.
+Each time, a number that reads as a fact about the code is largely a fact about
+how much code there is.
 
-Two results are worth separating from the methodological ones because they bear on
-how models are judged. Structural quality did not track capability: across three
-models spanning forty-one points of pass@1, defect density per hundred lines
-varied by six hundredths. Being much better at writing code that works did not
-mean writing code that was better built. And language-model perplexity, the most
-natural candidate for a measure that could see every defect at once, saw none of
-them --- and pointed the wrong way, because padding and duplication are the most
-predictable text there is.
+Two results bear on how models are judged rather than how they are measured.
+Structural quality did not follow capability: across three models spanning
+forty-one points of pass@1, defect density varied by six hundredths of a defect
+per hundred lines. And perplexity, the one measure that could in principle see
+every defect at once, saw none of them, and pointed the wrong way --- padding and
+duplication are the most predictable text there is.
 
-None of this says the metrics are worthless. It says they are instruments with
-known blind spots, and that the blind spots were not known before. A practitioner
-who wants to know whether a function has a long parameter list should ask a
-detector, not an index. A study reporting complexity over model output should say
-which defects that complexity has been shown to respond to. And anyone comparing
-two models on a defect rate should first establish that they are scoring the same
-kind of code.
+None of this makes the metrics worthless. It makes them instruments with known
+blind spots, where the blind spots were not known before. Ask a detector, not an
+index, whether a function has too many parameters. State which defects a
+complexity score has been shown to respond to before drawing conclusions from it.
+And before comparing two models on a defect rate, check that the same kind of code
+is being scored on both sides.
 
-What follows from here divides into two. The narrow work is to close the gaps this
-paper leaves: a design that fixes prompt wording and varies an explicit length
-target, sampled rather than single-shot generation so the spread of a model's
-output can be measured, and languages beyond Python. The broader question is
-whether the twelve-defect frame is the right one at all. Everything here concerns
-what a static analyser can confirm inside a single function, which excludes the
-design-level smells practitioners most often name as the reason a codebase is hard
-to work in. Those defects have no mechanical oracle, and finding one --- or
-establishing that human judgement is the only oracle available --- is the harder
-and more valuable problem. This paper's contribution to it is a method: if a
-measure is going to be trusted to see a defect, the way to find out is to change
-the defect and watch.
+\subsection*{Future work}
+
+Three gaps in this work are worth closing directly. The token experiment varies
+how much code is \emph{asked for} rather than how much is written, so a design
+that fixes the wording and sets an explicit length target would separate the two.
+Every model here is run once per task, so nothing is known about how much a
+model's structural output varies between attempts. And everything is Python.
+
+The larger question is whether twelve tool-confirmable defects are the right frame
+at all. They were chosen because a rule can confirm them, which is what makes a
+benchmark possible --- but the defects practitioners most often blame for
+unmaintainable code are design-level ones that no rule confirms. Those have no
+mechanical oracle. Finding one, or establishing that human judgement is the only
+oracle available, is the harder and more valuable problem. What this paper offers
+towards it is a method: if a measure is going to be trusted to see a defect, the
+way to find out is to change the defect and watch.
+
 
 
 % ---------------------------------------------------------------------
