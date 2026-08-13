@@ -1747,7 +1747,13 @@ interface does not expose a decoding temperature, so the same prompt can return
 different code on different calls. Its whole run was repeated once, which is
 enough to show the aggregates are stable but not enough to put an interval on
 them; more draws would give one, and would say whether that stability also holds
-for the prompt conditions of Section~\ref{sec:rq3}. And everything is Python.
+for the prompt conditions of Section~\ref{sec:rq3}. And everything is Python ---
+which is not only a limit on coverage, because the defect list itself is shaped by
+the language. A mutable default argument is a hazard specific to Python, and
+eleven of the twelve defects are confirmed by Pylint or Ruff, which run on nothing
+else. Repeating the protocol elsewhere means choosing a new defect list and new
+detectors before any measure can be tested, and would show whether the size
+confound belongs to the measures or to the idioms of one language.
 
 The larger question is whether twelve tool-confirmable defects are the right frame
 at all. They were chosen because a rule can confirm them, which is what makes a
