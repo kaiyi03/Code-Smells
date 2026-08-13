@@ -1674,14 +1674,6 @@ density to two decimal places is what a stable aggregate looks like.
 Detection strength is reported with a confidence interval throughout, and the
 $\pm 5$ cap is reported without one because it is a bound rather than an estimate.
 
-The full grid holds 204 defect--measure cells. When that many numbers are
-computed, a few will look striking by chance alone, and a study that went hunting
-through them for the largest would be reporting partly on luck. This paper does
-not adjust for that, and does not need to: the verdicts rest on whole rows read
-across two sources, not on any single cell being large. But the protection is in
-how the numbers are read, not in the numbers themselves, so a reader who picks one
-cell out of the grid and treats it as a result should discount it accordingly.
-
 Two results rest on less evidence than the others. The comparison of defect rates
 between passing and failing solutions in Section~\ref{sec:capability} has only 49
 failing Claude solutions to work with, so its largest gap is also its least
@@ -1750,10 +1742,12 @@ is being scored on both sides.
 Three gaps in this work are worth closing directly. The token experiment varies
 how much code is \emph{asked for} rather than how much is written, so a design
 that fixes the wording and sets an explicit length target would separate the two.
-The sampled model was regenerated once, which is enough to show its aggregates are
-stable but not enough to put a proper interval on them; more draws would give one,
-and would say whether the stability holds for the prompt conditions of
-Section~\ref{sec:rq3} as well as for the benchmark. And everything is Python.
+One of the three models, Claude, is sampled rather than decoded greedily: its
+interface does not expose a decoding temperature, so the same prompt can return
+different code on different calls. Its whole run was repeated once, which is
+enough to show the aggregates are stable but not enough to put an interval on
+them; more draws would give one, and would say whether that stability also holds
+for the prompt conditions of Section~\ref{sec:rq3}. And everything is Python.
 
 The larger question is whether twelve tool-confirmable defects are the right frame
 at all. They were chosen because a rule can confirm them, which is what makes a
