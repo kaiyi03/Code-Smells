@@ -987,8 +987,8 @@ solves 92.6\% of the 664 tasks; the two open models solve a little over half.
   model answers each task once. The two open models decode greedily, emitting the
   most probable token at every step, so their answers are reproducible; Claude is
   served through an API that does not accept a decoding temperature for this
-  model, so its answers are sampled. Section~\ref{sec:conclusionvalidity}
-  discusses what that asymmetry does and does not affect.}
+  model, so its answers are sampled. Section~\ref{sec:conclusionvalidity} reports a
+  full replication of Claude's run: 92.6\% here, 93.5\% on the repeat.}
   \label{tab:bench}
 \end{table}
 
@@ -1098,8 +1098,12 @@ score 1.93 (DeepSeek), 1.96 (Qwen) and 1.90 (Claude).
 
 Those three numbers are, for practical purposes, the same number. The gap between
 the highest and lowest is 0.06 defects per hundred lines: on a six-line function,
-about one defect in every three hundred such functions. Set that beside the
-correctness column, where the same three models are separated by 41 points.
+about one defect in every three hundred such functions. That gap is small enough
+to be worth asking whether it is stable, and it is: regenerating Claude's entire
+output --- the only one of the three that is sampled rather than decoded greedily
+--- returns the same 1.90, as Section~\ref{sec:conclusionvalidity} reports. Set
+the gap beside the correctness column, where the same three models are separated
+by 41 points.
 Figure~\ref{fig:capability} puts the two side by side --- a very large difference
 in one panel, and effectively none in the other, across the same models on the
 same tasks.
@@ -1648,15 +1652,24 @@ usable: any single Claude answer is one sample and could have come out otherwise
 but the figures in Section~\ref{sec:rq2} are all means over the full task set,
 where that per-task noise largely cancels.
 
-What this design cannot recover is how large the remaining spread is --- how far
-Claude's defect density would move if the whole benchmark were regenerated. Until
-that is measured, the six-hundredths gap in Section~\ref{sec:capability} is best
-read as three estimates that came out close together rather than three estimates
-known to coincide. The direction that would undermine the argument is the one
-that is least likely: greedy decoding is not usually beaten by a single sample on
-pass@1 \cite{humaneval2021}, so if anything Claude's correctness is understated
-here relative to the open models, which widens the capability gap the section is
-built on rather than narrowing it.
+How much noise survives that averaging is a question that can be measured rather
+than argued, so we measured it. All 664 tasks were generated a second time from
+the same prompts with the same settings, and scored identically. Individual
+answers do move: 22\% of tasks came back structurally different, and 2.4\% changed
+from passing to failing or the reverse. The aggregates do not. Correctness went
+from 92.6\% to 93.5\%, and defect density did not shift at the reported precision
+--- 1.90 defects per 100 source lines on both runs, from 73 defects in 3,837 lines
+and 74 in 3,890.
+
+That is the reassurance the comparison needs. The spread between the three models
+in Section~\ref{sec:capability} is 0.06 defects per 100 lines, and regenerating
+the sampled model's entire output moves its own density by less than 0.01. The
+three densities being close together is therefore a fact about the models rather
+than an artefact of which draw Claude happened to return, and the same holds for
+the capability gap the section is built on: 0.9 points of run-to-run movement
+against a 41-point spread. One replication bounds that movement rather than
+characterising its distribution, but a second independent draw landing on the same
+density to two decimal places is what a stable aggregate looks like.
 
 Detection strength is reported with a confidence interval throughout, and the
 $\pm 5$ cap is reported without one because it is a bound rather than an estimate.
@@ -1737,10 +1750,10 @@ is being scored on both sides.
 Three gaps in this work are worth closing directly. The token experiment varies
 how much code is \emph{asked for} rather than how much is written, so a design
 that fixes the wording and sets an explicit length target would separate the two.
-Every model here answers each task once, so for the model that is sampled rather
-than decoded greedily, nothing is known about how much its structural output
-varies between attempts --- a repeat run of the whole benchmark would put an error
-bar on the one comparison that currently has none. And everything is Python.
+The sampled model was regenerated once, which is enough to show its aggregates are
+stable but not enough to put a proper interval on them; more draws would give one,
+and would say whether the stability holds for the prompt conditions of
+Section~\ref{sec:rq3} as well as for the benchmark. And everything is Python.
 
 The larger question is whether twelve tool-confirmable defects are the right frame
 at all. They were chosen because a rule can confirm them, which is what makes a
