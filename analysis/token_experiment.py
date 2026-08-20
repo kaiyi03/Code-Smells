@@ -135,8 +135,8 @@ def main():
     # whichever conclusion its author preferred.
     panels = [
         ("tokens", "output tokens per task", "How much was written"),
-        ("defects_total", "defects found (all 664)", "Defects, counted"),
-        ("per100", "defects per 100 SLOC", "Defects, per line of code"),
+        ("defects_total", "smells found (all 664)", "Smells, counted"),
+        ("per100", "smells per 100 SLOC", "Smells, per line of code"),
         ("pass1", "pass@1 (%)", "Correctness"),
     ]
     x = range(len(CONDITIONS))
@@ -153,7 +153,7 @@ def main():
         ax.tick_params(labelsize=8)
         ax.set_ylim(bottom=0)
     axes[0].legend(frameon=False, fontsize=8)
-    fig.suptitle("Asking for more code: all three write more and all three gain defects, "
+    fig.suptitle("Asking for more code: all three write more and all three gain smells, "
                  "but only one dilutes its rate", y=1.06, fontsize=11)
     fig.tight_layout()
     for ext in ("pdf", "png"):

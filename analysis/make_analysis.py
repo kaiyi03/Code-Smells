@@ -178,9 +178,9 @@ def fig_heatmap():
     # Spell out the direction on the bar itself. The colour scale is reversed
     # RdYlGn, so red is a HIGH value -- readers who expect green-is-good read the
     # map backwards otherwise.
-    cbar.set_label("detection strength: red = defective code scores worse,\n"
-                   "green = defective code scores better (capped at $\\pm$5)")
-    fig.suptitle("How strongly each structural measure separates defective from clean code",
+    cbar.set_label("detection strength: red = smelly code scores worse,\n"
+                   "green = smelly code scores better (capped at $\\pm$5)")
+    fig.suptitle("How strongly each structural measure separates smelly from clean code",
                  y=1.0, fontsize=11)
     save(fig, "fig1_detection_heatmap")
 
@@ -233,7 +233,7 @@ def fig_coverage():
     ax.invert_yaxis()
     ax.set_xlim(0, 5.4)
     ax.set_xlabel("detection strength of the BEST measure in that family (injected)")
-    ax.set_title(f"Best case per family: every defect is reachable by something, but the\n"
+    ax.set_title(f"Best case per family: every smell is reachable by something, but the\n"
                  f"structural family alone leaves {len(blind_rows)} of {len(SMELLS)} "
                  f"out of reach", fontsize=10, pad=30)
     # Above the axes, not inside them: at lower right the legend box sat on top of the
@@ -337,7 +337,7 @@ def fig_verbosity():
                     fontsize=7, color="#9b2c2c", linespacing=1.35)
     ax.set_xticks(x); ax.set_xticklabels(labels, fontsize=8)
     ax.set_ylim(0, max(emitted) * 1.32)
-    ax.set_ylabel("share of generations carrying a defect")
+    ax.set_ylabel("share of generations carrying a smell")
     ax.set_title("Scoring raw output partly measures verbosity: of three models,\n"
                  "only the one that volunteers extra code moves when it is excluded",
                  fontsize=9.5, pad=8)
@@ -372,8 +372,8 @@ def fig_capability_vs_structure():
     fig, axes = plt.subplots(1, 2, figsize=(8.2, 3.9))
     for ax, vals, ttl, ylab, hi in [
             (axes[0], p1, "Correctness varies enormously", "pass@1 (%)", True),
-            (axes[1], dens, "Structural defect density does not",
-             "defects per 100 SLOC", False)]:
+            (axes[1], dens, "Structural smell density does not",
+             "smells per 100 SLOC", False)]:
         ax.bar(range(len(labels)), vals, color=BENCH_COLOURS[:len(labels)], width=.62)
         ax.set_xticks(range(len(labels)))
         ax.set_xticklabels(labels, rotation=18, ha="right", fontsize=7.6)
@@ -439,8 +439,8 @@ def fig_task_set():
     # was distinguished by colour alone with nothing saying what it meant.
     cols = ["#9b2c2c"] + ["#0f6d6d"] * (len(names) - 1) if short else ["#0f6d6d"] * len(names)
     for ax, vals, ttl, ylab in [
-            (axes[0], rates, "Share of generations carrying a defect", "%"),
-            (axes[1], dis, "Distinct defects observed (of 12)", "count")]:
+            (axes[0], rates, "Share of generations carrying a smell", "%"),
+            (axes[1], dis, "Distinct smells observed (of 12)", "count")]:
         ax.bar(range(len(names)), vals, color=cols)
         ax.set_xticks(range(len(names)))
         ax.set_xticklabels(names, rotation=20, ha="right", fontsize=7.5)
@@ -454,7 +454,7 @@ def fig_task_set():
                plt.Rectangle((0, 0), 1, 1, color="#0f6d6d")]
     fig.legend(handles,
                ["short benchmark tasks (MBPP + HumanEval)",
-                "tasks with room for the other defects"],
+                "tasks with room for the other smells"],
                frameon=False, ncol=2, loc="lower center", bbox_to_anchor=(0.5, -0.13),
                fontsize=8.5)
     fig.suptitle("The task set was the binding constraint, not the models", y=1.0, fontsize=11)
@@ -489,8 +489,8 @@ def fig_induction():
     ax.set_xticks(range(len(targets)))
     ax.set_xticklabels([s.replace("_", " ") for s in targets], rotation=18, ha="right")
     ax.set_ylim(0, 108)
-    ax.set_ylabel("share of targeted prompts where the defect appeared (%)")
-    ax.set_title("A prompt can reliably provoke some defects and never provoke others",
+    ax.set_ylabel("share of targeted prompts where the smell appeared (%)")
+    ax.set_title("A prompt can reliably provoke some smells and never provoke others",
                  pad=8, fontsize=10)
     ax.legend(frameon=False, fontsize=7.5)
     save(fig, "fig8_induction_rate")
@@ -530,7 +530,7 @@ def fig_perplexity():
     ax.invert_yaxis()
     ax.set_xlim(-1.6, 1.6)
     ax.set_xlabel("detection strength of perplexity (shaded: negligible)")
-    ax.set_title("A code language model does not find defective code more surprising",
+    ax.set_title("A code language model does not find smelly code more surprising",
                  fontsize=10, pad=8)
     ax.legend(frameon=False, loc="lower right")
     save(fig, "fig9_perplexity")
@@ -581,7 +581,7 @@ def table_detection():
     with open(os.path.join(TAB, "detection.tex"), "w", encoding="utf-8") as f:
         f.write("% generated by analysis/make_analysis.py -- do not edit\n")
         f.write("\\begin{tabular}{llrrl}\n\\toprule\n")
-        f.write("Defect & Strongest measure & Injected & Real & Verdict \\\\\n\\midrule\n")
+        f.write("Smell & Strongest measure & Injected & Real & Verdict \\\\\n\\midrule\n")
         for r in rows_out:
             f.write(f"\\texttt{{{r['smell'].replace('_', '\\_')}}} & "
                     f"{r['measure'].replace('_', ' ')} & "
@@ -596,7 +596,7 @@ def table_correctness():
     with open(os.path.join(TAB, "benchmark.tex"), "w", encoding="utf-8") as f:
         f.write("% generated by analysis/make_analysis.py -- do not edit\n")
         f.write("\\begin{tabular}{lrrr}\n\\toprule\n")
-        f.write("Defect & Examples & Tested & Behaviour preserved \\\\\n\\midrule\n")
+        f.write("Smell & Examples & Tested & Behaviour preserved \\\\\n\\midrule\n")
         for r in corr:
             f.write(f"\\texttt{{{r['smell'].replace('_', '\\_')}}} & 100 & "
                     f"{r['n_tested']} & {r['behaviour_kept']}/{r['n_tested']} \\\\\n")
