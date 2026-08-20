@@ -88,39 +88,33 @@
 \twocolumn[
   \maketitle
   \begin{onecolabstract}
-Benchmarks for code-generating language models measure whether the generated code
-runs. They do not measure whether it is well built. Work that addresses the second
-question reaches for the structural metrics software engineering already has ---
-cyclomatic complexity, the maintainability index, Halstead measures, similarity
-scores --- and reports their values on model output. Where the per-defect
-behaviour of those metrics has been examined, it has been examined by observing
-code that already carried the defect. That design cannot separate a metric
-responding to the defect from a metric responding to what the defect travels with.
+Code-generation benchmarks primarily evaluate functional correctness, providing
+limited insight into the structural quality of generated code. Functionally correct
+code can still exhibit code smells: structural characteristics that signal weaknesses
+in design and maintainability without necessarily altering program behaviour.
+Structural metrics are commonly used to assess this quality, yet it remains unclear
+whether they detect individual code smells or merely properties that co-occur with
+them.
 
-We separate them with an intervention. We build a benchmark of 1{,}300 Python
-functions in which twelve structural defects are introduced one at a time into
-otherwise unchanged code, each confirmed by a static analyser and each verified by
-execution to preserve behaviour, and pair it with 4{,}599 defective functions from
-human-written repositories scored against a shared clean baseline. A measure is
-credited with detecting a defect only when it responds on both.
+We address this ambiguity through controlled intervention, introducing twelve code
+smells one at a time into 1{,}300 otherwise unchanged Python functions while
+preserving their behaviour. We validate the resulting metric responses against
+4{,}599 smelly functions from human-written repositories. Across seventeen measures,
+only three smells are detected in both settings; five separate smelly from clean code
+in real repositories although the intervention shows the measure barely moves when
+only the smell changes, and four remain undetected by every measure tested. Eight of
+the twelve lie beyond every reference-free measure, the only class applicable to code
+with no known-good version to compare against. Language-model perplexity detects none
+of the twelve and inverts, scoring duplicated and padded code as more predictable than
+the clean originals.
 
-Across seventeen measures, three of the twelve defects are genuinely detected,
-five produce a separation on real code that the intervention shows the measure
-cannot be responding to, and four are invisible to everything tested. Eight of the
-twelve lie beyond the reach of the best reference-free measure available --- and
-reference-free measures are the only kind that can be used on code with no known-good
-version to compare against, which is to say all deployed code. Language-model
-perplexity detects nothing and points the wrong way, because padding and
-duplication are the most predictable text there is.
-
-Applying the validated panel to three models finds the same confound twice more.
-One model appeared two and a half times more defective than another until the
-demonstration code it volunteered was excluded from scoring. Prompts written to
-provoke a defect appear to meet resistance from weaker models, when what they meet
-is an unimplemented function. And structural quality does not track capability:
-across three models spanning forty-one points of pass@1, defect density per
-hundred lines varies by six hundredths. Being much better at writing code that
-works does not mean writing code that is better built.
+Applying the validated measures to three language models exposes the same confound
+twice more. One model appears 2.5 times smellier than another until the demonstration
+code it volunteered is excluded from scoring, and weaker models appear to resist
+prompts written to induce smells when what they produce is unimplemented functions.
+Structural quality shows little relationship with functional capability: across models
+separated by 41 points of pass@1, smell density differs by 0.06 smells per hundred
+lines. Better functional performance does not imply better-structured code.
   \end{onecolabstract}
   \vspace{1.4em}
 ]
