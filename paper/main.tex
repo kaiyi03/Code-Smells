@@ -17,6 +17,7 @@
 \usepackage{amsmath}
 \usepackage{listings}
 \usepackage{caption}
+\usepackage{threeparttable}
 \usepackage{xcolor}
 \usepackage[hidelinks]{hyperref}
 \usepackage{url}
@@ -122,6 +123,7 @@ lines. Better functional performance does not imply better-structured code.
 
 % ---------------------------------------------------------------------
 \section{Introduction}
+\label{sec:intro}
 
 Language models now write a substantial share of new code, and the benchmarks used
 to judge them ask almost exclusively whether that code runs. HumanEval and MBPP
@@ -218,9 +220,10 @@ This paper contributes:
         volunteers rather than what it was asked for measures verbosity, and a
         model answering with a stub has not written enough code to carry a smell.
         Each inverts a conclusion the uncorrected numbers support.
-  \item \textbf{Released artefacts.} The labelled benchmark, the validated panel
-        with its verdicts attached, and an evaluation tool that applies the panel
-        to arbitrary Python code.
+  \item \textbf{Released tools.} The injection pipeline that builds the
+        benchmark, the validation harness that produces the verdicts from a set
+        of generations, and an interactive dashboard for reading the full grid of
+        results measure by measure.
 \end{itemize}
 
 \subsection{Research questions}
@@ -413,8 +416,8 @@ Each of those four areas is well developed, and the gap lies between them. The
 metric literature supplies the measures and the generated-code literature applies
 them, but what the measures can actually see has been established only in part.
 Where per-smell behaviour has been examined, it has been examined observationally,
-which for the reason given above cannot distinguish a measure responding to the
-smell from one responding to size. Only an intervention can. This paper supplies one, and then
+which for the reason set out in Section~\ref{sec:intro} cannot distinguish a
+measure responding to the smell from one responding to size. Only an intervention can. This paper supplies one, and then
 asks what changes when claims about generated code are re-derived from an
 instrument that has been checked.
 
@@ -584,6 +587,7 @@ smelly functions in total, with per-smell counts from 92
 \begin{table*}[!tb]
 \centering
 \small
+\begin{threeparttable}
 \begin{tabular}{llcl}
 \toprule
 Family & Measures & Reference & Worse means \\
@@ -591,28 +595,28 @@ Family & Measures & Reference & Worse means \\
 Structural (9) & sloc, cyclomatic, cognitive & not needed & higher \\
            & halstead volume / difficulty / effort & & higher \\
            & maintainability index & & lower \\
-           & comment density, API calls & & context \\
+           & comment density, distinct API calls & & context\tnote{$\dagger$} \\
 Similarity (7) & BLEU, chrF, ROUGE-L, CodeBLEU & required & lower \\
            & AST similarity, CodeBERTScore, BERTScore & & lower \\
-Fluency (1) & perplexity & not needed & context \\
+Fluency (1) & perplexity & not needed & context\tnote{$\dagger$} \\
 \midrule
 \multicolumn{4}{l}{\emph{Recorded, but not under test}} \\
 Control    & pass/fail by execution & tests required & --- \\
 \bottomrule
 \end{tabular}
+\begin{tablenotes}[flushleft]
+\footnotesize
+\item[$\dagger$] No direction is good on its own, so the value is read against
+the clean baseline for the same task rather than on its own. Comment density is
+the clearest case: near zero suggests undocumented code, but a high value may mean
+careful documentation or filler.
+\end{tablenotes}
+\end{threeparttable}
 \caption{The measure panel: seventeen measures in three families. The
 \emph{Reference} column records whether a measure needs a known-good version of
 the code to compute. Correctness sits below the rule because it is not evaluated
 as a quality measure; it establishes that an injected smell left behaviour
 unchanged.}
-
-\vspace{3pt}
-{\footnotesize \emph{Context} means the measure has no direction that is good on
-its own. Comment density is the clearest case: a value near zero suggests
-undocumented code, but a high one may mean careful documentation or filler, so it
-is only readable against the same task's clean baseline. API calls and perplexity
-are read the same way.}
-
 \label{tab:panel}
 \end{table*}
 
@@ -661,12 +665,19 @@ against each other.
 
 \subsection{Notes on individual measures}
 
-Most of the panel is standard. Three choices warrant a note.
+Most of the panel is standard. Four choices warrant a note.
 
 \emph{Cognitive complexity} is included alongside cyclomatic complexity because
 the two disagree in a way that matters here: cyclomatic counts branches equally
 wherever they occur, while cognitive weights nesting. For a smell defined by
 nesting depth, the difference is the whole question.
+
+\emph{Distinct API calls} counts how many different functions or methods a
+body invokes. It is a usage profile rather than a complexity score: it separates
+code that leans on library calls from code that inlines everything. It is in the
+panel because that profile is plausibly what an unused import or an unused
+variable disturbs, and Section~\ref{sec:rq1} reports it as the only measure with
+any real-code response to \texttt{dead\_code}.
 
 \emph{AST similarity} compares the pre-order sequence of syntax-tree node types,
 discarding identifiers and literals. It therefore measures structural
@@ -675,8 +686,9 @@ resemblance specifically, where BLEU measures textual resemblance.
 \emph{Perplexity} is included to test a hypothesis rather than because it is an
 established quality measure: if structurally poor code is unusual code, a
 language model should find it more surprising. It is computed with
-\texttt{codegen-350M-mono}, a 350M-parameter causal language model trained on
-Python, and scored on the snippet alone with no reference.
+CodeGen-350M-mono \cite{nijkamp2022codegen}, a 350M-parameter causal language
+model further pre-trained on Python, and scored on the snippet alone with no
+reference.
 Section~\ref{sec:rq1} reports that the hypothesis fails.
 
 
@@ -791,18 +803,30 @@ The practical consequence is that a tool built on such a measure would flag
 functions for being large while reporting that it had found the smell, and would
 keep doing so on code where the smell was absent.
 
-One property of these verdicts belongs here rather than in the threats section.
-They are assigned by reading the two columns together, not by applying a numerical
-rule. The clear cases are clear: a large real value beside a near-zero injected one
-is co-occurrence, and values clearing Cohen's large-effect mark on both sources are
-detection. Where a pair falls between those, the verdict is our judgement about
-which reading the two numbers support. Table~\ref{tab:detection} therefore records
-a reading of the evidence rather than the output of a formula, and
-Section~\ref{sec:threats} returns to what that costs.
+These verdicts are a judgement, not a calculation. No formula converts the two
+numbers into a verdict: there is no injected value below which a smell is
+automatically co-occurrence, and no real value above which it is automatically
+detection. At the extremes the reading is forced. A real value above Cohen's
+large-effect mark sitting beside an injected value of essentially zero can only be
+co-occurrence, because a measure that did not move when the smell was introduced
+cannot be responding to it; large values on both sources can only be detection.
+The decisions we actually had to make are the ones in between, where an injected
+value is small but not zero, and there we assigned the verdict by asking which of
+the two readings the pair better supports. Table~\ref{tab:detection} therefore
+records our reading of the evidence, and Section~\ref{sec:threats} returns to what
+that costs.
 
 % ---------------------------------------------------------------------
 \section{RQ1: which measures can see which smells}
 \label{sec:rq1}
+
+Figure~\ref{fig:heatmap} shows the full grid --- every reference-free measure
+against every smell, on both sources --- and Table~\ref{tab:detection} distils
+it to the strongest real-world measure per smell. Read naively, the right-hand
+panel alone would be encouraging: most smells separate from clean code on
+several measures. The left-hand panel is what disciplines that reading. This
+section walks through the four patterns the two panels form together, then what
+they imply for how structural quality should be measured at all.
 
 \begin{figure*}[!tb]
   \centering
@@ -819,6 +843,16 @@ Section~\ref{sec:threats} returns to what that costs.
   \label{fig:heatmap}
 \end{figure*}
 
+\subsection{Four patterns, four worked examples}
+\label{sec:patterns}
+
+\paragraph{Genuine detection: both sources agree.}
+Deep nesting moves cyclomatic complexity at $d = 3.85$ $[3.39, 4.32]$ when
+injected and $5.0$ (capped) on real code; a complex conditional moves Halstead
+difficulty at $1.50$ $[1.18, 1.81]$ injected and $3.77$ $[3.56, 3.98]$ real.
+For these smells the causal and observational answers coincide, and the
+measures can be used as detectors with a clear conscience.
+
 \begin{table*}[!tb]
   \centering
   \small
@@ -830,24 +864,6 @@ Section~\ref{sec:threats} returns to what that costs.
   baseline of 1{,}000 clean functions from the same corpus.}
   \label{tab:detection}
 \end{table*}
-
-Figure~\ref{fig:heatmap} shows the full grid --- every reference-free measure
-against every smell, on both sources --- and Table~\ref{tab:detection} distils
-it to the strongest real-world measure per smell. Read naively, the right-hand
-panel alone would be encouraging: most smells separate from clean code on
-several measures. The left-hand panel is what disciplines that reading. This
-section walks through the four patterns the two panels form together, then what
-they imply for how structural quality should be measured at all.
-
-\subsection{Four patterns, four worked examples}
-\label{sec:patterns}
-
-\paragraph{Genuine detection: both sources agree.}
-Deep nesting moves cyclomatic complexity at $d = 3.85$ $[3.39, 4.32]$ when
-injected and $5.0$ (capped) on real code; a complex conditional moves Halstead
-difficulty at $1.50$ $[1.18, 1.81]$ injected and $3.77$ $[3.56, 3.98]$ real.
-For these smells the causal and observational answers coincide, and the
-measures can be used as detectors with a clear conscience.
 
 \paragraph{Co-occurrence: the intervention says no, real code says yes.}
 Rewriting a list comprehension as an explicit loop adds no branch, so cyclomatic
