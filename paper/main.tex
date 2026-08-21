@@ -16,6 +16,7 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{listings}
+\usepackage{caption}
 \usepackage{xcolor}
 \usepackage[hidelinks]{hyperref}
 \usepackage{url}
@@ -139,7 +140,7 @@ generated code against a reference. Recent work does exactly this, computing the
 metrics over model output and drawing conclusions about how well models write. The
 step that is skipped is the one that licenses those conclusions. These metrics were
 designed to \emph{describe} human-written code in aggregate, not to \emph{detect}
-particular code smells.\footnote{One word throughout: this paper says \emph{smell} for the twelve conditions it studies, where parts of the literature say \emph{defect} or \emph{structural defect}. A defect suggests code that computes the wrong answer, and none of the twelve implies that: every injected variant in the benchmark behaves identically to its clean twin.} Where their per-smell behaviour has been examined
+particular code smells. Where their per-smell behaviour has been examined
 at all, it has been examined by \emph{looking} rather than by \emph{intervening}:
 metrics are computed on code that already carries the smell, and judged by
 whether they separate it from code that does not
@@ -177,7 +178,12 @@ The result is a three-way verdict for every measure and smell: the measure
 \emph{detects} the smell, it merely \emph{co-occurs} with it, or it is
 \emph{blind} to it. Most of what a purely observational study would report as
 detection falls into the middle category, and the thing it usually co-occurs with
-is size.
+is size. One case makes the argument concrete. Rewriting a comprehension as an
+explicit loop adds no branch, so cyclomatic complexity cannot respond to it, and
+under the intervention it does not move at all ($d = 0.00$). On real code the same
+measure separates loop-carrying functions from clean ones at $d = 1.37$, because
+the functions that contain this smell are simply bigger. Observation alone would
+have called that detection.
 
 That confound does not stay confined to the instrument. Applying the validated
 panel to the output of three code-generating models, we find it twice more. It
@@ -189,13 +195,33 @@ to contain one. The paper's three questions are the same question at three
 levels.
 
 Once those corrections are made, the models are harder to separate than their
-benchmark scores suggest. Across three models spanning forty-one points of pass@1,
-structural smell density varies by six hundredths of a smell per hundred lines.
+benchmark scores suggest. Across three models spanning 41 points of pass@1,
+structural smell density varies by 0.06 smells per hundred lines.
 Whatever capability buys, on this evidence it does not buy better-built code.
 
-Alongside the results, the work produces three artefacts, all released openly: the
-labelled benchmark, the validated panel with its per-smell verdicts attached, and
-an evaluation tool that applies that panel to arbitrary Python code.
+This paper contributes:
+
+\begin{itemize}
+  \item \textbf{A controlled smell benchmark.} 1{,}300 Python functions in which
+        each of twelve smells is introduced individually into otherwise unchanged
+        code, every example confirmed by a static analyser and verified by
+        execution to preserve behaviour.
+  \item \textbf{A two-source validation method.} That intervention is paired with
+        4{,}599 smelly functions from human-written repositories, so a measure is
+        credited with detecting a smell only when it responds both to the smell
+        being changed and to the smell as it occurs naturally.
+  \item \textbf{A per-smell verdict for seventeen measures.} Every measure is
+        classified against every smell as \emph{detects}, \emph{co-occurs} or
+        \emph{blind} (Table~\ref{tab:detection}), giving a per-smell account of
+        what these measures can and cannot see.
+  \item \textbf{Two corrections to model comparison.} Scoring what a model
+        volunteers rather than what it was asked for measures verbosity, and a
+        model answering with a stub has not written enough code to carry a smell.
+        Each inverts a conclusion the uncorrected numbers support.
+  \item \textbf{Released artefacts.} The labelled benchmark, the validated panel
+        with its verdicts attached, and an evaluation tool that applies the panel
+        to arbitrary Python code.
+\end{itemize}
 
 \subsection{Research questions}
 
@@ -272,23 +298,9 @@ function exceeding a statement threshold, Ruff reports a loop that a
 comprehension would replace, jscpd reports a block appearing twice. Each such
 rule is a concrete, checkable stand-in for an informal idea.
 
-The two halves of this benchmark depend on that definition very differently, and
-the asymmetry is worth stating early. On the injected half the ground truth is
-\emph{constructive}: the smell is there because a known transformation put it
-there --- the body was wrapped in a \texttt{try}, the function was padded, the
-comprehension was expanded --- so what changed is known independently of any
-tool. The detector's job is to confirm that the edit produced the intended shape,
-not to decide what the shape is. On the real half no such independent access
-exists: the label is the only thing standing between a function and the claim
-that it is smelly.
-
-The detector's role on the injected half is not nothing, though, and it is worth
-being precise about what it is. A pair enters the benchmark only if the tool
-fires on the transformed function, so the detector decides \emph{membership}: an
-edit that produced the intended shape but that the tool failed to recognise is
-dropped. The benchmark is therefore restricted to instances of our
-transformations that the detectors can see. What the detector does not do on that
-half is define the smell, because the transformation already did.
+How much weight that definition has to bear differs sharply between this paper's
+two data sources, and Section~\ref{sec:verification} takes that up where the
+benchmark is described.
 
 We use these tools as exactly that --- an \emph{operational definition}, not
 ground truth. The distinction matters for what follows in two ways. It licenses
@@ -329,13 +341,10 @@ smell, and those authors' own conclusion is that the separation is so complete
 that it makes the classification task unrealistically easy. That is a diagnosis of
 the dataset, not a validation of the metrics.
 
-The limitation is the same in every case. Comparing smelly code with clean code
-cannot separate a metric responding to the smell from a metric responding to
-whatever else distinguishes smelly code. That a function with a long parameter
-list scores worse on some index does not establish that the index responds to the
-parameter list.
-
-The ``whatever else'' is often size, and that much is already established.
+The limitation is in every case the one this paper opens with: comparing smelly
+code with clean code cannot separate a metric responding to the smell from a
+metric responding to whatever else distinguishes smelly code. That ``whatever
+else'' is often size, and that much is already established.
 Controlling for class size removes most of the association between
 object-oriented metrics and fault-proneness \cite{elemam2001confounding}, and a
 metric's apparent validity is largely predictable from its correlation with size
@@ -403,10 +412,9 @@ material belongs in the denominator or out of the comparison altogether.
 Each of those four areas is well developed, and the gap lies between them. The
 metric literature supplies the measures and the generated-code literature applies
 them, but what the measures can actually see has been established only in part.
-Where per-smell behaviour has been examined, it has been examined one way --- compare smelly
-code with clean code, and ask whether the measure separates them --- and that
-comparison cannot distinguish a measure responding to the smell from a measure
-responding to size. Only an intervention can. This paper supplies one, and then
+Where per-smell behaviour has been examined, it has been examined observationally,
+which for the reason given above cannot distinguish a measure responding to the
+smell from one responding to size. Only an intervention can. This paper supplies one, and then
 asks what changes when claims about generated code are re-derived from an
 instrument that has been checked.
 
@@ -445,15 +453,12 @@ unit tests, which is what makes the behavioural verification below possible.
 CodeSearchNet (129) supplies real GitHub functions, which are longer
 \cite{codesearchnet2019}.
 
-The third source is necessary, not decorative. Several smells cannot be
-introduced into a five-line function at all: a method is not long, nesting is not
+The third source is necessary, not decorative: several smells cannot be introduced
+into a five-line function at all, because a method is not long, nesting is not
 deep, and a block is not duplicated unless there is enough code for the notion to
-apply. A benchmark built only from short competition-style tasks would silently
-under-represent exactly the smells that most concern practitioners. This same
-constraint reappears in Section~\ref{sec:rq2} as a limit on what free generation
-over short tasks can reveal, and motivates the prompt study of
-Section~\ref{sec:rq3}, which draws its tasks from a published set of prompts
-written to induce named smells \cite{codesmell2026}.
+apply. That same constraint returns in Section~\ref{sec:rq2} as a limit on what
+free generation over short tasks can reveal, and is what motivates the prompt
+study of Section~\ref{sec:rq3} \cite{codesmell2026}.
 
 In total the dataset holds 1{,}300 rows: 100 examples of each of the twelve
 smells, each paired with the clean function it was made from, plus 100 clean
@@ -466,20 +471,35 @@ acquires one named smell and nothing else. Listing~\ref{lst:inject} shows a
 representative pair: an MBPP solution before and after \texttt{broad\_except}
 injection.
 
-\begin{lstlisting}[float=*,caption={A clean function and its injected twin. The
-computation is unchanged; the transformation wraps it so that every exception is
-silently swallowed and \texttt{None} returned in its place.},
-label={lst:inject}]
-# clean                          # smelly
-def fifth_Power_Sum(n):          def fifth_Power_Sum(n):
-    sm = 0                           try:
-    for i in range(1, n + 1):            sm = 0
-        sm = sm + i*i*i*i*i              for i in range(1, n + 1):
-    return sm                                sm = sm + i*i*i*i*i
-                                         return sm
-                                     except Exception:
-                                         return None
+\begin{figure*}[!t]
+  \centering
+  \begin{minipage}[t]{0.46\textwidth}
+\begin{lstlisting}
+def fifth_Power_Sum(n):
+    sm = 0
+    for i in range(1, n + 1):
+        sm = sm + i * i * i * i * i
+    return sm
 \end{lstlisting}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.46\textwidth}
+\begin{lstlisting}
+def fifth_Power_Sum(n):
+    try:
+        sm = 0
+        for i in range(1, n + 1):
+            sm = sm + i * i * i * i * i
+        return sm
+    except Exception:
+        return None
+\end{lstlisting}
+  \end{minipage}
+  \captionof{lstlisting}{A clean function (left) and its injected twin (right),
+  for \texttt{broad\_except}. The computation is unchanged; the transformation
+  wraps the body so that every exception is silently swallowed and
+  \texttt{None} returned in its place.}
+  \label{lst:inject}
+\end{figure*}
 
 Injecting smells is not itself new; what is new here is what the injection is
 for. Existing smell datasets are mined from repositories and hand-labelled, and
@@ -497,6 +517,17 @@ intended smell is actually present --- which is the check the next section adds.
 
 Every pair passes two independent checks before it enters the benchmark, and the
 separation between them is the methodological point.
+
+The two halves of the data lean on the detectors very differently. On the injected
+half the ground truth is \emph{constructive}: the smell is there because a known
+transformation put it there, the body wrapped in a \texttt{try} or the
+comprehension expanded, so what changed is known independently of any tool and the
+detector only has to confirm that the edit produced the intended shape. It still
+decides \emph{membership}, since a pair enters the benchmark only if the tool
+fires, which restricts the benchmark to those instances of our transformations the
+detectors can see. On the real half no such independent access exists: there the
+label is the only thing standing between a function and the claim that it is
+smelly.
 
 \textbf{The detector confirms the shape.} The transformed function is run through
 Pylint, Ruff or jscpd, and kept only if the tool reports the intended smell. A
@@ -570,11 +601,18 @@ Control    & pass/fail by execution & tests required & --- \\
 \bottomrule
 \end{tabular}
 \caption{The measure panel: seventeen measures in three families. The
-\emph{Reference} column is the decisive one, since it determines which measures
-can be validated on real code at all. Measures marked \emph{context} have no
-inherent good direction and are interpreted against a baseline. Correctness sits
-below the rule because it is not being evaluated as a quality measure; it
-establishes that an injected smell left behaviour unchanged.}
+\emph{Reference} column records whether a measure needs a known-good version of
+the code to compute. Correctness sits below the rule because it is not evaluated
+as a quality measure; it establishes that an injected smell left behaviour
+unchanged.}
+
+\vspace{3pt}
+{\footnotesize \emph{Context} means the measure has no direction that is good on
+its own. Comment density is the clearest case: a value near zero suggests
+undocumented code, but a high one may mean careful documentation or filler, so it
+is only readable against the same task's clean baseline. API calls and perplexity
+are read the same way.}
+
 \label{tab:panel}
 \end{table*}
 
@@ -636,8 +674,10 @@ resemblance specifically, where BLEU measures textual resemblance.
 
 \emph{Perplexity} is included to test a hypothesis rather than because it is an
 established quality measure: if structurally poor code is unusual code, a
-language model should find it more surprising. Section~\ref{sec:rq1} reports that
-it does not.
+language model should find it more surprising. It is computed with
+\texttt{codegen-350M-mono}, a 350M-parameter causal language model trained on
+Python, and scored on the snippet alone with no reference.
+Section~\ref{sec:rq1} reports that the hypothesis fails.
 
 
 % ---------------------------------------------------------------------
@@ -750,6 +790,15 @@ separation that an observational study would simply have credited to the smell.
 The practical consequence is that a tool built on such a measure would flag
 functions for being large while reporting that it had found the smell, and would
 keep doing so on code where the smell was absent.
+
+One property of these verdicts belongs here rather than in the threats section.
+They are assigned by reading the two columns together, not by applying a numerical
+rule. The clear cases are clear: a large real value beside a near-zero injected one
+is co-occurrence, and values clearing Cohen's large-effect mark on both sources are
+detection. Where a pair falls between those, the verdict is our judgement about
+which reading the two numbers support. Table~\ref{tab:detection} therefore records
+a reading of the evidence rather than the output of a formula, and
+Section~\ref{sec:threats} returns to what that costs.
 
 % ---------------------------------------------------------------------
 \section{RQ1: which measures can see which smells}
@@ -1032,7 +1081,7 @@ to return only code. Two of them explained themselves anyway.
 
 
 Score every line each model returned, and DeepSeek carries a smell in 24.8\% of
-its solutions against Qwen's 9.8\% --- two and a half times the rate, on
+its solutions against Qwen's 9.8\% --- 2.5 times the rate, on
 identical tasks. Taken at face value, that says DeepSeek writes worse code.
 
 It does not. Asked for a function, DeepSeek frequently supplies the function and
@@ -1107,7 +1156,7 @@ same tasks.
   \includegraphics[width=\linewidth]{figures/fig10_capability_vs_structure.pdf}
   \caption{pass@1 beside smell density per hundred lines, for the same three
   models on the same tasks. The axes are scaled independently; the point is the
-  contrast between a forty-one-point spread and a six-hundredths one.}
+  contrast between a 41-point spread and a 0.06 one.}
   \label{fig:capability}
 \end{figure}
 
@@ -1411,7 +1460,7 @@ spend extra lines on documentation and validation that are themselves clean, whi
 the open models simply produce more of the same.
 
 \textbf{The two counts can still disagree, and where they do, neither is wrong.}
-For Claude the same 664 solutions support ``two and a half times as smelly'' and
+For Claude the same 664 solutions support ``2.5 times as smelly'' and
 ``46\% less smelly'' depending only on the denominator. Someone asking how many
 problems they will have to fix wants the count. Someone asking whether the code is
 well built for its length wants the rate. The risk is that a study reports
@@ -1709,7 +1758,7 @@ correction but a reversal: a measure credited with finding a smell turns out to
 be measuring how much code there is.
 
 That confound did not stay inside the instrument. Applying the validated panel to
-three models found it twice more. One model showed two and a half times the
+three models found it twice more. One model showed 2.5 times the
 smell rate of another until the demonstration code it volunteered was left out of
 the scoring. Prompts written to provoke a smell looked as though the weaker
 models were resisting them, when what they had actually run into was an
@@ -1719,7 +1768,7 @@ how much code there is.
 
 Two results bear on how models are judged rather than how they are measured.
 Structural quality did not follow capability: across three models spanning
-forty-one points of pass@1, smell density varied by six hundredths of a smell
+41 points of pass@1, smell density varied by 0.06 smells
 per hundred lines. And perplexity, the one measure that could in principle see
 every smell at once, saw none of them, and pointed the wrong way --- padding and
 duplication are the most predictable text there is.
