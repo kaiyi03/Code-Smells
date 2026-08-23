@@ -13,7 +13,9 @@ Claude:
   * thinking is DISABLED. Sonnet 5 thinks by default; the open models cannot, so
     leaving it on would compare a reasoning model against two non-reasoning ones
     and confound the model with the mode.
-  * no decoding temperature is set, so the model answers at the API default.
+  * no decoding temperature is set, because none can be: temperature=0 returns
+    400 ("deprecated for this model"), so greedy decoding is unavailable and
+    the model answers at a default that samples.
     That default samples, so Claude answers are NOT reproducible the way the open
     models are (they run with do_sample=False). Section 9.4 of the paper reports
     a full replication measuring how far that moves the aggregates.
