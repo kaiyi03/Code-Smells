@@ -4,10 +4,11 @@ sampled model's structural output moves between runs.
 
 Why this exists. The two open models decode greedily, so re-running them returns
 byte-identical code and their numbers carry no run-to-run uncertainty. Sonnet 5
-does not expose a decoding temperature, so its answers are sampled: the figures in
+is run with no decoding temperature set, so it answers at the API default,
+which samples: the figures in
 Section 7 are one draw per task, not the modal one. That is stated in Section 9.4,
 but stating it is not the same as bounding it -- without a second run there is no
-way to say whether Claude's 1.90 defects per 100 SLOC would come back as 1.90 or
+way to say whether Claude's 1.90 smells per 100 SLOC would come back as 1.90 or
 as 2.4, and the "capability does not buy structural quality" result leans on the
 three models' densities being close.
 

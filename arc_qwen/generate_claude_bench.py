@@ -13,9 +13,10 @@ Claude:
   * thinking is DISABLED. Sonnet 5 thinks by default; the open models cannot, so
     leaving it on would compare a reasoning model against two non-reasoning ones
     and confound the model with the mode.
-  * greedy-equivalent decoding. Sonnet 5 rejects temperature/top_p entirely, so
-    there is nothing to set -- but nothing is sampled at a different temperature
-    either, which is the property we actually need.
+  * no decoding temperature is set, so the model answers at the API default.
+    That default samples, so Claude answers are NOT reproducible the way the open
+    models are (they run with do_sample=False). Section 9.4 of the paper reports
+    a full replication measuring how far that moves the aggregates.
 
 The token budget deliberately does NOT match. The open models ran at 512, which
 binds on 0.3% (Qwen) and 1.1% (DeepSeek) of tasks -- close enough to non-binding

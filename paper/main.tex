@@ -971,11 +971,11 @@ similarity measures require a known-good reference, which the injected
 benchmark has by construction and real code never does. Their validation is
 therefore injected-only, inheriting exactly the artefacts catalogued above.
 One caution belongs with these verdicts wherever they are used. Detection strength
-is a statement about two \emph{groups} of functions, not about any one function, and
-Section~\ref{sec:threats} works out what that does and does not license: even the
-strongest verdict here would misrank a single smelly function against a single
-clean one about one time in six. The verdicts say which measures can be used to
-compare populations, not which can be trusted to judge a function in front of you.
+compares two \emph{groups} of functions and says nothing about any single one, so a
+measure can earn a strong verdict here and still be an unreliable guide to the
+function in front of you. The verdicts say which measures can be used to compare
+populations, not which can be trusted to judge the code on your screen.
+Section~\ref{sec:threats} works out how wide that gap is.
 
 This gives RQ1 its
 answer. No single measure sees all twelve smells. The structural family, which
@@ -1032,8 +1032,9 @@ The validated panel can now be turned on generated code. Three models solve the
 same 664 benchmark tasks --- DeepSeek-Coder-1.3B, Qwen2.5-Coder-1.5B and Claude
 Sonnet 5 --- from byte-identical prompts, so anything that differs between them
 is a property of the models rather than of how they were asked. One thing beyond
-the prompt does differ: the two open models are decoded greedily and Claude is
-sampled, because its API does not expose a temperature setting.
+the prompt does differ: the two open models are decoded greedily, while Claude was
+run without a decoding temperature set and so answered at its API default, which
+samples.
 Section~\ref{sec:conclusionvalidity} sets out what that does and does not affect.
 
 This section reports what the panel says, and then two things that have to be
@@ -1065,9 +1066,10 @@ solves 92.6\% of the 664 tasks; the two open models solve a little over half.
   \caption{Correctness on the 664 benchmark tasks. All three columns are pass@1;
   the last two split the same 664 tasks by source (164 HumanEval, 500 MBPP). Each
   model answers each task once. The two open models decode greedily, emitting the
-  most probable token at every step, so their answers are reproducible; Claude is
-  served through an API that, in the configuration we used, does not accept a
-  decoding temperature, so its answers are sampled. Section~\ref{sec:conclusionvalidity} reports a
+  most probable token at every step, so their answers are reproducible; Claude was
+  run with no
+  decoding temperature set, so it answered at its API default, which samples.
+  Section~\ref{sec:conclusionvalidity} reports a
   full replication of Claude's run: 92.6\% here, 93.5\% on the repeat.}
   \label{tab:bench}
 \end{table}
@@ -1265,8 +1267,6 @@ produce a long method, it has to be given something long to write.
 \section{RQ3: eliciting smells, and what elicitation measures}
 \label{sec:rq3}
 
-The benchmark's low numbers are therefore a property of its tasks rather than of
-the models.
 Section~\ref{sec:taskset} ended on a ceiling: most of the twelve smells cannot
 occur in a five-line function, so the benchmark could not say whether models
 avoid them. This section removes the ceiling by asking the models for code that
@@ -1391,14 +1391,18 @@ this is not the token budget.
   \label{fig:induction}
 \end{figure}
 
-That ordering --- \texttt{long\_parameter\_list} induced almost every time, then
-duplicate code, magic numbers, deep nesting and dead code, with
-\texttt{long\_method} last and never induced at all in the open models --- turns
-out to track something other than the smells themselves. Set it beside how often
-each model left a function unimplemented. Counting stubs --- bodies that are \texttt{pass}, an ellipsis, a
-bare docstring, or a \texttt{raise NotImplementedError} --- DeepSeek stubs 18.1\%
-of the functions it writes, Qwen 15.4\%, and Claude 5.0\%. That is the induction
-ordering exactly, inverted.
+Table~\ref{tab:induction} ordered the six smells by how reliably a prompt could
+provoke them. \texttt{long\_parameter\_list} came first and was induced almost
+every time, followed by duplicate code, magic numbers, deep nesting and dead code.
+\texttt{long\_method} came last, and neither open model produced it once in forty
+attempts. That ordering turns out to track something other than the smells
+themselves.
+
+Set it beside how often each model left a function unimplemented. Counting stubs,
+meaning bodies that are \texttt{pass}, an ellipsis, a bare docstring, or a
+\texttt{raise NotImplementedError}, DeepSeek stubs 18.1\% of the functions it
+writes, Qwen 15.4\%, and Claude 5.0\%. That is the induction ordering exactly,
+inverted.
 
 The connection is mechanical rather than mysterious. A function whose body is
 \texttt{pass} cannot be a long method, cannot nest deeply, and cannot contain a
@@ -1560,6 +1564,12 @@ or worsening depending on the denominator chosen.
 
 \subsection{Verbosity and correctness: no effect, with one sharp exception}
 
+The prompt set of Section~\ref{sec:promptset} could not say whether writing more
+code costs correctness, because its tasks carry no tests and nothing there can be
+run. The benchmark tasks do carry tests, so the same three instructions give a
+pass@1 for every condition. Table~\ref{tab:tokenspass} reports them, and the
+answer is not uniform.
+
 \begin{table}[H]
   \centering
   \small
@@ -1576,9 +1586,6 @@ or worsening depending on the denominator chosen.
   bold cell is the only one that moves materially from its own neutral condition.}
   \label{tab:tokenspass}
 \end{table}
-
-Table~\ref{tab:tokenspass} answers the question Section~\ref{sec:promptset} could
-not reach, and the answer is not uniform.
 
 For Claude and DeepSeek there is nothing to report, which is itself worth
 reporting. Claude scores 89.8\%, 93.1\% and 91.1\% across the three conditions and
@@ -1745,11 +1752,12 @@ provenance even if neither is a fair sample of Python at large.
 
 Every model answers each task once, but not in the same way, and the difference is
 worth stating plainly because Section~\ref{sec:rq2} compares the three directly.
-The two open models decode greedily: at each step they emit the token they rate
-most likely, so their runs are exactly reproducible and each model is represented
-by the single output it considers best. Claude is served through an API that does
-not accept a decoding temperature in the configuration we used, so its answers
-are sampled ---
+The two open models decode greedily, which is to say that at each step they emit
+the single token they rate most likely rather than drawing one at random from the
+distribution over plausible next tokens; so their runs are exactly reproducible and each model is represented
+by the single output it considers best. Claude was run with no decoding temperature
+set, so it answered at its API default. That default samples rather than taking
+the most likely token ---
 four identical calls issued while checking this returned two distinct programs.
 Its results are one draw per task rather than the most likely one, and running the
 benchmark again would not return the same code.
@@ -1864,10 +1872,9 @@ duplication are the most predictable text there is.
 Three gaps in this work are worth closing directly. The token experiment varies
 how much code is \emph{asked for} rather than how much is written, so a design
 that fixes the wording and sets an explicit length target would separate the two.
-One of the three models, Claude, is sampled rather than decoded greedily: its
-interface, as we used it, does not expose a decoding temperature, so the same
-prompt can return
-different code on different calls. Its whole run was repeated once, which is
+One of the three models, Claude, is sampled rather than decoded greedily: no
+decoding temperature was set for it, so it ran at its API default and the same
+prompt can return different code on different calls. Its whole run was repeated once, which is
 enough to show the aggregates are stable but not enough to put an interval on
 them; more draws would give one, and would say whether that stability also holds
 for the prompt conditions of Section~\ref{sec:rq3}. And everything is Python ---
