@@ -221,9 +221,11 @@ This paper contributes:
         model answering with a stub has not written enough code to carry a smell.
         Each inverts a conclusion the uncorrected numbers support.
   \item \textbf{Released tools.} The injection pipeline that builds the
-        benchmark, the validation harness that produces the verdicts from a set
-        of generations, and an interactive dashboard for reading the full grid of
-        results measure by measure.
+        benchmark from a corpus of clean functions, the harness that computes
+        detection strength for every measure against every smell on both sources,
+        and a web application that runs the whole evaluation on a function pasted
+        into it: the detectors, the structural and similarity measures, and
+        correctness against a supplied test block.
 \end{itemize}
 
 \subsection{Research questions}
@@ -811,8 +813,18 @@ large-effect mark sitting beside an injected value of essentially zero can only 
 co-occurrence, because a measure that did not move when the smell was introduced
 cannot be responding to it; large values on both sources can only be detection.
 The decisions we actually had to make are the ones in between, where an injected
-value is small but not zero, and there we assigned the verdict by asking which of
-the two readings the pair better supports. Table~\ref{tab:detection} therefore
+value is small but not zero. Such a value has two possible causes that point to
+opposite verdicts: either the measure cannot respond to this smell, or the injector
+did not produce a representative example of it. We separate them by asking whether
+there is a mechanical reason the measure could not have moved. Rewriting a
+comprehension as an explicit loop adds no branch, so cyclomatic complexity has
+nothing to register and the verdict is co-occurrence. Halstead difficulty, by
+contrast, is capable of registering a long method: it scores only $0.54$ on
+injected ones because our injector pads with straight-line statements, which makes
+a function long without making it dense, whereas real long methods are both. There
+the small injected value is a fact about the injector rather than about the
+measure, so the verdict is detection --- the weakest of the three, as
+Section~\ref{sec:threats} sets out. Table~\ref{tab:detection} therefore
 records our reading of the evidence, and Section~\ref{sec:threats} returns to what
 that costs.
 
@@ -919,13 +931,9 @@ tell the difference.
 \begin{figure}[!tb]
   \centering
   \includegraphics[width=\linewidth]{figures/fig4_family_coverage.pdf}
-  \caption{Best-case coverage per family on the injected benchmark. Bars are
-  \emph{maxima}, not averages, which is what the claim requires: if the strongest
-  measure in a family cannot see a smell, no measure in that family can, and
-  adding more of them will not help. Eight of the twelve smells lie beyond every
-  structural measure at Cohen's large-effect threshold. The similarity family
-  reaches all twelve, but only where a clean reference exists --- which the
-  benchmark has by construction and deployed code never does.}
+  \caption{Best-case coverage per family on the injected benchmark. Each bar is
+  the \emph{maximum} detection strength any measure in that family reaches on that
+  smell, not the average. The dashed line is Cohen's large-effect threshold.}
   \label{fig:coverage}
 \end{figure}
 
@@ -943,19 +951,32 @@ with per-measure medians between $2.5$ and $4.7$. It catches exactly the
 single-line and signature smells the structural family cannot reach, because any edit,
 however structurally invisible, makes the code diverge from its reference.
 
-The two families also differ in how much they duplicate each other internally.
-Correlating each measure's profile of detection strengths across the twelve
-smells, the median correlation between two similarity measures is $+0.85$: most
-of what any one reports, the others report too. Between two structural measures it
-is $+0.04$, so knowing what one says about a smell tells you almost nothing about
-what another will say. The panel could therefore lose most of its similarity
-measures at little cost, and cannot lose a structural measure without losing
-something no other measure covers.
+Coverage is not the only thing that separates the families. A panel is also
+described by how much its members repeat one another, which decides whether adding
+a measure adds information or restates what is already there. Each measure has a
+profile across the twelve smells --- its twelve detection strengths --- and
+correlating two profiles says how far the two measures agree about which smells
+are visible.
+
+Within the similarity family the median such correlation is $+0.85$: most of what
+any one of them reports, the others report too. Within the structural family it is
+$+0.04$, so knowing what one structural measure says about a smell tells you
+almost nothing about what another will say. The two families are therefore
+redundant in opposite degrees, and the practical consequence is asymmetric. The
+panel could lose most of its similarity measures at little cost, and cannot lose a
+structural measure without losing something no other measure covers.
 
 This coverage comes with a boundary that must be stated rather than footnoted:
 similarity measures require a known-good reference, which the injected
 benchmark has by construction and real code never does. Their validation is
 therefore injected-only, inheriting exactly the artefacts catalogued above.
+One caution belongs with these verdicts wherever they are used. Detection strength
+is a statement about two \emph{groups} of functions, not about any one function, and
+Section~\ref{sec:threats} works out what that does and does not license: even the
+strongest verdict here would misrank a single smelly function against a single
+clean one about one time in six. The verdicts say which measures can be used to
+compare populations, not which can be trusted to judge a function in front of you.
+
 This gives RQ1 its
 answer. No single measure sees all twelve smells. The structural family, which
 is the only family available on deployed code, leaves eight of the twelve out of
@@ -1045,8 +1066,8 @@ solves 92.6\% of the 664 tasks; the two open models solve a little over half.
   the last two split the same 664 tasks by source (164 HumanEval, 500 MBPP). Each
   model answers each task once. The two open models decode greedily, emitting the
   most probable token at every step, so their answers are reproducible; Claude is
-  served through an API that does not accept a decoding temperature for this
-  model, so its answers are sampled. Section~\ref{sec:conclusionvalidity} reports a
+  served through an API that, in the configuration we used, does not accept a
+  decoding temperature, so its answers are sampled. Section~\ref{sec:conclusionvalidity} reports a
   full replication of Claude's run: 92.6\% here, 93.5\% on the repeat.}
   \label{tab:bench}
 \end{table}
@@ -1110,14 +1131,11 @@ extra material there was to score.
 \begin{figure}[!b]
   \centering
   \includegraphics[width=\linewidth]{figures/fig6_verbosity_confound.pdf}
-  \caption{Share of generations carrying at least one smell, scored over
-  everything the model emitted and over the function definitions alone. The
-  correction moves one model and leaves the other two untouched, because only one
-  of them wrote anything outside the function it was asked for. The unit here is
-  the share of generations rather than the per-line rate used in
-  Figure~\ref{fig:capability}: this figure is about which \emph{code} should be
-  scored, and dividing by lines would keep the very material at issue in the
-  denominator.}
+  \caption{Share of generations carrying at least one smell, scored twice: over
+  everything the model emitted, and over the function definitions alone. The unit
+  is the share of generations rather than the per-line rate of
+  Figure~\ref{fig:capability}, because dividing by lines would return the
+  material at issue to the denominator.}
   \label{fig:verbosity}
 \end{figure}
 
@@ -1155,17 +1173,26 @@ With the scoring corrected, the models can be compared on structure. Counting
 smells per hundred source lines of the functions they were asked to write, they
 score 1.93 (DeepSeek), 1.96 (Qwen) and 1.90 (Claude).
 
-Those three numbers are, for practical purposes, the same number. The gap between
-the highest and lowest is 0.06 smells per hundred lines: on a six-line function,
-about one smell in every three hundred such functions. That gap is small enough
-to be worth asking whether it is stable, and it is: regenerating Claude's entire
-output --- the only one of the three that is sampled rather than decoded greedily
---- returns the same 1.90, as Section~\ref{sec:conclusionvalidity} reports. Set
-the gap beside the correctness column, where the same three models are separated
-by 41 points.
-Figure~\ref{fig:capability} puts the two side by side --- a very large difference
-in one panel, and effectively none in the other, across the same models on the
-same tasks.
+Those three numbers are not distinguishable from one another. Resampling the 664
+tasks with replacement (20{,}000 draws) puts DeepSeek at $1.93$ $[1.57, 2.31]$,
+Qwen at $1.96$ $[1.53, 2.40]$ and Claude at $1.90$ $[1.50, 2.33]$, and every
+pairwise difference has an interval spanning zero.
+
+Two things follow from that and they are not the same claim. The first is the
+result: across a 41-point spread in pass@1, no difference in smell density is
+detectable. The second is a limit on how hard the first can be pushed. These
+intervals are wide --- the widest pairwise bound is $0.66$ smells per hundred
+lines, about a third of the rate itself --- so the data do not establish that the
+three models are equivalent, only that this study cannot tell them apart.
+Demonstrating equivalence to a tight margin would need far more code per model
+than 664 short functions supply.
+
+The comparison with correctness is what carries the section, and it does not
+depend on the equivalence claim we cannot make. On the same tasks and the same
+generations, pass@1 separates these models by 41 points, a difference no amount of
+resampling would erase. One property of the code separates them emphatically; the
+other does not separate them at all. Figure~\ref{fig:capability} puts the two side
+by side.
 
 \begin{figure}[!b]
   \centering
@@ -1176,8 +1203,10 @@ same tasks.
   \label{fig:capability}
 \end{figure}
 
-This is the section's main result, and it only became visible once a frontier
-model joined the comparison. Two similar small models scoring similarly says
+The correction behind that scoring moves one model and leaves the other two
+untouched, because only one of them wrote anything outside the function it was
+asked for. This is the section's main result, and it only became visible once a
+frontier model joined the comparison. Two similar small models scoring similarly says
 little. A model that is far better at the task scoring the same says something:
 \emph{whatever capability buys, on this evidence it does not buy structural
 quality}. The two properties the introduction described as different are
@@ -1214,13 +1243,11 @@ a duplicated block.
 \begin{figure}[!b]
   \centering
   \includegraphics[width=\linewidth]{figures/fig7_task_set.pdf}
-  \caption{What changes when the tasks change. The red bar is this section's
-  benchmark --- MBPP and HumanEval, one short function per task. The green bars
-  are the same three models on the prompt set of Section~\ref{sec:rq3}, whose
-  tasks are long enough for the other smells to occur. Left: the share of
-  generations carrying at least one smell. Right: how many of the twelve
-  distinct smells were seen at all. The benchmark's low numbers are a property
-  of its tasks rather than of the models.}
+  \caption{The same three models on two task sets. Red is this section's
+  benchmark (MBPP and HumanEval, one short function per task); green is the prompt
+  set of Section~\ref{sec:rq3}, whose tasks are longer. Left: share of generations
+  carrying at least one smell. Right: how many of the twelve distinct smells
+  appeared at all.}
   \label{fig:taskset}
 \end{figure}
 
@@ -1238,6 +1265,8 @@ produce a long method, it has to be given something long to write.
 \section{RQ3: eliciting smells, and what elicitation measures}
 \label{sec:rq3}
 
+The benchmark's low numbers are therefore a property of its tasks rather than of
+the models.
 Section~\ref{sec:taskset} ended on a ceiling: most of the twelve smells cannot
 occur in a five-line function, so the benchmark could not say whether models
 avoid them. This section removes the ceiling by asking the models for code that
@@ -1251,8 +1280,12 @@ writes predicts the structural quality of what it writes.
 \subsection{The prompt set and how it was run}
 \label{sec:promptset}
 
-The tasks come from a published set of 476 prompts, each written to induce a
-named structural smell \cite{codesmell2026}. A prompt gives a task, a difficulty
+The tasks come from a set of 476 prompts, each written to induce a named
+structural smell. The set is not ours: it is a dataset release with no
+accompanying paper \cite{codesmell2026}, built by its authors following the
+prompt-construction methodology of Adamska et al.\ \cite{adamska2025green}, from
+which its keyword and token-depth fields derive, and reused here with their
+permission on the condition that it is cited. A prompt gives a task, a difficulty
 label (basic, intermediate or advanced) and an application domain, of which there
 are five, and is phrased so that a natural solution would carry the smell --- for
 instance by asking for a function that takes a long list of independent
@@ -1358,8 +1391,11 @@ this is not the token budget.
   \label{fig:induction}
 \end{figure}
 
-Set the induction ordering beside how often each model left a function
-unimplemented. Counting stubs --- bodies that are \texttt{pass}, an ellipsis, a
+That ordering --- \texttt{long\_parameter\_list} induced almost every time, then
+duplicate code, magic numbers, deep nesting and dead code, with
+\texttt{long\_method} last and never induced at all in the open models --- turns
+out to track something other than the smells themselves. Set it beside how often
+each model left a function unimplemented. Counting stubs --- bodies that are \texttt{pass}, an ellipsis, a
 bare docstring, or a \texttt{raise NotImplementedError} --- DeepSeek stubs 18.1\%
 of the functions it writes, Qwen 15.4\%, and Claude 5.0\%. That is the induction
 ordering exactly, inverted.
@@ -1496,39 +1532,53 @@ or worsening depending on the denominator chosen.
   \toprule
   Model & & terse & neutral & verbose \\
   \midrule
-  \multirow{5}{*}{DeepSeek}
+  \multirow{4}{*}{DeepSeek}
     & tokens per task  &  209 &  234 &  305 \\
     & mean SLOC        &  6.1 &  6.3 &  8.0 \\
     & smells, counted &   85 &   85 &  111 \\
     & per 100 SLOC     & 2.09 & 2.03 & 2.10 \\
-    & pass@1           & 52.7\% & 52.4\% & 50.6\% \\
   \midrule
-  \multirow{5}{*}{Qwen}
+  \multirow{4}{*}{Qwen}
     & tokens per task  &   35 &   69 &  242 \\
     & mean SLOC        &  2.5 &  5.0 &  8.7 \\
     & smells, counted &   30 &   66 &  106 \\
     & per 100 SLOC     & 1.83 & 1.98 & 1.84 \\
-    & pass@1           & \textbf{38.9\%} & 57.2\% & 56.0\% \\
   \midrule
-  \multirow{5}{*}{Claude}
+  \multirow{4}{*}{Claude}
     & tokens per task  &   63 &  117 &  742 \\
     & mean SLOC        &  4.2 &  5.9 & 19.5 \\
     & smells, counted &   55 &   71 &  139 \\
     & per 100 SLOC     & 1.97 & 1.82 & \textbf{1.07} \\
-    & pass@1           & 89.8\% & 93.1\% & 91.1\% \\
   \bottomrule
   \end{tabular}
-  \caption{The token experiment: the same 664 benchmark tasks under three
-  instructions varying only how much code is asked for. Every model writes more
-  and finds more smells; only Claude's per-line rate falls. Qwen's terse
-  condition is the one place correctness moves, and it moves down 18 points.}
+  \caption{The token experiment: how much each model wrote, and how many smells
+  it produced, on the same 664 benchmark tasks under three instructions varying
+  only how much code is asked for. Correctness under the same conditions is in
+  Table~\ref{tab:tokenspass}.}
   \label{tab:tokens}
 \end{table}
 
 \subsection{Verbosity and correctness: no effect, with one sharp exception}
 
-The correctness column answers the question Section~\ref{sec:promptset} could not
-reach, and the answer is not uniform.
+\begin{table}[H]
+  \centering
+  \small
+  \begin{tabular}{lrrr}
+  \toprule
+  Model & terse & neutral & verbose \\
+  \midrule
+  DeepSeek & 52.7\% & 52.4\% & 50.6\% \\
+  Qwen     & \textbf{38.9\%} & 57.2\% & 56.0\% \\
+  Claude   & 89.8\% & 93.1\% & 91.1\% \\
+  \bottomrule
+  \end{tabular}
+  \caption{pass@1 under the three instructions of Table~\ref{tab:tokens}. The
+  bold cell is the only one that moves materially from its own neutral condition.}
+  \label{tab:tokenspass}
+\end{table}
+
+Table~\ref{tab:tokenspass} answers the question Section~\ref{sec:promptset} could
+not reach, and the answer is not uniform.
 
 For Claude and DeepSeek there is nothing to report, which is itself worth
 reporting. Claude scores 89.8\%, 93.1\% and 91.1\% across the three conditions and
@@ -1698,7 +1748,8 @@ worth stating plainly because Section~\ref{sec:rq2} compares the three directly.
 The two open models decode greedily: at each step they emit the token they rate
 most likely, so their runs are exactly reproducible and each model is represented
 by the single output it considers best. Claude is served through an API that does
-not accept a decoding temperature for this model, so its answers are sampled ---
+not accept a decoding temperature in the configuration we used, so its answers
+are sampled ---
 four identical calls issued while checking this returned two distinct programs.
 Its results are one draw per task rather than the most likely one, and running the
 benchmark again would not return the same code.
@@ -1720,9 +1771,14 @@ from 92.6\% to 93.5\%, and smell density did not shift at the reported precision
 --- 1.90 smells per 100 source lines on both runs, from 73 smells in 3,837 lines
 and 74 in 3,890.
 
-That is the reassurance the comparison needs. The spread between the three models
-in Section~\ref{sec:capability} is 0.06 smells per 100 lines, and regenerating
-the sampled model's entire output moves its own density by less than 0.01. The
+That is the reassurance the comparison needs, and it is a different quantity from
+the interval in Section~\ref{sec:capability}. That interval comes from resampling
+which \emph{tasks} are in the benchmark, and is wide. This one holds the tasks
+fixed and resamples only the model's own generation, and is narrow: regenerating
+the sampled model's entire output moves its density by less than 0.01, against a
+spread between models of 0.06. Both are real, and they answer different questions:
+whether another 664 tasks would give the same number, and whether another run on
+these 664 would. The
 three densities being close together is therefore a fact about the models rather
 than an artefact of which draw Claude happened to return, and the same holds for
 the capability gap the section is built on: 0.9 points of run-to-run movement
@@ -1757,6 +1813,14 @@ actually see --- and answered it by changing one smell at a time in code that wa
 otherwise left alone, then checking the answer against code people wrote
 themselves.
 
+Three pieces of practice follow, and they are the part of this paper meant to be
+used. Ask a detector, not an index, whether a function has too many parameters.
+State which smells a complexity score has been shown to respond to before drawing
+conclusions from it. And before comparing two models on a smell rate, check that
+the same kind of code is being scored on both sides. None of this makes the
+metrics worthless; it makes them instruments with known blind spots, where the
+blind spots were not known before.
+
 For the twelve smells and seventeen measures tested, the metrics see less than
 their use implies. Three smells are genuinely detected. Five separate clearly on
 real code, but the controlled experiment shows the measure cannot be responding to
@@ -1782,6 +1846,12 @@ unimplemented function: a body of \texttt{pass} has no structure a smell could l
 Each time, a number that reads as a fact about the code is largely a fact about
 how much code there is.
 
+The third instance is the one with no methodological defence, because nothing in
+it is wrong. The same 664 Claude solutions support ``2.5 times as smelly'' and
+``46\% less smelly'', depending only on whether smells are counted or divided by
+lines. Both are honest arithmetic on real data, so neither can be caught by
+checking the numbers --- only by noticing that the other was not shown.
+
 Two results bear on how models are judged rather than how they are measured.
 Structural quality did not follow capability: across three models spanning
 41 points of pass@1, smell density varied by 0.06 smells
@@ -1789,20 +1859,14 @@ per hundred lines. And perplexity, the one measure that could in principle see
 every smell at once, saw none of them, and pointed the wrong way --- padding and
 duplication are the most predictable text there is.
 
-None of this makes the metrics worthless. It makes them instruments with known
-blind spots, where the blind spots were not known before. Ask a detector, not an
-index, whether a function has too many parameters. State which smells a
-complexity score has been shown to respond to before drawing conclusions from it.
-And before comparing two models on a smell rate, check that the same kind of code
-is being scored on both sides.
-
 \subsection*{Future work}
 
 Three gaps in this work are worth closing directly. The token experiment varies
 how much code is \emph{asked for} rather than how much is written, so a design
 that fixes the wording and sets an explicit length target would separate the two.
 One of the three models, Claude, is sampled rather than decoded greedily: its
-interface does not expose a decoding temperature, so the same prompt can return
+interface, as we used it, does not expose a decoding temperature, so the same
+prompt can return
 different code on different calls. Its whole run was repeated once, which is
 enough to show the aggregates are stable but not enough to put an interval on
 them; more draws would give one, and would say whether that stability also holds
