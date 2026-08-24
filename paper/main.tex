@@ -290,17 +290,14 @@ The vocabulary comes from Fowler's catalogue of \emph{code smells}: recognisable
 patterns that do not stop a program working but make it harder to change
 \cite{fowler1999refactoring}. A long method, a parameter list nobody can
 remember, a magic constant, a block duplicated in two places: none is a bug, and
-all of them cost time later.
-
-Because smells are patterns rather than failures, identifying them is a matter of
-definition. Static analysers make that definition operational: Pylint reports a
-function exceeding a statement threshold, Ruff reports a loop that a
+all of them cost time later. Because smells are patterns rather than failures, identifying them is a matter
+of definition. Static analysers make that definition operational: Pylint reports
+a function exceeding a statement threshold, Ruff reports a loop that a
 comprehension would replace, jscpd reports a block appearing twice. Each such
-rule is a concrete, checkable stand-in for an informal idea.
-
-How much weight that definition has to bear differs sharply between this paper's
-two data sources, and Section~\ref{sec:verification} takes that up where the
-benchmark is described.
+rule is a concrete, checkable stand-in for an informal idea. How much weight
+that definition has to bear differs sharply between this paper's two data
+sources, and Section~\ref{sec:verification} takes that up where the benchmark is
+described.
 
 We use these tools as exactly that: an \emph{operational definition}, not ground
 truth. The distinction matters for what follows in two ways. It licenses using
@@ -438,11 +435,10 @@ Two criteria decided the list, and both are load-bearing. A smell had to be
 \emph{reported as common in model-generated code}, so that the benchmark studies
 something that actually occurs rather than a curiosity. And it had to be
 \emph{confirmable by a tool}, so that every label in the dataset is a
-measurement rather than an assertion. The intersection is twelve smells,
-detected by three analysers: eight by Pylint, three by Ruff, and one by jscpd.
-
-The second criterion is what excludes the design-level smells listed in
-Section~\ref{sec:scope}: no rule confirms them mechanically.
+measurement rather than an assertion. The intersection is twelve smells, detected by three analysers: eight by Pylint,
+three by Ruff, and one by jscpd. The second criterion is what excludes the
+design-level smells listed in Section~\ref{sec:scope}: no rule confirms them
+mechanically.
 
 \subsection{Sources of clean code}
 
@@ -450,14 +446,13 @@ The clean half is drawn from three sources, chosen for a specific reason each.
 MBPP (993 functions) and HumanEval (178) supply short functions that come with
 unit tests, which is what makes the behavioural verification below possible.
 CodeSearchNet (129) supplies real GitHub functions, which are longer
-\cite{codesearchnet2019}.
-
-The third source is necessary, not decorative: several smells cannot be introduced
-into a five-line function at all, because a method is not long, nesting is not
-deep, and a block is not duplicated unless there is enough code for the notion to
-apply. That same constraint returns in Section~\ref{sec:rq2} as a limit on what
-free generation over short tasks can reveal, and is what motivates the prompt
-study of Section~\ref{sec:rq3} \cite{codesmell2026}.
+\cite{codesearchnet2019}. The third source is necessary, not decorative: several
+smells cannot be introduced into a five-line function at all, because a method
+is not long, nesting is not deep, and a block is not duplicated unless there is
+enough code for the notion to apply. That same constraint returns in
+Section~\ref{sec:rq2} as a limit on what free generation over short tasks can
+reveal, and is what motivates the prompt study of Section~\ref{sec:rq3}
+\cite{codesmell2026}.
 
 In total the dataset holds 1{,}300 rows: 100 examples of each of the twelve
 smells, each paired with the clean function it was made from, plus 100 clean
@@ -546,17 +541,15 @@ it confirms that it still \emph{means} what it did.
 \label{sec:realworld}
 
 Injected code has an obvious weakness: a measure might respond to the injector's
-habits rather than to the smell. Testing that requires smelly code that
-humans wrote, which is the second half of the benchmark.
-
-The smelly side comes from two published corpora of real Python methods. The
-first is CodeSmellData, a set of GitHub methods labelled per smell, released
-with the propensity work discussed in Section~\ref{sec:related}
-\cite{velasco2024propense,velasco2025causal}, so the corpus this paper validates
-measures on is the same one the closest related work is built from. The second
-is PySmell, whose labels were assigned by hand \cite{chen2016detecting}. Between
-them they label seven of our twelve smells. Two things had to be added before
-they could support a detection statistic.
+habits rather than to the smell. Testing that requires smelly code that humans
+wrote, which is the second half of the benchmark. The smelly side comes from two
+published corpora of real Python methods. The first is CodeSmellData, a set of
+GitHub methods labelled per smell, released with the propensity work discussed
+in Section~\ref{sec:related} \cite{velasco2024propense,velasco2025causal}, so
+the corpus this paper validates measures on is the same one the closest related
+work is built from. The second is PySmell, whose labels were assigned by hand
+\cite{chen2016detecting}. Between them they label seven of our twelve smells.
+Two things had to be added before they could support a detection statistic.
 
 \textbf{A clean class.} Every labelled row in these corpora is smelly. They were
 built to study smells, not to contrast them with anything, so there is no
@@ -712,22 +705,21 @@ is expressed as a standardised mean difference,
   \label{eq:d}
 \end{equation}
 which we call \emph{detection strength}: how far apart the smelly and clean
-groups sit, in units of the code's natural variation \cite{cohen1988statistical}.
-Signs are oriented so that positive always means the smelly group scored
-worse, regardless of the measure's native direction. A \emph{negative} value
-therefore means the measure moved the wrong way: smelly code scored
-\emph{better} on it than clean code. That is not a small positive result but a
-contradiction of what the measure is supposed to indicate, and
+groups sit, in units of the code's natural variation
+\cite{cohen1988statistical}. Signs are oriented so that positive always means
+the smelly group scored worse, regardless of the measure's native direction. A
+\emph{negative} value therefore means the measure moved the wrong way: smelly
+code scored \emph{better} on it than clean code. That is not a small positive
+result but a contradiction of what the measure is supposed to indicate, and
 Section~\ref{sec:perplexity} reports a measure for which most values are
-negative. Values are capped at $\pm 5$: beyond that point the groups barely overlap and the exact figure carries no additional information.
-
-As a reading aid we use Cohen's conventional bands for a standardised mean
-difference \cite{cohen1988statistical}: below $0.2$ negligible, $0.2$ to $0.5$
-small, $0.5$ to $0.8$ medium, above $0.8$ large. These are conventions, not laws,
-but they give the tables a consistent vocabulary: a measure with $d = 1.4$
-separates the groups dependably in aggregate; a measure with $d = 0.2$ has
-technically nonzero signal that no practitioner could act on for a single
-function.
+negative. Values are capped at $\pm 5$: beyond that point the groups barely overlap
+and the exact figure carries no additional information. As a reading aid we use
+Cohen's conventional bands for a standardised mean difference
+\cite{cohen1988statistical}: below $0.2$ negligible, $0.2$ to $0.5$ small, $0.5$ to $0.8$
+medium, above $0.8$ large. These are conventions, not laws, but they give the
+tables a consistent vocabulary: a measure with $d = 1.4$ separates the groups
+dependably in aggregate; a measure with $d = 0.2$ has technically nonzero signal that
+no practitioner could act on for a single function.
 
 Each estimate is reported with a 95\% confidence interval computed from the
 large-sample variance of a standardised difference between independent groups.
@@ -743,17 +735,16 @@ The injected benchmark invites a paired analysis: every smelly function has a
 clean twin, so the natural statistic seems to be the mean within-pair change
 divided by the spread of that change. We used exactly this at first, and it
 produces a subtle failure that is worth recording, because any benchmark built
-by programmatic injection will meet it.
-
-A paired effect size divides by the variability \emph{of the change}. An
-injector, being a program, often applies a near-identical edit every time: the
-dead-code injector adds one unused import; the magic-number injector introduces
-a constant. The change is then almost the same in every pair, its standard
-deviation approaches zero, and the paired statistic explodes regardless of how
-trivial the edit was. In our data, adding a single unused line scored $5.0$ (the
-cap) on lines of code, the same score as doubling the length of a function. The
-number was formally correct and completely misleading: it measured the
-injector's consistency, not the smell's visibility.
+by programmatic injection will meet it. A paired effect size divides by the
+variability \emph{of the change}. An injector, being a program, often applies a
+near-identical edit every time: the dead-code injector adds one unused import;
+the magic-number injector introduces a constant. The change is then almost the
+same in every pair, its standard deviation approaches zero, and the paired
+statistic explodes regardless of how trivial the edit was. In our data, adding a
+single unused line scored $5.0$ (the cap) on lines of code, the same score as
+doubling the length of a function. The number was formally correct and
+completely misleading: it measured the injector's consistency, not the smell's
+visibility.
 
 The unpaired form of Equation~\ref{eq:d} divides instead by the spread of the
 code itself, so a one-line edit is negligible next to the natural variation in
@@ -779,19 +770,15 @@ three verdicts.
   \item[Co-occurs.] The real groups separate, but the intervention shows the
         measure barely moves when only the smell changes. The separation is
         real and \emph{is not the smell}: it is something that travels with
-        the smell in real code, usually size. This verdict is only reachable
-        because the controlled arm exists: an observational study cannot
-        distinguish it from detection, and this is the single most common
-        confusion the protocol is designed to catch.
+        the smell in real code, usually size. This verdict is only reachable because the controlled arm exists.
   \item[Blind.] Neither source shows a usable response. The smell is invisible
         to the measure, and detecting it is a job for a rule-based detector.
 \end{description}
 
 The middle verdict deserves emphasis, because it is easy to read as a failure
 and it is not one. A near-zero injected value next to a large real value tells
-you something definite: the measure cannot be responding to the smell, so
-whatever it is responding to is something else that smelly code happens to have:
-in almost every case here, extra size. The pairing identifies the cause of a
+you something definite: the measure cannot be responding to the smell, so whatever it is responding to is something else that smelly code happens to
+have, in almost every case here extra size. The pairing identifies the cause of a
 separation that an observational study would simply have credited to the smell.
 The practical consequence is that a tool built on such a measure would flag
 functions for being large while reporting that it had found the smell, and would
@@ -935,8 +922,7 @@ no structural measure can, and adding more of them will not help. On that readin
 the structural family reaches only four of the twelve smells at Cohen's
 large-effect threshold. Eight lie beyond every measure it contains.
 
-The reference-based family (BLEU, chrF, ROUGE-L, CodeBLEU, AST similarity,
-CodeBERTScore, BERTScore) sees the injected smells very differently: every one
+The reference-based family sees the injected smells very differently: every one
 of its measures separates every one of the twelve by at least $d = 1.46$, with
 per-measure medians between $2.5$ and $4.7$. It catches exactly the single-line and
 signature smells the structural family cannot reach, because any edit, however
@@ -1143,15 +1129,14 @@ part of the answer.
 
 Two things follow. First, a smell rate computed over everything a model returns
 is partly a measure of how much it volunteers, so comparing two models on it
-ranks them partly by that.
-
-Second, the obvious alternative fix does not work here. A natural response to
-``one model wrote more'' is to divide by size and report smells per hundred
-lines. That would not solve this problem, because the demonstration code would still be counted: its smells in the numerator, its lines in the denominator.
-The rate would come down, but only because the function was credited with lines
-it did not contain. What is needed here is not a smaller number but a smaller
-\emph{corpus}: score the function the prompt asked for, and leave out everything
-the model added around it.
+ranks them partly by that. Second, the obvious alternative fix does not work
+here. A natural response to ``one model wrote more'' is to divide by size and
+report smells per hundred lines. That would not solve this problem, because the
+demonstration code would still be counted: its smells in the numerator, its
+lines in the denominator. The rate would come down, but only because the
+function was credited with lines it did not contain. What is needed here is not
+a smaller number but a smaller \emph{corpus}: score the function the prompt
+asked for, and leave out everything the model added around it.
 
 \subsection{Capability does not buy structural quality}
 \label{sec:capability}
@@ -1159,12 +1144,10 @@ the model added around it.
 
 With the scoring corrected, the models can be compared on structure. Counting
 smells per hundred source lines of the functions they were asked to write, they
-score 1.93 (DeepSeek), 1.96 (Qwen) and 1.90 (Claude).
-
-Those three numbers are not distinguishable from one another. Resampling the 664
-tasks with replacement (20{,}000 draws) puts DeepSeek at $1.93$ $[1.57, 2.31]$,
-Qwen at $1.96$ $[1.53, 2.40]$ and Claude at $1.90$ $[1.50, 2.33]$, and every
-pairwise difference has an interval spanning zero.
+score 1.93 (DeepSeek), 1.96 (Qwen) and 1.90 (Claude). Those three numbers are
+not distinguishable from one another. Resampling the 664 tasks with replacement
+(20{,}000 draws) puts DeepSeek at $1.93$ $[1.57, 2.31]$, Qwen at $1.96$ $[1.53, 2.40]$ and Claude at $1.90$
+$[1.50, 2.33]$, and every pairwise difference has an interval spanning zero.
 
 Two things follow from that and they are not the same claim. The first is the
 result: across a 41-point spread in pass@1, no difference in smell density is
@@ -1253,11 +1236,9 @@ produce a long method, it has to be given something long to write.
 \section{RQ3: eliciting smells, and what elicitation measures}
 \label{sec:rq3}
 
-Section~\ref{sec:taskset} ended on a ceiling: most of the twelve smells cannot
-occur in a five-line function, so the benchmark could not say whether models
-avoid them. This section removes the ceiling by asking the models for code that
-has room for the smells, and finds that the ceiling is replaced by a subtler
-one. Whether a smell shows up depends less on whether the model was willing to
+Section~\ref{sec:taskset} ended on a ceiling that belonged to the task set
+rather than to the models. This section removes it by asking for code with room
+for the smells, and finds the ceiling replaced by a subtler one. Whether a smell shows up depends less on whether the model was willing to
 write it than on whether the model wrote a whole function at all. The section then
 turns to the second half of RQ3: whether the amount a model
 writes predicts the structural quality of what it writes.
@@ -1315,42 +1296,27 @@ smell density was unmoved, at 1.02 per hundred lines before and 1.03 after.
 
 Table~\ref{tab:induction} gives, for each smell, how often the prompt that asked
 for it got it, and Figure~\ref{fig:induction} plots the same data as rates. The
-spread is the finding, and it runs in two directions.
-
-% [H], not [!t] or [!b]: this table is short and belongs immediately after the
-% sentence that introduces it. Floated to the top of the column it preceded the
-% heading of the subsection discussing it; floated to the bottom it fell past the
-% start of the next one.
-\begin{table}[H]
-  \centering
-  \small
-  \begin{tabular}{lrrr}
-  \toprule
-  Requested smell & \mbox{DeepSeek} & Qwen & Claude \\
-  \midrule
-  \texttt{long\_parameter\_list} & 36/40 & 38/40 & 40/40 \\
-  \texttt{duplicate\_code}       &  5/20 &  3/20 & 19/20 \\
-  \texttt{magic\_number}         &  3/18 & 10/18 & 13/18 \\
-  \texttt{deep\_nesting}         &  3/18 &  6/18 &  9/18 \\
-  \texttt{dead\_code}            &  3/16 &  5/16 &  6/16 \\
-  \texttt{long\_method}          &  0/40 &  0/40 & 13/40 \\
-  \midrule
-  Overall                        & 32.9\% & 40.8\% & 65.8\% \\
-  \bottomrule
-  \end{tabular}
-  \caption{Induction: how often a prompt written to provoke a smell produced
-  one, over the 152 prompts whose target is among our twelve. Rows are ordered by
-  how reliably the smell can be induced.}
-  \label{tab:induction}
-\end{table}
-
-Across smells, some are easy to provoke and some are impossible. Asking for a
-function with many parameters produces one almost every time: 36, 38 and 40 out
-of 40. Asking for dead code almost never works: no model manages more than six
-out of sixteen, because an unused import is the kind of thing a model tidies
-away without being asked. Prompt wording is a strong lever on some structural
-properties and no lever at all on others, and which is which is not obvious in
-advance.
+spread is the finding, and it runs in two directions. % [H], not [!t] or [!b]:
+this table is short and belongs immediately after the % sentence that introduces
+it. Floated to the top of the column it preceded the % heading of the subsection
+discussing it; floated to the bottom it fell past the % start of the next one.
+\begin{table}[H] \centering \small \begin{tabular}{lrrr} \toprule Requested
+smell & \mbox{DeepSeek} & Qwen & Claude \\ \midrule
+\texttt{long\_parameter\_list} & 36/40 & 38/40 & 40/40 \\
+\texttt{duplicate\_code} & 5/20 & 3/20 & 19/20 \\ \texttt{magic\_number} & 3/18
+& 10/18 & 13/18 \\ \texttt{deep\_nesting} & 3/18 & 6/18 & 9/18 \\
+\texttt{dead\_code} & 3/16 & 5/16 & 6/16 \\ \texttt{long\_method} & 0/40 & 0/40
+& 13/40 \\ \midrule Overall & 32.9\% & 40.8\% & 65.8\% \\ \bottomrule
+\end{tabular} \caption{Induction: how often a prompt written to provoke a smell
+produced one, over the 152 prompts whose target is among our twelve. Rows are
+ordered by how reliably the smell can be induced.} \label{tab:induction}
+\end{table} Across smells, some are easy to provoke and some are impossible.
+Asking for a function with many parameters produces one almost every time: 36,
+38 and 40 out of 40. Asking for dead code almost never works: no model manages
+more than six out of sixteen, because an unused import is the kind of thing a
+model tidies away without being asked. Prompt wording is a strong lever on some
+structural properties and no lever at all on others, and which is which is not
+obvious in advance.
 
 Across models, the ordering is consistent: Claude induces most, then Qwen, then
 DeepSeek, at 65.8\%, 40.8\% and 32.9\% overall. This is the row that looks like a
@@ -1414,7 +1380,6 @@ more insistently should reduce it. Three instruction strengths were run on the
 open models: a minimal instruction that only requests code, a \emph{full} one
 that asks for every function to be implemented with no placeholders, and an
 \emph{emphatic} one that says so at greater length and repeats the prohibition.
-
 Each comparison below holds the token budget fixed, so that instruction strength
 is the only thing varying. At a 1{,}024-token budget, moving from the minimal to
 the full instruction takes Qwen's per-function stub rate from 18.2\% to 15.4\%
@@ -1432,14 +1397,13 @@ partly a prompting artefact and partly a property of these models.
 
 The obvious explanation for zero long methods from the open models is that they
 ran out of tokens. It is worth ruling out explicitly, because it would make the
-result an artefact of our setup rather than a fact about the models.
-
-Running both open models at 1{,}024 and at 4{,}096 tokens, the same prompts
-produce the same answer: zero long methods out of forty at either budget. Their
-output length distributions barely move (DeepSeek's mean goes from 495 tokens to
-589, against a cap four times larger), and fewer than 2\% of generations reach
-the cap in any run. The models are not being cut off. They decompose. Asked for
-a function that does seven things, they return five or six small functions that
+result an artefact of our setup rather than a fact about the models. Running
+both open models at 1{,}024 and at 4{,}096 tokens, the same prompts produce the
+same answer: zero long methods out of forty at either budget. Their output
+length distributions barely move (DeepSeek's mean goes from 495 tokens to 589,
+against a cap four times larger), and fewer than 2\% of generations reach the
+cap in any run. The models are not being cut off. They decompose. Asked for a
+function that does seven things, they return five or six small functions that
 between them do seven things, which is a reasonable piece of engineering and the
 opposite of what was requested.
 
@@ -1575,17 +1539,15 @@ neither ordering is monotonic. Asking Claude for four and a half times as much
 code, with input validation and explicit edge-case handling, changed how much it
 wrote and left how often it worked exactly where it was.
 
-Qwen breaks the pattern, and in the direction opposite to the one usually feared.
-Its terse condition scores 38.9\% $[35.2, 42.6]$ against 57.2\% $[53.5, 61.0]$
-under the neutral instruction: a drop of 18.3 points, far larger than the width of
-either interval and not attributable to sampling error. Told to write the shortest
-solution that works, Qwen writes solutions that do not. Its mean output under that
-instruction is 35 tokens and 2.5 lines, and at that length a good many of these
-tasks simply cannot be solved.
-
-So brevity has a floor, and the weakest model in the comparison sits closest to
-it. The instruction that costs nothing when given to Claude removes almost a fifth
-of Qwen's correct answers.
+Qwen breaks the pattern, and in the direction opposite to the one usually
+feared. Its terse condition scores 38.9\% $[35.2, 42.6]$ against 57.2\% $[53.5, 61.0]$ under the
+neutral instruction: a drop of 18.3 points, far larger than the width of either
+interval and not attributable to sampling error. Told to write the shortest
+solution that works, Qwen writes solutions that do not. Its mean output under
+that instruction is 35 tokens and 2.5 lines, and at that length a good many of
+these tasks simply cannot be solved. So brevity has a floor, and the weakest
+model in the comparison sits closest to it. The instruction that costs nothing
+when given to Claude removes almost a fifth of Qwen's correct answers.
 
 Taken together the three results give a practitioner a rule, a caution, and a
 recommendation.
@@ -1635,17 +1597,15 @@ any of these results can be used for. Detection strength compares two
 average. It says nothing about any single function.
 
 The gap between those two things is wider than the effect sizes suggest. Take a
-measure scoring $d = 1.4$, comfortably ``large'' by the conventional bands. Draw
-one smelly function and one clean function at random and ask which scores
-worse: that measure gets it right about 84\% of the time, and wrong about one
-pair in six. At $d = 0.8$, the threshold for a large effect at all, it is wrong
-about three times in ten.
-
-So a measure can earn a strong verdict in this paper and still be an unreliable
-guide to the function in front of you. What is validated here is that a measure
-\emph{responds} to a smell across a population, not that it can \emph{identify}
-one in a given piece of code, and identifying one is what these metrics are
-usually reached for.
+measure scoring $d = 1.4$, comfortably ``large'' by the conventional bands. Draw one
+smelly function and one clean function at random and ask which scores worse:
+that measure gets it right about 84\% of the time, and wrong about one pair in
+six. At $d = 0.8$, the threshold for a large effect at all, it is wrong about three
+times in ten. So a measure can earn a strong verdict in this paper and still be
+an unreliable guide to the function in front of you. What is validated here is
+that a measure \emph{responds} to a smell across a population, not that it can
+\emph{identify} one in a given piece of code, and identifying one is what these
+metrics are usually reached for.
 
 A third point concerns the verdicts themselves. \emph{Detects}, \emph{co-occurs}
 and \emph{blind} are assigned by reading the two columns together, not by applying
@@ -1807,29 +1767,24 @@ blind spots were not known before.
 For the twelve smells and seventeen measures tested, the metrics see less than
 their use implies: three smells are genuinely detected, five separate on real
 code only because the functions carrying them are bigger, and four are invisible
-to everything in the panel. Counting only the measures that work without a
-known-good version of the code to compare against, which is the only kind
-available for code already written, eight of the twelve lie beyond the best
-measure we have.
+to everything in the panel. Eight of the twelve lie beyond every measure that
+works without a known-good version of the code to compare against, which is the
+only kind available for code already written. The useful part of that is
+negative: observation cannot tell detection from co-occurrence, because both
+look the same, and only changing the smell distinguishes them. Where our
+verdicts differ from what observation alone would have given, the difference is
+not a correction but a reversal.
 
-The most useful consequence is a negative one. Looking at smelly and clean code
-cannot tell detection apart from co-occurrence, because both look the same: two
-groups, separated. Only changing the smell distinguishes them. Where our verdicts
-differ from what looking alone would have given, the difference is not a small
-correction but a reversal: a measure credited with finding a smell turns out to
-be measuring how much code there is.
-
-That confound did not stay inside the instrument. Applying the validated panel
-to three models found it twice more. One model showed 2.5 times the smell rate
-of another until the demonstration code it volunteered was left out of the
-scoring. Prompts written to provoke a smell looked as though the weaker models
-were resisting them, when what they had actually run into was an unimplemented
-function: a body of \texttt{pass} has no structure a smell could live in. Each time, a number that reads as a fact about the code is largely a fact about
-how much code there is. The third instance is the one with no methodological
-defence, because nothing in it is wrong. The same 664 Claude solutions support ``2.5 times as smelly'' and
-``46\% less smelly'', depending only on whether smells are counted or divided by
-lines. Both are honest arithmetic on real data, so neither can be caught by
-checking the numbers, only by noticing that the other was not shown.
+That reversal is a measure reading size instead of the smell, and the confound
+did not stay inside the instrument. One model showed 2.5 times the smell rate of
+another until the demonstration code it volunteered was left out of the scoring.
+Weaker models looked as though they were resisting prompts written to provoke a
+smell, when what they had run into was an unimplemented function. And the same
+664 solutions support ``2.5 times as smelly'' and ``46\% less smelly'' depending
+only on whether smells are counted or divided by lines. That last one has no
+methodological defence, because nothing in it is wrong: both are honest
+arithmetic, so neither can be caught by checking the numbers, only by noticing
+that the other was not shown.
 
 Two results bear on how models are judged rather than how they are measured.
 Structural quality did not follow capability: across three models spanning 41
