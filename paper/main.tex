@@ -18,6 +18,13 @@
 \usepackage{listings}
 \usepackage{caption}
 \usepackage{threeparttable}
+
+% Set \anontrue before submitting to a double-blind venue: it replaces the
+% author block and the two repository URLs, which identify us, and leaves the
+% rest of the paper untouched. \anonfalse for the readable version.
+\newif\ifanon
+\anonfalse
+
 \usepackage{xcolor}
 \usepackage[hidelinks]{hyperref}
 \usepackage{url}
@@ -76,10 +83,14 @@
        \large A Controlled Validation of Structural Measures
        for LLM-Generated Code}
 
-\author{Kai Yi Ng\\
-        Machine Learning Research Group\\
-        University of Oxford\\
-        \texttt{kaiyi.ng@some.ox.ac.uk}}
+\ifanon
+  \author{}
+\else
+  \author{Kai Yi Ng\\
+          Machine Learning Research Group\\
+          University of Oxford\\
+          \texttt{kaiyi.ng@some.ox.ac.uk}}
+\fi
 
 \date{\today}
 
@@ -147,8 +158,7 @@ rather than by \emph{intervening}: metrics are computed on code that already
 carries the smell, and judged by whether they separate it from code that does
 not (Section~\ref{sec:related}). That design cannot distinguish the two
 available explanations of a separation. A metric that moves when smelly and
-clean code are compared has been shown to respond to \emph{something} that
-differs between the groups, and the smell is only one candidate.
+clean code are compared has been shown to respond to something that differs between the groups, and the smell is only one candidate.
 
 The distinction cannot be settled by observation alone. Smelly code found in
 real repositories differs from clean code in many ways at once. It is written by
@@ -211,8 +221,8 @@ This paper contributes:
         credited with detecting a smell only when it responds both to the smell
         being changed and to the smell as it occurs naturally.
   \item \textbf{A per-smell verdict for seventeen measures.} Every measure is
-        classified against every smell as \emph{detects}, \emph{co-occurs} or
-        \emph{blind} (Table~\ref{tab:detection}), giving a per-smell account of
+        classified against every smell as detects, co-occurs or
+        blind (Table~\ref{tab:detection}), giving a per-smell account of
         what these measures can and cannot see.
   \item \textbf{Two corrections to model comparison.} Scoring what a model
         volunteers rather than what it was asked for measures verbosity, and a
@@ -265,8 +275,7 @@ coverage, not a claim that they are unimportant; they are simply not the kind of
 thing this protocol can validate a measure against.
 
 \emph{One function at a time, in one language.} The unit of analysis is a single
-Python function. Smells that live in the relationships \emph{between} classes or
-modules are therefore out of reach by construction, and nothing here is claimed
+Python function. Smells that live in the relationships between classes or modules are therefore out of reach by construction, and nothing here is claimed
 to transfer to languages with different structural conventions.
 
 \emph{Three models, chosen to span capability rather than to survey it.} The
@@ -319,8 +328,7 @@ single 0--100 score. Cognitive complexity refines the cyclomatic idea by
 weighting nesting, on the argument that a branch three levels deep costs a reader
 more than a flat one.
 
-The important observation for this paper is what these metrics were built
-\emph{for}. They were designed to describe codebases in aggregate: to summarise
+The important observation for this paper is what these metrics were built for. They were designed to describe codebases in aggregate: to summarise
 a module, track a project over time, or flag files worth a human's attention.
 They were not designed to detect particular smells.
 
@@ -497,7 +505,7 @@ def fifth_Power_Sum(n):
 
 Injecting smells is not itself new; what is new here is what the injection is
 for. Existing smell datasets are mined from repositories and hand-labelled, and
-they exist to train or evaluate \emph{detectors}. The closest construction to
+they exist to train or evaluate detectors. The closest construction to
 ours is the refactoring-agent benchmark of Lin et al.\ \cite{lin2026smellbench},
 which also introduces one smell into clean Python and confirms behaviour by
 running the affected tests. Three things differ. It evaluates agents rather than
@@ -689,8 +697,7 @@ injected pairs support a causal question: if only the smell changes, does the
 measure move? The real-world layer supports an observational one: do smelly and
 clean code, as people actually write them, differ on the measure? The protocol's
 job is to put both answers on a single scale, so that for every measure and
-every smell the two can be read side by side, and, crucially, so that their
-\emph{disagreement} is visible, because the disagreement is where the
+every smell the two can be read side by side, and, crucially, so that their disagreement is visible, because the disagreement is where the
 information is.
 
 \subsection{Detection strength}
@@ -829,7 +836,7 @@ they imply for how structural quality should be measured at all.
   worse, and green is zero or negative, meaning the measure did not separate the
   groups or separated them the wrong way. Values are capped at $\pm 5$. Row
   labels are coloured by the final verdict of Section~\ref{sec:verdicts}, not by
-  the scale. The information is in the \emph{differences} between the two panels,
+  the scale. The information is in the differences between the two panels,
   catalogued in Section~\ref{sec:patterns}.}
   \label{fig:heatmap}
 \end{figure*}
@@ -916,7 +923,7 @@ tell the difference.
 \end{figure}
 
 Figure~\ref{fig:coverage} states the structural family's limit as an upper bound.
-For each smell it plots the \emph{strongest} measure each family offers, which is
+For each smell it plots the strongest measure each family offers, which is
 the form the claim requires: if the best structural measure cannot see a smell,
 no structural measure can, and adding more of them will not help. On that reading
 the structural family reaches only four of the twelve smells at Cohen's
@@ -976,8 +983,7 @@ that could, in principle, see \emph{every} smell. It sees none of them.
   \includegraphics[width=\linewidth]{figures/fig9_perplexity.pdf}
   \caption{Perplexity under a code language model, on both sources. No smell
   clears even the small-effect band in the direction the hypothesis predicts, and
-  most values fall below zero, meaning the model found the smelly code
-  \emph{less} surprising than the clean code, not more.}
+  most values fall below zero, meaning the model found the smelly code less surprising than the clean code, not more.}
   \label{fig:perplexity}
 \end{figure}
 
@@ -985,8 +991,7 @@ Across all twelve smells its detection strength never exceeds $0.46$ in the
 smelly direction on either source, and the means are $-0.23$ injected and
 $-0.39$ real (Figure~\ref{fig:perplexity}). The sign is the substance here.
 Positive detection strength means the smelly group scored worse, so a negative
-value means perplexity went the other way: the model found smelly code
-\emph{easier} to predict than clean code. That is not a weak result in the
+value means perplexity went the other way: the model found smelly code easier to predict than clean code. That is not a weak result in the
 expected direction. It is a result in the opposite direction to the hypothesis.
 
 The mechanism is mundane. The largest negative values belong to long methods
@@ -1060,8 +1065,7 @@ Section~\ref{sec:capability} checks whether it does.
 
 
 Figure~\ref{fig:models} puts each model's output beside the benchmark's own
-reference solutions. The first result is uniform: generated code is
-\emph{simpler} than the code it is being compared against, on every complexity
+reference solutions. The first result is uniform: generated code is simpler than the code it is being compared against, on every complexity
 measure and for every model. Mean length runs from 5.3 to 6.6 lines against the
 reference's 6.9; cyclomatic complexity from 2.65 to 2.86 against 3.17; cognitive
 complexity from 2.00 to 2.41 against 2.86. The common worry that models produce
@@ -1827,10 +1831,16 @@ out is to change the smell and watch.
 
 % ---------------------------------------------------------------------
 \section*{Data and code availability}
+\ifanon
+The benchmark, the evaluation tool, and every figure in this paper are released
+openly. The repository and the hosted version of the tool are withheld here
+because their addresses identify the authors, and will be given on acceptance.
+\else
 The benchmark, the evaluation tool, and every figure in this paper are available
 at \url{https://github.com/kaiyi03/Code-Smells}. An interactive version of the
 evaluation tool, which applies the same panel to arbitrary Python code, is at
 \url{https://code-smell-dashboard.onrender.com}.
+\fi
 
 % ---------------------------------------------------------------------
 \balance
