@@ -893,9 +893,8 @@ is why the size of an injected effect cannot be read as an estimate of the real
 one.
 
 \paragraph{Blind: nothing to see.} For \texttt{long\_parameter\_list},
-\texttt{mutable\_default} and \texttt{dead\_code}, no structural measure shows a
-usable response on either source: the strongest real association for dead code
-is $0.31$ on a profiling measure, and the injected values sit at zero. What these
+\texttt{mutable\_default} and \texttt{dead\_code}, no structural measure shows a usable response on either source: the strongest
+real association for \texttt{dead\_code} is $0.31$ on a profiling measure, and the injected values sit at zero. What these
 three have in common is that the smell lives in a single line or in the
 parameter list: an extra parameter, a mutable default value, one unused import.
 The function's bulk and branching are untouched, so a measure that summarises
@@ -1346,9 +1345,10 @@ this is not the token budget.
 \end{figure}
 
 Table~\ref{tab:induction} ordered the six smells by how reliably a prompt could
-provoke them. \texttt{long\_parameter\_list} came first and was induced almost
-every time, followed by duplicate code, magic numbers, deep nesting and dead code.
-\texttt{long\_method} came last, and neither open model produced it once in forty
+provoke them. \texttt{long\_parameter\_list} came first and was induced almost every time,
+followed by \texttt{duplicate\_code}, \texttt{magic\_number},
+\texttt{deep\_nesting} and \texttt{dead\_code}. \texttt{long\_method} came
+last, and neither open model produced it once in forty
 attempts. That ordering turns out to track something other than the smells
 themselves.
 
