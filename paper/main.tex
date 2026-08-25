@@ -845,9 +845,10 @@ they imply for how structural quality should be measured at all.
 \label{sec:patterns}
 
 \paragraph{Genuine detection: both sources agree.}
-Deep nesting moves cyclomatic complexity at $d = 3.85$ $[3.39, 4.32]$ when
-injected and $5.0$ (capped) on real code; a complex conditional moves Halstead
-difficulty at $1.50$ $[1.18, 1.81]$ injected and $3.77$ $[3.56, 3.98]$ real.
+\texttt{deep\_nesting} moves cyclomatic complexity at $d = 3.85$ $[3.39,
+4.32]$ when injected and $5.0$ (capped) on real code;
+\texttt{complex\_conditional} moves Halstead difficulty at $1.50$ $[1.18,
+1.81]$ injected and $3.77$ $[3.56, 3.98]$ real.
 For these smells the causal and observational answers coincide, and the
 measures can be used as detectors with a clear conscience.
 
@@ -866,10 +867,10 @@ measures can be used as detectors with a clear conscience.
 \paragraph{Co-occurrence: the intervention says no, real code says yes.}
 Rewriting a list comprehension as an explicit loop adds no branch, so cyclomatic
 complexity provably cannot respond to it, and the injected value is exactly
-$0.00$ $[-0.28, 0.28]$. Yet on real code the same measure separates
-inefficient-loop functions from clean ones at $1.37$ $[1.23, 1.51]$. The
-resolution is in the group medians: real functions containing inefficient loops
-have a median of six branch points against the clean baseline's two, because
+$0.00$ $[-0.28, 0.28]$. Yet on real code the same measure separates \texttt{inefficient\_loop}
+functions from clean ones at $1.37$ $[1.23, 1.51]$. The resolution is in the
+group medians: those functions have a median of six branch points against the
+clean baseline's two, because
 functions that contain this smell are simply \emph{bigger}. The separation is
 real, and it is a size difference carrying the smell's label. The same pattern
 holds more weakly for \texttt{broad\_except}, which scores $0.10$ injected and
@@ -880,9 +881,9 @@ cells that are pale on the left and hot on the right.
 
 \paragraph{Injection artefacts: the controlled arm gets magnitudes wrong.} The
 disagreement runs the other way too, and it calibrates how far a synthetic
-benchmark can be trusted. Sometimes injection overstates. Injected long methods
-score $5.0$ on lines of code, because the injector pads every function by a large
-and uniform amount, while real long methods score $1.92$, still large but noisier,
+benchmark can be trusted. Sometimes injection overstates. Injected \texttt{long\_method} examples score $5.0$ on lines of code, because
+the injector pads every function by a large and uniform amount, while real ones
+score $1.92$, still large but noisier,
 since real long functions vary enormously in length. Sometimes it understates.
 The same injector puts Halstead difficulty at $0.54$ against $3.51$ $[3.34, 3.68]$ on real code,
 because padding a function with straight-line statements makes it long without
@@ -993,8 +994,8 @@ Positive detection strength means the smelly group scored worse, so a negative
 value means perplexity went the other way: the model found smelly code easier to predict than clean code. That is not a weak result in the
 expected direction. It is a result in the opposite direction to the hypothesis.
 
-The mechanism is mundane. The largest negative values belong to long methods
-($-1.24$) and duplicated code ($-1.03$), and padding and repetition are the most
+The mechanism is mundane. The largest negative values belong to \texttt{long\_method} ($-1.24$) and
+\texttt{duplicate\_code} ($-1.03$), and padding and repetition are the most
 predictable text there is: a model that has just read a block is very good at
 predicting the same block again. Making code worse, in these two ways, makes it
 more ordinary.
@@ -1630,9 +1631,9 @@ arm would be reproducing the very confound it exists to detect.
 
 The results survive that objection, and it is worth showing why rather than
 asserting it. Comparing each verdict's measure against what raw lines of code did
-on the same injection: for deep nesting, cyclomatic complexity moves $3.85$ while
-length moves $1.28$, so it responds to the nesting over and above the growth; for
-a complex conditional, Halstead difficulty beats length by $1.07$.
+on the same injection: for \texttt{deep\_nesting}, cyclomatic complexity moves $3.85$ while length
+moves $1.28$, so it responds to the nesting over and above the growth; for
+\texttt{complex\_conditional}, Halstead difficulty beats length by $1.07$.
 
 The co-occurrence and blind verdicts are safer still, and for a simple reason.
 Those verdicts rest on measures that stayed flat when the smell was injected, at
