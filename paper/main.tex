@@ -102,32 +102,36 @@
   \maketitle
   \begin{onecolabstract}
 Code-generation benchmarks evaluate whether generated code runs, not whether it
-is well built. Functionally correct code can still carry `code smells':
-structural patterns that signal weaknesses in design and maintainability without
-altering behaviour. Structural metrics are widely used to assess this quality,
-but whether they respond to individual smells or to properties that accompany
-them, most obviously size, is unknown.
+is well built. Correct code can still carry `code smells': structural patterns
+that weaken design and maintainability without altering behaviour. Structural
+metrics are widely used to assess this quality, but whether they respond to
+individual smells or to properties that accompany them, most obviously size, is
+unknown.
 
-We separate the two by intervention. Twelve smells are injected one at a time
-into 1{,}300 otherwise unchanged Python functions, each confirmed by a static
-analyser and verified by execution to preserve behaviour, and the responses are
-validated against 4{,}599 `smelly' functions from human-written repositories. A
-measure is credited with detecting a smell only when it responds to both.
+We separate them by intervention, injecting twelve smells one at a time into 1{,}300 otherwise unchanged Python functions, each confirmed by a static
+analyser and verified by execution to preserve behaviour, and the responses
+checked against 4{,}599 `smelly' functions from human repositories. A measure
+detects a smell only if it responds to both.
 
 Across seventeen measures, three of the twelve smells are detected. For a further
 five, the measure separates smelly from clean code in real repositories but does
-not move when the smell alone is introduced, showing that it tracks the size of
-smelly functions rather than the smell itself. Four are invisible to every measure tested. Eight of the twelve lie
-beyond every reference-free measure, the only kind applicable to code with no
-known-good version to compare against.
-Language-model perplexity detects none, and inverts, because padded and duplicated code is
-unusually predictable.
+not move when the smell alone is introduced, showing that it tracks function size
+rather than the smell. The remaining four are invisible to every measure tested.
 
-Applying the validated measures to three language models finds the same confound
-twice more. The apparent gap between two of them narrows from 2.5 to 1.2 times
-once one model's unrequested code is excluded from scoring. Structural quality
-does not follow capability, and across a 41-point spread in pass@1 smell density
-is statistically indistinguishable between models.
+A second count matters more in practice. Seven of the seventeen measures score
+code against a correct version of itself, which a benchmark supplies and
+deployed code never has. Counting only the ten that do not, eight of the twelve
+smells are out of reach. Perplexity, which could in principle see them all, sees
+none and points the wrong way, because padded and duplicated code is more
+predictable than the clean original.
+
+Applying the validated measures to three language models finds the confound twice
+more. An apparent 2.5-fold gap between two of them falls to 1.2 when only
+the function each was asked to write is scored, rather than everything it
+returned: one habitually follows its answer with a worked example, and those
+extra lines carried the smells. Structural quality does not follow capability,
+and across a 41-point spread in pass@1 smell density is statistically
+indistinguishable between models.
 \end{onecolabstract} \vspace{1.4em} ]
 
 % ---------------------------------------------------------------------
