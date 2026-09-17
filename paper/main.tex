@@ -101,62 +101,65 @@
 \twocolumn[
   \maketitle
   \begin{onecolabstract}
-Code-generation benchmarks primarily evaluate functional correctness, providing
-limited insight into the structural quality of generated code. Functionally correct
-code can still exhibit code smells: structural characteristics that signal weaknesses
-in design and maintainability without necessarily altering program behaviour.
-Structural metrics are commonly used to assess this quality, yet it remains unclear
-whether they detect individual code smells or merely properties that co-occur with
-them.
+Code-generation benchmarks evaluate whether generated code runs, not whether it
+is well built. Functionally correct code can still carry `code smells':
+structural patterns that signal weaknesses in design and maintainability without
+altering behaviour. Structural metrics are widely used to assess this quality,
+but whether they respond to individual smells or to properties that accompany
+them, most obviously size, is unknown.
 
-We address this ambiguity through controlled intervention, introducing twelve
-code smells one at a time into 1{,}300 otherwise unchanged Python functions
-while preserving their behaviour. We validate the resulting metric responses
-against 4{,}599 smelly functions from human-written repositories. Across
-seventeen measures, only three smells are detected in both settings; five
-separate smelly from clean code in real repositories although the intervention
-shows the measure barely moves when only the smell changes, and four remain
-undetected by every measure tested. Eight of the twelve lie beyond every
-reference-free measure, the only class applicable to code with no known-good
-version to compare against. Language-model perplexity detects none of the twelve
-and inverts, scoring duplicated and padded code as more predictable than the
-clean originals.
+We separate the two by intervention. Twelve smells are injected one at a time
+into 1{,}300 otherwise unchanged Python functions, each confirmed by a static
+analyser and verified by execution to preserve behaviour, and the responses are
+validated against 4{,}599 `smelly' functions from human-written repositories. A
+measure is credited with detecting a smell only when it responds to both.
 
-Applying the validated measures to three language models exposes the same
-confound twice more. One model appears 2.5 times smellier than another until the
-demonstration code it volunteered is excluded from scoring, and weaker models
-appear to resist prompts written to induce smells when what they produce is
-unimplemented functions. Structural quality shows little relationship with
-functional capability: across models separated by 41 points of pass@1, smell
-density differs by 0.06 smells per hundred lines. Better functional performance
-does not imply better-structured code. \end{onecolabstract} \vspace{1.4em} ]
+Across seventeen measures, three of the twelve smells are detected. For a further
+five, the measure separates smelly from clean code in real repositories but does
+not move when the smell alone is introduced, showing that it tracks the size of
+smelly functions rather than the smell itself. Four are invisible to every measure tested. Eight of the twelve lie
+beyond every reference-free measure, the only kind applicable to code with no
+known-good version to compare against.
+Language-model perplexity detects none, and inverts, because padded and duplicated code is
+unusually predictable.
+
+Applying the validated measures to three language models finds the same confound
+twice more. The apparent gap between two of them narrows from 2.5 to 1.2 times
+once one model's unrequested code is excluded from scoring. Structural quality
+does not follow capability, and across a 41-point spread in pass@1 smell density
+is statistically indistinguishable between models.
+\end{onecolabstract} \vspace{1.4em} ]
 
 % ---------------------------------------------------------------------
 \section{Introduction}
 \label{sec:intro}
 
-Language models now write a substantial share of new code, and the benchmarks
-used to judge them ask almost exclusively whether that code runs. HumanEval and
-MBPP score a generated function by executing it against unit tests; a model is
-better if a larger fraction of its solutions pass. This is a reasonable thing to
-measure and a poor proxy for the thing practitioners actually worry about. Code
-that passes its tests can still be code no one wants to maintain: a function
-that does seven things, a conditional with six clauses, a constant with no name
-and no explanation. Correctness and structural quality are different properties,
-and only one of them is routinely benchmarked.
+Language models are now widely used to write code
+\cite{stackoverflow2025}, and the benchmarks used to judge them ask almost
+exclusively whether that code runs. HumanEval \cite{humaneval2021} and MBPP \cite{mbpp2021}, the two standard
+benchmarks for Python function synthesis, each pair a short natural-language
+task with unit tests and score a generated function by executing it against
+them; a model is considered better if a larger fraction of its solutions pass. Though this seems a reasonable measure of code validity, it is a poor proxy for
+code attributes that practitioners actually worry about. Code that passes
+validity tests can still be code that is difficult to understand and to
+maintain: for example, a function that does seven things, a conditional with six
+clauses, a constant with no name and no explanation. Correctness and structural
+quality are different properties of any code, yet only correctness is routinely
+benchmarked.
 
-The natural response is to reach for the metrics software engineering already
-has. Cyclomatic complexity, the Halstead measures, and the maintainability index
-have decades of use behind them; similarity measures such as BLEU and CodeBLEU
-compare generated code against a reference. Recent work does exactly this,
-computing these metrics over model output and drawing conclusions about how well
-models write. The step that is skipped is the one that licenses those
+Software engineering does, however, have tools which enable some measures of
+structural quality to be evaluated. For example, cyclomatic complexity
+\cite{mccabe1976complexity}, the Halstead measures \cite{halstead1977elements}
+and the maintainability index \cite{coleman1994maintainability} have decades of
+use behind them; similarity measures such as BLEU \cite{papineni2002bleu} and
+CodeBLEU \cite{codebleu2020} compare generated code against a reference. Recent approaches compute these metrics over model output
+and draw conclusions about how well models write. The step that is skipped is the one that licenses those
 conclusions. These metrics were designed to \emph{describe} human-written code
 in aggregate, not to \emph{detect} particular code smells. Where their per-smell
-behaviour has been examined at all, it has been examined by \emph{looking}
-rather than by \emph{intervening}: metrics are computed on code that already
-carries the smell, and judged by whether they separate it from code that does
-not (Section~\ref{sec:related}). That design cannot distinguish the two
+behaviour has been examined at all \cite{fontana2016comparing,dinucci2018detecting,azeem2019machine}, it has been
+examined by \emph{looking} rather than by \emph{intervening}: metrics are
+computed on code that already carries the smell, and judged by whether they
+separate it from code that does not (Section~\ref{sec:related}). That design cannot distinguish the two
 available explanations of a separation. A metric that moves when smelly and
 clean code are compared has been shown to respond to something that differs between the groups, and the smell is only one candidate.
 
