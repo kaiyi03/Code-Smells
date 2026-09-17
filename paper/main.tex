@@ -103,7 +103,7 @@
   \begin{onecolabstract}
 Code-generation benchmarks primarily evaluate functional correctness, providing
 limited insight into the structural quality of generated code. Functionally correct
-code can still exhibit code smells: structural characteristics that signal weaknesses
+code can still exhibit `code smells': structural characteristics that signal weaknesses
 in design and maintainability without necessarily altering program behaviour.
 Structural metrics are commonly used to assess this quality, yet it remains unclear
 whether they detect individual code smells or merely properties that co-occur with
@@ -112,9 +112,9 @@ them.
 We address this ambiguity through controlled intervention, introducing twelve
 code smells one at a time into 1{,}300 otherwise unchanged Python functions
 while preserving their behaviour. We validate the resulting metric responses
-against 4{,}599 smelly functions from human-written repositories. Across
-seventeen measures, only three smells are detected in both settings; five
-separate smelly from clean code in real repositories although the intervention
+against 4{,}599 `smelly' functions from human-written repositories. Across
+seventeen measures, only three smells are detected in both settings. We find five
+separate smelly-from-clean code examples in real repositories, although the intervention
 shows the measure barely moves when only the smell changes, and four remain
 undetected by every measure tested. Eight of the twelve lie beyond every
 reference-free measure, the only class applicable to code with no known-good
@@ -138,18 +138,16 @@ does not imply better-structured code. \end{onecolabstract} \vspace{1.4em} ]
 Language models now write a substantial share of new code, and the benchmarks
 used to judge them ask almost exclusively whether that code runs. HumanEval and
 MBPP score a generated function by executing it against unit tests; a model is
-better if a larger fraction of its solutions pass. This is a reasonable thing to
-measure and a poor proxy for the thing practitioners actually worry about. Code
-that passes its tests can still be code no one wants to maintain: a function
+considered better if a larger fraction of its solutions pass. Though this seems a reasonable 
+measure of code validity, it is a poor proxy for code attributes that practitioners actually worry about. Code
+that passes validity tests can still be code that is difficult to understand and to maintain: for example, a function
 that does seven things, a conditional with six clauses, a constant with no name
-and no explanation. Correctness and structural quality are different properties,
-and only one of them is routinely benchmarked.
+and no explanation. Correctness and structural quality are different properties of any code,
+yet only correctness is routinely benchmarked.
 
-The natural response is to reach for the metrics software engineering already
-has. Cyclomatic complexity, the Halstead measures, and the maintainability index
+Software engineering does, however, have tools which enable some measures of structural quality to be evaluated. For example, cyclomatic complexity, the Halstead measures, and the maintainability index
 have decades of use behind them; similarity measures such as BLEU and CodeBLEU
-compare generated code against a reference. Recent work does exactly this,
-computing these metrics over model output and drawing conclusions about how well
+compare generated code against a reference. Recent approaches compute these metrics over model output and drawing conclusions about how well
 models write. The step that is skipped is the one that licenses those
 conclusions. These metrics were designed to \emph{describe} human-written code
 in aggregate, not to \emph{detect} particular code smells. Where their per-smell
